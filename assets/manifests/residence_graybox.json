@@ -10,7 +10,7 @@
   "source": "assets/source/buildings/residence_graybox.json",
   "source_sha256": "0557e35a91f74cc4e2e9f2d4193c037d2a36139c7ef990843984c94ee0dfa7bf",
   "recipe_tool": "tools/build_grayboxes.py",
-  "recipe_tool_sha256": "d2f9e3cc53c6147d09cb69d74d17eea40199aaacafc619f54baee385ae0c5b11",
+  "recipe_tool_sha256": "407e64e98e4b7777b27c2c0b531e8275933c1e6b2fe2cf9244c99e40114a72d5",
   "generated": "assets/generated/buildings/residence_graybox.gltf",
   "generated_sha256": "2f9b182f50c5c72dc23331636b88936326c4a6a66f7439381dadc42790ac6149",
   "authority": {

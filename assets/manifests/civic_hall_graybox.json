@@ -10,7 +10,7 @@
   "source": "assets/source/buildings/civic_hall_graybox.json",
   "source_sha256": "2576df736aa517cef6fdf0ce65733af0e270c35f2ca2943056fcfae74bb8fd4b",
   "recipe_tool": "tools/build_grayboxes.py",
-  "recipe_tool_sha256": "d2f9e3cc53c6147d09cb69d74d17eea40199aaacafc619f54baee385ae0c5b11",
+  "recipe_tool_sha256": "407e64e98e4b7777b27c2c0b531e8275933c1e6b2fe2cf9244c99e40114a72d5",
   "generated": "assets/generated/buildings/civic_hall_graybox.gltf",
   "generated_sha256": "0e56eb2727ba47a2f9e23f48a72c1060021138b178191e4351aa79c72537f914",
   "authority": {

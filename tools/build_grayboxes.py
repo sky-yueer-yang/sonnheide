@@ -59,12 +59,12 @@ def generate(source):
     canonical = json.dumps(authority, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()
     manifest = {"schema_version": 1, "asset_id": recipe["asset_id"], "kind": "building_graybox",
                 "authorship": {"mode": "original", "project": "Sonnheide"}, "production_art": False,
-                "source": str(source.relative_to(ROOT)), "source_sha256": digest(raw), "recipe_tool": "tools/build_grayboxes.py",
-                "recipe_tool_sha256": digest(Path(__file__).read_bytes()), "generated": str(destination.relative_to(ROOT)),
+                "source": source.relative_to(ROOT).as_posix(), "source_sha256": digest(raw), "recipe_tool": "tools/build_grayboxes.py",
+                "recipe_tool_sha256": digest(Path(__file__).read_bytes()), "generated": destination.relative_to(ROOT).as_posix(),
                 "generated_sha256": digest(encoded), "authority": authority, "authority_sha256": digest(canonical),
                 "coordinate_system": "RH_Y_UP_METERS", "pivot": "footprint_center_ground", "bounds_m": {"min": minimum, "max": maximum},
                 "triangles": len(indices) // 3, "draw_calls": 1, "stage": "pipeline_fixture"}
-    (ROOT / "assets/manifests" / (recipe["asset_id"] + ".json")).write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (ROOT / "assets/manifests" / (recipe["asset_id"] + ".json")).write_bytes((json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
 
 
 def main():

@@ -11,13 +11,13 @@ SOURCE = ROOT / "docs/design/Sonnheide_Complete_Design_v0.6.md"
 
 def write(name, value):
     path = ROOT / "data/catalogs" / name
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_bytes((json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
 
 
 def main():
     raw = SOURCE.read_bytes()
     text = raw.decode("utf-8")
-    provenance = {"source": str(SOURCE.relative_to(ROOT)), "sha256": hashlib.sha256(raw).hexdigest(),
+    provenance = {"source": SOURCE.relative_to(ROOT).as_posix(), "sha256": hashlib.sha256(raw).hexdigest(),
                   "design_version": "0.6", "status": "extracted_definitions_not_implemented_rules"}
     capabilities, families, slots, laws = [], [], [], []
     direction = None

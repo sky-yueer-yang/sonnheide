@@ -160,7 +160,8 @@ void Simulation::validate() const {
   if(world_.navigationEpoch_==0 || world_.navigationEpoch_==std::numeric_limits<std::uint64_t>::max() || world_.navigationBuiltEpoch_>world_.navigationEpoch_) throw std::runtime_error("invalid navigation epoch");
   for(std::size_t i=0;i<events_.size();++i) if(events_[i].sequence!=i+1 || events_[i].kind.empty()) throw std::runtime_error("invalid history");
   std::set<std::uint64_t> acceptedRevisions;
-  for(auto& [id,receipt]:receipts_){
+  for(const auto& entry:receipts_){
+    const auto& id=entry.first;const auto& receipt=entry.second;
     auto command=decode_canonical(receipt.canonical);auto& result=receipt.result;
     if(id.empty() || id.size()>128 || !command || result.revision>revision_ ||
        (receipt.principal!=Principal::Player && receipt.principal!=Principal::Scheduler && receipt.principal!=Principal::Observer)) throw std::runtime_error("invalid receipt");
