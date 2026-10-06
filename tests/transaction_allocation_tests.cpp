@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <new>
+#include <sstream>
 
 namespace {thread_local long failAfter=-1;thread_local bool injected=false;}
 void* operator new(std::size_t size){
@@ -18,6 +19,7 @@ void operator delete[](void* pointer,std::size_t) noexcept {std::free(pointer);}
 
 int main(){
   using namespace sonnheide;
+  const auto snapshot=[](const Simulation& simulation){std::ostringstream out;simulation.save(out);return out.str();};
   long failures=0;
   for(long allocation=0;allocation<256;++allocation){
     Simulation simulation(FrozenWorld(2,2,{Surface::Land,Surface::Water,Surface::Land,Surface::Water}),{{7,{100,0}}});
@@ -25,18 +27,19 @@ int main(){
     // MSVC locale/iostream initialization can allocate inside noexcept library startup.
     // Warm a separate transaction before testing per-command allocations in an initialized runtime.
     auto warmup=simulation;warmup.submit(command,{Principal::Player,7});
+    const auto before=snapshot(simulation);const auto committed=snapshot(warmup);
     bool failed=false;injected=false;failAfter=allocation;
     try{simulation.submit(command,{Principal::Player,7});}
     catch(const std::exception&){failAfter=-1;if(!injected) throw;failed=true;}
     failAfter=-1;
     if(failed){
-      if(simulation.revision()!=0 || !simulation.jobs().empty() || simulation.stock().at(7)!=Stock{100,0}){std::cerr<<"allocation failure left partial commit\n";return 1;}
+      if(snapshot(simulation)!=before){std::cerr<<"allocation failure left partial commit\n";return 1;}
       auto retry=simulation.submit(command,{Principal::Player,7});
-      if(retry.status!=Status::Accepted || simulation.stock().at(7)!=Stock{90,10}){std::cerr<<"original command retry failed\n";return 1;}
+      if(retry.status!=Status::Accepted || snapshot(simulation)!=committed){std::cerr<<"original command retry failed\n";return 1;}
       simulation.validate();
     }else{
       auto retry=simulation.submit(command,{Principal::Player,7});
-      if(retry.status!=Status::Accepted || simulation.revision()!=1 || simulation.jobs().size()!=1){std::cerr<<"successful commit missing receipt\n";return 1;}
+      if(retry.status!=Status::Accepted || snapshot(simulation)!=committed){std::cerr<<"successful commit missing receipt\n";return 1;}
     }
     if(injected) ++failures;
     else {std::cout<<"PASS atomic commit across "<<failures<<" injected allocation failures\n";return 0;}

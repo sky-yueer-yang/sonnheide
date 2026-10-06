@@ -6,9 +6,9 @@
 
 - Apple clang21、arm64 macOS，`-std=c++20 -Wall -Wextra -Wpedantic -Werror`编译。
 - 18组内核场景：材料预约/消费；完工前水面；四邻接/禁孤岛；拒绝无半写；幂等/冲突/修订；可信Scheduler劳动入口；取消/永久完成；dirty导航；单格海峡分裂；reclaimed-only港口/泊位/重叠；4旋转；湖海/非法角度；中途checkpoint/回执续跑；损坏/版本/截断；2000命令守恒；伪造孤岛/epoch/坐标边界；伪造权限回执拒绝。
-- 对事务全部allocation位置逐一注入bad_alloc：世界不出现半提交，原commandId可重试；当前11个失败位置得到验证。
+- 对已初始化运行时中的`PlanReclamation`事务逐一注入分配失败：完整checkpoint字节在失败前后相同，原commandId可重试，成功状态与正常提交完全相同；本机当前11个分配位置得到验证。该实验不覆盖所有命令或标准库启动路径。
 - headless贯穿演示：2个完成造陆格、1个港口、材料100→80、reserved=0、天然mask hash不变、checkpoint相同。
-- 本机`python3 tools/build.py --sanitizers`已通过：headless、全部18场景、11个allocation故障位置、目录与原创几何校验。GitHub三平台CMake构建结果以Checks为准；CI配置本身不是平台成绩。
+- 本机`python3 tools/build.py --sanitizers`已通过：headless、全部18场景、11个allocation故障位置、目录与原创几何校验。2026-10-06，GitHub Actions的Linux/macOS Debug、Windows Release及Linux ASan+UBSan四个job均已实际通过，见[基线运行记录](https://github.com/sky-yueer-yang/sonnheide/actions/runs/37539046613)；后续提交仍以各自Checks为准。
 - 内容校验包括原稿SHA-256、科技424项计数/唯一ID/前置DAG、35法律/13业务、27章追踪、3原创glTF来源/权威hash/尺寸/入口/三角绕序及本地文档链接。
 
 ## 独立审查发现并修复
