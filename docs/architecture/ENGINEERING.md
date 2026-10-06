@@ -29,6 +29,8 @@
 
 `ci.yml`提供ubuntu-24.04、macos-14、windows-2022的CMake编译/CTest与目录/资产可重建检查；Linux额外ASan/UBSan。每次push、PR或手动运行。真实结果以GitHub Checks为准，配置文件存在不代表平台构建通过。
 
+Linux/macOS测试Debug，Windows测试Release以避免MSVC Debug容器对整状态复制oracle的额外开销；所有断言使用显式异常/返回值检查，不依赖会被NDEBUG删除的assert。内核场景设置120秒、其他测试60秒上限；测试耗时不代表生产算法的性能。
+
 Actions引用固定commit（checkout v5.0.0、setup-python v5.6.0此次已解析上游tag），contents只读，checkout不保留凭证，不用高权限pull_request_target。[GitHub官方固定SHA建议](https://docs.github.com/en/actions/reference/security/secure-use)
 
 图形GPU/IME、内容压缩、地球转换、完整经济/重放场景分别在实现时增CI作业。无GPU的runner不假称Metal画面通过；需真实设备手动场景记录。机型/OS/编译器/viewport/seed/定义hash一起记录，否则性能无法比较。

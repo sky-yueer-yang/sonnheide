@@ -10,11 +10,17 @@ concurrency:
   cancel-in-progress: true
 jobs:
   kernel:
-    name: Kernel / ${{ matrix.os }}
+    name: Kernel / ${{ matrix.os }} (${{ matrix.config }})
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-14, windows-2022]
+        include:
+          - os: ubuntu-24.04
+            config: Debug
+          - os: macos-14
+            config: Debug
+          - os: windows-2022
+            config: Release
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
@@ -32,11 +38,11 @@ jobs:
           python tools/validate_project.py
           git diff --exit-code
       - name: Configure
-        run: cmake -S . -B .build/ci -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+        run: cmake -S . -B .build/ci -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DBUILD_TESTING=ON
       - name: Build
-        run: cmake --build .build/ci --config Debug --parallel 2
+        run: cmake --build .build/ci --config ${{ matrix.config }} --parallel 2
       - name: Test
-        run: ctest --test-dir .build/ci -C Debug --output-on-failure
+        run: ctest --test-dir .build/ci -C ${{ matrix.config }} --output-on-failure
   sanitizers:
     name: Kernel / ASan + UBSan
     runs-on: ubuntu-24.04
