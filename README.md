@@ -1,0 +1,66 @@
+# Sonnheide
+
+Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采用游戏引擎；仿真、工程框架与客户端由我们搭建，所有建筑几何与外观由我们制作。** 独立开源库承担窗口、GPU、动画、字体和资产处理；第三方人物、动作、纹理、植物及地理数据按具体文件许可证复用。
+
+本仓库托管初步工程设计与一段可编译的 C++20 内核，**尚不是可游玩的完整游戏**。GitHub：[sky-yueer-yang/sonnheide](https://github.com/sky-yueer-yang/sonnheide)。当前仓库原本即为公开仓库；托管不自动授予原创代码、美术或设计开放许可，见 [原创与第三方权利策略](OWNERSHIP.md)。
+
+## 从这里阅读
+
+|内容|入口|
+|---|---|
+|架构总览、真正需要攻克的问题、模块边界|[工程总纲](docs/architecture/OVERVIEW.md)|
+|27章逐章对应对象、事务、不变量|[领域映射](docs/architecture/DOMAIN_MAP.md)|
+|五类共享基础、经济起步、调度、文化、战争与规模|[仿真架构](docs/architecture/SIMULATION.md)|
+|真实地球、投影、岸线、格网、填海与导航|[世界工程](docs/architecture/WORLD.md)|
+|原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
+|命令、预览、授权、共享合同与错误协议|[接口契约](docs/architecture/CONTRACTS.md)|
+|存档、恢复、版本迁移与确定性级别|[持久化](docs/architecture/PERSISTENCE.md)|
+|自制建筑、人体、材质、LOD、资产编译与流送|[内容流水线](docs/architecture/CONTENT_PIPELINE.md)|
+|代码依赖决定、可复用部件与拒绝理由|[开源技术栈](docs/research/OPEN_SOURCE_STACK.md)|
+|人物/动作/植物/水体/材质/地理资源及许可证|[资产来源](docs/research/ASSET_SOURCES.md)|
+|构建、GitHub/LFS/Releases、协作与交付|[工程运维](docs/architecture/ENGINEERING.md)|
+|切片顺序、必须先验证的实验与通过标准|[开发路线](docs/planning/ROADMAP.md)|
+|工程风险、决策与当前验证边界|[风险清单](docs/planning/RISKS.md)、[架构决策](docs/decisions/0001-foundation.md)、[验证记录](docs/planning/VALIDATION.md)|
+|原始游戏规则，逐字保留与SHA-256来源|[设计基线v0.6](docs/design/Sonnheide_Complete_Design_v0.6.md)、[来源清单](data/catalogs/design_source.json)|
+
+## 已经落地
+
+- C++20 headless 内核：只读天然底图、整数施工材料预约、分步劳动、取消、完工永久造陆、道路与正交港口几何、泊位保护、导航版本失效与全图连通正确性基准。
+- 命令 ID 去重、负载/授权冲突拒绝、预览修订检查；世界与回执在同一屏障提交；存档重载检查空间、材料、身份、回执及历史约束。
+- 18组内核场景、2000条确定种子压力命令、分配失败注入事务测试、headless 贯穿演示。
+- 从原稿实际提取40能力突破＋96谱系＋288槽位、35类法律、13类业务；未提供的原参考代码和配置没有被伪称导入。
+- 3份原创建筑几何配方及自包含 glTF 灰盒：住宅、CitySquare 的 CivicHall 组件、港口。它们用于格式/空间验证，正式写实模型、三时代外观与全建筑目录尚待制作。
+- CMake 构建、三平台 GitHub Actions 与 Linux sanitizer 作业、内容/来源哈希校验、LFS 规则。
+
+## 运行现有切片
+
+需要 C++20 编译器与 Python 3.9+。macOS/Linux 在没有 CMake 时也能立即构建并验证：
+
+```sh
+python3 tools/build.py
+python3 tools/build.py --sanitizers
+```
+
+生产构建描述使用 CMake 3.24+。Windows 使用 CMake、MSVC 和 Python，其他平台也可使用此路径：
+
+```sh
+cmake --preset debug
+cmake --build --preset debug --config Debug
+ctest --preset debug -C Debug
+```
+
+重建可读目录与自制灰盒：
+
+```sh
+python3 tools/extract_catalogs.py
+python3 tools/build_grayboxes.py
+python3 tools/validate_project.py
+```
+
+headless 演示会施工两格人工陆地、建一个港口、验证天然底图未变并执行存档往返。它没有窗口、真实地球数据、人物劳动分配、经济循环或写实水体。`KernelPlacePort` 只实现空间/导航子集；生产 `PlacePort` 的科技、产权、预算和许可尚待接入。
+
+## 当前实现不能直接作为生产规模方案
+
+内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
+
+SDL3、bgfx、ozz、RmlUi 与正式第三方资源处于**已选择/已研究、未集成**状态；仓库没有为了增加文件数量创建空的渲染器、社会系统或经济系统。下一步进入 [A1 平台与写实客户端实验](docs/planning/ROADMAP.md)，再按贯穿切片实现全部设计。

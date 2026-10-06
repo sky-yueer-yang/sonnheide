@@ -1,0 +1,15 @@
+{
+  "status": "planning_example_not_active_kernel_config",
+  "base_tick_hz_at_speed_1": 20,
+  "ticks_per_game_day": 1200,
+  "days_per_month": 30,
+  "months_per_year": 12,
+  "camera_affects_simulation": false,
+  "requires_validation": [
+    "movement vs calendar distance",
+    "labor and food integration",
+    "combat reload timings",
+    "fast-forward workload"
+  ],
+  "freeze_in_save": true
+}

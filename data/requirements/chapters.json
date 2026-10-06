@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "source": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+  "scope": "new 27-chapter engineering map; not the absent 199-item original trace",
+  "chapters": [
+    {
+      "chapter": 1,
+      "requirement_group": "DM-01",
+      "title": "Sonnheide：范围、冲突裁决与最小核心",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 2,
+      "requirement_group": "DM-02",
+      "title": "真实地球地图、世界、人、前文化国家与文化场起步",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/WORLD.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 3,
+      "requirement_group": "DM-03",
+      "title": "复合文化、独立语言谱系、相变与命名",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 4,
+      "requirement_group": "DM-04",
+      "title": "公国、大公国、王国、帝国与法制",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 5,
+      "requirement_group": "DM-05",
+      "title": "城市、建筑、外观、道路与公共服务",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/RENDERING.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 6,
+      "requirement_group": "DM-06",
+      "title": "经济核心：公共起步、产权、账本、生产与需求",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 7,
+      "requirement_group": "DM-07",
+      "title": "企业、工厂、集团与退出机制",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 8,
+      "requirement_group": "DM-08",
+      "title": "物流、灵活合同、税收和资本",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 9,
+      "requirement_group": "DM-09",
+      "title": "矿物再生曲面：真正可交互的三维资源编辑",
+      "status": "planned",
+      "architecture_document": "docs/architecture/WORLD.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 10,
+      "requirement_group": "DM-10",
+      "title": "科技、零件、大学与知识传播",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 11,
+      "requirement_group": "DM-11",
+      "title": "宗教根、教义与不可变章程",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 12,
+      "requirement_group": "DM-12",
+      "title": "教会经济、国家关系和罕见分裂",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 13,
+      "requirement_group": "DM-13",
+      "title": "个人信仰、传教网络与三类宗教建筑",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 14,
+      "requirement_group": "DM-14",
+      "title": "移民：动机、准入、旅程和融入",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 15,
+      "requirement_group": "DM-15",
+      "title": "Army：组织、招募、装备和补给",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 16,
+      "requirement_group": "DM-16",
+      "title": "战斗、阵法、城市攻防与战术AI",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 17,
+      "requirement_group": "DM-17",
+      "title": "干净而深入的军事地图交互",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 18,
+      "requirement_group": "DM-18",
+      "title": "战争目标、殖民、附属国与反叛",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 19,
+      "requirement_group": "DM-19",
+      "title": "国旗编辑器与政治地图",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 20,
+      "requirement_group": "DM-20",
+      "title": "真三维写实风与统一交互",
+      "status": "planned",
+      "architecture_document": "docs/architecture/RENDERING.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 21,
+      "requirement_group": "DM-21",
+      "title": "工程模型、调度与从现有工程迁移",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 22,
+      "requirement_group": "DM-22",
+      "title": "验证、平衡、开发顺序和交付边界",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 23,
+      "requirement_group": "DM-23",
+      "title": "三条贯穿系统的完整历史",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 24,
+      "requirement_group": "DM-24",
+      "title": "玩家编辑边界与反绕过",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    },
+    {
+      "chapter": 25,
+      "requirement_group": "DM-25",
+      "title": "科技全目录：本版424项定义",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 26,
+      "requirement_group": "DM-26",
+      "title": "法律与业务目录",
+      "status": "planned",
+      "architecture_document": "docs/architecture/DOMAIN_MAP.md",
+      "scope_note": "Production implementation pending"
+    },
+    {
+      "chapter": 27,
+      "requirement_group": "DM-27",
+      "title": "最小命令协议与跨系统事务",
+      "status": "partial_kernel",
+      "architecture_document": "docs/architecture/CONTRACTS.md",
+      "scope_note": "Only the explicitly documented transaction/geometry/checkpoint proof slice exists"
+    }
+  ]
+}

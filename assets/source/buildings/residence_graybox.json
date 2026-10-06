@@ -1,0 +1,13 @@
+{
+  "asset_id": "residence_graybox",
+  "authority": {"building_type": "residence", "volume_class": "small_house_1", "footprint_cells": [2, 2], "cell_size_m": 4, "allowed_origins": ["NATURAL", "RECLAIMED"], "rotations": [0, 90, 180, 270], "capacity": {"residents": 4}, "entrance_m": [0, 0, -4]},
+  "boxes": [
+    {"center": [0, 0.15, 0], "size": [8, 0.3, 8]},
+    {"center": [-3.8, 1.65, 0], "size": [0.4, 2.7, 8]},
+    {"center": [3.8, 1.65, 0], "size": [0.4, 2.7, 8]},
+    {"center": [0, 1.65, 3.8], "size": [8, 2.7, 0.4]},
+    {"center": [-2.4, 1.65, -3.8], "size": [3.2, 2.7, 0.4]},
+    {"center": [2.4, 1.65, -3.8], "size": [3.2, 2.7, 0.4]},
+    {"center": [0, 3.15, 0], "size": [8, 0.3, 8]}
+  ]
+}

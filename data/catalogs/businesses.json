@@ -1,0 +1,127 @@
+{
+  "provenance": {
+    "source": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+    "design_version": "0.6",
+    "status": "extracted_definitions_not_implemented_rules"
+  },
+  "businesses": [
+    {
+      "name": {
+        "zh-CN": "农田",
+        "en": "Farm"
+      },
+      "earliest_stage": "communal",
+      "capacity_constraints": "land_labor_tools",
+      "source_line": 2125
+    },
+    {
+      "name": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "earliest_stage": "communal",
+      "capacity_constraints": "land_labor_regrowth",
+      "source_line": 2126
+    },
+    {
+      "name": {
+        "zh-CN": "矿厂",
+        "en": "Mine"
+      },
+      "earliest_stage": "public_specialisation",
+      "capacity_constraints": "labor_rate_stock",
+      "source_line": 2127
+    },
+    {
+      "name": {
+        "zh-CN": "港口",
+        "en": "Port"
+      },
+      "earliest_stage": "public_specialisation",
+      "capacity_constraints": "berths_holds_dockyard",
+      "source_line": 2128
+    },
+    {
+      "name": {
+        "zh-CN": "大学",
+        "en": "University"
+      },
+      "earliest_stage": "public_specialisation",
+      "capacity_constraints": "teaching_research_seats",
+      "source_line": 2129
+    },
+    {
+      "name": {
+        "zh-CN": "研究所",
+        "en": "Research Institute"
+      },
+      "earliest_stage": "public_specialisation",
+      "capacity_constraints": "research_staff",
+      "source_line": 2130
+    },
+    {
+      "name": {
+        "zh-CN": "科技工厂",
+        "en": "Technology Factory"
+      },
+      "earliest_stage": "public_specialisation",
+      "capacity_constraints": "lines_labor_inputs",
+      "source_line": 2131
+    },
+    {
+      "name": {
+        "zh-CN": "运输公司",
+        "en": "Logistics"
+      },
+      "earliest_stage": "public_specialisation",
+      "capacity_constraints": "vehicle_slots_handling",
+      "source_line": 2132
+    },
+    {
+      "name": {
+        "zh-CN": "建筑公司",
+        "en": "Construction"
+      },
+      "earliest_stage": "communal",
+      "capacity_constraints": "worker_project_slots",
+      "source_line": 2133
+    },
+    {
+      "name": {
+        "zh-CN": "投资公司",
+        "en": "Investment"
+      },
+      "earliest_stage": "late_finance",
+      "capacity_constraints": "capital_risk_limits",
+      "source_line": 2134
+    },
+    {
+      "name": {
+        "zh-CN": "银行",
+        "en": "Bank"
+      },
+      "earliest_stage": "late_finance",
+      "capacity_constraints": "capital_and_reserves",
+      "source_line": 2135
+    },
+    {
+      "name": {
+        "zh-CN": "消费品公司",
+        "en": "Consumer Goods"
+      },
+      "earliest_stage": "late_consumption",
+      "capacity_constraints": "solvent_demand_and_craft",
+      "source_line": 2136
+    },
+    {
+      "name": {
+        "zh-CN": "房产租赁",
+        "en": "Residential Letting"
+      },
+      "earliest_stage": "mature_mixed",
+      "capacity_constraints": "habitable_units",
+      "source_line": 2137
+    }
+  ]
+}

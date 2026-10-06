@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "asset_id": "civic_hall_graybox",
+  "kind": "building_graybox",
+  "authorship": {
+    "mode": "original",
+    "project": "Sonnheide"
+  },
+  "production_art": false,
+  "source": "assets/source/buildings/civic_hall_graybox.json",
+  "source_sha256": "2576df736aa517cef6fdf0ce65733af0e270c35f2ca2943056fcfae74bb8fd4b",
+  "recipe_tool": "tools/build_grayboxes.py",
+  "recipe_tool_sha256": "d2f9e3cc53c6147d09cb69d74d17eea40199aaacafc619f54baee385ae0c5b11",
+  "generated": "assets/generated/buildings/civic_hall_graybox.gltf",
+  "generated_sha256": "0e56eb2727ba47a2f9e23f48a72c1060021138b178191e4351aa79c72537f914",
+  "authority": {
+    "building_type": "city_square_civic_hall_component",
+    "volume_class": "civic_hall_small",
+    "footprint_cells": [
+      3,
+      2
+    ],
+    "cell_size_m": 4,
+    "allowed_origins": [
+      "NATURAL",
+      "RECLAIMED"
+    ],
+    "rotations": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "capacity": {
+      "office_slots": 4
+    },
+    "entrance_m": [
+      0,
+      0,
+      -4
+    ]
+  },
+  "authority_sha256": "ab9c18f9e8bf3f8fd9fd9fb76972297dd56efdb6b75ecba30d5cfb70692ae234",
+  "coordinate_system": "RH_Y_UP_METERS",
+  "pivot": "footprint_center_ground",
+  "bounds_m": {
+    "min": [
+      -6.0,
+      0.0,
+      -4.0
+    ],
+    "max": [
+      6.0,
+      4.5,
+      4.0
+    ]
+  },
+  "triangles": 84,
+  "draw_calls": 1,
+  "stage": "pipeline_fixture"
+}

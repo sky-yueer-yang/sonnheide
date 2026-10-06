@@ -1,0 +1,5075 @@
+{
+  "provenance": {
+    "source": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+    "design_version": "0.6",
+    "status": "extracted_definitions_not_implemented_rules"
+  },
+  "capabilities": [
+    {
+      "id": "T001",
+      "name": {
+        "zh-CN": "农业剩余",
+        "en": "Agrarian Surplus"
+      },
+      "prerequisite_text": "文化资格＋社区研究",
+      "prerequisite_ids": [],
+      "unlocks": "stable_surplus",
+      "source_line": 1810
+    },
+    {
+      "id": "T002",
+      "name": {
+        "zh-CN": "记述",
+        "en": "Writing"
+      },
+      "prerequisite_text": "T001",
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "unlocks": "written_records",
+      "source_line": 1811
+    },
+    {
+      "id": "T003",
+      "name": {
+        "zh-CN": "公共工程",
+        "en": "Public Works"
+      },
+      "prerequisite_text": "T001",
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "unlocks": "public_projects",
+      "source_line": 1812
+    },
+    {
+      "id": "T004",
+      "name": {
+        "zh-CN": "标准度量",
+        "en": "Standard Measures"
+      },
+      "prerequisite_text": "T002",
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "unlocks": "standard_measures",
+      "source_line": 1813
+    },
+    {
+      "id": "T005",
+      "name": {
+        "zh-CN": "档案保存",
+        "en": "Archives"
+      },
+      "prerequisite_text": "T002",
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "unlocks": "archives",
+      "source_line": 1814
+    },
+    {
+      "id": "T006",
+      "name": {
+        "zh-CN": "教育传承",
+        "en": "Education"
+      },
+      "prerequisite_text": "T005",
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "unlocks": "formal_teaching",
+      "source_line": 1815
+    },
+    {
+      "id": "T007",
+      "name": {
+        "zh-CN": "大学组织",
+        "en": "University Organisation"
+      },
+      "prerequisite_text": "T006, T001",
+      "prerequisite_ids": [
+        "T006",
+        "T001"
+      ],
+      "unlocks": "university",
+      "source_line": 1816
+    },
+    {
+      "id": "T008",
+      "name": {
+        "zh-CN": "基础金工",
+        "en": "Basic Metalworking"
+      },
+      "prerequisite_text": "T003",
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "unlocks": "metalworking",
+      "source_line": 1817
+    },
+    {
+      "id": "T009",
+      "name": {
+        "zh-CN": "专业采掘",
+        "en": "Mining"
+      },
+      "prerequisite_text": "T003",
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "unlocks": "mining",
+      "source_line": 1818
+    },
+    {
+      "id": "T010",
+      "name": {
+        "zh-CN": "水路运输",
+        "en": "Water Transport"
+      },
+      "prerequisite_text": "T003",
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "unlocks": "port",
+      "source_line": 1819
+    },
+    {
+      "id": "T011",
+      "name": {
+        "zh-CN": "道路工程",
+        "en": "Roadworks"
+      },
+      "prerequisite_text": "T003",
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "unlocks": "roads",
+      "source_line": 1820
+    },
+    {
+      "id": "T012",
+      "name": {
+        "zh-CN": "石砌结构",
+        "en": "Masonry"
+      },
+      "prerequisite_text": "T003",
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "unlocks": "masonry",
+      "source_line": 1821
+    },
+    {
+      "id": "T013",
+      "name": {
+        "zh-CN": "高级屋架",
+        "en": "Advanced Framing"
+      },
+      "prerequisite_text": "T012",
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "unlocks": "medieval_structures",
+      "source_line": 1822
+    },
+    {
+      "id": "T014",
+      "name": {
+        "zh-CN": "专门制造",
+        "en": "Specialist Manufacturing"
+      },
+      "prerequisite_text": "T008, T004",
+      "prerequisite_ids": [
+        "T008",
+        "T004"
+      ],
+      "unlocks": "manufacturing",
+      "source_line": 1823
+    },
+    {
+      "id": "T015",
+      "name": {
+        "zh-CN": "工匠训练",
+        "en": "Craft Training"
+      },
+      "prerequisite_text": "T006, T014",
+      "prerequisite_ids": [
+        "T006",
+        "T014"
+      ],
+      "unlocks": "craft_training",
+      "source_line": 1824
+    },
+    {
+      "id": "T016",
+      "name": {
+        "zh-CN": "外交记录",
+        "en": "Diplomatic Records"
+      },
+      "prerequisite_text": "T002",
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "unlocks": "formal_treaties",
+      "source_line": 1825
+    },
+    {
+      "id": "T017",
+      "name": {
+        "zh-CN": "财政核算",
+        "en": "Fiscal Accounting"
+      },
+      "prerequisite_text": "T004, T016",
+      "prerequisite_ids": [
+        "T004",
+        "T016"
+      ],
+      "unlocks": "recorded_taxation",
+      "source_line": 1826
+    },
+    {
+      "id": "T018",
+      "name": {
+        "zh-CN": "标准货币",
+        "en": "Standard Currency"
+      },
+      "prerequisite_text": "T004, T017",
+      "prerequisite_ids": [
+        "T004",
+        "T017"
+      ],
+      "unlocks": "money",
+      "source_line": 1827
+    },
+    {
+      "id": "T019",
+      "name": {
+        "zh-CN": "契约执行",
+        "en": "Contract Enforcement"
+      },
+      "prerequisite_text": "T005, T018",
+      "prerequisite_ids": [
+        "T005",
+        "T018"
+      ],
+      "unlocks": "contracts",
+      "source_line": 1828
+    },
+    {
+      "id": "T020",
+      "name": {
+        "zh-CN": "产权登记",
+        "en": "Property Registry"
+      },
+      "prerequisite_text": "T019",
+      "prerequisite_ids": [
+        "T019"
+      ],
+      "unlocks": "registered_property",
+      "source_line": 1829
+    },
+    {
+      "id": "T021",
+      "name": {
+        "zh-CN": "文献网络",
+        "en": "Manuscript Network"
+      },
+      "prerequisite_text": "T005, T006",
+      "prerequisite_ids": [
+        "T005",
+        "T006"
+      ],
+      "unlocks": "copying_network",
+      "source_line": 1830
+    },
+    {
+      "id": "T022",
+      "name": {
+        "zh-CN": "印刷传播",
+        "en": "Printing"
+      },
+      "prerequisite_text": "T015, T021",
+      "prerequisite_ids": [
+        "T015",
+        "T021"
+      ],
+      "unlocks": "printing",
+      "source_line": 1831
+    },
+    {
+      "id": "T023",
+      "name": {
+        "zh-CN": "精密光学",
+        "en": "Precision Optics"
+      },
+      "prerequisite_text": "T015, T007",
+      "prerequisite_ids": [
+        "T015",
+        "T007"
+      ],
+      "unlocks": "optics",
+      "source_line": 1832
+    },
+    {
+      "id": "T024",
+      "name": {
+        "zh-CN": "标准零件",
+        "en": "Standard Parts"
+      },
+      "prerequisite_text": "T014, T004",
+      "prerequisite_ids": [
+        "T014",
+        "T004"
+      ],
+      "unlocks": "standard_parts",
+      "source_line": 1833
+    },
+    {
+      "id": "T025",
+      "name": {
+        "zh-CN": "专用流水线",
+        "en": "Dedicated Production Lines"
+      },
+      "prerequisite_text": "T024, T019",
+      "prerequisite_ids": [
+        "T024",
+        "T019"
+      ],
+      "unlocks": "assembly_lines",
+      "source_line": 1834
+    },
+    {
+      "id": "T026",
+      "name": {
+        "zh-CN": "高阶结构",
+        "en": "Advanced Structures"
+      },
+      "prerequisite_text": "T013, T024",
+      "prerequisite_ids": [
+        "T013",
+        "T024"
+      ],
+      "unlocks": "enlightenment_structures",
+      "source_line": 1835
+    },
+    {
+      "id": "T027",
+      "name": {
+        "zh-CN": "远洋运务",
+        "en": "Ocean Logistics"
+      },
+      "prerequisite_text": "T010, T011, T019",
+      "prerequisite_ids": [
+        "T010",
+        "T011",
+        "T019"
+      ],
+      "unlocks": "ocean_shipping",
+      "source_line": 1836
+    },
+    {
+      "id": "T028",
+      "name": {
+        "zh-CN": "火绳军备",
+        "en": "Matchlock Capability"
+      },
+      "prerequisite_text": "T015",
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "unlocks": "matchlock",
+      "source_line": 1837
+    },
+    {
+      "id": "T029",
+      "name": {
+        "zh-CN": "燧发军备",
+        "en": "Flintlock Capability"
+      },
+      "prerequisite_text": "T028, T024",
+      "prerequisite_ids": [
+        "T028",
+        "T024"
+      ],
+      "unlocks": "flintlock",
+      "source_line": 1838
+    },
+    {
+      "id": "T030",
+      "name": {
+        "zh-CN": "野战火炮",
+        "en": "Field Artillery"
+      },
+      "prerequisite_text": "T028, T008",
+      "prerequisite_ids": [
+        "T028",
+        "T008"
+      ],
+      "unlocks": "field_artillery",
+      "source_line": 1839
+    },
+    {
+      "id": "T031",
+      "name": {
+        "zh-CN": "私营法人准入",
+        "en": "Private Company Admission"
+      },
+      "prerequisite_text": "T020, T017, T019",
+      "prerequisite_ids": [
+        "T020",
+        "T017",
+        "T019"
+      ],
+      "unlocks": "private_company_eligible",
+      "source_line": 1840
+    },
+    {
+      "id": "T032",
+      "name": {
+        "zh-CN": "集团组织",
+        "en": "Corporate Groups"
+      },
+      "prerequisite_text": "T031, T025",
+      "prerequisite_ids": [
+        "T031",
+        "T025"
+      ],
+      "unlocks": "corporate_groups",
+      "source_line": 1841
+    },
+    {
+      "id": "T033",
+      "name": {
+        "zh-CN": "跨境经营",
+        "en": "Cross-border Business"
+      },
+      "prerequisite_text": "T027, T032",
+      "prerequisite_ids": [
+        "T027",
+        "T032"
+      ],
+      "unlocks": "cross_border_business",
+      "source_line": 1842
+    },
+    {
+      "id": "T034",
+      "name": {
+        "zh-CN": "保守银行制度",
+        "en": "Reserved Banking"
+      },
+      "prerequisite_text": "T018, T019, T020, T032",
+      "prerequisite_ids": [
+        "T018",
+        "T019",
+        "T020",
+        "T032"
+      ],
+      "unlocks": "banking_eligible",
+      "source_line": 1843
+    },
+    {
+      "id": "T035",
+      "name": {
+        "zh-CN": "长期资本投资",
+        "en": "Long-term Investment"
+      },
+      "prerequisite_text": "T034, T032",
+      "prerequisite_ids": [
+        "T034",
+        "T032"
+      ],
+      "unlocks": "investment_eligible",
+      "source_line": 1844
+    },
+    {
+      "id": "T036",
+      "name": {
+        "zh-CN": "成熟文化消费",
+        "en": "Mature Cultural Consumption"
+      },
+      "prerequisite_text": "T031, T022",
+      "prerequisite_ids": [
+        "T031",
+        "T022"
+      ],
+      "unlocks": "cultural_consumption_eligible",
+      "source_line": 1845
+    },
+    {
+      "id": "T037",
+      "name": {
+        "zh-CN": "民用太阳能驱动",
+        "en": "Civil Solar Drive"
+      },
+      "prerequisite_text": "T024, T025, T023",
+      "prerequisite_ids": [
+        "T024",
+        "T025",
+        "T023"
+      ],
+      "unlocks": "civil_solar_drive",
+      "source_line": 1846
+    },
+    {
+      "id": "T038",
+      "name": {
+        "zh-CN": "自动道路交通",
+        "en": "Autonomous Road Mobility"
+      },
+      "prerequisite_text": "T037, T011",
+      "prerequisite_ids": [
+        "T037",
+        "T011"
+      ],
+      "unlocks": "autonomous_mobility",
+      "source_line": 1847
+    },
+    {
+      "id": "T039",
+      "name": {
+        "zh-CN": "宪制行政",
+        "en": "Constitutional Administration"
+      },
+      "prerequisite_text": "T016, T017, T006",
+      "prerequisite_ids": [
+        "T016",
+        "T017",
+        "T006"
+      ],
+      "unlocks": "constitutional_administration",
+      "source_line": 1848
+    },
+    {
+      "id": "T040",
+      "name": {
+        "zh-CN": "大型共同圣所营建",
+        "en": "Great Sanctuary Construction"
+      },
+      "prerequisite_text": "T026, T027",
+      "prerequisite_ids": [
+        "T026",
+        "T027"
+      ],
+      "unlocks": "temple_eligible",
+      "source_line": 1849
+    }
+  ],
+  "families": [
+    {
+      "id": "F0101",
+      "name": {
+        "zh-CN": "犁",
+        "en": "Plough"
+      },
+      "direction": {
+        "zh-CN": "农业",
+        "en": "Agriculture"
+      },
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "slot_ids": [
+        "F0101-S1",
+        "F0101-S2",
+        "F0101-S3"
+      ],
+      "source_line": 1855
+    },
+    {
+      "id": "F0102",
+      "name": {
+        "zh-CN": "播种器",
+        "en": "Seed Drill"
+      },
+      "direction": {
+        "zh-CN": "农业",
+        "en": "Agriculture"
+      },
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "slot_ids": [
+        "F0102-S1",
+        "F0102-S2",
+        "F0102-S3"
+      ],
+      "source_line": 1856
+    },
+    {
+      "id": "F0103",
+      "name": {
+        "zh-CN": "收割器",
+        "en": "Harvester"
+      },
+      "direction": {
+        "zh-CN": "农业",
+        "en": "Agriculture"
+      },
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "slot_ids": [
+        "F0103-S1",
+        "F0103-S2",
+        "F0103-S3"
+      ],
+      "source_line": 1857
+    },
+    {
+      "id": "F0104",
+      "name": {
+        "zh-CN": "灌溉器",
+        "en": "Irrigator"
+      },
+      "direction": {
+        "zh-CN": "农业",
+        "en": "Agriculture"
+      },
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "slot_ids": [
+        "F0104-S1",
+        "F0104-S2",
+        "F0104-S3"
+      ],
+      "source_line": 1858
+    },
+    {
+      "id": "F0105",
+      "name": {
+        "zh-CN": "脱粒器",
+        "en": "Thresher"
+      },
+      "direction": {
+        "zh-CN": "农业",
+        "en": "Agriculture"
+      },
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "slot_ids": [
+        "F0105-S1",
+        "F0105-S2",
+        "F0105-S3"
+      ],
+      "source_line": 1859
+    },
+    {
+      "id": "F0106",
+      "name": {
+        "zh-CN": "育苗工艺",
+        "en": "Nursery Method"
+      },
+      "direction": {
+        "zh-CN": "农业",
+        "en": "Agriculture"
+      },
+      "prerequisite_ids": [
+        "T001"
+      ],
+      "slot_ids": [
+        "F0106-S1",
+        "F0106-S2",
+        "F0106-S3"
+      ],
+      "source_line": 1860
+    },
+    {
+      "id": "F0201",
+      "name": {
+        "zh-CN": "伐木锯",
+        "en": "Felling Saw"
+      },
+      "direction": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "slot_ids": [
+        "F0201-S1",
+        "F0201-S2",
+        "F0201-S3"
+      ],
+      "source_line": 1869
+    },
+    {
+      "id": "F0202",
+      "name": {
+        "zh-CN": "截材台",
+        "en": "Timber Bench"
+      },
+      "direction": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "slot_ids": [
+        "F0202-S1",
+        "F0202-S2",
+        "F0202-S3"
+      ],
+      "source_line": 1870
+    },
+    {
+      "id": "F0203",
+      "name": {
+        "zh-CN": "育林工艺",
+        "en": "Silviculture Method"
+      },
+      "direction": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "slot_ids": [
+        "F0203-S1",
+        "F0203-S2",
+        "F0203-S3"
+      ],
+      "source_line": 1871
+    },
+    {
+      "id": "F0204",
+      "name": {
+        "zh-CN": "木材干燥架",
+        "en": "Timber Drying Rack"
+      },
+      "direction": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "slot_ids": [
+        "F0204-S1",
+        "F0204-S2",
+        "F0204-S3"
+      ],
+      "source_line": 1872
+    },
+    {
+      "id": "F0205",
+      "name": {
+        "zh-CN": "集材绞盘",
+        "en": "Logging Winch"
+      },
+      "direction": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "slot_ids": [
+        "F0205-S1",
+        "F0205-S2",
+        "F0205-S3"
+      ],
+      "source_line": 1873
+    },
+    {
+      "id": "F0206",
+      "name": {
+        "zh-CN": "苗圃工艺",
+        "en": "Tree Nursery Method"
+      },
+      "direction": {
+        "zh-CN": "林业",
+        "en": "Forestry"
+      },
+      "prerequisite_ids": [
+        "T003"
+      ],
+      "slot_ids": [
+        "F0206-S1",
+        "F0206-S2",
+        "F0206-S3"
+      ],
+      "source_line": 1874
+    },
+    {
+      "id": "F0301",
+      "name": {
+        "zh-CN": "采掘工具",
+        "en": "Mining Tool"
+      },
+      "direction": {
+        "zh-CN": "采掘",
+        "en": "Extraction"
+      },
+      "prerequisite_ids": [
+        "T009"
+      ],
+      "slot_ids": [
+        "F0301-S1",
+        "F0301-S2",
+        "F0301-S3"
+      ],
+      "source_line": 1883
+    },
+    {
+      "id": "F0302",
+      "name": {
+        "zh-CN": "坑道支护",
+        "en": "Gallery Support"
+      },
+      "direction": {
+        "zh-CN": "采掘",
+        "en": "Extraction"
+      },
+      "prerequisite_ids": [
+        "T009"
+      ],
+      "slot_ids": [
+        "F0302-S1",
+        "F0302-S2",
+        "F0302-S3"
+      ],
+      "source_line": 1884
+    },
+    {
+      "id": "F0303",
+      "name": {
+        "zh-CN": "矿井提升器",
+        "en": "Mine Hoist"
+      },
+      "direction": {
+        "zh-CN": "采掘",
+        "en": "Extraction"
+      },
+      "prerequisite_ids": [
+        "T009"
+      ],
+      "slot_ids": [
+        "F0303-S1",
+        "F0303-S2",
+        "F0303-S3"
+      ],
+      "source_line": 1885
+    },
+    {
+      "id": "F0304",
+      "name": {
+        "zh-CN": "矿石筛选器",
+        "en": "Ore Sorter"
+      },
+      "direction": {
+        "zh-CN": "采掘",
+        "en": "Extraction"
+      },
+      "prerequisite_ids": [
+        "T009"
+      ],
+      "slot_ids": [
+        "F0304-S1",
+        "F0304-S2",
+        "F0304-S3"
+      ],
+      "source_line": 1886
+    },
+    {
+      "id": "F0305",
+      "name": {
+        "zh-CN": "排水装置",
+        "en": "Drainage Device"
+      },
+      "direction": {
+        "zh-CN": "采掘",
+        "en": "Extraction"
+      },
+      "prerequisite_ids": [
+        "T009"
+      ],
+      "slot_ids": [
+        "F0305-S1",
+        "F0305-S2",
+        "F0305-S3"
+      ],
+      "source_line": 1887
+    },
+    {
+      "id": "F0306",
+      "name": {
+        "zh-CN": "通风装置",
+        "en": "Ventilation Device"
+      },
+      "direction": {
+        "zh-CN": "采掘",
+        "en": "Extraction"
+      },
+      "prerequisite_ids": [
+        "T009"
+      ],
+      "slot_ids": [
+        "F0306-S1",
+        "F0306-S2",
+        "F0306-S3"
+      ],
+      "source_line": 1888
+    },
+    {
+      "id": "F0401",
+      "name": {
+        "zh-CN": "铁材加工炉",
+        "en": "Ironworking Furnace"
+      },
+      "direction": {
+        "zh-CN": "材料加工",
+        "en": "Materials"
+      },
+      "prerequisite_ids": [
+        "T008"
+      ],
+      "slot_ids": [
+        "F0401-S1",
+        "F0401-S2",
+        "F0401-S3"
+      ],
+      "source_line": 1897
+    },
+    {
+      "id": "F0402",
+      "name": {
+        "zh-CN": "铜材加工炉",
+        "en": "Copperworking Furnace"
+      },
+      "direction": {
+        "zh-CN": "材料加工",
+        "en": "Materials"
+      },
+      "prerequisite_ids": [
+        "T008"
+      ],
+      "slot_ids": [
+        "F0402-S1",
+        "F0402-S2",
+        "F0402-S3"
+      ],
+      "source_line": 1898
+    },
+    {
+      "id": "F0403",
+      "name": {
+        "zh-CN": "合金工艺",
+        "en": "Alloy Method"
+      },
+      "direction": {
+        "zh-CN": "材料加工",
+        "en": "Materials"
+      },
+      "prerequisite_ids": [
+        "T008"
+      ],
+      "slot_ids": [
+        "F0403-S1",
+        "F0403-S2",
+        "F0403-S3"
+      ],
+      "source_line": 1899
+    },
+    {
+      "id": "F0404",
+      "name": {
+        "zh-CN": "金属成形台",
+        "en": "Metal Forming Bench"
+      },
+      "direction": {
+        "zh-CN": "材料加工",
+        "en": "Materials"
+      },
+      "prerequisite_ids": [
+        "T008"
+      ],
+      "slot_ids": [
+        "F0404-S1",
+        "F0404-S2",
+        "F0404-S3"
+      ],
+      "source_line": 1900
+    },
+    {
+      "id": "F0405",
+      "name": {
+        "zh-CN": "铸件整修台",
+        "en": "Casting Finishing Bench"
+      },
+      "direction": {
+        "zh-CN": "材料加工",
+        "en": "Materials"
+      },
+      "prerequisite_ids": [
+        "T008"
+      ],
+      "slot_ids": [
+        "F0405-S1",
+        "F0405-S2",
+        "F0405-S3"
+      ],
+      "source_line": 1901
+    },
+    {
+      "id": "F0406",
+      "name": {
+        "zh-CN": "金属处理工艺",
+        "en": "Metal Treatment Method"
+      },
+      "direction": {
+        "zh-CN": "材料加工",
+        "en": "Materials"
+      },
+      "prerequisite_ids": [
+        "T008"
+      ],
+      "slot_ids": [
+        "F0406-S1",
+        "F0406-S2",
+        "F0406-S3"
+      ],
+      "source_line": 1902
+    },
+    {
+      "id": "F0501",
+      "name": {
+        "zh-CN": "螺纹加工装置",
+        "en": "Threading Device"
+      },
+      "direction": {
+        "zh-CN": "机械与制造",
+        "en": "Mechanisms"
+      },
+      "prerequisite_ids": [
+        "T024"
+      ],
+      "slot_ids": [
+        "F0501-S1",
+        "F0501-S2",
+        "F0501-S3"
+      ],
+      "source_line": 1911
+    },
+    {
+      "id": "F0502",
+      "name": {
+        "zh-CN": "齿轮传动器",
+        "en": "Gear Drive"
+      },
+      "direction": {
+        "zh-CN": "机械与制造",
+        "en": "Mechanisms"
+      },
+      "prerequisite_ids": [
+        "T024"
+      ],
+      "slot_ids": [
+        "F0502-S1",
+        "F0502-S2",
+        "F0502-S3"
+      ],
+      "source_line": 1912
+    },
+    {
+      "id": "F0503",
+      "name": {
+        "zh-CN": "轴承组件",
+        "en": "Bearing Assembly"
+      },
+      "direction": {
+        "zh-CN": "机械与制造",
+        "en": "Mechanisms"
+      },
+      "prerequisite_ids": [
+        "T024"
+      ],
+      "slot_ids": [
+        "F0503-S1",
+        "F0503-S2",
+        "F0503-S3"
+      ],
+      "source_line": 1913
+    },
+    {
+      "id": "F0504",
+      "name": {
+        "zh-CN": "联轴器",
+        "en": "Shaft Coupling"
+      },
+      "direction": {
+        "zh-CN": "机械与制造",
+        "en": "Mechanisms"
+      },
+      "prerequisite_ids": [
+        "T024"
+      ],
+      "slot_ids": [
+        "F0504-S1",
+        "F0504-S2",
+        "F0504-S3"
+      ],
+      "source_line": 1914
+    },
+    {
+      "id": "F0505",
+      "name": {
+        "zh-CN": "计量夹具",
+        "en": "Measuring Jig"
+      },
+      "direction": {
+        "zh-CN": "机械与制造",
+        "en": "Mechanisms"
+      },
+      "prerequisite_ids": [
+        "T024"
+      ],
+      "slot_ids": [
+        "F0505-S1",
+        "F0505-S2",
+        "F0505-S3"
+      ],
+      "source_line": 1915
+    },
+    {
+      "id": "F0506",
+      "name": {
+        "zh-CN": "流水线工装",
+        "en": "Line Tooling"
+      },
+      "direction": {
+        "zh-CN": "机械与制造",
+        "en": "Mechanisms"
+      },
+      "prerequisite_ids": [
+        "T024"
+      ],
+      "slot_ids": [
+        "F0506-S1",
+        "F0506-S2",
+        "F0506-S3"
+      ],
+      "source_line": 1916
+    },
+    {
+      "id": "F0601",
+      "name": {
+        "zh-CN": "梁柱体系",
+        "en": "Post and Beam System"
+      },
+      "direction": {
+        "zh-CN": "建筑",
+        "en": "Construction"
+      },
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "slot_ids": [
+        "F0601-S1",
+        "F0601-S2",
+        "F0601-S3"
+      ],
+      "source_line": 1925
+    },
+    {
+      "id": "F0602",
+      "name": {
+        "zh-CN": "拱券结构",
+        "en": "Arch Structure"
+      },
+      "direction": {
+        "zh-CN": "建筑",
+        "en": "Construction"
+      },
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "slot_ids": [
+        "F0602-S1",
+        "F0602-S2",
+        "F0602-S3"
+      ],
+      "source_line": 1926
+    },
+    {
+      "id": "F0603",
+      "name": {
+        "zh-CN": "屋架结构",
+        "en": "Roof Frame"
+      },
+      "direction": {
+        "zh-CN": "建筑",
+        "en": "Construction"
+      },
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "slot_ids": [
+        "F0603-S1",
+        "F0603-S2",
+        "F0603-S3"
+      ],
+      "source_line": 1927
+    },
+    {
+      "id": "F0604",
+      "name": {
+        "zh-CN": "墙体工艺",
+        "en": "Wall Method"
+      },
+      "direction": {
+        "zh-CN": "建筑",
+        "en": "Construction"
+      },
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "slot_ids": [
+        "F0604-S1",
+        "F0604-S2",
+        "F0604-S3"
+      ],
+      "source_line": 1928
+    },
+    {
+      "id": "F0605",
+      "name": {
+        "zh-CN": "多层楼板",
+        "en": "Storey Deck"
+      },
+      "direction": {
+        "zh-CN": "建筑",
+        "en": "Construction"
+      },
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "slot_ids": [
+        "F0605-S1",
+        "F0605-S2",
+        "F0605-S3"
+      ],
+      "source_line": 1929
+    },
+    {
+      "id": "F0606",
+      "name": {
+        "zh-CN": "建筑维护工艺",
+        "en": "Building Maintenance Method"
+      },
+      "direction": {
+        "zh-CN": "建筑",
+        "en": "Construction"
+      },
+      "prerequisite_ids": [
+        "T012"
+      ],
+      "slot_ids": [
+        "F0606-S1",
+        "F0606-S2",
+        "F0606-S3"
+      ],
+      "source_line": 1930
+    },
+    {
+      "id": "F0701",
+      "name": {
+        "zh-CN": "私人坐骑配具",
+        "en": "Private Mount Tack"
+      },
+      "direction": {
+        "zh-CN": "陆路交通",
+        "en": "Road Transport"
+      },
+      "prerequisite_ids": [
+        "T011"
+      ],
+      "slot_ids": [
+        "F0701-S1",
+        "F0701-S2",
+        "F0701-S3"
+      ],
+      "source_line": 1939
+    },
+    {
+      "id": "F0702",
+      "name": {
+        "zh-CN": "货运马车",
+        "en": "Freight Carriage"
+      },
+      "direction": {
+        "zh-CN": "陆路交通",
+        "en": "Road Transport"
+      },
+      "prerequisite_ids": [
+        "T011"
+      ],
+      "slot_ids": [
+        "F0702-S1",
+        "F0702-S2",
+        "F0702-S3"
+      ],
+      "source_line": 1940
+    },
+    {
+      "id": "F0703",
+      "name": {
+        "zh-CN": "私人马车",
+        "en": "Private Carriage"
+      },
+      "direction": {
+        "zh-CN": "陆路交通",
+        "en": "Road Transport"
+      },
+      "prerequisite_ids": [
+        "T011"
+      ],
+      "slot_ids": [
+        "F0703-S1",
+        "F0703-S2",
+        "F0703-S3"
+      ],
+      "source_line": 1941
+    },
+    {
+      "id": "F0704",
+      "name": {
+        "zh-CN": "道路铺装工艺",
+        "en": "Road Surfacing Method"
+      },
+      "direction": {
+        "zh-CN": "陆路交通",
+        "en": "Road Transport"
+      },
+      "prerequisite_ids": [
+        "T011"
+      ],
+      "slot_ids": [
+        "F0704-S1",
+        "F0704-S2",
+        "F0704-S3"
+      ],
+      "source_line": 1942
+    },
+    {
+      "id": "F0705",
+      "name": {
+        "zh-CN": "太阳能货车",
+        "en": "Solar Freight Vehicle"
+      },
+      "direction": {
+        "zh-CN": "陆路交通",
+        "en": "Road Transport"
+      },
+      "prerequisite_ids": [
+        "T038"
+      ],
+      "slot_ids": [
+        "F0705-S1",
+        "F0705-S2",
+        "F0705-S3"
+      ],
+      "source_line": 1943
+    },
+    {
+      "id": "F0706",
+      "name": {
+        "zh-CN": "太阳能私家车",
+        "en": "Solar Private Vehicle"
+      },
+      "direction": {
+        "zh-CN": "陆路交通",
+        "en": "Road Transport"
+      },
+      "prerequisite_ids": [
+        "T038"
+      ],
+      "slot_ids": [
+        "F0706-S1",
+        "F0706-S2",
+        "F0706-S3"
+      ],
+      "source_line": 1944
+    },
+    {
+      "id": "F0801",
+      "name": {
+        "zh-CN": "河运船",
+        "en": "River Carrier"
+      },
+      "direction": {
+        "zh-CN": "船舶与港口",
+        "en": "Shipping"
+      },
+      "prerequisite_ids": [
+        "T010"
+      ],
+      "slot_ids": [
+        "F0801-S1",
+        "F0801-S2",
+        "F0801-S3"
+      ],
+      "source_line": 1953
+    },
+    {
+      "id": "F0802",
+      "name": {
+        "zh-CN": "近岸运输船",
+        "en": "Coastal Carrier"
+      },
+      "direction": {
+        "zh-CN": "船舶与港口",
+        "en": "Shipping"
+      },
+      "prerequisite_ids": [
+        "T010"
+      ],
+      "slot_ids": [
+        "F0802-S1",
+        "F0802-S2",
+        "F0802-S3"
+      ],
+      "source_line": 1954
+    },
+    {
+      "id": "F0803",
+      "name": {
+        "zh-CN": "远洋运输船",
+        "en": "Ocean Carrier"
+      },
+      "direction": {
+        "zh-CN": "船舶与港口",
+        "en": "Shipping"
+      },
+      "prerequisite_ids": [
+        "T027"
+      ],
+      "slot_ids": [
+        "F0803-S1",
+        "F0803-S2",
+        "F0803-S3"
+      ],
+      "source_line": 1955
+    },
+    {
+      "id": "F0804",
+      "name": {
+        "zh-CN": "港口装卸器",
+        "en": "Port Loader"
+      },
+      "direction": {
+        "zh-CN": "船舶与港口",
+        "en": "Shipping"
+      },
+      "prerequisite_ids": [
+        "T010"
+      ],
+      "slot_ids": [
+        "F0804-S1",
+        "F0804-S2",
+        "F0804-S3"
+      ],
+      "source_line": 1956
+    },
+    {
+      "id": "F0805",
+      "name": {
+        "zh-CN": "船坞工艺",
+        "en": "Dockyard Method"
+      },
+      "direction": {
+        "zh-CN": "船舶与港口",
+        "en": "Shipping"
+      },
+      "prerequisite_ids": [
+        "T010"
+      ],
+      "slot_ids": [
+        "F0805-S1",
+        "F0805-S2",
+        "F0805-S3"
+      ],
+      "source_line": 1957
+    },
+    {
+      "id": "F0806",
+      "name": {
+        "zh-CN": "军运舱段",
+        "en": "Troop Transport Compartment"
+      },
+      "direction": {
+        "zh-CN": "船舶与港口",
+        "en": "Shipping"
+      },
+      "prerequisite_ids": [
+        "T010"
+      ],
+      "slot_ids": [
+        "F0806-S1",
+        "F0806-S2",
+        "F0806-S3"
+      ],
+      "source_line": 1958
+    },
+    {
+      "id": "F0901",
+      "name": {
+        "zh-CN": "书写工艺",
+        "en": "Writing Method"
+      },
+      "direction": {
+        "zh-CN": "记述与教育",
+        "en": "Knowledge"
+      },
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "slot_ids": [
+        "F0901-S1",
+        "F0901-S2",
+        "F0901-S3"
+      ],
+      "source_line": 1967
+    },
+    {
+      "id": "F0902",
+      "name": {
+        "zh-CN": "抄写工艺",
+        "en": "Copying Method"
+      },
+      "direction": {
+        "zh-CN": "记述与教育",
+        "en": "Knowledge"
+      },
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "slot_ids": [
+        "F0902-S1",
+        "F0902-S2",
+        "F0902-S3"
+      ],
+      "source_line": 1968
+    },
+    {
+      "id": "F0903",
+      "name": {
+        "zh-CN": "印刷装置",
+        "en": "Printing Device"
+      },
+      "direction": {
+        "zh-CN": "记述与教育",
+        "en": "Knowledge"
+      },
+      "prerequisite_ids": [
+        "T022"
+      ],
+      "slot_ids": [
+        "F0903-S1",
+        "F0903-S2",
+        "F0903-S3"
+      ],
+      "source_line": 1969
+    },
+    {
+      "id": "F0904",
+      "name": {
+        "zh-CN": "档案编目法",
+        "en": "Archive Index"
+      },
+      "direction": {
+        "zh-CN": "记述与教育",
+        "en": "Knowledge"
+      },
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "slot_ids": [
+        "F0904-S1",
+        "F0904-S2",
+        "F0904-S3"
+      ],
+      "source_line": 1970
+    },
+    {
+      "id": "F0905",
+      "name": {
+        "zh-CN": "教学法",
+        "en": "Teaching Method"
+      },
+      "direction": {
+        "zh-CN": "记述与教育",
+        "en": "Knowledge"
+      },
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "slot_ids": [
+        "F0905-S1",
+        "F0905-S2",
+        "F0905-S3"
+      ],
+      "source_line": 1971
+    },
+    {
+      "id": "F0906",
+      "name": {
+        "zh-CN": "翻译工艺",
+        "en": "Translation Method"
+      },
+      "direction": {
+        "zh-CN": "记述与教育",
+        "en": "Knowledge"
+      },
+      "prerequisite_ids": [
+        "T002"
+      ],
+      "slot_ids": [
+        "F0906-S1",
+        "F0906-S2",
+        "F0906-S3"
+      ],
+      "source_line": 1972
+    },
+    {
+      "id": "F1001",
+      "name": {
+        "zh-CN": "观察镜",
+        "en": "Observation Lens"
+      },
+      "direction": {
+        "zh-CN": "光学",
+        "en": "Optics"
+      },
+      "prerequisite_ids": [
+        "T023"
+      ],
+      "slot_ids": [
+        "F1001-S1",
+        "F1001-S2",
+        "F1001-S3"
+      ],
+      "source_line": 1981
+    },
+    {
+      "id": "F1002",
+      "name": {
+        "zh-CN": "测量镜",
+        "en": "Survey Lens"
+      },
+      "direction": {
+        "zh-CN": "光学",
+        "en": "Optics"
+      },
+      "prerequisite_ids": [
+        "T023"
+      ],
+      "slot_ids": [
+        "F1002-S1",
+        "F1002-S2",
+        "F1002-S3"
+      ],
+      "source_line": 1982
+    },
+    {
+      "id": "F1003",
+      "name": {
+        "zh-CN": "工匠镜",
+        "en": "Craft Lens"
+      },
+      "direction": {
+        "zh-CN": "光学",
+        "en": "Optics"
+      },
+      "prerequisite_ids": [
+        "T023"
+      ],
+      "slot_ids": [
+        "F1003-S1",
+        "F1003-S2",
+        "F1003-S3"
+      ],
+      "source_line": 1983
+    },
+    {
+      "id": "F1004",
+      "name": {
+        "zh-CN": "光学玻璃工艺",
+        "en": "Optical Glass Method"
+      },
+      "direction": {
+        "zh-CN": "光学",
+        "en": "Optics"
+      },
+      "prerequisite_ids": [
+        "T023"
+      ],
+      "slot_ids": [
+        "F1004-S1",
+        "F1004-S2",
+        "F1004-S3"
+      ],
+      "source_line": 1984
+    },
+    {
+      "id": "F1005",
+      "name": {
+        "zh-CN": "镜架装置",
+        "en": "Optical Mount"
+      },
+      "direction": {
+        "zh-CN": "光学",
+        "en": "Optics"
+      },
+      "prerequisite_ids": [
+        "T023"
+      ],
+      "slot_ids": [
+        "F1005-S1",
+        "F1005-S2",
+        "F1005-S3"
+      ],
+      "source_line": 1985
+    },
+    {
+      "id": "F1006",
+      "name": {
+        "zh-CN": "光学检测台",
+        "en": "Optical Inspection Bench"
+      },
+      "direction": {
+        "zh-CN": "光学",
+        "en": "Optics"
+      },
+      "prerequisite_ids": [
+        "T023"
+      ],
+      "slot_ids": [
+        "F1006-S1",
+        "F1006-S2",
+        "F1006-S3"
+      ],
+      "source_line": 1986
+    },
+    {
+      "id": "F1101",
+      "name": {
+        "zh-CN": "纺线装置",
+        "en": "Spinning Device"
+      },
+      "direction": {
+        "zh-CN": "纺织",
+        "en": "Textiles"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1101-S1",
+        "F1101-S2",
+        "F1101-S3"
+      ],
+      "source_line": 1995
+    },
+    {
+      "id": "F1102",
+      "name": {
+        "zh-CN": "织布装置",
+        "en": "Weaving Device"
+      },
+      "direction": {
+        "zh-CN": "纺织",
+        "en": "Textiles"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1102-S1",
+        "F1102-S2",
+        "F1102-S3"
+      ],
+      "source_line": 1996
+    },
+    {
+      "id": "F1103",
+      "name": {
+        "zh-CN": "裁剪工艺",
+        "en": "Cutting Method"
+      },
+      "direction": {
+        "zh-CN": "纺织",
+        "en": "Textiles"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1103-S1",
+        "F1103-S2",
+        "F1103-S3"
+      ],
+      "source_line": 1997
+    },
+    {
+      "id": "F1104",
+      "name": {
+        "zh-CN": "染整工艺",
+        "en": "Finishing Method"
+      },
+      "direction": {
+        "zh-CN": "纺织",
+        "en": "Textiles"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1104-S1",
+        "F1104-S2",
+        "F1104-S3"
+      ],
+      "source_line": 1998
+    },
+    {
+      "id": "F1105",
+      "name": {
+        "zh-CN": "耐用布料工艺",
+        "en": "Durable Fabric Method"
+      },
+      "direction": {
+        "zh-CN": "纺织",
+        "en": "Textiles"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1105-S1",
+        "F1105-S2",
+        "F1105-S3"
+      ],
+      "source_line": 1999
+    },
+    {
+      "id": "F1106",
+      "name": {
+        "zh-CN": "服装配制法",
+        "en": "Garment Method"
+      },
+      "direction": {
+        "zh-CN": "纺织",
+        "en": "Textiles"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1106-S1",
+        "F1106-S2",
+        "F1106-S3"
+      ],
+      "source_line": 2000
+    },
+    {
+      "id": "F1201",
+      "name": {
+        "zh-CN": "弦乐器",
+        "en": "String Instrument"
+      },
+      "direction": {
+        "zh-CN": "文化消费",
+        "en": "Cultural Goods"
+      },
+      "prerequisite_ids": [
+        "T036"
+      ],
+      "slot_ids": [
+        "F1201-S1",
+        "F1201-S2",
+        "F1201-S3"
+      ],
+      "source_line": 2009
+    },
+    {
+      "id": "F1202",
+      "name": {
+        "zh-CN": "键盘乐器",
+        "en": "Keyboard Instrument"
+      },
+      "direction": {
+        "zh-CN": "文化消费",
+        "en": "Cultural Goods"
+      },
+      "prerequisite_ids": [
+        "T036"
+      ],
+      "slot_ids": [
+        "F1202-S1",
+        "F1202-S2",
+        "F1202-S3"
+      ],
+      "source_line": 2010
+    },
+    {
+      "id": "F1203",
+      "name": {
+        "zh-CN": "管乐器",
+        "en": "Wind Instrument"
+      },
+      "direction": {
+        "zh-CN": "文化消费",
+        "en": "Cultural Goods"
+      },
+      "prerequisite_ids": [
+        "T036"
+      ],
+      "slot_ids": [
+        "F1203-S1",
+        "F1203-S2",
+        "F1203-S3"
+      ],
+      "source_line": 2011
+    },
+    {
+      "id": "F1204",
+      "name": {
+        "zh-CN": "装饰工艺",
+        "en": "Decorative Craft"
+      },
+      "direction": {
+        "zh-CN": "文化消费",
+        "en": "Cultural Goods"
+      },
+      "prerequisite_ids": [
+        "T036"
+      ],
+      "slot_ids": [
+        "F1204-S1",
+        "F1204-S2",
+        "F1204-S3"
+      ],
+      "source_line": 2012
+    },
+    {
+      "id": "F1205",
+      "name": {
+        "zh-CN": "家居陈设工艺",
+        "en": "Furnishing Craft"
+      },
+      "direction": {
+        "zh-CN": "文化消费",
+        "en": "Cultural Goods"
+      },
+      "prerequisite_ids": [
+        "T036"
+      ],
+      "slot_ids": [
+        "F1205-S1",
+        "F1205-S2",
+        "F1205-S3"
+      ],
+      "source_line": 2013
+    },
+    {
+      "id": "F1206",
+      "name": {
+        "zh-CN": "演出组织法",
+        "en": "Performance Organisation"
+      },
+      "direction": {
+        "zh-CN": "文化消费",
+        "en": "Cultural Goods"
+      },
+      "prerequisite_ids": [
+        "T036"
+      ],
+      "slot_ids": [
+        "F1206-S1",
+        "F1206-S2",
+        "F1206-S3"
+      ],
+      "source_line": 2014
+    },
+    {
+      "id": "F1301",
+      "name": {
+        "zh-CN": "剑具",
+        "en": "Sword Equipment"
+      },
+      "direction": {
+        "zh-CN": "传统军备",
+        "en": "Traditional Arms"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1301-S1",
+        "F1301-S2",
+        "F1301-S3"
+      ],
+      "source_line": 2023
+    },
+    {
+      "id": "F1302",
+      "name": {
+        "zh-CN": "盾具",
+        "en": "Shield Equipment"
+      },
+      "direction": {
+        "zh-CN": "传统军备",
+        "en": "Traditional Arms"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1302-S1",
+        "F1302-S2",
+        "F1302-S3"
+      ],
+      "source_line": 2024
+    },
+    {
+      "id": "F1303",
+      "name": {
+        "zh-CN": "长枪",
+        "en": "Pike Equipment"
+      },
+      "direction": {
+        "zh-CN": "传统军备",
+        "en": "Traditional Arms"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1303-S1",
+        "F1303-S2",
+        "F1303-S3"
+      ],
+      "source_line": 2025
+    },
+    {
+      "id": "F1304",
+      "name": {
+        "zh-CN": "弓具",
+        "en": "Bow Equipment"
+      },
+      "direction": {
+        "zh-CN": "传统军备",
+        "en": "Traditional Arms"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1304-S1",
+        "F1304-S2",
+        "F1304-S3"
+      ],
+      "source_line": 2026
+    },
+    {
+      "id": "F1305",
+      "name": {
+        "zh-CN": "弩具",
+        "en": "Crossbow Equipment"
+      },
+      "direction": {
+        "zh-CN": "传统军备",
+        "en": "Traditional Arms"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1305-S1",
+        "F1305-S2",
+        "F1305-S3"
+      ],
+      "source_line": 2027
+    },
+    {
+      "id": "F1306",
+      "name": {
+        "zh-CN": "骑乘军具",
+        "en": "Mounted Equipment"
+      },
+      "direction": {
+        "zh-CN": "传统军备",
+        "en": "Traditional Arms"
+      },
+      "prerequisite_ids": [
+        "T015"
+      ],
+      "slot_ids": [
+        "F1306-S1",
+        "F1306-S2",
+        "F1306-S3"
+      ],
+      "source_line": 2028
+    },
+    {
+      "id": "F1401",
+      "name": {
+        "zh-CN": "火绳枪",
+        "en": "Matchlock"
+      },
+      "direction": {
+        "zh-CN": "火器上限",
+        "en": "Black-powder Arms"
+      },
+      "prerequisite_ids": [
+        "T028"
+      ],
+      "slot_ids": [
+        "F1401-S1",
+        "F1401-S2",
+        "F1401-S3"
+      ],
+      "source_line": 2037
+    },
+    {
+      "id": "F1402",
+      "name": {
+        "zh-CN": "燧发枪",
+        "en": "Flintlock"
+      },
+      "direction": {
+        "zh-CN": "火器上限",
+        "en": "Black-powder Arms"
+      },
+      "prerequisite_ids": [
+        "T029"
+      ],
+      "slot_ids": [
+        "F1402-S1",
+        "F1402-S2",
+        "F1402-S3"
+      ],
+      "source_line": 2038
+    },
+    {
+      "id": "F1403",
+      "name": {
+        "zh-CN": "轻型火炮",
+        "en": "Light Cannon"
+      },
+      "direction": {
+        "zh-CN": "火器上限",
+        "en": "Black-powder Arms"
+      },
+      "prerequisite_ids": [
+        "T030"
+      ],
+      "slot_ids": [
+        "F1403-S1",
+        "F1403-S2",
+        "F1403-S3"
+      ],
+      "source_line": 2039
+    },
+    {
+      "id": "F1404",
+      "name": {
+        "zh-CN": "野战火炮",
+        "en": "Field Cannon"
+      },
+      "direction": {
+        "zh-CN": "火器上限",
+        "en": "Black-powder Arms"
+      },
+      "prerequisite_ids": [
+        "T030"
+      ],
+      "slot_ids": [
+        "F1404-S1",
+        "F1404-S2",
+        "F1404-S3"
+      ],
+      "source_line": 2040
+    },
+    {
+      "id": "F1405",
+      "name": {
+        "zh-CN": "军需弹药工艺",
+        "en": "Military Ammunition Method"
+      },
+      "direction": {
+        "zh-CN": "火器上限",
+        "en": "Black-powder Arms"
+      },
+      "prerequisite_ids": [
+        "T028"
+      ],
+      "slot_ids": [
+        "F1405-S1",
+        "F1405-S2",
+        "F1405-S3"
+      ],
+      "source_line": 2041
+    },
+    {
+      "id": "F1406",
+      "name": {
+        "zh-CN": "火器维护工艺",
+        "en": "Firearm Maintenance Method"
+      },
+      "direction": {
+        "zh-CN": "火器上限",
+        "en": "Black-powder Arms"
+      },
+      "prerequisite_ids": [
+        "T028"
+      ],
+      "slot_ids": [
+        "F1406-S1",
+        "F1406-S2",
+        "F1406-S3"
+      ],
+      "source_line": 2042
+    },
+    {
+      "id": "F1501",
+      "name": {
+        "zh-CN": "账簿法",
+        "en": "Ledger Method"
+      },
+      "direction": {
+        "zh-CN": "会计与制度技术",
+        "en": "Administration"
+      },
+      "prerequisite_ids": [
+        "T019"
+      ],
+      "slot_ids": [
+        "F1501-S1",
+        "F1501-S2",
+        "F1501-S3"
+      ],
+      "source_line": 2051
+    },
+    {
+      "id": "F1502",
+      "name": {
+        "zh-CN": "合同登记法",
+        "en": "Contract Registry"
+      },
+      "direction": {
+        "zh-CN": "会计与制度技术",
+        "en": "Administration"
+      },
+      "prerequisite_ids": [
+        "T019"
+      ],
+      "slot_ids": [
+        "F1502-S1",
+        "F1502-S2",
+        "F1502-S3"
+      ],
+      "source_line": 2052
+    },
+    {
+      "id": "F1503",
+      "name": {
+        "zh-CN": "项目核算法",
+        "en": "Project Accounting"
+      },
+      "direction": {
+        "zh-CN": "会计与制度技术",
+        "en": "Administration"
+      },
+      "prerequisite_ids": [
+        "T019"
+      ],
+      "slot_ids": [
+        "F1503-S1",
+        "F1503-S2",
+        "F1503-S3"
+      ],
+      "source_line": 2053
+    },
+    {
+      "id": "F1504",
+      "name": {
+        "zh-CN": "税务核验法",
+        "en": "Tax Verification"
+      },
+      "direction": {
+        "zh-CN": "会计与制度技术",
+        "en": "Administration"
+      },
+      "prerequisite_ids": [
+        "T019"
+      ],
+      "slot_ids": [
+        "F1504-S1",
+        "F1504-S2",
+        "F1504-S3"
+      ],
+      "source_line": 2054
+    },
+    {
+      "id": "F1505",
+      "name": {
+        "zh-CN": "银行清算法",
+        "en": "Bank Settlement"
+      },
+      "direction": {
+        "zh-CN": "会计与制度技术",
+        "en": "Administration"
+      },
+      "prerequisite_ids": [
+        "T034"
+      ],
+      "slot_ids": [
+        "F1505-S1",
+        "F1505-S2",
+        "F1505-S3"
+      ],
+      "source_line": 2055
+    },
+    {
+      "id": "F1506",
+      "name": {
+        "zh-CN": "股权登记法",
+        "en": "Share Registry"
+      },
+      "direction": {
+        "zh-CN": "会计与制度技术",
+        "en": "Administration"
+      },
+      "prerequisite_ids": [
+        "T032"
+      ],
+      "slot_ids": [
+        "F1506-S1",
+        "F1506-S2",
+        "F1506-S3"
+      ],
+      "source_line": 2056
+    },
+    {
+      "id": "F1601",
+      "name": {
+        "zh-CN": "粮食储存法",
+        "en": "Food Storage Method"
+      },
+      "direction": {
+        "zh-CN": "仓储与保存",
+        "en": "Storage"
+      },
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "slot_ids": [
+        "F1601-S1",
+        "F1601-S2",
+        "F1601-S3"
+      ],
+      "source_line": 2065
+    },
+    {
+      "id": "F1602",
+      "name": {
+        "zh-CN": "广场仓储架",
+        "en": "City Square Storage Rack"
+      },
+      "direction": {
+        "zh-CN": "仓储与保存",
+        "en": "Storage"
+      },
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "slot_ids": [
+        "F1602-S1",
+        "F1602-S2",
+        "F1602-S3"
+      ],
+      "source_line": 2066
+    },
+    {
+      "id": "F1603",
+      "name": {
+        "zh-CN": "包装工艺",
+        "en": "Packaging Method"
+      },
+      "direction": {
+        "zh-CN": "仓储与保存",
+        "en": "Storage"
+      },
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "slot_ids": [
+        "F1603-S1",
+        "F1603-S2",
+        "F1603-S3"
+      ],
+      "source_line": 2067
+    },
+    {
+      "id": "F1604",
+      "name": {
+        "zh-CN": "装卸组织法",
+        "en": "Handling Organisation"
+      },
+      "direction": {
+        "zh-CN": "仓储与保存",
+        "en": "Storage"
+      },
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "slot_ids": [
+        "F1604-S1",
+        "F1604-S2",
+        "F1604-S3"
+      ],
+      "source_line": 2068
+    },
+    {
+      "id": "F1605",
+      "name": {
+        "zh-CN": "库存核验法",
+        "en": "Stock Verification"
+      },
+      "direction": {
+        "zh-CN": "仓储与保存",
+        "en": "Storage"
+      },
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "slot_ids": [
+        "F1605-S1",
+        "F1605-S2",
+        "F1605-S3"
+      ],
+      "source_line": 2069
+    },
+    {
+      "id": "F1606",
+      "name": {
+        "zh-CN": "军需保管法",
+        "en": "Military Supply Storage"
+      },
+      "direction": {
+        "zh-CN": "仓储与保存",
+        "en": "Storage"
+      },
+      "prerequisite_ids": [
+        "T005"
+      ],
+      "slot_ids": [
+        "F1606-S1",
+        "F1606-S2",
+        "F1606-S3"
+      ],
+      "source_line": 2070
+    }
+  ],
+  "slots": [
+    {
+      "id": "F0101-S1",
+      "family_id": "F0101",
+      "name": {
+        "zh-CN": "连接螺栓"
+      },
+      "source_line": 1855,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0101-S2",
+      "family_id": "F0101",
+      "name": {
+        "zh-CN": "作业端"
+      },
+      "source_line": 1855,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0101-S3",
+      "family_id": "F0101",
+      "name": {
+        "zh-CN": "受力结构"
+      },
+      "source_line": 1855,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0102-S1",
+      "family_id": "F0102",
+      "name": {
+        "zh-CN": "连接螺栓"
+      },
+      "source_line": 1856,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0102-S2",
+      "family_id": "F0102",
+      "name": {
+        "zh-CN": "作业端"
+      },
+      "source_line": 1856,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0102-S3",
+      "family_id": "F0102",
+      "name": {
+        "zh-CN": "受力结构"
+      },
+      "source_line": 1856,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0103-S1",
+      "family_id": "F0103",
+      "name": {
+        "zh-CN": "连接螺栓"
+      },
+      "source_line": 1857,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0103-S2",
+      "family_id": "F0103",
+      "name": {
+        "zh-CN": "作业端"
+      },
+      "source_line": 1857,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0103-S3",
+      "family_id": "F0103",
+      "name": {
+        "zh-CN": "受力结构"
+      },
+      "source_line": 1857,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0104-S1",
+      "family_id": "F0104",
+      "name": {
+        "zh-CN": "连接螺栓"
+      },
+      "source_line": 1858,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0104-S2",
+      "family_id": "F0104",
+      "name": {
+        "zh-CN": "作业端"
+      },
+      "source_line": 1858,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0104-S3",
+      "family_id": "F0104",
+      "name": {
+        "zh-CN": "受力结构"
+      },
+      "source_line": 1858,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0105-S1",
+      "family_id": "F0105",
+      "name": {
+        "zh-CN": "连接螺栓"
+      },
+      "source_line": 1859,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0105-S2",
+      "family_id": "F0105",
+      "name": {
+        "zh-CN": "作业端"
+      },
+      "source_line": 1859,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0105-S3",
+      "family_id": "F0105",
+      "name": {
+        "zh-CN": "受力结构"
+      },
+      "source_line": 1859,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0106-S1",
+      "family_id": "F0106",
+      "name": {
+        "zh-CN": "连接螺栓"
+      },
+      "source_line": 1860,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0106-S2",
+      "family_id": "F0106",
+      "name": {
+        "zh-CN": "作业端"
+      },
+      "source_line": 1860,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0106-S3",
+      "family_id": "F0106",
+      "name": {
+        "zh-CN": "受力结构"
+      },
+      "source_line": 1860,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0201-S1",
+      "family_id": "F0201",
+      "name": {
+        "zh-CN": "固定件"
+      },
+      "source_line": 1869,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0201-S2",
+      "family_id": "F0201",
+      "name": {
+        "zh-CN": "切割与培育部件"
+      },
+      "source_line": 1869,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0201-S3",
+      "family_id": "F0201",
+      "name": {
+        "zh-CN": "支承结构"
+      },
+      "source_line": 1869,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0202-S1",
+      "family_id": "F0202",
+      "name": {
+        "zh-CN": "固定件"
+      },
+      "source_line": 1870,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0202-S2",
+      "family_id": "F0202",
+      "name": {
+        "zh-CN": "切割与培育部件"
+      },
+      "source_line": 1870,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0202-S3",
+      "family_id": "F0202",
+      "name": {
+        "zh-CN": "支承结构"
+      },
+      "source_line": 1870,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0203-S1",
+      "family_id": "F0203",
+      "name": {
+        "zh-CN": "固定件"
+      },
+      "source_line": 1871,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0203-S2",
+      "family_id": "F0203",
+      "name": {
+        "zh-CN": "切割与培育部件"
+      },
+      "source_line": 1871,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0203-S3",
+      "family_id": "F0203",
+      "name": {
+        "zh-CN": "支承结构"
+      },
+      "source_line": 1871,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0204-S1",
+      "family_id": "F0204",
+      "name": {
+        "zh-CN": "固定件"
+      },
+      "source_line": 1872,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0204-S2",
+      "family_id": "F0204",
+      "name": {
+        "zh-CN": "切割与培育部件"
+      },
+      "source_line": 1872,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0204-S3",
+      "family_id": "F0204",
+      "name": {
+        "zh-CN": "支承结构"
+      },
+      "source_line": 1872,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0205-S1",
+      "family_id": "F0205",
+      "name": {
+        "zh-CN": "固定件"
+      },
+      "source_line": 1873,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0205-S2",
+      "family_id": "F0205",
+      "name": {
+        "zh-CN": "切割与培育部件"
+      },
+      "source_line": 1873,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0205-S3",
+      "family_id": "F0205",
+      "name": {
+        "zh-CN": "支承结构"
+      },
+      "source_line": 1873,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0206-S1",
+      "family_id": "F0206",
+      "name": {
+        "zh-CN": "固定件"
+      },
+      "source_line": 1874,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0206-S2",
+      "family_id": "F0206",
+      "name": {
+        "zh-CN": "切割与培育部件"
+      },
+      "source_line": 1874,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0206-S3",
+      "family_id": "F0206",
+      "name": {
+        "zh-CN": "支承结构"
+      },
+      "source_line": 1874,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0301-S1",
+      "family_id": "F0301",
+      "name": {
+        "zh-CN": "耐用连接件"
+      },
+      "source_line": 1883,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0301-S2",
+      "family_id": "F0301",
+      "name": {
+        "zh-CN": "工作机构"
+      },
+      "source_line": 1883,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0301-S3",
+      "family_id": "F0301",
+      "name": {
+        "zh-CN": "控制工序"
+      },
+      "source_line": 1883,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0302-S1",
+      "family_id": "F0302",
+      "name": {
+        "zh-CN": "耐用连接件"
+      },
+      "source_line": 1884,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0302-S2",
+      "family_id": "F0302",
+      "name": {
+        "zh-CN": "工作机构"
+      },
+      "source_line": 1884,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0302-S3",
+      "family_id": "F0302",
+      "name": {
+        "zh-CN": "控制工序"
+      },
+      "source_line": 1884,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0303-S1",
+      "family_id": "F0303",
+      "name": {
+        "zh-CN": "耐用连接件"
+      },
+      "source_line": 1885,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0303-S2",
+      "family_id": "F0303",
+      "name": {
+        "zh-CN": "工作机构"
+      },
+      "source_line": 1885,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0303-S3",
+      "family_id": "F0303",
+      "name": {
+        "zh-CN": "控制工序"
+      },
+      "source_line": 1885,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0304-S1",
+      "family_id": "F0304",
+      "name": {
+        "zh-CN": "耐用连接件"
+      },
+      "source_line": 1886,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0304-S2",
+      "family_id": "F0304",
+      "name": {
+        "zh-CN": "工作机构"
+      },
+      "source_line": 1886,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0304-S3",
+      "family_id": "F0304",
+      "name": {
+        "zh-CN": "控制工序"
+      },
+      "source_line": 1886,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0305-S1",
+      "family_id": "F0305",
+      "name": {
+        "zh-CN": "耐用连接件"
+      },
+      "source_line": 1887,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0305-S2",
+      "family_id": "F0305",
+      "name": {
+        "zh-CN": "工作机构"
+      },
+      "source_line": 1887,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0305-S3",
+      "family_id": "F0305",
+      "name": {
+        "zh-CN": "控制工序"
+      },
+      "source_line": 1887,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0306-S1",
+      "family_id": "F0306",
+      "name": {
+        "zh-CN": "耐用连接件"
+      },
+      "source_line": 1888,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0306-S2",
+      "family_id": "F0306",
+      "name": {
+        "zh-CN": "工作机构"
+      },
+      "source_line": 1888,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0306-S3",
+      "family_id": "F0306",
+      "name": {
+        "zh-CN": "控制工序"
+      },
+      "source_line": 1888,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0401-S1",
+      "family_id": "F0401",
+      "name": {
+        "zh-CN": "容器结构"
+      },
+      "source_line": 1897,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0401-S2",
+      "family_id": "F0401",
+      "name": {
+        "zh-CN": "加工次序"
+      },
+      "source_line": 1897,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0401-S3",
+      "family_id": "F0401",
+      "name": {
+        "zh-CN": "检测工序"
+      },
+      "source_line": 1897,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0402-S1",
+      "family_id": "F0402",
+      "name": {
+        "zh-CN": "容器结构"
+      },
+      "source_line": 1898,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0402-S2",
+      "family_id": "F0402",
+      "name": {
+        "zh-CN": "加工次序"
+      },
+      "source_line": 1898,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0402-S3",
+      "family_id": "F0402",
+      "name": {
+        "zh-CN": "检测工序"
+      },
+      "source_line": 1898,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0403-S1",
+      "family_id": "F0403",
+      "name": {
+        "zh-CN": "容器结构"
+      },
+      "source_line": 1899,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0403-S2",
+      "family_id": "F0403",
+      "name": {
+        "zh-CN": "加工次序"
+      },
+      "source_line": 1899,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0403-S3",
+      "family_id": "F0403",
+      "name": {
+        "zh-CN": "检测工序"
+      },
+      "source_line": 1899,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0404-S1",
+      "family_id": "F0404",
+      "name": {
+        "zh-CN": "容器结构"
+      },
+      "source_line": 1900,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0404-S2",
+      "family_id": "F0404",
+      "name": {
+        "zh-CN": "加工次序"
+      },
+      "source_line": 1900,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0404-S3",
+      "family_id": "F0404",
+      "name": {
+        "zh-CN": "检测工序"
+      },
+      "source_line": 1900,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0405-S1",
+      "family_id": "F0405",
+      "name": {
+        "zh-CN": "容器结构"
+      },
+      "source_line": 1901,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0405-S2",
+      "family_id": "F0405",
+      "name": {
+        "zh-CN": "加工次序"
+      },
+      "source_line": 1901,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0405-S3",
+      "family_id": "F0405",
+      "name": {
+        "zh-CN": "检测工序"
+      },
+      "source_line": 1901,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0406-S1",
+      "family_id": "F0406",
+      "name": {
+        "zh-CN": "容器结构"
+      },
+      "source_line": 1902,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0406-S2",
+      "family_id": "F0406",
+      "name": {
+        "zh-CN": "加工次序"
+      },
+      "source_line": 1902,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0406-S3",
+      "family_id": "F0406",
+      "name": {
+        "zh-CN": "检测工序"
+      },
+      "source_line": 1902,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0501-S1",
+      "family_id": "F0501",
+      "name": {
+        "zh-CN": "定位件"
+      },
+      "source_line": 1911,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0501-S2",
+      "family_id": "F0501",
+      "name": {
+        "zh-CN": "传动组件"
+      },
+      "source_line": 1911,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0501-S3",
+      "family_id": "F0501",
+      "name": {
+        "zh-CN": "装配规范"
+      },
+      "source_line": 1911,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0502-S1",
+      "family_id": "F0502",
+      "name": {
+        "zh-CN": "定位件"
+      },
+      "source_line": 1912,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0502-S2",
+      "family_id": "F0502",
+      "name": {
+        "zh-CN": "传动组件"
+      },
+      "source_line": 1912,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0502-S3",
+      "family_id": "F0502",
+      "name": {
+        "zh-CN": "装配规范"
+      },
+      "source_line": 1912,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0503-S1",
+      "family_id": "F0503",
+      "name": {
+        "zh-CN": "定位件"
+      },
+      "source_line": 1913,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0503-S2",
+      "family_id": "F0503",
+      "name": {
+        "zh-CN": "传动组件"
+      },
+      "source_line": 1913,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0503-S3",
+      "family_id": "F0503",
+      "name": {
+        "zh-CN": "装配规范"
+      },
+      "source_line": 1913,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0504-S1",
+      "family_id": "F0504",
+      "name": {
+        "zh-CN": "定位件"
+      },
+      "source_line": 1914,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0504-S2",
+      "family_id": "F0504",
+      "name": {
+        "zh-CN": "传动组件"
+      },
+      "source_line": 1914,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0504-S3",
+      "family_id": "F0504",
+      "name": {
+        "zh-CN": "装配规范"
+      },
+      "source_line": 1914,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0505-S1",
+      "family_id": "F0505",
+      "name": {
+        "zh-CN": "定位件"
+      },
+      "source_line": 1915,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0505-S2",
+      "family_id": "F0505",
+      "name": {
+        "zh-CN": "传动组件"
+      },
+      "source_line": 1915,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0505-S3",
+      "family_id": "F0505",
+      "name": {
+        "zh-CN": "装配规范"
+      },
+      "source_line": 1915,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0506-S1",
+      "family_id": "F0506",
+      "name": {
+        "zh-CN": "定位件"
+      },
+      "source_line": 1916,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0506-S2",
+      "family_id": "F0506",
+      "name": {
+        "zh-CN": "传动组件"
+      },
+      "source_line": 1916,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0506-S3",
+      "family_id": "F0506",
+      "name": {
+        "zh-CN": "装配规范"
+      },
+      "source_line": 1916,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0601-S1",
+      "family_id": "F0601",
+      "name": {
+        "zh-CN": "连接节点"
+      },
+      "source_line": 1925,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0601-S2",
+      "family_id": "F0601",
+      "name": {
+        "zh-CN": "受力组件"
+      },
+      "source_line": 1925,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0601-S3",
+      "family_id": "F0601",
+      "name": {
+        "zh-CN": "施工工序"
+      },
+      "source_line": 1925,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0602-S1",
+      "family_id": "F0602",
+      "name": {
+        "zh-CN": "连接节点"
+      },
+      "source_line": 1926,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0602-S2",
+      "family_id": "F0602",
+      "name": {
+        "zh-CN": "受力组件"
+      },
+      "source_line": 1926,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0602-S3",
+      "family_id": "F0602",
+      "name": {
+        "zh-CN": "施工工序"
+      },
+      "source_line": 1926,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0603-S1",
+      "family_id": "F0603",
+      "name": {
+        "zh-CN": "连接节点"
+      },
+      "source_line": 1927,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0603-S2",
+      "family_id": "F0603",
+      "name": {
+        "zh-CN": "受力组件"
+      },
+      "source_line": 1927,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0603-S3",
+      "family_id": "F0603",
+      "name": {
+        "zh-CN": "施工工序"
+      },
+      "source_line": 1927,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0604-S1",
+      "family_id": "F0604",
+      "name": {
+        "zh-CN": "连接节点"
+      },
+      "source_line": 1928,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0604-S2",
+      "family_id": "F0604",
+      "name": {
+        "zh-CN": "受力组件"
+      },
+      "source_line": 1928,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0604-S3",
+      "family_id": "F0604",
+      "name": {
+        "zh-CN": "施工工序"
+      },
+      "source_line": 1928,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0605-S1",
+      "family_id": "F0605",
+      "name": {
+        "zh-CN": "连接节点"
+      },
+      "source_line": 1929,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0605-S2",
+      "family_id": "F0605",
+      "name": {
+        "zh-CN": "受力组件"
+      },
+      "source_line": 1929,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0605-S3",
+      "family_id": "F0605",
+      "name": {
+        "zh-CN": "施工工序"
+      },
+      "source_line": 1929,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0606-S1",
+      "family_id": "F0606",
+      "name": {
+        "zh-CN": "连接节点"
+      },
+      "source_line": 1930,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0606-S2",
+      "family_id": "F0606",
+      "name": {
+        "zh-CN": "受力组件"
+      },
+      "source_line": 1930,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0606-S3",
+      "family_id": "F0606",
+      "name": {
+        "zh-CN": "施工工序"
+      },
+      "source_line": 1930,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0701-S1",
+      "family_id": "F0701",
+      "name": {
+        "zh-CN": "承载结构"
+      },
+      "source_line": 1939,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0701-S2",
+      "family_id": "F0701",
+      "name": {
+        "zh-CN": "行走组件"
+      },
+      "source_line": 1939,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0701-S3",
+      "family_id": "F0701",
+      "name": {
+        "zh-CN": "维护规范"
+      },
+      "source_line": 1939,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0702-S1",
+      "family_id": "F0702",
+      "name": {
+        "zh-CN": "承载结构"
+      },
+      "source_line": 1940,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0702-S2",
+      "family_id": "F0702",
+      "name": {
+        "zh-CN": "行走组件"
+      },
+      "source_line": 1940,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0702-S3",
+      "family_id": "F0702",
+      "name": {
+        "zh-CN": "维护规范"
+      },
+      "source_line": 1940,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0703-S1",
+      "family_id": "F0703",
+      "name": {
+        "zh-CN": "承载结构"
+      },
+      "source_line": 1941,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0703-S2",
+      "family_id": "F0703",
+      "name": {
+        "zh-CN": "行走组件"
+      },
+      "source_line": 1941,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0703-S3",
+      "family_id": "F0703",
+      "name": {
+        "zh-CN": "维护规范"
+      },
+      "source_line": 1941,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0704-S1",
+      "family_id": "F0704",
+      "name": {
+        "zh-CN": "承载结构"
+      },
+      "source_line": 1942,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0704-S2",
+      "family_id": "F0704",
+      "name": {
+        "zh-CN": "行走组件"
+      },
+      "source_line": 1942,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0704-S3",
+      "family_id": "F0704",
+      "name": {
+        "zh-CN": "维护规范"
+      },
+      "source_line": 1942,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0705-S1",
+      "family_id": "F0705",
+      "name": {
+        "zh-CN": "承载结构"
+      },
+      "source_line": 1943,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0705-S2",
+      "family_id": "F0705",
+      "name": {
+        "zh-CN": "行走组件"
+      },
+      "source_line": 1943,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0705-S3",
+      "family_id": "F0705",
+      "name": {
+        "zh-CN": "维护规范"
+      },
+      "source_line": 1943,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0706-S1",
+      "family_id": "F0706",
+      "name": {
+        "zh-CN": "承载结构"
+      },
+      "source_line": 1944,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0706-S2",
+      "family_id": "F0706",
+      "name": {
+        "zh-CN": "行走组件"
+      },
+      "source_line": 1944,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0706-S3",
+      "family_id": "F0706",
+      "name": {
+        "zh-CN": "维护规范"
+      },
+      "source_line": 1944,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0801-S1",
+      "family_id": "F0801",
+      "name": {
+        "zh-CN": "舱体配置"
+      },
+      "source_line": 1953,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0801-S2",
+      "family_id": "F0801",
+      "name": {
+        "zh-CN": "装卸组件"
+      },
+      "source_line": 1953,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0801-S3",
+      "family_id": "F0801",
+      "name": {
+        "zh-CN": "结构连接"
+      },
+      "source_line": 1953,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0802-S1",
+      "family_id": "F0802",
+      "name": {
+        "zh-CN": "舱体配置"
+      },
+      "source_line": 1954,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0802-S2",
+      "family_id": "F0802",
+      "name": {
+        "zh-CN": "装卸组件"
+      },
+      "source_line": 1954,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0802-S3",
+      "family_id": "F0802",
+      "name": {
+        "zh-CN": "结构连接"
+      },
+      "source_line": 1954,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0803-S1",
+      "family_id": "F0803",
+      "name": {
+        "zh-CN": "舱体配置"
+      },
+      "source_line": 1955,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0803-S2",
+      "family_id": "F0803",
+      "name": {
+        "zh-CN": "装卸组件"
+      },
+      "source_line": 1955,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0803-S3",
+      "family_id": "F0803",
+      "name": {
+        "zh-CN": "结构连接"
+      },
+      "source_line": 1955,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0804-S1",
+      "family_id": "F0804",
+      "name": {
+        "zh-CN": "舱体配置"
+      },
+      "source_line": 1956,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0804-S2",
+      "family_id": "F0804",
+      "name": {
+        "zh-CN": "装卸组件"
+      },
+      "source_line": 1956,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0804-S3",
+      "family_id": "F0804",
+      "name": {
+        "zh-CN": "结构连接"
+      },
+      "source_line": 1956,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0805-S1",
+      "family_id": "F0805",
+      "name": {
+        "zh-CN": "舱体配置"
+      },
+      "source_line": 1957,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0805-S2",
+      "family_id": "F0805",
+      "name": {
+        "zh-CN": "装卸组件"
+      },
+      "source_line": 1957,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0805-S3",
+      "family_id": "F0805",
+      "name": {
+        "zh-CN": "结构连接"
+      },
+      "source_line": 1957,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0806-S1",
+      "family_id": "F0806",
+      "name": {
+        "zh-CN": "舱体配置"
+      },
+      "source_line": 1958,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0806-S2",
+      "family_id": "F0806",
+      "name": {
+        "zh-CN": "装卸组件"
+      },
+      "source_line": 1958,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0806-S3",
+      "family_id": "F0806",
+      "name": {
+        "zh-CN": "结构连接"
+      },
+      "source_line": 1958,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0901-S1",
+      "family_id": "F0901",
+      "name": {
+        "zh-CN": "表达格式"
+      },
+      "source_line": 1967,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0901-S2",
+      "family_id": "F0901",
+      "name": {
+        "zh-CN": "校核步骤"
+      },
+      "source_line": 1967,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0901-S3",
+      "family_id": "F0901",
+      "name": {
+        "zh-CN": "传授流程"
+      },
+      "source_line": 1967,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0902-S1",
+      "family_id": "F0902",
+      "name": {
+        "zh-CN": "表达格式"
+      },
+      "source_line": 1968,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0902-S2",
+      "family_id": "F0902",
+      "name": {
+        "zh-CN": "校核步骤"
+      },
+      "source_line": 1968,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0902-S3",
+      "family_id": "F0902",
+      "name": {
+        "zh-CN": "传授流程"
+      },
+      "source_line": 1968,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0903-S1",
+      "family_id": "F0903",
+      "name": {
+        "zh-CN": "表达格式"
+      },
+      "source_line": 1969,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0903-S2",
+      "family_id": "F0903",
+      "name": {
+        "zh-CN": "校核步骤"
+      },
+      "source_line": 1969,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0903-S3",
+      "family_id": "F0903",
+      "name": {
+        "zh-CN": "传授流程"
+      },
+      "source_line": 1969,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0904-S1",
+      "family_id": "F0904",
+      "name": {
+        "zh-CN": "表达格式"
+      },
+      "source_line": 1970,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0904-S2",
+      "family_id": "F0904",
+      "name": {
+        "zh-CN": "校核步骤"
+      },
+      "source_line": 1970,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0904-S3",
+      "family_id": "F0904",
+      "name": {
+        "zh-CN": "传授流程"
+      },
+      "source_line": 1970,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0905-S1",
+      "family_id": "F0905",
+      "name": {
+        "zh-CN": "表达格式"
+      },
+      "source_line": 1971,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0905-S2",
+      "family_id": "F0905",
+      "name": {
+        "zh-CN": "校核步骤"
+      },
+      "source_line": 1971,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0905-S3",
+      "family_id": "F0905",
+      "name": {
+        "zh-CN": "传授流程"
+      },
+      "source_line": 1971,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0906-S1",
+      "family_id": "F0906",
+      "name": {
+        "zh-CN": "表达格式"
+      },
+      "source_line": 1972,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0906-S2",
+      "family_id": "F0906",
+      "name": {
+        "zh-CN": "校核步骤"
+      },
+      "source_line": 1972,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F0906-S3",
+      "family_id": "F0906",
+      "name": {
+        "zh-CN": "传授流程"
+      },
+      "source_line": 1972,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1001-S1",
+      "family_id": "F1001",
+      "name": {
+        "zh-CN": "支承架"
+      },
+      "source_line": 1981,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1001-S2",
+      "family_id": "F1001",
+      "name": {
+        "zh-CN": "光学组件"
+      },
+      "source_line": 1981,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1001-S3",
+      "family_id": "F1001",
+      "name": {
+        "zh-CN": "调校工序"
+      },
+      "source_line": 1981,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1002-S1",
+      "family_id": "F1002",
+      "name": {
+        "zh-CN": "支承架"
+      },
+      "source_line": 1982,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1002-S2",
+      "family_id": "F1002",
+      "name": {
+        "zh-CN": "光学组件"
+      },
+      "source_line": 1982,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1002-S3",
+      "family_id": "F1002",
+      "name": {
+        "zh-CN": "调校工序"
+      },
+      "source_line": 1982,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1003-S1",
+      "family_id": "F1003",
+      "name": {
+        "zh-CN": "支承架"
+      },
+      "source_line": 1983,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1003-S2",
+      "family_id": "F1003",
+      "name": {
+        "zh-CN": "光学组件"
+      },
+      "source_line": 1983,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1003-S3",
+      "family_id": "F1003",
+      "name": {
+        "zh-CN": "调校工序"
+      },
+      "source_line": 1983,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1004-S1",
+      "family_id": "F1004",
+      "name": {
+        "zh-CN": "支承架"
+      },
+      "source_line": 1984,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1004-S2",
+      "family_id": "F1004",
+      "name": {
+        "zh-CN": "光学组件"
+      },
+      "source_line": 1984,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1004-S3",
+      "family_id": "F1004",
+      "name": {
+        "zh-CN": "调校工序"
+      },
+      "source_line": 1984,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1005-S1",
+      "family_id": "F1005",
+      "name": {
+        "zh-CN": "支承架"
+      },
+      "source_line": 1985,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1005-S2",
+      "family_id": "F1005",
+      "name": {
+        "zh-CN": "光学组件"
+      },
+      "source_line": 1985,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1005-S3",
+      "family_id": "F1005",
+      "name": {
+        "zh-CN": "调校工序"
+      },
+      "source_line": 1985,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1006-S1",
+      "family_id": "F1006",
+      "name": {
+        "zh-CN": "支承架"
+      },
+      "source_line": 1986,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1006-S2",
+      "family_id": "F1006",
+      "name": {
+        "zh-CN": "光学组件"
+      },
+      "source_line": 1986,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1006-S3",
+      "family_id": "F1006",
+      "name": {
+        "zh-CN": "调校工序"
+      },
+      "source_line": 1986,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1101-S1",
+      "family_id": "F1101",
+      "name": {
+        "zh-CN": "导向组件"
+      },
+      "source_line": 1995,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1101-S2",
+      "family_id": "F1101",
+      "name": {
+        "zh-CN": "作业组件"
+      },
+      "source_line": 1995,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1101-S3",
+      "family_id": "F1101",
+      "name": {
+        "zh-CN": "质量规范"
+      },
+      "source_line": 1995,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1102-S1",
+      "family_id": "F1102",
+      "name": {
+        "zh-CN": "导向组件"
+      },
+      "source_line": 1996,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1102-S2",
+      "family_id": "F1102",
+      "name": {
+        "zh-CN": "作业组件"
+      },
+      "source_line": 1996,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1102-S3",
+      "family_id": "F1102",
+      "name": {
+        "zh-CN": "质量规范"
+      },
+      "source_line": 1996,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1103-S1",
+      "family_id": "F1103",
+      "name": {
+        "zh-CN": "导向组件"
+      },
+      "source_line": 1997,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1103-S2",
+      "family_id": "F1103",
+      "name": {
+        "zh-CN": "作业组件"
+      },
+      "source_line": 1997,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1103-S3",
+      "family_id": "F1103",
+      "name": {
+        "zh-CN": "质量规范"
+      },
+      "source_line": 1997,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1104-S1",
+      "family_id": "F1104",
+      "name": {
+        "zh-CN": "导向组件"
+      },
+      "source_line": 1998,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1104-S2",
+      "family_id": "F1104",
+      "name": {
+        "zh-CN": "作业组件"
+      },
+      "source_line": 1998,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1104-S3",
+      "family_id": "F1104",
+      "name": {
+        "zh-CN": "质量规范"
+      },
+      "source_line": 1998,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1105-S1",
+      "family_id": "F1105",
+      "name": {
+        "zh-CN": "导向组件"
+      },
+      "source_line": 1999,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1105-S2",
+      "family_id": "F1105",
+      "name": {
+        "zh-CN": "作业组件"
+      },
+      "source_line": 1999,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1105-S3",
+      "family_id": "F1105",
+      "name": {
+        "zh-CN": "质量规范"
+      },
+      "source_line": 1999,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1106-S1",
+      "family_id": "F1106",
+      "name": {
+        "zh-CN": "导向组件"
+      },
+      "source_line": 2000,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1106-S2",
+      "family_id": "F1106",
+      "name": {
+        "zh-CN": "作业组件"
+      },
+      "source_line": 2000,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1106-S3",
+      "family_id": "F1106",
+      "name": {
+        "zh-CN": "质量规范"
+      },
+      "source_line": 2000,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1201-S1",
+      "family_id": "F1201",
+      "name": {
+        "zh-CN": "形制方案"
+      },
+      "source_line": 2009,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1201-S2",
+      "family_id": "F1201",
+      "name": {
+        "zh-CN": "制作工序"
+      },
+      "source_line": 2009,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1201-S3",
+      "family_id": "F1201",
+      "name": {
+        "zh-CN": "服务配置"
+      },
+      "source_line": 2009,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1202-S1",
+      "family_id": "F1202",
+      "name": {
+        "zh-CN": "形制方案"
+      },
+      "source_line": 2010,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1202-S2",
+      "family_id": "F1202",
+      "name": {
+        "zh-CN": "制作工序"
+      },
+      "source_line": 2010,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1202-S3",
+      "family_id": "F1202",
+      "name": {
+        "zh-CN": "服务配置"
+      },
+      "source_line": 2010,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1203-S1",
+      "family_id": "F1203",
+      "name": {
+        "zh-CN": "形制方案"
+      },
+      "source_line": 2011,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1203-S2",
+      "family_id": "F1203",
+      "name": {
+        "zh-CN": "制作工序"
+      },
+      "source_line": 2011,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1203-S3",
+      "family_id": "F1203",
+      "name": {
+        "zh-CN": "服务配置"
+      },
+      "source_line": 2011,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1204-S1",
+      "family_id": "F1204",
+      "name": {
+        "zh-CN": "形制方案"
+      },
+      "source_line": 2012,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1204-S2",
+      "family_id": "F1204",
+      "name": {
+        "zh-CN": "制作工序"
+      },
+      "source_line": 2012,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1204-S3",
+      "family_id": "F1204",
+      "name": {
+        "zh-CN": "服务配置"
+      },
+      "source_line": 2012,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1205-S1",
+      "family_id": "F1205",
+      "name": {
+        "zh-CN": "形制方案"
+      },
+      "source_line": 2013,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1205-S2",
+      "family_id": "F1205",
+      "name": {
+        "zh-CN": "制作工序"
+      },
+      "source_line": 2013,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1205-S3",
+      "family_id": "F1205",
+      "name": {
+        "zh-CN": "服务配置"
+      },
+      "source_line": 2013,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1206-S1",
+      "family_id": "F1206",
+      "name": {
+        "zh-CN": "形制方案"
+      },
+      "source_line": 2014,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1206-S2",
+      "family_id": "F1206",
+      "name": {
+        "zh-CN": "制作工序"
+      },
+      "source_line": 2014,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1206-S3",
+      "family_id": "F1206",
+      "name": {
+        "zh-CN": "服务配置"
+      },
+      "source_line": 2014,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1301-S1",
+      "family_id": "F1301",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2023,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1301-S2",
+      "family_id": "F1301",
+      "name": {
+        "zh-CN": "配用规范"
+      },
+      "source_line": 2023,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1301-S3",
+      "family_id": "F1301",
+      "name": {
+        "zh-CN": "保养方案"
+      },
+      "source_line": 2023,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1302-S1",
+      "family_id": "F1302",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2024,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1302-S2",
+      "family_id": "F1302",
+      "name": {
+        "zh-CN": "配用规范"
+      },
+      "source_line": 2024,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1302-S3",
+      "family_id": "F1302",
+      "name": {
+        "zh-CN": "保养方案"
+      },
+      "source_line": 2024,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1303-S1",
+      "family_id": "F1303",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2025,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1303-S2",
+      "family_id": "F1303",
+      "name": {
+        "zh-CN": "配用规范"
+      },
+      "source_line": 2025,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1303-S3",
+      "family_id": "F1303",
+      "name": {
+        "zh-CN": "保养方案"
+      },
+      "source_line": 2025,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1304-S1",
+      "family_id": "F1304",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2026,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1304-S2",
+      "family_id": "F1304",
+      "name": {
+        "zh-CN": "配用规范"
+      },
+      "source_line": 2026,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1304-S3",
+      "family_id": "F1304",
+      "name": {
+        "zh-CN": "保养方案"
+      },
+      "source_line": 2026,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1305-S1",
+      "family_id": "F1305",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2027,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1305-S2",
+      "family_id": "F1305",
+      "name": {
+        "zh-CN": "配用规范"
+      },
+      "source_line": 2027,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1305-S3",
+      "family_id": "F1305",
+      "name": {
+        "zh-CN": "保养方案"
+      },
+      "source_line": 2027,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1306-S1",
+      "family_id": "F1306",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2028,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1306-S2",
+      "family_id": "F1306",
+      "name": {
+        "zh-CN": "配用规范"
+      },
+      "source_line": 2028,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1306-S3",
+      "family_id": "F1306",
+      "name": {
+        "zh-CN": "保养方案"
+      },
+      "source_line": 2028,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1401-S1",
+      "family_id": "F1401",
+      "name": {
+        "zh-CN": "可靠性方案"
+      },
+      "source_line": 2037,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1401-S2",
+      "family_id": "F1401",
+      "name": {
+        "zh-CN": "配置规范"
+      },
+      "source_line": 2037,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1401-S3",
+      "family_id": "F1401",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2037,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1402-S1",
+      "family_id": "F1402",
+      "name": {
+        "zh-CN": "可靠性方案"
+      },
+      "source_line": 2038,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1402-S2",
+      "family_id": "F1402",
+      "name": {
+        "zh-CN": "配置规范"
+      },
+      "source_line": 2038,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1402-S3",
+      "family_id": "F1402",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2038,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1403-S1",
+      "family_id": "F1403",
+      "name": {
+        "zh-CN": "可靠性方案"
+      },
+      "source_line": 2039,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1403-S2",
+      "family_id": "F1403",
+      "name": {
+        "zh-CN": "配置规范"
+      },
+      "source_line": 2039,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1403-S3",
+      "family_id": "F1403",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2039,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1404-S1",
+      "family_id": "F1404",
+      "name": {
+        "zh-CN": "可靠性方案"
+      },
+      "source_line": 2040,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1404-S2",
+      "family_id": "F1404",
+      "name": {
+        "zh-CN": "配置规范"
+      },
+      "source_line": 2040,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1404-S3",
+      "family_id": "F1404",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2040,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1405-S1",
+      "family_id": "F1405",
+      "name": {
+        "zh-CN": "可靠性方案"
+      },
+      "source_line": 2041,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1405-S2",
+      "family_id": "F1405",
+      "name": {
+        "zh-CN": "配置规范"
+      },
+      "source_line": 2041,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1405-S3",
+      "family_id": "F1405",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2041,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1406-S1",
+      "family_id": "F1406",
+      "name": {
+        "zh-CN": "可靠性方案"
+      },
+      "source_line": 2042,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1406-S2",
+      "family_id": "F1406",
+      "name": {
+        "zh-CN": "配置规范"
+      },
+      "source_line": 2042,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1406-S3",
+      "family_id": "F1406",
+      "name": {
+        "zh-CN": "耐用改良"
+      },
+      "source_line": 2042,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1501-S1",
+      "family_id": "F1501",
+      "name": {
+        "zh-CN": "记录格式"
+      },
+      "source_line": 2051,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1501-S2",
+      "family_id": "F1501",
+      "name": {
+        "zh-CN": "核验步骤"
+      },
+      "source_line": 2051,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1501-S3",
+      "family_id": "F1501",
+      "name": {
+        "zh-CN": "分工规范"
+      },
+      "source_line": 2051,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1502-S1",
+      "family_id": "F1502",
+      "name": {
+        "zh-CN": "记录格式"
+      },
+      "source_line": 2052,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1502-S2",
+      "family_id": "F1502",
+      "name": {
+        "zh-CN": "核验步骤"
+      },
+      "source_line": 2052,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1502-S3",
+      "family_id": "F1502",
+      "name": {
+        "zh-CN": "分工规范"
+      },
+      "source_line": 2052,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1503-S1",
+      "family_id": "F1503",
+      "name": {
+        "zh-CN": "记录格式"
+      },
+      "source_line": 2053,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1503-S2",
+      "family_id": "F1503",
+      "name": {
+        "zh-CN": "核验步骤"
+      },
+      "source_line": 2053,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1503-S3",
+      "family_id": "F1503",
+      "name": {
+        "zh-CN": "分工规范"
+      },
+      "source_line": 2053,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1504-S1",
+      "family_id": "F1504",
+      "name": {
+        "zh-CN": "记录格式"
+      },
+      "source_line": 2054,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1504-S2",
+      "family_id": "F1504",
+      "name": {
+        "zh-CN": "核验步骤"
+      },
+      "source_line": 2054,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1504-S3",
+      "family_id": "F1504",
+      "name": {
+        "zh-CN": "分工规范"
+      },
+      "source_line": 2054,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1505-S1",
+      "family_id": "F1505",
+      "name": {
+        "zh-CN": "记录格式"
+      },
+      "source_line": 2055,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1505-S2",
+      "family_id": "F1505",
+      "name": {
+        "zh-CN": "核验步骤"
+      },
+      "source_line": 2055,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1505-S3",
+      "family_id": "F1505",
+      "name": {
+        "zh-CN": "分工规范"
+      },
+      "source_line": 2055,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1506-S1",
+      "family_id": "F1506",
+      "name": {
+        "zh-CN": "记录格式"
+      },
+      "source_line": 2056,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1506-S2",
+      "family_id": "F1506",
+      "name": {
+        "zh-CN": "核验步骤"
+      },
+      "source_line": 2056,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1506-S3",
+      "family_id": "F1506",
+      "name": {
+        "zh-CN": "分工规范"
+      },
+      "source_line": 2056,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1601-S1",
+      "family_id": "F1601",
+      "name": {
+        "zh-CN": "容纳配置"
+      },
+      "source_line": 2065,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1601-S2",
+      "family_id": "F1601",
+      "name": {
+        "zh-CN": "周转工序"
+      },
+      "source_line": 2065,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1601-S3",
+      "family_id": "F1601",
+      "name": {
+        "zh-CN": "保管规范"
+      },
+      "source_line": 2065,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1602-S1",
+      "family_id": "F1602",
+      "name": {
+        "zh-CN": "容纳配置"
+      },
+      "source_line": 2066,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1602-S2",
+      "family_id": "F1602",
+      "name": {
+        "zh-CN": "周转工序"
+      },
+      "source_line": 2066,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1602-S3",
+      "family_id": "F1602",
+      "name": {
+        "zh-CN": "保管规范"
+      },
+      "source_line": 2066,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1603-S1",
+      "family_id": "F1603",
+      "name": {
+        "zh-CN": "容纳配置"
+      },
+      "source_line": 2067,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1603-S2",
+      "family_id": "F1603",
+      "name": {
+        "zh-CN": "周转工序"
+      },
+      "source_line": 2067,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1603-S3",
+      "family_id": "F1603",
+      "name": {
+        "zh-CN": "保管规范"
+      },
+      "source_line": 2067,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1604-S1",
+      "family_id": "F1604",
+      "name": {
+        "zh-CN": "容纳配置"
+      },
+      "source_line": 2068,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1604-S2",
+      "family_id": "F1604",
+      "name": {
+        "zh-CN": "周转工序"
+      },
+      "source_line": 2068,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1604-S3",
+      "family_id": "F1604",
+      "name": {
+        "zh-CN": "保管规范"
+      },
+      "source_line": 2068,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1605-S1",
+      "family_id": "F1605",
+      "name": {
+        "zh-CN": "容纳配置"
+      },
+      "source_line": 2069,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1605-S2",
+      "family_id": "F1605",
+      "name": {
+        "zh-CN": "周转工序"
+      },
+      "source_line": 2069,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1605-S3",
+      "family_id": "F1605",
+      "name": {
+        "zh-CN": "保管规范"
+      },
+      "source_line": 2069,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1606-S1",
+      "family_id": "F1606",
+      "name": {
+        "zh-CN": "容纳配置"
+      },
+      "source_line": 2070,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1606-S2",
+      "family_id": "F1606",
+      "name": {
+        "zh-CN": "周转工序"
+      },
+      "source_line": 2070,
+      "translation_status": "en_pending"
+    },
+    {
+      "id": "F1606-S3",
+      "family_id": "F1606",
+      "name": {
+        "zh-CN": "保管规范"
+      },
+      "source_line": 2070,
+      "translation_status": "en_pending"
+    }
+  ]
+}

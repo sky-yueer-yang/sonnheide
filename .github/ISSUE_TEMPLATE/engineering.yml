@@ -1,0 +1,23 @@
+name: 工程切片
+description: 记录需要攻克的具体瓶颈与验收
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 需要突破什么
+      description: 具体因果、空间、性能或内容瓶颈，避免仅写模块名。
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 需求、共享事实与受影响领域
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 通过门槛
+      description: 必须能用不变量、贯穿场景或真实负载测量验收。
+    validations:
+      required: true

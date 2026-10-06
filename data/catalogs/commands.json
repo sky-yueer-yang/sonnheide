@@ -1,0 +1,194 @@
+{
+  "provenance": {
+    "source": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+    "design_version": "0.6",
+    "status": "extracted_definitions_not_implemented_rules"
+  },
+  "commands": [
+    {
+      "kind": "CreateEarthWorld",
+      "payload_requirements": "WGS84选择框、目标长边／worldScale、GeoSourceManifest版本",
+      "validation_requirements": "选区有效、统一比例、格网预算不超上限、数据瓦片可用",
+      "outcome_rules": "EarthMapCreated＋NaturalLandWaterMaskFrozen；MAP_TOO_LARGE／SOURCE_TILE_MISSING",
+      "source_line": 2155,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ReclaimLandCell",
+      "payload_requirements": "目标WATER格、出资城市／主体、施工合同",
+      "validation_requirements": "天然格为WATER、无既有reclaimed、四邻接天然LAND或已完成RECLAIMED LAND、无冲突占用、材料／劳动可预约",
+      "outcome_rules": "ReclamationCellJobCreated→ReclaimedLandCompleted；NOT_WATER／NO_LAND_ADJACENCY／SITE_OCCUPIED",
+      "source_line": 2156,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "PlacePort",
+      "payload_requirements": "模板、锚点、0/90/180/270旋转、海侧边",
+      "validation_requirements": "PortCore每格均为已完成RECLAIMED LAND、海侧边整排邻接WATER、BerthWaterZone连续且可航、陆侧道路／产权合法",
+      "outcome_rules": "PortBuilt；CORE_NOT_RECLAIMED／SEA_EDGE_NOT_WATER／BERTH_BLOCKED／NO_WATER_APPROACH",
+      "source_line": 2157,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ResolvePrimaryGenesis",
+      "payload_requirements": "GenesisNode、创始人、成员、随机流版本",
+      "validation_requirements": "创始人无文化无语言、节点已越过阈值、同节点未提交",
+      "outcome_rules": "Culture＋RootLanguage＋正式姓名原子创建；FOUNDER_ALREADY_CULTURED／NOT_NUCLEATED",
+      "source_line": 2158,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ResolveSecondaryCultureGenesis",
+      "payload_requirements": "GenesisNode、创始人、成员、父文化来源",
+      "validation_requirements": "创始人已有文化和语言、节点已越过阈值",
+      "outcome_rules": "只创建Culture；**不得创建Language**；PRIMARY_REQUIRED／NOT_NUCLEATED",
+      "source_line": 2159,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "CreateDerivedLanguage",
+      "payload_requirements": "speech community、父语言、音变历史",
+      "validation_requirements": "有父语言、长期实际使用／分化、谱系无环",
+      "outcome_rules": "DerivedLanguageFormed；不要求新Culture",
+      "source_line": 2160,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "CreateReligion",
+      "payload_requirements": "先知名单、根教义、教派边界、初始章程",
+      "validation_requirements": "玩家来源、全员有文化、没有被另一根绑定的先知",
+      "outcome_rules": "ReligionFounded；CULTURE_REQUIRED／PROPHET_ROOT_LOCKED",
+      "source_line": 2161,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "AppointProphets",
+      "payload_requirements": "ReligionId、人员名单",
+      "validation_requirements": "根存在、有文化、同根或未绑定",
+      "outcome_rules": "ProphetsAppointed；只在完整校验后批量提交",
+      "source_line": 2162,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ChangeDenominationRules",
+      "payload_requirements": "教派、教令差异",
+      "validation_requirements": "在根边界和冻结章程内、法定程序完成",
+      "outcome_rules": "RulesChanged；CHARTER_IMMUTABLE",
+      "source_line": 2163,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ApproveEmpirePetition",
+      "payload_requirements": "申请Id、预览版本",
+      "validation_requirements": "玩家授权、官方宗教、成员同意、宪章和领土版本一致",
+      "outcome_rules": "DivineGrantIssued、StatePromoted",
+      "source_line": 2164,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ChangeStateLaw",
+      "payload_requirements": "法域、法律条款、生效期",
+      "validation_requirements": "已解锁能力、宪制权限、条约、过渡与退出方案",
+      "outcome_rules": "LawEnacted；TREATY_CONFLICT／CAPABILITY_REQUIRED",
+      "source_line": 2165,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "FoundEnterprise",
+      "payload_requirements": "股东、资金、业务、租赁总部、项目",
+      "validation_requirements": "社会门槛、持续付费需求、已批准产能去重、许可、现金和人员",
+      "outcome_rules": "EnterpriseRegistered；MARKET_ALREADY_RESERVED",
+      "source_line": 2166,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "CommissionProductionLine",
+      "payload_requirements": "工厂、产品家族、配置、预留材料",
+      "validation_requirements": "空线槽、家族能力、一次性工装预算、材料与工人",
+      "outcome_rules": "ProductionLineTooling；NO_LINE_SLOT",
+      "source_line": 2167,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "RetrofitProductionLine",
+      "payload_requirements": "线Id、新版本",
+      "validation_requirements": "兼容组匹配、停机与调校成本、知识权限",
+      "outcome_rules": "LineConfigurationChanged；NEW_FAMILY_REQUIRES_TOOLING",
+      "source_line": 2168,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "RetireProductionLine",
+      "payload_requirements": "线Id、善后计划",
+      "validation_requirements": "不再接新单、在制品结算、人员和占用安全释放",
+      "outcome_rules": "LineRetired；JOBS_STILL_ACTIVE",
+      "source_line": 2169,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "CreateFreightContract",
+      "payload_requirements": "源CitySquare、目的CitySquare、货主批次、数量、预算",
+      "validation_requirements": "真实可用库存、承运容量、线路、法域限制",
+      "outcome_rules": "ShipmentReserved；NOT_OWNER／STOCK_RESERVED",
+      "source_line": 2170,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "CharterPortTransport",
+      "payload_requirements": "港口、乘客／Army、航程、预算",
+      "validation_requirements": "船属于港口、泊位和容量、目的地可下船",
+      "outcome_rules": "PassengerTransportReserved；NO_LANDING_ACCESS",
+      "source_line": 2171,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "IssueArmyOrder",
+      "payload_requirements": "Army列表、类型、目标／路径／阵线、条件",
+      "validation_requirements": "控制权、成员仍有效、军事上限、合法目标、导航",
+      "outcome_rules": "ArmyOrderQueued；PATH_BLOCKED／AUTHORITY_DENIED",
+      "source_line": 2172,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "SettlePeace",
+      "payload_requirements": "参与方、条款、被转移对象",
+      "validation_requirements": "有效同意、占领／请求条件、从属图无环、权益保存",
+      "outcome_rules": "TreatySigned；不是直接覆盖City.stateId",
+      "source_line": 2173,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "ApplyMigration",
+      "payload_requirements": "家庭／个人、目的城市、路径、证据",
+      "validation_requirements": "文化与信仰资格、住所、资金／人才／服役等真实条件",
+      "outcome_rules": "MigrationApplicationFiled",
+      "source_line": 2174,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "EditMineralStroke",
+      "payload_requirements": "矿种、扫过格心样本、笔触锚值、版本",
+      "validation_requirements": "非负有限速率、地图范围、统一锚点、可撤销预览",
+      "outcome_rules": "MineralRatesEdited；不补发虚假矿石",
+      "source_line": 2175,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "SwitchBuildingAppearance",
+      "payload_requirements": "建筑Id、外观Id",
+      "validation_requirements": "已解锁、同类可用外观、不改变容量／结构",
+      "outcome_rules": "AppearanceChanged",
+      "source_line": 2176,
+      "implementation_status": "planned"
+    },
+    {
+      "kind": "RenameEntity",
+      "payload_requirements": "对象Id、新显示名",
+      "validation_requirements": "长度／文本安全、保留身份与历史记录",
+      "outcome_rules": "EntityRenamed",
+      "source_line": 2177,
+      "implementation_status": "planned"
+    }
+  ]
+}

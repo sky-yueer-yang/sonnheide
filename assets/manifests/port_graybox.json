@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "asset_id": "port_graybox",
+  "kind": "building_graybox",
+  "authorship": {
+    "mode": "original",
+    "project": "Sonnheide"
+  },
+  "production_art": false,
+  "source": "assets/source/buildings/port_graybox.json",
+  "source_sha256": "6b0e02c7b9d59609224bae4f5fbaa1bb243fee9edb2a38bab8f4bd035448f7c7",
+  "recipe_tool": "tools/build_grayboxes.py",
+  "recipe_tool_sha256": "d2f9e3cc53c6147d09cb69d74d17eea40199aaacafc619f54baee385ae0c5b11",
+  "generated": "assets/generated/buildings/port_graybox.gltf",
+  "generated_sha256": "fafd10ed4f66a0cd2dbf767cfa02a2d6d061242930ed9f4edaa2712305e7e3b0",
+  "authority": {
+    "building_type": "port",
+    "volume_class": "port_core_small",
+    "footprint_cells": [
+      2,
+      2
+    ],
+    "cell_size_m": 4,
+    "allowed_origins": [
+      "RECLAIMED"
+    ],
+    "rotations": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "sea_edge": "EAST",
+    "berth_depth_cells": 2,
+    "capacity": {
+      "berths": 1
+    },
+    "entrance_m": [
+      -4,
+      0,
+      0
+    ]
+  },
+  "authority_sha256": "8a41aa82858dcaf4399bc17ebc83b22511f276e43d55b27c1dabf12ae771f44a",
+  "coordinate_system": "RH_Y_UP_METERS",
+  "pivot": "footprint_center_ground",
+  "bounds_m": {
+    "min": [
+      -4.0,
+      0.0,
+      -4.0
+    ],
+    "max": [
+      4.0,
+      3.2,
+      4.0
+    ]
+  },
+  "triangles": 60,
+  "draw_calls": 1,
+  "stage": "pipeline_fixture"
+}

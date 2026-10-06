@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "asset_id": "residence_graybox",
+  "kind": "building_graybox",
+  "authorship": {
+    "mode": "original",
+    "project": "Sonnheide"
+  },
+  "production_art": false,
+  "source": "assets/source/buildings/residence_graybox.json",
+  "source_sha256": "0557e35a91f74cc4e2e9f2d4193c037d2a36139c7ef990843984c94ee0dfa7bf",
+  "recipe_tool": "tools/build_grayboxes.py",
+  "recipe_tool_sha256": "d2f9e3cc53c6147d09cb69d74d17eea40199aaacafc619f54baee385ae0c5b11",
+  "generated": "assets/generated/buildings/residence_graybox.gltf",
+  "generated_sha256": "2f9b182f50c5c72dc23331636b88936326c4a6a66f7439381dadc42790ac6149",
+  "authority": {
+    "building_type": "residence",
+    "volume_class": "small_house_1",
+    "footprint_cells": [
+      2,
+      2
+    ],
+    "cell_size_m": 4,
+    "allowed_origins": [
+      "NATURAL",
+      "RECLAIMED"
+    ],
+    "rotations": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "capacity": {
+      "residents": 4
+    },
+    "entrance_m": [
+      0,
+      0,
+      -4
+    ]
+  },
+  "authority_sha256": "4a43b048003bbaf2bd297035edf8f19077c13ff224d9b4734feb9e55aeef92f6",
+  "coordinate_system": "RH_Y_UP_METERS",
+  "pivot": "footprint_center_ground",
+  "bounds_m": {
+    "min": [
+      -4.0,
+      0.0,
+      -4.0
+    ],
+    "max": [
+      4.0,
+      3.3,
+      4.0
+    ]
+  },
+  "triangles": 84,
+  "draw_calls": 1,
+  "stage": "pipeline_fixture"
+}

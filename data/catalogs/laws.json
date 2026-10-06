@@ -1,0 +1,360 @@
+{
+  "provenance": {
+    "source": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+    "design_version": "0.6",
+    "status": "extracted_definitions_not_implemented_rules"
+  },
+  "laws": [
+    {
+      "id": "LAW_SUCCESSION",
+      "name": {
+        "zh-CN": "王冠继承",
+        "en": "Crown Succession"
+      },
+      "trigger": "crown_vacant",
+      "constraint": "candidate_election",
+      "source_line": 2085
+    },
+    {
+      "id": "LAW_CENTRALISATION",
+      "name": {
+        "zh-CN": "行政集中",
+        "en": "Administrative Centralisation"
+      },
+      "trigger": "city_action",
+      "constraint": "authority_scope",
+      "source_line": 2086
+    },
+    {
+      "id": "LAW_LEGISLATURE",
+      "name": {
+        "zh-CN": "立法约束",
+        "en": "Legislative Authority"
+      },
+      "trigger": "change_law",
+      "constraint": "approval_rule",
+      "source_line": 2087
+    },
+    {
+      "id": "LAW_FISCAL_SHARE",
+      "name": {
+        "zh-CN": "财政分成",
+        "en": "Fiscal Sharing"
+      },
+      "trigger": "tax_settlement",
+      "constraint": "split_same_assessment",
+      "source_line": 2088
+    },
+    {
+      "id": "LAW_OFFICIAL_RELIGION",
+      "name": {
+        "zh-CN": "官方宗教",
+        "en": "Official Religion"
+      },
+      "trigger": "religious_recognition",
+      "constraint": "religion_and_grant_check",
+      "source_line": 2089
+    },
+    {
+      "id": "LAW_PROPERTY_REGIME",
+      "name": {
+        "zh-CN": "产权制度",
+        "en": "Property Regime"
+      },
+      "trigger": "register_owner",
+      "constraint": "eligible_actor",
+      "source_line": 2090
+    },
+    {
+      "id": "LAW_COMPANY_ADMISSION",
+      "name": {
+        "zh-CN": "法人准入",
+        "en": "Company Admission"
+      },
+      "trigger": "company_application",
+      "constraint": "readiness_and_market_capacity",
+      "source_line": 2091
+    },
+    {
+      "id": "LAW_FOREIGN_COMPANY",
+      "name": {
+        "zh-CN": "外国企业",
+        "en": "Foreign Companies"
+      },
+      "trigger": "foreign_branch_application",
+      "constraint": "host_registration",
+      "source_line": 2092
+    },
+    {
+      "id": "LAW_GROUP_OWNERSHIP",
+      "name": {
+        "zh-CN": "集团控股",
+        "en": "Corporate Ownership"
+      },
+      "trigger": "purchase_equity",
+      "constraint": "acyclic_ownership_and_limits",
+      "source_line": 2093
+    },
+    {
+      "id": "LAW_BANKING",
+      "name": {
+        "zh-CN": "银行许可",
+        "en": "Banking Licence"
+      },
+      "trigger": "bank_application",
+      "constraint": "capital_and_reserve_check",
+      "source_line": 2094
+    },
+    {
+      "id": "LAW_CHURCH_BUSINESS",
+      "name": {
+        "zh-CN": "教会经营许可",
+        "en": "Church Business Permission"
+      },
+      "trigger": "church_company_application",
+      "constraint": "charter_and_state_intersection",
+      "source_line": 2095
+    },
+    {
+      "id": "LAW_LAND_TAX",
+      "name": {
+        "zh-CN": "土地物业税",
+        "en": "Land and Property Tax"
+      },
+      "trigger": "tax_period",
+      "constraint": "site_tax_base",
+      "source_line": 2096
+    },
+    {
+      "id": "LAW_INCOME_TAX",
+      "name": {
+        "zh-CN": "个人所得税",
+        "en": "Personal Income Tax"
+      },
+      "trigger": "income_event",
+      "constraint": "progressive_tax",
+      "source_line": 2097
+    },
+    {
+      "id": "LAW_SALES_TAX",
+      "name": {
+        "zh-CN": "销售税",
+        "en": "Sales Tax"
+      },
+      "trigger": "final_sale",
+      "constraint": "single_stage_sales_tax",
+      "source_line": 2098
+    },
+    {
+      "id": "LAW_PROFIT_TAX",
+      "name": {
+        "zh-CN": "利润税",
+        "en": "Profit Tax"
+      },
+      "trigger": "profit_period",
+      "constraint": "profit_base",
+      "source_line": 2099
+    },
+    {
+      "id": "LAW_CUSTOMS",
+      "name": {
+        "zh-CN": "关税",
+        "en": "Customs"
+      },
+      "trigger": "border_crossing",
+      "constraint": "once_per_clearance",
+      "source_line": 2100
+    },
+    {
+      "id": "LAW_DIVIDEND_TAX",
+      "name": {
+        "zh-CN": "股息预扣",
+        "en": "Dividend Withholding"
+      },
+      "trigger": "dividend",
+      "constraint": "withhold_and_credit",
+      "source_line": 2101
+    },
+    {
+      "id": "LAW_INHERITANCE",
+      "name": {
+        "zh-CN": "遗产处理",
+        "en": "Estate Settlement"
+      },
+      "trigger": "person_death",
+      "constraint": "settle_debts_then_transfer",
+      "source_line": 2102
+    },
+    {
+      "id": "LAW_INHERITANCE_TAX",
+      "name": {
+        "zh-CN": "遗产税",
+        "en": "Inheritance Tax"
+      },
+      "trigger": "estate_transfer",
+      "constraint": "net_estate_base",
+      "source_line": 2103
+    },
+    {
+      "id": "LAW_RESOURCE_FEE",
+      "name": {
+        "zh-CN": "资源特许费",
+        "en": "Resource Royalty"
+      },
+      "trigger": "extraction",
+      "constraint": "actual_extracted_quantity",
+      "source_line": 2104
+    },
+    {
+      "id": "LAW_TITHE_COLLECTION",
+      "name": {
+        "zh-CN": "宗教奉献代征",
+        "en": "Religious Contribution Collection"
+      },
+      "trigger": "contribution_assessment",
+      "constraint": "protected_floor_and_payable",
+      "source_line": 2105
+    },
+    {
+      "id": "LAW_INSOLVENCY",
+      "name": {
+        "zh-CN": "破产退出",
+        "en": "Insolvency"
+      },
+      "trigger": "insolvent_actor",
+      "constraint": "exclude_client_property",
+      "source_line": 2106
+    },
+    {
+      "id": "LAW_EXPROPRIATION",
+      "name": {
+        "zh-CN": "征收补偿",
+        "en": "Expropriation"
+      },
+      "trigger": "take_asset",
+      "constraint": "legal_compensation",
+      "source_line": 2107
+    },
+    {
+      "id": "LAW_LABOR",
+      "name": {
+        "zh-CN": "劳动契约",
+        "en": "Labour Contracts"
+      },
+      "trigger": "hire_or_exit",
+      "constraint": "single_active_labor_allocation",
+      "source_line": 2108
+    },
+    {
+      "id": "LAW_CONSCRIPTION",
+      "name": {
+        "zh-CN": "征召服役",
+        "en": "Conscription"
+      },
+      "trigger": "recruit",
+      "constraint": "adult_labor_reserve",
+      "source_line": 2109
+    },
+    {
+      "id": "LAW_MIGRATION_GENERAL",
+      "name": {
+        "zh-CN": "普通居留",
+        "en": "General Residence"
+      },
+      "trigger": "migration_apply",
+      "constraint": "housing_and_rights",
+      "source_line": 2110
+    },
+    {
+      "id": "LAW_MIGRATION_INVESTMENT",
+      "name": {
+        "zh-CN": "投资准入",
+        "en": "Investment Admission"
+      },
+      "trigger": "investment_migration",
+      "constraint": "real_locked_capital",
+      "source_line": 2111
+    },
+    {
+      "id": "LAW_MIGRATION_FAITH",
+      "name": {
+        "zh-CN": "宗教移民",
+        "en": "Faith-based Admission"
+      },
+      "trigger": "faith_migration",
+      "constraint": "culture_membership_sponsor",
+      "source_line": 2112
+    },
+    {
+      "id": "LAW_MIGRATION_TALENT",
+      "name": {
+        "zh-CN": "人才准入",
+        "en": "Talent Admission"
+      },
+      "trigger": "talent_migration",
+      "constraint": "actual_skill_and_slot",
+      "source_line": 2113
+    },
+    {
+      "id": "LAW_RELIGIOUS_TOLERANCE",
+      "name": {
+        "zh-CN": "信仰权利",
+        "en": "Religious Rights"
+      },
+      "trigger": "religious_activity",
+      "constraint": "permission_and_social_effect",
+      "source_line": 2114
+    },
+    {
+      "id": "LAW_CULTURE_POLICY",
+      "name": {
+        "zh-CN": "官方文化",
+        "en": "Official Cultures"
+      },
+      "trigger": "official_culture_change",
+      "constraint": "nonempty_reference_set",
+      "source_line": 2115
+    },
+    {
+      "id": "LAW_KNOWLEDGE_RIGHTS",
+      "name": {
+        "zh-CN": "知识权利",
+        "en": "Knowledge Rights"
+      },
+      "trigger": "publish_or_use",
+      "constraint": "access_competence_license",
+      "source_line": 2116
+    },
+    {
+      "id": "LAW_SUBJECT_TREATY",
+      "name": {
+        "zh-CN": "附属保留权",
+        "en": "Dependency Reserved Powers"
+      },
+      "trigger": "subject_action",
+      "constraint": "explicit_treaty_scope",
+      "source_line": 2117
+    },
+    {
+      "id": "LAW_IMPERIAL_CHARTER",
+      "name": {
+        "zh-CN": "帝国宪章",
+        "en": "Imperial Charter"
+      },
+      "trigger": "empire_request",
+      "constraint": "divine_approval",
+      "source_line": 2118
+    },
+    {
+      "id": "LAW_TERRITORIAL_TRANSITION",
+      "name": {
+        "zh-CN": "领土过渡",
+        "en": "Territorial Transition"
+      },
+      "trigger": "peace_commit",
+      "constraint": "occupier_distinct_from_owner",
+      "source_line": 2119
+    }
+  ]
+}

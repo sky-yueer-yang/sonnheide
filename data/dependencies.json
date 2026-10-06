@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "document_type": "selection_manifest_not_build_lock",
+  "integrated_runtime_dependencies": [],
+  "planned": [
+    {
+      "name": "SDL3",
+      "upstream": "https://github.com/libsdl-org/SDL",
+      "license_candidate": "Zlib",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "bgfx",
+      "upstream": "https://github.com/bkaradzic/bgfx",
+      "license_candidate": "BSD-2-Clause",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "bx",
+      "upstream": "https://github.com/bkaradzic/bx",
+      "license_candidate": "BSD-2-Clause",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "bimg",
+      "upstream": "https://github.com/bkaradzic/bimg",
+      "license_candidate": "BSD-2-Clause",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "cgltf",
+      "upstream": "https://github.com/jkuhlmann/cgltf",
+      "license_candidate": "MIT",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "ozz-animation",
+      "upstream": "https://github.com/guillaumeblanc/ozz-animation",
+      "license_candidate": "MIT",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "meshoptimizer",
+      "upstream": "https://github.com/zeux/meshoptimizer",
+      "license_candidate": "MIT",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "RmlUi",
+      "upstream": "https://github.com/mikke89/RmlUi",
+      "license_candidate": "MIT",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    },
+    {
+      "name": "FreeType",
+      "upstream": "https://freetype.org/",
+      "license_candidate": "FTL",
+      "status": "not_integrated",
+      "resolved_commit": null,
+      "source_archive_sha256": null,
+      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+    }
+  ]
+}
