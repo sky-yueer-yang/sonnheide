@@ -1,0 +1,10 @@
+.build/
+build/
+.cache/
+.venv/
+.DS_Store
+__pycache__/
+*.pyc
+*.tmp
+*.save
+!tests/fixtures/*.save
