@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "design_and_visual_preview_only",
+  "decision": "docs/decisions/0002-building-construction.md",
+  "scope": "building_body_only",
+  "construction": {
+    "requires_actual_delivery": true,
+    "start_when": "all_required_materials_received_and_site_clear",
+    "material_consumption": "consume_full_recipe_once_at_automatic_build_start",
+    "cancel_automatic_build_material_refund": false,
+    "requires_onsite_person_labor": false,
+    "duration_source": "BuildingDefinition.durationTicks",
+    "completion_source": "committed_scheduler_transaction"
+  },
+  "presentation": {
+    "shape": "original_rectangular_wire_mesh_cage",
+    "sides": 4,
+    "top_cap": true,
+    "bounds_source": "validated_cageBounds_within_constructionEnvelope",
+    "layer_height_m": 0.75,
+    "mesh_pitch_m": 0.25,
+    "raise_seconds": 3.0,
+    "lower_seconds": 3.0,
+    "raise_order": "bottom_to_top",
+    "lower_order": "top_to_bottom_reverse_sampling",
+    "clock": "unscaled_presentation_seconds_freeze_on_game_pause",
+    "complete_during_raise": "finish_raise_then_lower",
+    "completion_enables_building_immediately": true,
+    "completed_entrance": "clear_all_active_entrance_and_loading_paths_at_completion",
+    "reload_waiting_delivery": "no_cage",
+    "reload_automatic_build": "fully_enclosed",
+    "reload_complete": "ready_without_replay",
+    "cancel": "lower_from_current_coverage_without_final_building",
+    "optional_enclosed_clips": [],
+    "creates_iron_cost_or_combat_obstacle": false
+  },
+  "preview_only": {
+    "delivery_seconds": 4.0,
+    "enclosed_hold_seconds": 5.0,
+    "authoritative_game_duration": false
+  }
+}

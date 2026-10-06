@@ -9,6 +9,7 @@
 |schema/协议/定义集/内容包/GeoSourceManifest哈希与版本|GPU句柄、视锥列表、LOD当前级别、阴影缓存|
 |投影、EarthMapSelection、cellSize、唯一worldScale、冻结natural mask/hash|地球全球浏览视窗缓存、表现岸线LOD|
 |reclaimed、未完工工程、真实材料/劳动投入、空间约束|effectiveSurface、landOrigin派生值、导航索引与mesh|
+|建筑本体等待/自动施工/完成状态、实际到货/投入、startedTick/durationTicks/completedTick、工程定义版本|围网层数采样、表现时钟、pendingComplete、临时网罩GPU资源|
 |SimTick、TimeConfig、独立RNG流/计数器、due tasks|渲染frameDelta、线程完成顺序、墙钟时间|
 |身份/关系、产权/保管/位置、所有预约和在途状态|检查器筛选、未提交草稿、刷矿/军令预览|
 |日月账本、批次质量/版本、合同/生产线/资本/知识|价格图显示采样、可重算的总结统计|
@@ -19,6 +20,8 @@
 |命令回执去重状态、已提交事件序列/历史引用|程序内部指针/虚表/`std::hash`值|
 
 死者压成保留稳定ID的档案，亲属、发明、文化、先知和历史引用不断链。ID不回收给新人。名称历史不依赖当前显示名。
+
+建筑本体采用[ADR 0002](../decisions/0002-building-construction.md)的材料实送与自动工期，没有现场砌筑人物预约；填海真实劳动仍保存。载入WAITING_DELIVERY只恢复工地/配送且无网罩，载入AUTOMATIC_BUILD直接重建完整网罩，载入已完成/已取消时直接成品/无网罩，不重播围/拆动画、材料交付或完成事务。现场货物和在途货物继续保留唯一真实位置。
 
 ## 2. 生产存档包
 

@@ -69,7 +69,8 @@ BuildingDefinition
   interiorContainerSlots            抽象容纳能力，不创建可游览房间
   allowedSurfaceOrigins             LAND且NATURAL/RECLAIMED；Port仅RECLAIMED
   rotationsAllowed                  离散朝向，Port固定四向
-  constructionAndMaintenance        工程资源／劳动／状态，不由模型动画支付
+  constructionAndMaintenance        建筑材料/自动工期/状态；维护劳动独立，不由动画支付
+  deliveryApron, deliveryAnchor      建筑前侧网罩外的合法接货/等待/退出区域
   authorityHash                     玩法空间和容量字段的规范化哈希
 ```
 
@@ -87,6 +88,7 @@ AppearanceDefinition
   materialSet, tintParameters         共享PBR纹理和材质参数
   entranceSocketBindings             美术门与权威入口的逐项对位
   renderBounds                       视觉边界，不能侵入非法地面／交通净空
+  constructionPresentation           合法cageBounds、分层网罩与可选包围中段clip
   lods[], shadowProxy, selectionProxy
   authorshipAndSources                原创作者与开放材质来源链
 ```
@@ -245,7 +247,7 @@ canonical rest pose 为 T pose；脚底位于 `Y=0`，前向 `-Z`。语义至少
 
 ### 8.4 第一批动作集合
 
-先覆盖 idle／walk／run／turn／carry／build／farm／chop／enter/exit／hold/release；成年军事动作在军事切片接入，儿童没有兵役或战斗武器动作。矿工入矿、车辆进门、人物进入建筑使用同一容纳状态；进入后 render proxy 隐藏但快照仍引用其 ID。
+先覆盖 idle／walk／run／turn／pickup／carry／putdown／farm／chop／enter/exit／hold/release；人物送材料到前侧后离开，建筑不需要`build`砌筑动作或现场施工工人。建筑本体用原创四面加顶盖的矩形网罩，从下到上分层围起，完成后反向撤除；网罩覆盖完整模型且留在合法工程envelope内，参数与取消/早完成/载入行为见[ADR 0002](../decisions/0002-building-construction.md)。成年军事动作在军事切片接入，儿童没有兵役或战斗武器动作。矿工入矿、车辆进门、人物进入建筑使用同一容纳状态；进入后 render proxy 隐藏但快照仍引用其 ID。
 
 Divine Hand 抓持只是渲染姿态与容纳状态改变；松手后的散布位置由玩法模块提供，动画不能将多人释放到同一点。被抓人物仍保留文化、国籍、信仰、财产与 Army 关系。
 

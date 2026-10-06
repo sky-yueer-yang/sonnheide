@@ -13,6 +13,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |五类共享基础、经济起步、调度、文化、战争与规模|[仿真架构](docs/architecture/SIMULATION.md)|
 |真实地球、投影、岸线、格网、填海与导航|[世界工程](docs/architecture/WORLD.md)|
 |原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
+|材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
 |命令、预览、授权、共享合同与错误协议|[接口契约](docs/architecture/CONTRACTS.md)|
 |存档、恢复、版本迁移与确定性级别|[持久化](docs/architecture/PERSISTENCE.md)|
 |自制建筑、人体、材质、LOD、资产编译与流送|[内容流水线](docs/architecture/CONTENT_PIPELINE.md)|
@@ -31,6 +32,8 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 - 从原稿实际提取40能力突破＋96谱系＋288槽位、35类法律、13类业务；未提供的原参考代码和配置没有被伪称导入。
 - 3份原创建筑几何配方及自包含 glTF 灰盒：住宅、CitySquare 的 CivicHall 组件、港口。它们用于格式/空间验证，正式写实模型、三时代外观与全建筑目录尚待制作。
 - CMake 构建、三平台 GitHub Actions 与 Linux sanitizer 作业、内容/来源哈希校验、LFS 规则。
+
+建筑施工的新设计为：小人实际把材料送到前侧接货区，到齐后建筑自动推进工期；无人物砌筑动作。原创长方体铁丝网约3秒逐层围起，中段完全包围，完工后约3秒反向拆去。已有[可播放视觉预览](tools/previews/building-construction.html)和参数示例，生产建筑/物流与GPU动画尚未实现；填海仍沿用真实材料和劳动规则。
 
 ## 运行现有切片
 
