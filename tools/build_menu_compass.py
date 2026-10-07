@@ -46,26 +46,26 @@ def compose():
         '     stroke="#fff6df" stroke-linecap="round" stroke-linejoin="round">',
         '  <metadata>Original Sonnheide interface artwork. Deterministic source: tools/build_menu_compass.py.',
         '    No open-content license has been assigned. Company logo is a separate unmodified user asset.</metadata>',
-        '  <!-- Exact topology: clear center, complete inner rings, empty annulus 150-195, triple outer edge, attached dense exterior rays. -->',
-        '  <!-- Center radius 105 remains entirely empty. All exterior rays begin at radius 211. -->',
+        '  <!-- Exact topology: clear center, complete inner rings, narrow empty annulus 128-136, fine triple outer edge, subdued dense exterior rays. -->',
+        '  <!-- Center radius 105 remains entirely empty. All exterior rays begin at radius 145. -->',
     ]
     parts += group("complete-inner-rings", [circle(116, .50, .66),
                                             circle(121, .35, .48),
                                             circle(127, .65, .74)])
 
-    # Every inner graduation stays strictly below radius 150, including its stroke.
+    # Quiet graduations fit inside the inner circles, leaving the narrow gap clear.
     ticks = []
     for i in range(120):
         major, intermediate = i % 10 == 0, i % 5 == 0
-        ticks.append(radial(134, 147 if major else 143 if intermediate else 138,
+        ticks.append(radial(108, 113 if major else 111 if intermediate else 110,
                             i * 3, .70 if major else .45 if intermediate else .30,
                             .66 if major else .49 if intermediate else .35))
     parts += group("120-quiet-inner-graduations", ticks)
 
-    # Intentionally no paths, lines, rings or other geometry in radii 150 through 195.
-    parts += group("complete-triple-outer-edge", [circle(200, .45, .68),
-                                                  circle(204, .45, .65),
-                                                  circle(210, 1.40, .80)])
+    # The outer edge almost touches the inner circles; radii 128-136 stay empty.
+    parts += group("complete-triple-outer-edge", [circle(137, .25, .42),
+                                                  circle(140, .25, .40),
+                                                  circle(144, .50, .48)])
 
     # Exactly 360 equally spaced rays attach to the outer edge. Six endpoint tiers
     # make the perimeter strongly varied while retaining the precision of a clock.
@@ -83,7 +83,7 @@ def compose():
             end, width, opacity = 240, .50, .56
         else:
             end, width, opacity = (240, .35, .50) if i % 2 == 0 else (226, .30, .45)
-        rays.append(radial(211, end, i, width, opacity))
+        rays.append(radial(145, end - 67, i, width, opacity * .60))
     parts += group("360-attached-dense-rays", rays)
     parts.append('</svg>')
     return "\n".join(parts) + "\n"
@@ -103,7 +103,7 @@ def main():
         if not DESTINATION.is_file() or DESTINATION.read_bytes() != artwork:
             print("Compass SVG differs from its generation recipe", file=sys.stderr)
             return 1
-        print("Compass SVG matches its original recipe: 360 attached rays, 120 inner ticks; static, empty annulus 150-195")
+        print("Compass SVG matches its original recipe: 360 subdued attached rays, 120 inner ticks; static, narrow empty annulus 128-136")
     else:
         DESTINATION.parent.mkdir(parents=True, exist_ok=True)
         DESTINATION.write_bytes(artwork)

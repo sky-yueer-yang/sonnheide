@@ -13,7 +13,7 @@
 .company-signature::before{content:"";position:absolute;left:50%;top:50%;width:calc(var(--logo-size) * 2.5);height:calc(var(--logo-size) * 2.5);transform:translate(-50%,-50%);background:radial-gradient(circle,#090705b0 0%,#0b090682 27%,#0b090631 49%,transparent 72%);pointer-events:none}
 .company-logo{position:relative;z-index:2;width:var(--logo-size);height:var(--logo-size);object-fit:contain;filter:drop-shadow(0 0 9px #fff6df66) drop-shadow(0 0 30px #fff6df40)}
 .logo-glow{position:absolute;left:50%;top:50%;width:calc(var(--logo-size) * 3.5);height:calc(var(--logo-size) * 3.5);transform:translate(-50%,-50%);background:radial-gradient(circle,#fff6df50 0%,#fff6df24 26%,#fff6df0a 45%,transparent 66%)}
-.logo-rays{position:absolute;inset:0;width:100%;height:100%;opacity:1;filter:drop-shadow(0 0 2px #fff6df55)}
+.logo-rays{position:absolute;inset:0;width:100%;height:100%;opacity:1;filter:drop-shadow(0 0 .75px #fff6df18)}
 .main-layout{--menu-step:36px;--menu-font:24px;--menu-bottom:8vh;--right-inset:7vw;--title-gap:36px;min-height:100svh;position:relative}
 h1{position:absolute;right:var(--right-inset);bottom:calc(var(--menu-bottom) + 5 * var(--menu-step) + var(--title-gap));font:400 clamp(36px,3.9vw,64px)/1.12 var(--roman);letter-spacing:.035em;color:var(--light-ink);text-shadow:0 0 3px #fff6df55,0 0 18px #fff6df38,0 0 42px #fff6df18;max-width:86vw;white-space:nowrap;text-align:right}
 .main-nav{position:absolute;right:var(--right-inset);bottom:var(--menu-bottom);display:flex;flex-direction:column;align-items:flex-end;gap:0;min-width:280px;max-width:84vw}

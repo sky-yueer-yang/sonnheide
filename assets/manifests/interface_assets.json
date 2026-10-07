@@ -50,13 +50,13 @@
     "light_color": "#fff6df",
     "artwork": {
       "path": "assets/source/ui/branding/sonnreich-compass.svg",
-      "bytes": 49231,
-      "sha256": "f7090ea4576e64511446d217d6be2c5ebb1625151eaba04fe03b4e184c101b3f"
+      "bytes": 49250,
+      "sha256": "c815c5073b77f17f77e9ba4e8c511ec9f8421449e3176dfd526176126125c616"
     },
     "recipe": {
       "path": "tools/build_menu_compass.py",
-      "bytes": 4759,
-      "sha256": "73f8e9f957bd304f06c31431c07a85bdbb304afc771539317e3d13df7f2b2c28"
+      "bytes": 4789,
+      "sha256": "eb531e3d514d9ffc873b99067bf92c1f7f3c47093d2b9ac72d8b8ed6b7eba625"
     }
   }
 }
