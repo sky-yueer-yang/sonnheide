@@ -162,7 +162,7 @@ GPU 蒙皮按同 mesh/材质/骨架 LOD 批次，姿态 palette 使用受设备�
 
 输入经过唯一 `InputRouter`：UI 焦点/捕获优先 → 当前工具 capture → 临时相机修饰 → 观察默认动作。一旦 pointerDown 开始 stroke/阵线/抓取，记录 capture owner，松键、出窗口、取消时由同一个 owner 清理；切模式终止尚未提交地图stroke，不静默丢弃对象表单。Esc按最上层窗口/地图预览/浏览层处理，脏表单保留或显式选择丢弃。资源模式滚轮调笔刷；显式修饰键才缩放；空格临时平移，中键旋转，但文本框和IME composition优先。所有映射进入配置并在底部状态显示，不在不同 subsystem 各自读键盘。全局工具按[ADR 0006](../decisions/0006-bottom-toolbar-trilingual-editing.md)集中底部分区栏，详见[UI_ARCHITECTURE](UI_ARCHITECTURE.md)。
 
-全部按钮无border/outline/ring外围描边；最新ADR 0009允许纯文字按钮，主菜单必须无图标、集中右下角/右对齐，其他图标仅承担明确功能。禁止不必要的小字，必要信息在对应窗口用正常字号展示；焦点用文字/背景明暗与字重，功能图标保留三语tooltip/accessible name。左上角Sonnreich原创Logo有微弱静态柔光与长短粗细不同的作者放射线，不呼吸旋转；大写SONNHEIDE主标题与留白形成纪念性新古典/金色/未来感构图。主菜单油画暗层/微移/交叠每次仅保留当前和下一画必要纹理，有界decode/upload、按hash去重；坏画保旧画或静态暗底，变更窗口保主体安全区，降低动态关闭持续运动。Logo静态、菜单始终深沉，不消费World Age或为换画创建World。
+全部按钮无border/outline/ring外围描边；最新ADR 0009允许纯文字按钮，主菜单必须无图标、集中右下角/右对齐，其他图标仅承担明确功能。禁止不必要的小字，必要信息在对应窗口用正常字号展示；焦点用文字/背景明暗与字重，功能图标保留三语tooltip/accessible name。Sonnreich品牌中心左上向内，完整多圈内环/无射线环带/2—3道边外圈/外圈起点的密集长短粗细射线，远端可越屏，整组以品牌中心固定轻微顺时针倾斜，柔光静止、不持续旋转；SONNHEIDE右移、主页字体略小，右下纯文字菜单紧凑而不重叠；主页文字/射线/光晕统一#fff6df且带明亮静态柔光，禁止按钮盒子ring。油画小中央亮焦点/大部分渐暗保留原饱和度和细节，禁止全幅统一半亮度或去饱和；微移/交叠每次仅保留当前和下一画必要纹理，有界decode/upload、按hash去重；坏画保旧画或静态暗底，变更窗口保主体安全区，降低动态关闭持续运动。Logo/钟盘静态，菜单仅小中央焦点明亮、大部分连续渐暗，不消费World Age或为换画创建World。
 
 中文、英文、德文、希腊码、IME composition、粘贴与 UTF-8 名称从切片 A 开始验证。UI locale独立于游戏Language，消息、动态错误、辅助名称和工具提示按同一message key表；德文长文本/逗号小数/ÄÖÜß与中文组合输入分别验收。FreeType 负责字形光栅化；复杂 shaping 可启用 RmlUi 的 HarfBuzz 示例字体引擎并固化适配，不能把“能加载中文字体”误认作已支持中文输入与换行。字体采用可分发 Noto Sans CJK 的指定子集/文件，逐页加载字形 atlas，避免一次栅格化全部 CJK。字号、DPI 与 atlas 页数共同受预算限制。[FreeType 许可](https://freetype.org/license.html)、[Noto CJK 字体许可](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)
 

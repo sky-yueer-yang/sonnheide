@@ -42,5 +42,21 @@
       ]
     }
   ],
-  "scope": "Browser menu typography and brand source assets; native font shaping and Chinese font packaging remain planned."
+  "scope": "Browser menu typography, unchanged brand source, and reproducible original vector instrument; native font shaping and Chinese font packaging remain planned.",
+  "menu_instrument": {
+    "source_mode": "original",
+    "license": null,
+    "rights_note": "Original project-authored static vector artwork and deterministic recipe. No open-content license assigned; company PNG is separate and unchanged.",
+    "light_color": "#fff6df",
+    "artwork": {
+      "path": "assets/source/ui/branding/sonnreich-compass.svg",
+      "bytes": 49231,
+      "sha256": "f7090ea4576e64511446d217d6be2c5ebb1625151eaba04fe03b4e184c101b3f"
+    },
+    "recipe": {
+      "path": "tools/build_menu_compass.py",
+      "bytes": 4759,
+      "sha256": "73f8e9f957bd304f06c31431c07a85bdbb304afc771539317e3d13df7f2b2c28"
+    }
+  }
 }

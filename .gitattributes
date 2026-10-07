@@ -29,3 +29,5 @@ assets/source/ui/paintings/*.jpg -filter -diff -merge -text
 assets/source/ui/branding/*.png -filter -diff -merge -text
 assets/source/ui/fonts/*.ttf -text
 assets/source/ui/fonts/*.pb text eol=lf
+
+*.svg text eol=lf

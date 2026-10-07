@@ -12,6 +12,7 @@ import import_makehuman_sources
 import validate_interaction_schema
 import validate_ui_locales
 import import_menu_paintings
+import build_menu_compass
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -96,6 +97,20 @@ def validate_interface_assets():
     require(path.stat().st_size == logo["bytes"] and sha(path) == logo["sha256"],
             "Supplied company mark bytes changed")
     require(path.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n", "Company mark is not PNG")
+    instrument = manifest["menu_instrument"]
+    require(instrument["source_mode"] == "original" and instrument["license"] is None,
+            "Original menu artwork must not acquire an invented open license")
+    for key in ("artwork", "recipe"):
+        item = instrument[key]
+        path = local_path(item["path"])
+        require(path.stat().st_size == item["bytes"] and sha(path) == item["sha256"],
+                "Menu instrument source hash mismatch: " + item["path"])
+    require(local_path(instrument["artwork"]["path"]).read_bytes() == build_menu_compass.svg_bytes(),
+            "Menu instrument differs from its offline generation recipe")
+    color = instrument["light_color"]
+    require(color == "#fff6df" and 'stroke="' + color + '"' in build_menu_compass.compose()
+            and "--light-ink:" + color in (ROOT / "tools/previews/main-menu.css").read_text(encoding="utf-8"),
+            "Menu typography and instrument light color diverged")
     fonts = manifest["fonts"]
     require(len(fonts) == 1 and fonts[0]["family"] == "Cinzel" and
             fonts[0]["license"] == "OFL-1.1" and fonts[0]["modified"] is False and
@@ -110,7 +125,7 @@ def validate_interface_assets():
     require({i["upstream_path"] for i in fonts[0]["files"]} ==
             {"ofl/cinzel/Cinzel[wght].ttf", "ofl/cinzel/OFL.txt", "ofl/cinzel/METADATA.pb"},
             "Font license or metadata missing")
-    return "unchanged supplied company mark and locally served Cinzel/OFL source hashes"
+    return "unchanged company mark, reproducible original menu instrument, and Cinzel/OFL source hashes"
 
 
 def main():
