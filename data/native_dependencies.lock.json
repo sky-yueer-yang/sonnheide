@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "dependencies": [
+    {
+      "name": "sdl",
+      "repository": "https://github.com/libsdl-org/SDL",
+      "revision": "7f3ae3d57459e59943a4ecfefc8f6277ec6bf540",
+      "version": "3.2.28",
+      "archive_filename": "sdl-7f3ae3d57459e59943a4ecfefc8f6277ec6bf540.tar.gz",
+      "archive_sha256": "7a8347c770b90b33daac2352858ca03f9c9a2ccc8ce711054870361d1a6b32e5",
+      "archive_bytes": 16135954,
+      "official_source_url": "https://codeload.github.com/libsdl-org/SDL/tar.gz/7f3ae3d57459e59943a4ecfefc8f6277ec6bf540",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/sdl-7f3ae3d57459e59943a4ecfefc8f6277ec6bf540.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "LICENSE.txt",
+          "project_path": "third_party/native/sdl/LICENSE.txt",
+          "sha256": "97f35b302b361680ec1e891e95d2d52097bb95abff361434916d99dc1305f127"
+        },
+        {
+          "upstream_path": "src/hidapi/LICENSE-bsd.txt",
+          "project_path": "third_party/native/sdl/src/hidapi/LICENSE-bsd.txt",
+          "sha256": "30eb1bef29b46f8ba7ab8b416035dbd93cb034a45481dd97815b944284582cd2"
+        },
+        {
+          "upstream_path": "src/video/yuv2rgb/LICENSE",
+          "project_path": "third_party/native/sdl/src/video/yuv2rgb/LICENSE",
+          "sha256": "f7d74004cc75778cae46c5f0139f244d67c07ef64cf51937e8272352197dcb18"
+        }
+      ],
+      "license_identifier": "Zlib"
+    },
+    {
+      "name": "rmlui",
+      "repository": "https://github.com/mikke89/RmlUi",
+      "revision": "40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9",
+      "version": "5.1",
+      "archive_filename": "rmlui-40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9.tar.gz",
+      "archive_sha256": "59cc05404011645873048fbf7aac5131ac4c8c304853fa448d1aa43b4e2ba340",
+      "archive_bytes": 3196830,
+      "official_source_url": "https://codeload.github.com/mikke89/RmlUi/tar.gz/40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/rmlui-40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "LICENSE.txt",
+          "project_path": "third_party/native/rmlui/LICENSE.txt",
+          "sha256": "136e1e771efa532241c7a2a89ec2823bb63925de00448e752b648820145e5841"
+        }
+      ],
+      "license_identifier": "MIT"
+    },
+    {
+      "name": "freetype",
+      "repository": "https://github.com/freetype/freetype",
+      "revision": "42608f77f20749dd6ddc9e0536788eaad70ea4b5",
+      "version": "2.13.3",
+      "archive_filename": "freetype-42608f77f20749dd6ddc9e0536788eaad70ea4b5.tar.gz",
+      "archive_sha256": "68ce87bb59ea209eb7350f41a94a27519ce16b37011b475a1e62d4abee154b66",
+      "archive_bytes": 2483768,
+      "official_source_url": "https://codeload.github.com/freetype/freetype/tar.gz/42608f77f20749dd6ddc9e0536788eaad70ea4b5",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/freetype-42608f77f20749dd6ddc9e0536788eaad70ea4b5.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "docs/FTL.TXT",
+          "project_path": "third_party/native/freetype/FTL.TXT",
+          "sha256": "08c135755dd589039470f1fdbb400daaabaaa50d0b366d19cebff4d22986baa1"
+        },
+        {
+          "upstream_path": "docs/GPLv2.TXT",
+          "project_path": "third_party/native/freetype/GPLv2.TXT",
+          "sha256": "c4120c6752c910c299e3bd9cb3a46ff262c268303ca2069b61f92f10a5656c18"
+        },
+        {
+          "upstream_path": "LICENSE.TXT",
+          "project_path": "third_party/native/freetype/LICENSE.TXT",
+          "sha256": "2e3bbb7d7c5c396368dd0853a790ec29ce5b8647163dde42a0493fb0d6556b2b"
+        },
+        {
+          "upstream_path": "README",
+          "project_path": "third_party/native/freetype/README",
+          "sha256": "304b99f680248e42f9c656d36c8c41cda74cf6eebbc5af4d11c4abc1b0d9e2b9"
+        },
+        {
+          "upstream_path": "src/base/fthash.c",
+          "project_path": "third_party/native/freetype/src/base/fthash.c",
+          "sha256": "73fca7e875ea7bfc7496dc9eb84abe9f16844ebd7589f0e4eafd9b1d1df137e3"
+        },
+        {
+          "upstream_path": "include/freetype/internal/fthash.h",
+          "project_path": "third_party/native/freetype/include/freetype/internal/fthash.h",
+          "sha256": "351299f86d56190d44c829deb70256c3343b9da416f0451c6aabd4586b174dbe"
+        },
+        {
+          "upstream_path": "src/autofit/ft-hb.c",
+          "project_path": "third_party/native/freetype/src/autofit/ft-hb.c",
+          "sha256": "65c23597427a2954bed2145191d2f129fe26b6f290d371b900628ac0c6b5af37"
+        },
+        {
+          "upstream_path": "src/autofit/ft-hb.h",
+          "project_path": "third_party/native/freetype/src/autofit/ft-hb.h",
+          "sha256": "6f21bd19ea7d53accc407a3dbd18648de36940cfabf235e4970f009f7a4def04"
+        },
+        {
+          "upstream_path": "src/gzip/zlib.h",
+          "project_path": "third_party/native/freetype/src/gzip/zlib.h",
+          "sha256": "611f309346ae31781d4cf8f795f8c79092eee6c8a0c273c8ba81c6beeb0ecf92"
+        }
+      ],
+      "license_identifier": "FTL"
+    },
+    {
+      "name": "bgfx-cmake",
+      "repository": "https://github.com/bkaradzic/bgfx.cmake",
+      "revision": "f2ea8fb0438721d754aefa22b14fe161f948a383",
+      "version": "commit",
+      "archive_filename": "bgfx-cmake-f2ea8fb0438721d754aefa22b14fe161f948a383.tar.gz",
+      "archive_sha256": "8b038a670a214cc95f803028d3484def92ee729334d50aff2c4dee594e4aacc8",
+      "archive_bytes": 34512,
+      "official_source_url": "https://codeload.github.com/bkaradzic/bgfx.cmake/tar.gz/f2ea8fb0438721d754aefa22b14fe161f948a383",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/bgfx-cmake-f2ea8fb0438721d754aefa22b14fe161f948a383.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "LICENSE",
+          "project_path": "third_party/native/bgfx-cmake/LICENSE",
+          "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+        }
+      ],
+      "license_identifier": "CC0-1.0"
+    },
+    {
+      "name": "bgfx",
+      "repository": "https://github.com/bkaradzic/bgfx",
+      "revision": "cca91681c953d2de9531197b0f580c866ffaa775",
+      "version": "commit",
+      "archive_filename": "bgfx-cca91681c953d2de9531197b0f580c866ffaa775.tar.gz",
+      "archive_sha256": "fdf2642d58327bee772eb06e4fdb32aef4c53c0d17325820a848d1628e01a24e",
+      "archive_bytes": 124627236,
+      "official_source_url": "https://codeload.github.com/bkaradzic/bgfx/tar.gz/cca91681c953d2de9531197b0f580c866ffaa775",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/bgfx-cca91681c953d2de9531197b0f580c866ffaa775.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "LICENSE",
+          "project_path": "third_party/native/bgfx/LICENSE",
+          "sha256": "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"
+        },
+        {
+          "upstream_path": "3rdparty/metal-cpp/LICENSE.txt",
+          "project_path": "third_party/native/bgfx/3rdparty/metal-cpp/LICENSE.txt",
+          "sha256": "f4e92c7fe2aa066e294c0da9d08683dc9fb741ee6e6debbfad99a0c96e07c1f2"
+        }
+      ],
+      "license_identifier": "BSD-2-Clause"
+    },
+    {
+      "name": "bx",
+      "repository": "https://github.com/bkaradzic/bx",
+      "revision": "d86e4ea9d9da6e832a3ff41398587d82b772c69b",
+      "version": "commit",
+      "archive_filename": "bx-d86e4ea9d9da6e832a3ff41398587d82b772c69b.tar.gz",
+      "archive_sha256": "ebceffb7cba8d29dc0931de6b2fd2a700f26fbd5a3b978ee92398b91f2260956",
+      "archive_bytes": 1563435,
+      "official_source_url": "https://codeload.github.com/bkaradzic/bx/tar.gz/d86e4ea9d9da6e832a3ff41398587d82b772c69b",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/bx-d86e4ea9d9da6e832a3ff41398587d82b772c69b.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "LICENSE",
+          "project_path": "third_party/native/bx/LICENSE",
+          "sha256": "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"
+        }
+      ],
+      "license_identifier": "BSD-2-Clause"
+    },
+    {
+      "name": "bimg",
+      "repository": "https://github.com/bkaradzic/bimg",
+      "revision": "101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1",
+      "version": "commit",
+      "archive_filename": "bimg-101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1.tar.gz",
+      "archive_sha256": "efb47d1ee18a653658c04e3aabbafd4e302b17a191c18cfe2ca64b6892761f94",
+      "archive_bytes": 1536434,
+      "official_source_url": "https://codeload.github.com/bkaradzic/bimg/tar.gz/101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/bimg-101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1.tar.gz",
+      "licenses": [
+        {
+          "upstream_path": "LICENSE",
+          "project_path": "third_party/native/bimg/LICENSE",
+          "sha256": "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"
+        }
+      ],
+      "license_identifier": "BSD-2-Clause"
+    }
+  ],
+  "build_tools": [
+    {
+      "name": "cmake",
+      "version": "3.31.10",
+      "platform": "macos-universal",
+      "official_source_url": "https://cmake.org/files/v3.31/cmake-3.31.10-macos-universal.tar.gz",
+      "archive_filename": "cmake-3.31.10-macos-universal.tar.gz",
+      "archive_sha256": "be9f3faeeaf7921cc2d77cea711dd5e6f72c63af2810cacd9205b3ce8d1593c9",
+      "archive_bytes": 79508153,
+      "checksum_source": "https://cmake.org/files/v3.31/cmake-3.31.10-SHA-256.txt",
+      "redistribution": "build tool cached locally; not linked into application"
+    }
+  ],
+  "architecture_reason": "Independent libraries only: SDL owns window/input; bgfx owns Metal device and draw submission; RmlUi parses local native RML/RCSS and emits triangles; FreeType rasterizes font glyphs; ImageIO decodes JPEG/PNG. No browser and no game engine.",
+  "image_decoder": "Apple system ImageIO; no redistributed image-decoding package",
+  "shader_source": "Pinned bgfx examples/common/debugdraw/vs_debugdraw_fill_texture.bin.h and examples/common/imgui/fs_ocornut_imgui.bin.h; original BSD notices retained in bgfx source archive"
+}

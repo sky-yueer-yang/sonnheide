@@ -3,6 +3,7 @@ build/
 .cache/
 .venv/
 .DS_Store
+assets/source/ui/fonts/noto-serif-cjk-sc/NotoSerifCJKsc-Regular.otf
 __pycache__/
 *.pyc
 *.tmp
