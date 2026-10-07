@@ -37,7 +37,8 @@ def main():
     subprocess.run([shutil.which("python3") or "python3", str(ROOT / "tools/validate_project.py")], check=True, cwd=ROOT)
     node = os.environ.get("SONNHEIDE_NODE") or shutil.which("node")
     if node:
-        subprocess.run([node, str(ROOT / "tools/validate_interaction_preview.js")], check=True, cwd=ROOT)
+        for validator in ("validate_interaction_preview.js", "validate_world_inspector.js", "validate_menu_preview.js"):
+            subprocess.run([node, str(ROOT / "tools" / validator)], check=True, cwd=ROOT)
     else:
         print("SKIP: optional Node.js interaction preview checks; set SONNHEIDE_NODE to run them")
 

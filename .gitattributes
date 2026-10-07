@@ -22,3 +22,10 @@ third_party/abyssal-ocean/LICENSE text eol=lf
 *.pack filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 assets/source/third_party/makehuman/** -text
+# Five small, pinned menu paintings travel with offline previews (3.2 MB total).
+# Larger future textures and authored art continue to use the global LFS rules.
+assets/source/ui/paintings/*.jpg -filter -diff -merge -text
+# The 199 KB supplied company mark and 125 KB font are bounded offline UI sources.
+assets/source/ui/branding/*.png -filter -diff -merge -text
+assets/source/ui/fonts/*.ttf -text
+assets/source/ui/fonts/*.pb text eol=lf

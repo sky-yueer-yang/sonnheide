@@ -24,4 +24,12 @@
 - MPFB v2.0.17 commit `80919fa4682335c41847f761a4d79dcad4124732`仅锁定为离线工具路线；未导入或运行插件。其GPL-3.0-or-later与核心图形CC0分别适用。MakeClothes/MakeTarget同属离线生态，后续实际引入时保留自身许可，不当运行时库。
 - [标准库离线核验器](tools/import_makehuman_sources.py)复核实际源件、索引、绑定和证据；这些源数据尚未输出游戏glTF/LOD、材质、动作或GPU角色。详细准入与缺口见[生态记录](docs/research/MAKEHUMAN_ECOSYSTEM.md)。
 
+## Cinzel界面字体
+
+- Copyright 2020 The Cinzel Project Authors（[作者项目](https://github.com/NDISCOVER/Cinzel)）。准确源来自[Google Fonts固定commit](https://github.com/google/fonts/tree/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cinzel)，未改字体字节；本地文件名为`Cinzel.ttf`。
+- SIL Open Font License 1.1：[完整OFL](assets/source/ui/fonts/OFL-Cinzel.txt)。字体、许可、上游metadata的准确URL、字节数与SHA-256见[界面源件清单](assets/manifests/interface_assets.json)。随项目分发时保留作者通知与OFL；不单独出售字体，不变更字体许可。
+- 当前用于浏览器主菜单，本地加载；中文使用系统宋体回退，未打包或声称已许可完整中文字库。原生字体整形尚未接入。
+
+用户提供的公司标志与五幅油画分别见[标志通知](assets/source/ui/branding/NOTICES.md)和[油画通知](assets/source/ui/paintings/NOTICES.md)，不因托管或第三方字体许可获得开放授权。
+
 其他依赖与资产处于选择/准入研究阶段，见[依赖状态](data/dependencies.json)。实际下载之前不得列入已集成分发清单。

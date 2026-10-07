@@ -11,6 +11,7 @@ import import_etopo_sample
 import import_makehuman_sources
 import validate_interaction_schema
 import validate_ui_locales
+import import_menu_paintings
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -86,6 +87,32 @@ def validate_manifest(manifest):
         require(abs(min(p[i] for p in positions) - lower[i]) < 1e-5 and abs(max(p[i] for p in positions) - upper[i]) < 1e-5, "False mesh bounds")
 
 
+def validate_interface_assets():
+    manifest = read(ROOT / "assets/manifests/interface_assets.json")
+    logo = manifest["branding"]
+    require(logo["source_mode"] == "user_supplied" and logo["license"] is None,
+            "Company mark must not acquire an invented open license")
+    path = local_path(logo["path"])
+    require(path.stat().st_size == logo["bytes"] and sha(path) == logo["sha256"],
+            "Supplied company mark bytes changed")
+    require(path.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n", "Company mark is not PNG")
+    fonts = manifest["fonts"]
+    require(len(fonts) == 1 and fonts[0]["family"] == "Cinzel" and
+            fonts[0]["license"] == "OFL-1.1" and fonts[0]["modified"] is False and
+            fonts[0]["commit"] == "3dd78844021e948ceb633d1dcee3f7885561b5d9",
+            "Menu font source lock changed")
+    for item in fonts[0]["files"]:
+        path = local_path(item["path"])
+        require(path.stat().st_size == item["bytes"] and sha(path) == item["sha256"],
+                "Pinned font or license bytes changed: " + item["path"])
+        require(item["url"].startswith("https://raw.githubusercontent.com/google/fonts/" +
+                fonts[0]["commit"] + "/ofl/cinzel/"), "Font source is not pinned official repository")
+    require({i["upstream_path"] for i in fonts[0]["files"]} ==
+            {"ofl/cinzel/Cinzel[wght].ttf", "ofl/cinzel/OFL.txt", "ofl/cinzel/METADATA.pb"},
+            "Font license or metadata missing")
+    return "unchanged supplied company mark and locally served Cinzel/OFL source hashes"
+
+
 def main():
     dependencies = read(ROOT / "data/dependencies.json")
     for source in dependencies["retained_geographic_sources"]:
@@ -147,6 +174,8 @@ def main():
     import_makehuman_sources.verify(ROOT)
     interaction_summary = validate_interaction_schema.validate(ROOT)
     ui_summary = validate_ui_locales.validate(ROOT)
+    painting_summary = import_menu_paintings.verify()
+    interface_summary = validate_interface_assets()
     # Check actual relative Markdown links, excluding URLs, anchors and inline examples.
     for path in [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md"))]:
         if path == ROOT / provenance["source"]:
@@ -159,6 +188,8 @@ def main():
     print("PASS: pinned Abyssal MIT sources, offline real ETOPO sample, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, selected MakeHuman sources, documentation links")
     print("PASS: " + interaction_summary)
     print("PASS: " + ui_summary)
+    print("PASS: " + painting_summary)
+    print("PASS: " + interface_summary)
 
 
 

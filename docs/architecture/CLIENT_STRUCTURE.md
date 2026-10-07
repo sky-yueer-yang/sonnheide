@@ -2,6 +2,8 @@
 
 2026-10-06。本文是生产工程的目标结构与接入顺序；第 1 节列出当前真实实现和验证范围。最新顺序是主页面与应用启动→创建世界与真实初始地表→基础游戏界面、镜头、保存载入和返回→再开始原创建筑与人物服装资产、建设和生活。前三阶段先形成一个可可靠进入、离开和恢复的真实区域空世界。计划目录在首次实现对应功能时才创建，不通过空目录或接口数量表示完成。应用状态与世界交接见 [APPLICATION_FLOW](APPLICATION_FLOW.md)，阶段和退出条件见 [完整施工计划](../planning/IMPLEMENTATION_PLAN.md)。
 
+视觉最新按[ADR 0009](../decisions/0009-monumental-minimal-interface.md)，环境按[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)：[油画/极简无框交互](VISUAL_STYLE.md)贯穿菜单、底栏、对象和动态表单；核心只发布[Light/Darkness环境状态](LIGHT_AGES.md)，呈现层消费其快照，不计算自转公转/太阳昼夜。主菜单轮播属于应用可见时间，自动光暗属于仿真tick，不能共用计时器。
+
 ## 1. 现有工程与生产目标的区别
 
 |当前真实文件/目标|已有证据|生产接入还缺什么|
@@ -14,6 +16,7 @@
 |`apps/headless/main.cpp`|有限造陆→港口→存档贯穿|生产世界的全域 headless 场景运行器|
 |`data/ui_locales.json`|英汉德统一消息目录与离线镜像校验|完整生产字段/定义文本、字体、IME和原生消息cooker|
 |`tools/previews/world-inspector.html`|浏览器示例状态的可点击交互原型|SDL3/bgfx/RmlUi 原生客户端；原型不嵌入发行游戏，不作为生产事实源|
+|`tools/previews/main-menu.html`、五幅用户油画|浏览器主菜单/三语设置与环境小场景；固定原字节来源|原生应用状态、真实新建/存载、World环境计时与GPU灯光；按钮不能假成功|
 |`assets/source`、`generated`、`manifests`|3 份原创灰盒、选定 MakeHuman 源件、来源与部分验证|正式建模/材质、统一成人 rig、衣物适配、动作、LOD、完整 pack|
 
 运行时库选择沿用 [开源栈决定](../research/OPEN_SOURCE_STACK.md)：C++20 + SDL3 + bgfx/bx/bimg + RmlUi + FreeType；cgltf/meshoptimizer 优先离线使用；ozz-animation 用于角色动画。它们当前仍未集成。`data/dependencies.json` 是选择清单，不是生产 lock。接入成功后才记录兼容 commit、源归档 SHA-256、编译器/参数、传递依赖、许可文件和实测平台。
@@ -70,7 +73,7 @@ Sonnheide/
 │  │  ├─ buildings/                   全原创楼体/构件/地基/道路/港口
 │  │  ├─ characters/                  planned：统一成人规格、变体/衣物
 │  │  ├─ animations/                  planned：rig/重定向/源动作
-│  │  ├─ ui/                          planned：原创图标/窗口装饰/字体证据
+│  │  ├─ ui/                          partial：油画/企业标志/Cinzel源与许可；native UI planned
 │  │  └─ materials/                   planned：自制及逐项准入表面素材
 │  ├─ generated/                     有意义 fixtures 与派生产物
 │  └─ manifests/                     原文件/许可/配方/hash/几何/LOD
@@ -110,6 +113,8 @@ Sonnheide/
 |`sonnheide_content_cooker` planned|固定离线 importer/LOD/动作/pack；DCC 外部离线步骤|取互联网浮动版本；编辑工具链接发行游戏|
 
 UI 数据类型可位于核心公开查询协议，但 RML 元素、翻译字符串和 GPU 句柄不进权威存档。开发性能面板如使用 ImGui，仍与玩家 RmlUi 页面分开。候选 World 只在私有准备区校验，不接命令、不运行仿真；活动会话始终只有一个。它是安全切换的暂存对象，不是第二份并行经营的生产事实。
+
+环境状态由核心单写者持有相位、自动开关、有界期限与generation，存入世界checkpoint；界面只发typed切换意图，renderer只插值显示。日历不导出日照角，油画轮播不写环境。无框按钮在RmlUi中同样禁止outline/ring，主菜单纯文字，其余按实际识别需要使用icon；保持三语标签和可见焦点状态，不到发行时再换一套样式。
 
 ### 4.1 应用、创建与存档的责任划分
 

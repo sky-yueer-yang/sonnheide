@@ -1,6 +1,6 @@
 # 原生三维客户端与表现层架构
 
-设计基线：`Sonnheide_Complete_Design.md` v0.6；本方案日期：2026-10-06。本文是生产客户端的设计与验收契约，不表示图形依赖、PBR、水体、人物或 UI 已经集成。当前可执行能力以仓库构建目标及测试结果为准。
+设计基线：`Sonnheide_Complete_Design.md` v0.6；本方案更新：2026-10-07。本文是生产客户端的设计与验收契约，不表示图形依赖、PBR、水体、人物或 UI 已经集成。当前可执行能力以仓库构建目标及测试结果为准。油画和Light/Darkness按[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)，纯文字主菜单/静态公司Logo/无不必要小字按[ADR 0009](../decisions/0009-monumental-minimal-interface.md)；原生启动/真实空地图通过后才制作建筑，顺序按[ADR 0007](../decisions/0007-foundation-experience-first.md)。
 
 ## 1. 已作出的选择与真正的难点
 
@@ -42,6 +42,7 @@ SDL 事件 → InputRouter → 当前 Tool / CameraController / UI
 |国家旗定义、主题色、主权与占领关系|不同图层绘制法定主权和占领|占领自动覆盖主权或人物国籍|
 |矿物格心值、稀疏 GenesisNode|生成只读曲面与视觉插值|插值点成为新矿格或文化仿真节点|
 |建筑性能定义、外观 ID、入口与 footprint|表现外观和选取体；按领域预览放置|换皮肤增加容量或移动入口|
+|Light/Darkness与环境revision、已有灯具可用性|选择固定环境profile、受控过渡和可见局部灯代理|根据帧/日历旋转太阳，曝光改Age，shader发光充当真实能源|
 
 仿真线程发布快照后，表现线程可保留其所有权直到消费结束。首版使用简单的有界快照交换；人口增长后以共享不可变 chunk 和 dirty 列降低复制量，禁止为每个渲染帧序列化全量 JSON。过期表现快照可以跳过；命令、提交事实与历史事件不能丢弃。抓取/释放、传送、入楼/出楼、死亡带有空间不连续标记，禁止在两个端点间插值穿城飞行。
 
@@ -67,12 +68,12 @@ SDL 事件 → InputRouter → 当前 Tool / CameraController / UI
 
 ## 4. 我们自己的渲染通道与 PBR
 
-初版采用简单 forward 渲染；白天主日光 + 环境光满足核心地图观察。首轮不引入 deferred、实时 GI、光追、虚拟几何或必须依赖 compute 的 GPU-driven 路径。需要更多局部灯时再依据实际可见负载决定 clustered forward。
+初版采用简单 forward 渲染；Age of Light使用固定方向主光+环境光，Age of Darkness使用较暗环境光及实际可用灯具。只接两个固定环境profile，不做日出日落/每日昼夜或自转公转求解；日历仍为仿真时间单位。阶段1验证两个profile的真实空地表，阶段2才接入World规则计时/存载；详细边界见[LIGHT_AGES](LIGHT_AGES.md)。首轮不引入 deferred、实时 GI、光追、虚拟几何或必须依赖 compute 的 GPU-driven 路径。需要更多局部灯时再依据实际可见负载决定 clustered forward。
 
 |顺序|通道|内容与约束|
 |---|---|---|
 |1|资源上传与可见集|缓存资源；空间 chunk 与视锥剔除；不逐对象创建材质|
-|2|阴影|日光级联阴影；近景重要人物；远景不做高成本动态阴影|
+|2|阴影|固定主光级联阴影；Darkness按profile压低/停用主光；近景重要人物；远景不做高成本动态阴影|
 |3|不透明世界|冻结真实高程地表、人工平台、地基/坡道、道路、原创建筑、人物、树木与交通资产|
 |4|水前颜色/深度准备|仅在水体质量等级需要时复制或解析采样源；禁止读写同一 attachment|
 |5|水与透明世界|Abyssal谱波位移水面与独立WATER遮罩；限制透明层数量与overdraw|
@@ -83,7 +84,9 @@ SDL 事件 → InputRouter → 当前 Tool / CameraController / UI
 
 每个通道声明输入、输出、尺寸、格式、MSAA 和顺序，使用固定 view 分配表及显式依赖；不把 bgfx 的排序机制当作自动 frame graph。首版 frame graph 是我们的小型 pass 列表，只有实际使用的通道。透明水、矿物曲面与标签的组合要专测；不能通过打开全部透明 overlay 得到不可读地图。
 
-材质基线是 metallic-roughness PBR：base color/normal/metallic/roughness/AO、线性空间光照、IBL、主日光阴影、受控曝光。base color 与 emissive 纹理按 sRGB 解码，数据纹理保持线性；切线、normal map 方向在导入时验证。批次 key 为 mesh/LOD/material variant/render pass；国家主题色使用实例参数，不能为每人复制材质。UI 国旗保存固定 8-bit 色表，不因渲染光照生成第 24 种可选色。
+材质基线是 metallic-roughness PBR：base color/normal/metallic/roughness/AO、线性空间光照、IBL、固定主光阴影、受控曝光。两个profile的曝光受限，不能把Darkness自动补亮为白天；最低环境照明保留地形/入口可读性，UI在tone mapping后绘制。base color 与 emissive 纹理按 sRGB 解码，数据纹理保持线性；切线、normal map 方向在导入时验证。批次 key 为 mesh/LOD/material variant/render pass；国家主题色使用实例参数，不能为每人复制材质。UI 国旗保存固定 8-bit 色表，不因渲染光照生成第 24 种可选色。
+
+空世界没有可点亮的建筑或灯具；局部光来自真实已有对象的可用快照。阶段3原创灯具/窗/发光部件与light代理共用规则接口，阶段4按已定义的能力结算实际可用性；没有真实供给合同的试灯仅开发场景。灯光代理按可见度/距离/重要性设置有界数量，远景可仅emissive且不投影；裁掉代理不关领域灯具、不清其状态，不依相机省去真实成本。短profile交叠为表现，逻辑Age已经提交；降低动态直接使用当前profile，不补播快进期间环境历史。
 
 可有选择地移植 bgfx 官方 IBL/阴影示例代码并保留 BSD notices；生产材质的公式与能量响应参考 Filament 的官方 PBR 文档。代码复用需要具体文件许可，示例配套模型、HDRI、贴图、字体分别审查。不能将整份示例资产包视为 BSD。[bgfx IBL shader](https://github.com/bkaradzic/bgfx/blob/master/examples/18-ibl/fs_ibl_mesh.sc)、[Filament PBR 文档源码](https://github.com/google/filament/blob/main/docs/Filament.md.html)、[bgfx 示例资产许可](https://bkaradzic.github.io/bgfx/license.html)
 
@@ -105,7 +108,7 @@ Port 预览只画四项：已完成 RECLAIMED footprint、整排 sea-facing edge
 
 关键移植门槛：GLSL3改为所锁shaderc的uniform/sampler/varying和矩阵约定；每个依赖pass用有序view，显式声明RT读写/格式与floating-point renderability。当前CPU参考保留上游正指数inverse、centered谱的checkerboard修正与不除N²约定，并用直接2D IDFT核对。禁止换一套FFT归一化后仅靠调波高掩盖错误。世界位置用相机相对float，但谱相位用冻结的全局位置对cascade周期取模，浮动原点不能让波跳动。同步GPU高度回读替换为异步且只供表现；核心不消费非确定波高。
 
-`WaterRenderer`输入：独立权威WATER mask、完成填海更新、同一datum下的平均水位/真实海底高程、可见chunk、风/谱质量profile、日光/IBL、相机与纯表现时间。高程负值不能代替mask；低于海平面的LAND必须保持干燥。上游TMA全局depth和局部浅水衰减不能宣称为真实浅水水动力、河流流动或湖面求解；内陆水域须有单独固定水位profile，不能全套用海平面。默认程序岛生成不进入真实世界。
+`WaterRenderer`输入：独立权威WATER mask、完成填海更新、同一datum下的平均水位/真实海底高程、可见chunk、风/谱质量profile、已提交Light/Darkness的固定主光/IBL、相机与纯表现时间。高程负值不能代替mask；低于海平面的LAND必须保持干燥。上游TMA全局depth和局部浅水衰减不能宣称为真实浅水水动力、河流流动或湖面求解；内陆水域须有单独固定水位profile，不能全套用海平面。默认程序岛生成不进入真实世界。
 
 水体输出只含表现draw/pass；视觉浪、泡沫和船尾迹不改水陆、地形、地基、船导航或材料。不加入侵蚀/潮汐/刷地形玩法。水前scene color/depth按caps处理，禁止读写同一attachment；可选低分辨率反射与水下效果以实际预算决定，基础海岸遮罩必须正确。
 
@@ -159,6 +162,8 @@ GPU 蒙皮按同 mesh/材质/骨架 LOD 批次，姿态 palette 使用受设备�
 
 输入经过唯一 `InputRouter`：UI 焦点/捕获优先 → 当前工具 capture → 临时相机修饰 → 观察默认动作。一旦 pointerDown 开始 stroke/阵线/抓取，记录 capture owner，松键、出窗口、取消时由同一个 owner 清理；切模式终止尚未提交地图stroke，不静默丢弃对象表单。Esc按最上层窗口/地图预览/浏览层处理，脏表单保留或显式选择丢弃。资源模式滚轮调笔刷；显式修饰键才缩放；空格临时平移，中键旋转，但文本框和IME composition优先。所有映射进入配置并在底部状态显示，不在不同 subsystem 各自读键盘。全局工具按[ADR 0006](../decisions/0006-bottom-toolbar-trilingual-editing.md)集中底部分区栏，详见[UI_ARCHITECTURE](UI_ARCHITECTURE.md)。
 
+全部按钮无border/outline/ring外围描边；最新ADR 0009允许纯文字按钮，主菜单必须无图标、集中右下角/右对齐，其他图标仅承担明确功能。禁止不必要的小字，必要信息在对应窗口用正常字号展示；焦点用文字/背景明暗与字重，功能图标保留三语tooltip/accessible name。左上角Sonnreich原创Logo有微弱静态柔光与长短粗细不同的作者放射线，不呼吸旋转；大写SONNHEIDE主标题与留白形成纪念性新古典/金色/未来感构图。主菜单油画暗层/微移/交叠每次仅保留当前和下一画必要纹理，有界decode/upload、按hash去重；坏画保旧画或静态暗底，变更窗口保主体安全区，降低动态关闭持续运动。Logo静态、菜单始终深沉，不消费World Age或为换画创建World。
+
 中文、英文、德文、希腊码、IME composition、粘贴与 UTF-8 名称从切片 A 开始验证。UI locale独立于游戏Language，消息、动态错误、辅助名称和工具提示按同一message key表；德文长文本/逗号小数/ÄÖÜß与中文组合输入分别验收。FreeType 负责字形光栅化；复杂 shaping 可启用 RmlUi 的 HarfBuzz 示例字体引擎并固化适配，不能把“能加载中文字体”误认作已支持中文输入与换行。字体采用可分发 Noto Sans CJK 的指定子集/文件，逐页加载字形 atlas，避免一次栅格化全部 CJK。字号、DPI 与 atlas 页数共同受预算限制。[FreeType 许可](https://freetype.org/license.html)、[Noto CJK 字体许可](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)
 
 检查器遵循统一结构：名称/归属 → 四项核心事实与当前任务 → 三至六个动作 → 可展开细节。可用动作与拒绝原因来自领域查询；UI disabled 不替代后端校验。异步加载未完成时使用自制中性代理；代理不得伪装为建筑最终美术或改变实体位置。
@@ -173,15 +178,17 @@ shader 源码、varying 定义、include 树、材质 schema 都进入 Git；生
 
 首轮 1080p、60 fps（16.7 ms）只是测量目标。先分别记录 CPU 表现/提交、CPU 仿真、GPU 各 pass、p50/p95/p99、显存、上传字节、draw 数、可见对象、完整骨架人数和资源等待时间。不能把 CPU+GPU 时间机械相加，也不能用独立人物走路 benchmark 推断完整文明性能。以 100/1,000/10,000 人的真实任务、城市、港区和交战场景测量后设定设备档。
 
-生产客户端接入需要依次通过：
+生产客户端接入按最新基础优先顺序通过：
 
 1. 三平台窗口/resize/HiDPI/input/minimize/关闭，画面与资源生命周期无崩溃；shader 目标全部可编译。
-2. 一座原创 CitySquare + 原创住屋 + 一个合法人物基体；360°相机、PBR、日光阴影；基本内存稳定。
-3. 天然弯岸 + 单格人工填海 + 正交原创 Port；可行域、预览、网格版本和航路更新一致。
-4. 矿峰后的画笔仍命中原地面点；相机 0/90/180/270°、HiDPI 与多个后端投影/反投影一致；锚定夷平不漂移。
-5. 旗整体世界投影、政治层切换、占领层、国家主题色人物批次、英汉德检查器与中文 IME 可用。
-6. 连续拉远/拉近与跟随时动画/HLOD不闪切，不重置任务；选中对象优先；异步拾取不选择已回收 ID。
-7. 真实负载与长期运行记录，并证明相机/渲染开关不改变权威仿真结果。
+2. 深沉油画/静态公司Logo主菜单、右下角右对齐纯文字/无边框/无不必要小字/三语焦点/降低动态→创建→真实空世界0人0楼、同XYZ比例、固定height/mask与基础静态水面；两个固定环境profile可辨，不称Abyssal FFT已移植。
+3. 相机/底部七分区→Light/Darkness手动/自动→暂停/保存/返回/载入→相同环境余量和天然hash；取消/坏包/坏档/晚结果保旧世界。基础门槛通过后才启动新建筑/成人/衣物制作。
+4. 一座原创 CitySquare + 原创住屋 + 一个合法人物基体；360°相机、PBR、固定主光阴影、真实可用灯具和两个profile；基本内存稳定。
+5. 天然弯岸 + 单格人工填海 + 正交原创 Port/Abyssal原生移植；可行域、预览、网格版本、航路更新和GPU/CPU对照一致。
+6. 矿峰后的画笔仍命中原地面点；相机 0/90/180/270°、HiDPI 与多个后端投影/反投影一致；锚定夷平不漂移。
+7. 旗整体世界投影、政治层切换、占领层、国家主题色人物批次、英汉德检查器与中文 IME 可用。
+8. 连续拉远/拉近与跟随时动画/HLOD不闪切，不重置任务；选中对象优先；异步拾取不选择已回收 ID。
+9. 真实负载与长期运行记录，并证明相机/渲染开关不改变权威仿真结果。
 
 以上门槛完成前可交付可执行 headless 核心、设计及资源约束，但不能声称已交付写实三维客户端。
 

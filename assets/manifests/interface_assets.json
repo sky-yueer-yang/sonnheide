@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "branding": {
+    "source_mode": "user_supplied",
+    "source_filename": "sonnreich_logo_transparent_fullsize.png",
+    "path": "assets/source/ui/branding/sonnreich_logo_transparent_fullsize.png",
+    "bytes": 199469,
+    "sha256": "7c82883b00e5d28eafe4066aa6a8d3d457b9e94ad798aa54680074728d8f414b",
+    "license": null,
+    "rights_note": "User-provided company mark. Authorized project use and repository hosting; no open-source or trademark license granted. Original bytes unchanged."
+  },
+  "fonts": [
+    {
+      "family": "Cinzel",
+      "license": "OFL-1.1",
+      "repository": "https://github.com/google/fonts",
+      "commit": "3dd78844021e948ceb633d1dcee3f7885561b5d9",
+      "upstream_project": "https://github.com/NDISCOVER/Cinzel",
+      "modified": false,
+      "files": [
+        {
+          "path": "assets/source/ui/fonts/Cinzel.ttf",
+          "upstream_path": "ofl/cinzel/Cinzel[wght].ttf",
+          "url": "https://raw.githubusercontent.com/google/fonts/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cinzel/Cinzel%5Bwght%5D.ttf",
+          "bytes": 125468,
+          "sha256": "f4d83d34d1f6c741193e4acf4b3dff9531e5a67b6aa65228d00a7db72a4e0f34"
+        },
+        {
+          "path": "assets/source/ui/fonts/OFL-Cinzel.txt",
+          "upstream_path": "ofl/cinzel/OFL.txt",
+          "url": "https://raw.githubusercontent.com/google/fonts/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cinzel/OFL.txt",
+          "bytes": 4383,
+          "sha256": "f2b3029aba64c378bf0963b62945eee15e564fe4330b934c8f2eb058282b5e83"
+        },
+        {
+          "path": "assets/source/ui/fonts/Cinzel-METADATA.pb",
+          "upstream_path": "ofl/cinzel/METADATA.pb",
+          "url": "https://raw.githubusercontent.com/google/fonts/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cinzel/METADATA.pb",
+          "bytes": 586,
+          "sha256": "86d647e7a48c40db7f73c74883f76638610f305a9007ae50902c1f77ec44e7e5"
+        }
+      ]
+    }
+  ],
+  "scope": "Browser menu typography and brand source assets; native font shaping and Chinese font packaging remain planned."
+}

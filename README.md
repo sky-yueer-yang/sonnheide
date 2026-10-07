@@ -16,6 +16,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |底部分区工具栏、地图窗口与英汉德交互|[最新前端ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)、[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[WorldBox参考](docs/research/WORLDBOX_FRONTEND.md)|
 |初步程序目录、构建目标与单一事实接入|[程序结构](docs/architecture/CLIENT_STRUCTURE.md)|
 |主菜单、创建世界、初始地表、保存载入与失败恢复|[最新顺序ADR 0007](docs/decisions/0007-foundation-experience-first.md)、[应用流程](docs/architecture/APPLICATION_FLOW.md)|
+|油画艺术主菜单、极简无框交互、光暗纪元|[最新视觉ADR 0009](docs/decisions/0009-monumental-minimal-interface.md)、[光暗ADR 0008](docs/decisions/0008-sacred-interface-and-light-ages.md)、[视觉合同](docs/architecture/VISUAL_STYLE.md)、[Light/Darkness规则](docs/architecture/LIGHT_AGES.md)|
 |40类字段编辑、人物六轴、国家宗教与35法族|[编辑矩阵](docs/architecture/EDITING.md)、[机器合同](data/interaction_schema.json)|
 |材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
 |真实高程、长方体地基、人/车入口与邻楼保护|[最新变更ADR 0003](docs/decisions/0003-terrain-and-site-access.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
@@ -36,9 +37,11 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 
 本轮新增[集中交互ADR 0005](docs/decisions/0005-unified-inspectors-and-world-tools.md)、[全域信息/编辑合同](docs/architecture/INTERACTION.md)与[40种页面registry](data/interaction_schema.json)。[可点击信息页原型](tools/previews/world-inspector.html)可直接在浏览器离线打开：近景人物→国籍国家→城市/企业/语言等关联页面；远景点国家区域；世界统计/比较、规则、收藏/标记、分类清理、18岁玩家放置与0岁繁衍演示。原型使用明确标注的示例数据，不是可玩的3D世界或生产RmlUi客户端。
 
-前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。最新[ADR 0007](docs/decisions/0007-foundation-experience-first.md)把[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)重排为先主菜单、创建世界、真实初始地表、基础界面和存档往返，通过原生空世界门槛后才开始建筑/人物服装制作。主菜单与创建流程现为设计合同，尚未实现；不先创建空目录。
+前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。最新[ADR 0007](docs/decisions/0007-foundation-experience-first.md)把[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)重排为先主菜单、创建世界、真实初始地表、基础界面和存档往返，通过原生空世界门槛后才开始建筑/人物服装制作。原生主菜单与创建流程仍待实现；浏览器主菜单已可审阅，不先创建空目录。
 
 独立C++ `sonnheide_interaction` oracle验证人口来源、全龄同BodySpec、typed引用/档案、单写者原子命令、世界规则、去重统计及清理保护；它尚未连接kernel、服装Ledger、完整法务/交通或生产存档。所有新增人物只允许玩家亲自放置（固定18岁）或合法繁衍（0岁）；年龄不生成儿童体型。
+
+最新可审阅[油画主菜单原型](tools/previews/main-menu.html)使用用户提供的五幅JPEG：低亮、极慢微移与交叠切换。左上使用原始Sonnreich标志、静态微光与细放射线，大写SONNHEIDE使用本地Cinzel字体；纯文字菜单在右下右对齐，语言与画控收进设置。新增硬约束：绝不添加无必要小字，文字按钮不再强制icon，所有按钮仍无框。世界信息页同步克制深色主题，并在环境窗口说明Light/Darkness呈现演示的范围。正式世界只采用Age of Light与Age of Darkness，支持自动交替和手动切换，不做天体昼夜；日历/人物年龄仍按原合同推进。这些浏览器呈现不代表原生新建/存载或权威光暗状态已实现。
 
 - C++20 headless 内核：只读天然底图、整数施工材料预约、分步劳动、取消、完工永久造陆、道路与正交港口几何、泊位保护、导航版本失效与全图连通正确性基准。
 - 命令 ID 去重、负载/授权冲突拒绝、预览修订检查；世界与回执在同一屏障提交；存档重载检查空间、材料、身份、回执及历史约束。
@@ -87,7 +90,7 @@ headless 演示会施工两格人工陆地、建一个港口、验证天然底�
 
 ## 当前实现不能直接作为生产规模方案
 
-信息页前端行为验收可运行 `node tools/validate_interaction_preview.js`；没有PATH中的Node时可用`SONNHEIDE_NODE`指定已有运行时再执行`python3 tools/build.py`。Node仅用于原型JavaScript验证，无npm包或生产引擎依赖。收藏、导航与地图marker属于PlayerView，不改变世界事务revision。40种有内容的示例页面不代表40个领域业务已实现；程序性编辑的生产法务命令仍须按各域实现。
+信息页前端行为验收可运行 `node tools/validate_interaction_preview.js`；没有PATH中的Node时可用`SONNHEIDE_NODE`指定已有运行时再执行`python3 tools/build.py`。主菜单图片/呈现回归另运行`node tools/validate_menu_preview.js`与`node tools/validate_world_inspector.js`。Node仅用于原型JavaScript验证，无npm包或生产引擎依赖。收藏、导航与地图marker属于PlayerView，不改变世界事务revision。40种有内容的示例页面不代表40个领域业务已实现；程序性编辑的生产法务命令仍须按各域实现。
 
 内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
 

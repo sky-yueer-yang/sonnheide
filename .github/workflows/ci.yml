@@ -40,7 +40,10 @@ jobs:
       - name: Configure
         run: cmake -S . -B .build/ci -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DBUILD_TESTING=ON
       - name: Validate offline inspector interactions
-        run: node tools/validate_interaction_preview.js
+        run: |
+          node tools/validate_interaction_preview.js
+          node tools/validate_world_inspector.js
+          node tools/validate_menu_preview.js
       - name: Build
         run: cmake --build .build/ci --config ${{ matrix.config }} --parallel 2
       - name: Test
@@ -56,7 +59,10 @@ jobs:
       - name: Configure
         run: cmake -S . -B .build/sanitizers -DCMAKE_BUILD_TYPE=Debug -DSONNHEIDE_SANITIZERS=ON
       - name: Validate offline inspector interactions
-        run: node tools/validate_interaction_preview.js
+        run: |
+          node tools/validate_interaction_preview.js
+          node tools/validate_world_inspector.js
+          node tools/validate_menu_preview.js
       - name: Build
         run: cmake --build .build/sanitizers --parallel 2
       - name: Test

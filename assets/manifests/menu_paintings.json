@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "status": "local_browser_presentation_assets_not_native_integration",
+  "source_mode": "user_supplied",
+  "source_directory_label": "Downloads/油画",
+  "permission_basis": "User explicitly requested these paintings for the Sonnheide menu; existing project instruction hosts necessary source files on GitHub.",
+  "license": null,
+  "attribution": "No artist or third-party license asserted from filenames.",
+  "processing": "Original JPEG bytes copied unchanged. Darkness, cropping, movement and crossfade are runtime presentation.",
+  "recipe_tool": "tools/import_menu_paintings.py",
+  "paintings": [
+    {
+      "id": "painting-01",
+      "path": "assets/source/ui/paintings/painting-01.jpg",
+      "original_filename": "ChatGPT Image Oct 6, 2026, 11_51_13 PM.jpg",
+      "bytes": 612018,
+      "sha256": "37b76a31b72f2e6e3218b16466caad37f12053bd94d7950744d5c5f23fb96950",
+      "size_px": [
+        1500,
+        1000
+      ]
+    },
+    {
+      "id": "painting-02",
+      "path": "assets/source/ui/paintings/painting-02.jpg",
+      "original_filename": "ChatGPT Image Oct 6, 2026, 11_51_17 PM.jpg",
+      "bytes": 732253,
+      "sha256": "9d6512a72c08fb1ebe955e47d4796c83cc8e225cfa3e2b5e83d308f1fdd3395e",
+      "size_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "painting-03",
+      "path": "assets/source/ui/paintings/painting-03.jpg",
+      "original_filename": "ChatGPT Image Oct 6, 2026, 11_51_22 PM.jpg",
+      "bytes": 601150,
+      "sha256": "e5a310a7d5b081e014dedb5e8dc1d5846a603c11086f728717e1c36103345688",
+      "size_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "painting-04",
+      "path": "assets/source/ui/paintings/painting-04.jpg",
+      "original_filename": "ChatGPT Image Oct 6, 2026, 11_51_26 PM.jpg",
+      "bytes": 682042,
+      "sha256": "97d3fba0b8d2623e5fcc4eddb2482728f505315d1e1f6b64f20188f63dc148b1",
+      "size_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "painting-05",
+      "path": "assets/source/ui/paintings/painting-05.jpg",
+      "original_filename": "ChatGPT Image Oct 6, 2026, 11_51_30 PM.jpg",
+      "bytes": 589793,
+      "sha256": "8f2f9aa10aeeff51a222ffe5536bb375537cbd21cd0cf5e5bd2b42f9408c0649",
+      "size_px": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}
