@@ -17,7 +17,7 @@
 
 新增生产目录只在有功能时创建。后续依次新增platform、renderer、content-cooker、people等；不是先写一百个空hpp。
 
-最新初步程序结构见[CLIENT_STRUCTURE](CLIENT_STRUCTURE.md)，完整施工顺序见[IMPLEMENTATION_PLAN](../planning/IMPLEMENTATION_PLAN.md)；原创建筑/人物/服装/UI美术与平台/权威World接入并行起步。底部分区栏、英汉德消息与富编辑分别按[UI_ARCHITECTURE](UI_ARCHITECTURE.md)及[EDITING](EDITING.md)。当前项目JSON/HTML本地化镜像由Python标准库校验，实际原型行为由可选Node内建模块验证；Node不是发行游戏运行时依赖。
+最新初步程序结构见[CLIENT_STRUCTURE](CLIENT_STRUCTURE.md)，完整施工顺序见[IMPLEMENTATION_PLAN](../planning/IMPLEMENTATION_PLAN.md)。按[ADR 0007](../decisions/0007-foundation-experience-first.md)先完成[主菜单/创建与存档流程](APPLICATION_FLOW.md)、真实初始地表和基础游戏界面，原生空世界验收通过后才开始新建筑/人物/服装制作。基础UI/地表所需视觉与平台并行；前期其余资产仅准备合同/许可。底部分区栏、英汉德消息与富编辑分别按[UI_ARCHITECTURE](UI_ARCHITECTURE.md)及[EDITING](EDITING.md)。当前项目JSON/HTML本地化镜像由Python标准库校验，实际原型行为由可选Node内建模块验证；Node不是发行游戏运行时依赖。
 
 ## 2. 构建与依赖
 

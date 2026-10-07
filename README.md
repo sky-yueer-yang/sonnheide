@@ -15,6 +15,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
 |底部分区工具栏、地图窗口与英汉德交互|[最新前端ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)、[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[WorldBox参考](docs/research/WORLDBOX_FRONTEND.md)|
 |初步程序目录、构建目标与单一事实接入|[程序结构](docs/architecture/CLIENT_STRUCTURE.md)|
+|主菜单、创建世界、初始地表、保存载入与失败恢复|[最新顺序ADR 0007](docs/decisions/0007-foundation-experience-first.md)、[应用流程](docs/architecture/APPLICATION_FLOW.md)|
 |40类字段编辑、人物六轴、国家宗教与35法族|[编辑矩阵](docs/architecture/EDITING.md)、[机器合同](data/interaction_schema.json)|
 |材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
 |真实高程、长方体地基、人/车入口与邻楼保护|[最新变更ADR 0003](docs/decisions/0003-terrain-and-site-access.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
@@ -27,7 +28,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |人物/动作/植物/水体/材质/地理资源及许可证|[资产来源](docs/research/ASSET_SOURCES.md)|
 |构建、GitHub/LFS/Releases、协作与交付|[工程运维](docs/architecture/ENGINEERING.md)|
 |切片顺序、必须先验证的实验与通过标准|[开发路线](docs/planning/ROADMAP.md)|
-|10阶段完整施工，建筑和美术在前两阶段启动|[完整施工计划](docs/planning/IMPLEMENTATION_PLAN.md)|
+|11阶段完整施工，先基础体验再建筑与玩法资产|[完整施工计划](docs/planning/IMPLEMENTATION_PLAN.md)|
 |工程风险、决策与当前验证边界|[风险清单](docs/planning/RISKS.md)、[架构决策](docs/decisions/0001-foundation.md)、[验证记录](docs/planning/VALIDATION.md)|
 |原始游戏规则，逐字保留与SHA-256来源|[设计基线v0.6](docs/design/Sonnheide_Complete_Design_v0.6.md)、[来源清单](data/catalogs/design_source.json)|
 
@@ -35,7 +36,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 
 本轮新增[集中交互ADR 0005](docs/decisions/0005-unified-inspectors-and-world-tools.md)、[全域信息/编辑合同](docs/architecture/INTERACTION.md)与[40种页面registry](data/interaction_schema.json)。[可点击信息页原型](tools/previews/world-inspector.html)可直接在浏览器离线打开：近景人物→国籍国家→城市/企业/语言等关联页面；远景点国家区域；世界统计/比较、规则、收藏/标记、分类清理、18岁玩家放置与0岁繁衍演示。原型使用明确标注的示例数据，不是可玩的3D世界或生产RmlUi客户端。
 
-本轮前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。[初步程序结构](docs/architecture/CLIENT_STRUCTURE.md)和[10阶段施工计划](docs/planning/IMPLEMENTATION_PLAN.md)将原创建筑、成年人物/服装及UI美术提前，不先创建空目录。
+前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。最新[ADR 0007](docs/decisions/0007-foundation-experience-first.md)把[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)重排为先主菜单、创建世界、真实初始地表、基础界面和存档往返，通过原生空世界门槛后才开始建筑/人物服装制作。主菜单与创建流程现为设计合同，尚未实现；不先创建空目录。
 
 独立C++ `sonnheide_interaction` oracle验证人口来源、全龄同BodySpec、typed引用/档案、单写者原子命令、世界规则、去重统计及清理保护；它尚未连接kernel、服装Ledger、完整法务/交通或生产存档。所有新增人物只允许玩家亲自放置（固定18岁）或合法繁衍（0岁）；年龄不生成儿童体型。
 
@@ -90,4 +91,4 @@ headless 演示会施工两格人工陆地、建一个港口、验证天然底�
 
 内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
 
-SDL3、bgfx、ozz、RmlUi仍未集成；MakeHuman正式路线已保留选定源件，游戏角色输出未完成。仓库没有为了增加文件数量创建空的渲染器或社会系统。下一步进入[A1平台与写实客户端实验](docs/planning/ROADMAP.md)，并将服装oracle接入共享库存/劳动/物流/知识/存档，按贯穿切片实现全部设计。
+SDL3、bgfx、ozz、RmlUi仍未集成；MakeHuman正式路线已保留选定源件，游戏角色输出未完成。仓库没有为了增加文件数量创建空的渲染器或社会系统。下一步按[新路线](docs/planning/ROADMAP.md)做原生启动/主菜单、创建与初始地表、基础游戏界面和保存载入；建筑及服装接入在此门槛以后，随后按真实贯穿切片完成其余设计。
