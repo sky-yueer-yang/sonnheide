@@ -1,6 +1,6 @@
 # 原生主页面：来源、发行与接口独立审查
 
-审查日期：2026-10-07。这里记录实取文件、固定源版本和已验证边界；原生程序的整体编译、视觉和交互结果由主集成记录提供。SDL、bgfx、FreeType、RmlUi 是分别负责窗口、GPU、字体和原生界面的库，没有引入游戏引擎或网页容器。当前平台实现使用 macOS 系统 ImageIO 解码原始 PNG/JPEG，不再引入第三方图片解码器。
+审查日期：2026-10-07。这里记录实取文件、固定源版本和已验证边界；原生程序的整体编译、视觉和交互结果由主集成记录提供。SDL、bgfx、FreeType、RmlUi 是分别负责窗口、GPU、字体和原生界面的库，没有引入游戏引擎或网页容器。macOS 使用系统 ImageIO，Windows 使用已固定 bimg 中的 STB JPEG/LodePNG PNG 解码器；Windows 不启用 AVIF/WIC。所需原始第三方许可随源码保留。
 
 ## 来源与许可证
 
@@ -67,7 +67,7 @@ python3 assets/source/ui/fonts/noto-serif-cjk-sc/verify_font.py
 
 ### 逻辑坐标、真实像素与输入
 
-窗口尺寸和 framebuffer 像素尺寸分开，SDL 事件坐标仍为窗口坐标。当前方案以逻辑坐标排版 RmlUi、投影使用逻辑尺寸，bgfx backbuffer/view rect 使用真实像素尺寸，scissor 用独立 X/Y 比率映射一次。不要同时缩放鼠标、UI 和投影导致双倍坐标；显示器比例也不能固定为 2。缩放/全屏/跨屏后重取两个尺寸，零像素窗口暂停提交。[SDL HiDPI 说明](https://wiki.libsdl.org/SDL3/README-highdpi)
+窗口尺寸和 framebuffer 像素尺寸分开，SDL 事件坐标仍为窗口坐标。实际Retina检查后，当前方案使用bgfx view0逻辑坐标绘背景/标志，view1物理像素投影绘RmlUi；Rml Context使用物理尺寸和dp ratio，RCSS用dp长度，18dp字形在2倍密度时按36px真实栅格。鼠标从窗口坐标按density映射一次；UI scissor已经为物理像素，不再重复乘比率。不要同时缩放鼠标、UI 和投影导致双倍坐标；显示器比例也不能固定为 2。缩放/全屏/跨屏后重取两个尺寸，零像素窗口暂停提交。[SDL HiDPI 说明](https://wiki.libsdl.org/SDL3/README-highdpi)
 
 macOS 包需要 `NSHighResolutionCapable` 及高像素密度窗口设置。逻辑 18px 字体放大到 Retina framebuffer 的视觉清晰度，须在实机截图核验；窗口/鼠标/裁剪一致并不自动证明字形已经以最高密度栅格化。
 
@@ -90,3 +90,11 @@ SDL_TEXT_INPUT 的 UTF-8 字符串交给 `ProcessTextInput(String)`；字符输�
 发布之后必须从项目 Release 重新下载每个资产验证 bytes/hash，确认可用后才报告“已托管完成”；已经存在同名资产时校验它，不能默认覆盖。GitHub 的 Release 上传 API 接受二进制资产，工作流可用 `gh release upload`，无需在聊天或本机暴露个人凭证。[官方 Release assets API](https://docs.github.com/en/rest/releases/assets#upload-a-release-asset)
 
 本审查没有自行发布 Release、改 PR 或写入全局依赖记录；发行完成状态由 root 的工作流与回读校验结果提供。原始 OTF 已在本机实际取得，manifest 中的 Release URL 仍不能单凭文字算作已上传。与此不同，Git 中的许可证原文和 provenance 已经具体落地，可供发布前复核。
+
+## 项目托管回读证据（2026-10-07）
+
+源托管工作流37580411171实际成功；项目`native-sources-v1` Release已包含七份原始库归档和原始中文OTF。root随后从每个项目Release下载URL重新读取全部字节，八份文件的长度与SHA-256逐一完全匹配lock/manifest，记录在本机忽略的`.build/project-source-readback.json`。这是实际上传和回读证据，而非只配置了URL。
+
+## Windows 原生接入边界
+
+SDL HWND 交接 Direct3D11，RmlUi 文件接口在 Windows 将 UTF-8 路径转换为 UTF-16 后用 `_wfopen`，MSVC 统一 `/utf-8`。本机用 Windows 同一 bimg 解码代码验证五张原始油画、Logo，以及非对称 2×2 PNG 的顶部行序和 straight alpha；中文路径的 Open/Read/Seek/Tell 实测通过。五张 JPEG 均无需 EXIF 方向变换。四张油画原件内嵌 Display P3 ICC，STB 不做 ICC 转换，因此尚未宣称跨平台颜色严格一致，Windows 显示设备外观仍需实测。原件不改写。

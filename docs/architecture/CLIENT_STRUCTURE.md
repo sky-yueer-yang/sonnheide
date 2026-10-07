@@ -16,10 +16,11 @@
 |`apps/headless/main.cpp`|有限造陆→港口→存档贯穿|生产世界的全域 headless 场景运行器|
 |`data/ui_locales.json`|英汉德统一消息目录与离线镜像校验|完整生产字段/定义文本、字体、IME和原生消息cooker|
 |`tools/previews/world-inspector.html`|浏览器示例状态的可点击交互原型|SDL3/bgfx/RmlUi 原生客户端；原型不嵌入发行游戏，不作为生产事实源|
+|`apps/game/main.cpp`、`platform`、`presentation/native`、`client/native`、`ui/application`|原生主页面/三语设置、窗口/输入/字体/Metal、真实Rml布局与GPU运行|Steam/Windows实机验证、完整IME、生产World创建/存载及地图界面|
 |`tools/previews/main-menu.html`、五幅用户油画|浏览器主菜单/三语设置与环境小场景；固定原字节来源|原生应用状态、真实新建/存载、World环境计时与GPU灯光；按钮不能假成功|
 |`assets/source`、`generated`、`manifests`|3 份原创灰盒、选定 MakeHuman 源件、来源与部分验证|正式建模/材质、统一成人 rig、衣物适配、动作、LOD、完整 pack|
 
-运行时库选择沿用 [开源栈决定](../research/OPEN_SOURCE_STACK.md)：C++20 + SDL3 + bgfx/bx/bimg + RmlUi + FreeType；cgltf/meshoptimizer 优先离线使用；ozz-animation 用于角色动画。它们当前仍未集成。`data/dependencies.json` 是选择清单，不是生产 lock。接入成功后才记录兼容 commit、源归档 SHA-256、编译器/参数、传递依赖、许可文件和实测平台。
+运行时库选择沿用 [开源栈决定](../research/OPEN_SOURCE_STACK.md)：C++20 + SDL3 + bgfx/bx/bimg + RmlUi + FreeType；cgltf/meshoptimizer 优先离线使用；ozz-animation 用于角色动画。SDL3、bgfx/bx/bimg、RmlUi、FreeType已经接入原生主页面；准确版本、原始源归档和许可哈希见`data/native_dependencies.lock.json`。cgltf/meshoptimizer/ozz仍未接入。`data/dependencies.json`保留状态分类，不替代lock。
 
 ## 2. 要先解决的四个工程断点
 
@@ -51,12 +52,12 @@ Sonnheide/
 │     ├─ military/                    planned：Army/补给/战斗/战争/和约
 │     ├─ queries/                     planned：对象页/图谱/统计只读投影
 │     └─ persistence/                 planned：checkpoint/迁移/历史/重放
-├─ platform/                          planned：SDL3 窗口/IME/文件/设备桥
-├─ presentation/                      现有 CPU FFT；其余 planned
+├─ platform/                          现有：SDL3 窗口/事件桥；完整IME planned
+├─ presentation/                      现有 CPU FFT 与 native主菜单GPU桥；世界渲染 planned
 │  ├─ renderer/                       bgfx 资源/通道/PBR/水体/阴影
 │  ├─ scene/                          视觉代理/LOD/HLOD/动画/空间拾取
 │  └─ overlays/                       国家/文化/矿物/施工/军令只读图层
-├─ client/                            planned：玩家交互
+├─ client/                            现有 native主菜单；领域交互 planned
 │  ├─ application/                    主菜单/应用状态/创建草稿/存档选择/世界交接
 │  ├─ shell/                          底部 section 工具栏/窗口宿主/通知/时钟
 │  ├─ tools/                          工具会话/选择/放置/笔刷/军令/清理预览
@@ -67,13 +68,13 @@ Sonnheide/
 │  └─ bridges/                        RmlUi ↔ SDL3/bgfx；快照 binding
 ├─ apps/
 │  ├─ headless/                       现有；以后增加真实贯穿场景参数
-│  └─ game/                           planned：生命周期/候选发布/装配与有序关闭
+│  └─ game/                           现有原生入口/有序关闭；候选World发布 planned
 ├─ assets/
 │  ├─ source/                         作者源与可分发原始源；大文件 LFS
 │  │  ├─ buildings/                   全原创楼体/构件/地基/道路/港口
 │  │  ├─ characters/                  planned：统一成人规格、变体/衣物
 │  │  ├─ animations/                  planned：rig/重定向/源动作
-│  │  ├─ ui/                          partial：油画/企业标志/Cinzel源与许可；native UI planned
+│  │  ├─ ui/                          现有油画/标志/Cinzel/Noto原件与许可；native RML/RCSS已接
 │  │  └─ materials/                   planned：自制及逐项准入表面素材
 │  ├─ generated/                     有意义 fixtures 与派生产物
 │  └─ manifests/                     原文件/许可/配方/hash/几何/LOD
@@ -82,7 +83,7 @@ Sonnheide/
 │  ├─ interaction_schema.json         现有：40 类型、关系/编辑合同
 │  ├─ localization/                   planned：en/zh/de 消息目录
 │  └─ geo/                            现有 ETOPO 窗口；完整 EarthPack planned
-├─ ui/                               planned：RML/RCSS 与原创图标引用
+├─ ui/                               现有 application主菜单RML/RCSS；游戏地图页 planned
 │  ├─ application/                    主页面/创建/进度/存档/恢复/三语设置
 │  ├─ shell/                          section 栏、工具带、窗口、toast
 │  ├─ inspectors/                     类型专属页面模板

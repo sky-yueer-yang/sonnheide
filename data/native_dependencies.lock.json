@@ -185,6 +185,33 @@
           "upstream_path": "LICENSE",
           "project_path": "third_party/native/bimg/LICENSE",
           "sha256": "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"
+        },
+        {
+          "upstream_path": "3rdparty/stb/LICENSE",
+          "project_path": "third_party/native/bimg/3rdparty/stb/LICENSE",
+          "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63"
+        },
+        {
+          "upstream_path": "3rdparty/lodepng/LICENSE",
+          "project_path": "third_party/native/bimg/3rdparty/lodepng/LICENSE",
+          "sha256": "bdafa318b8e637d600ca1b60545e894881977a16a16b74809c95e805701621e3"
+        },
+        {
+          "upstream_path": "3rdparty/lodepng/lodepng.h",
+          "project_path": "third_party/native/bimg/3rdparty/lodepng/lodepng.h.NOTICE.txt",
+          "sha256": "7543967b5cc3fe997d1b7edbb43604e0ca54bb4c2550ff3321834748df0ba081",
+          "selection": "unmodified leading copyright/license comment; full source retained in project Release archive"
+        },
+        {
+          "upstream_path": "3rdparty/lodepng/lodepng.cpp",
+          "project_path": "third_party/native/bimg/3rdparty/lodepng/lodepng.cpp.NOTICE.txt",
+          "sha256": "7543967b5cc3fe997d1b7edbb43604e0ca54bb4c2550ff3321834748df0ba081",
+          "selection": "unmodified leading copyright/license comment; full source retained in project Release archive"
+        },
+        {
+          "upstream_path": "3rdparty/astc-encoder/LICENSE.txt",
+          "project_path": "third_party/native/bimg/3rdparty/astc-encoder/LICENSE.txt",
+          "sha256": "494accc32e50eb523a0e384d0ae6d4b702db867a89d6971216760e92b240ee12"
         }
       ],
       "license_identifier": "BSD-2-Clause"
@@ -203,7 +230,21 @@
       "redistribution": "build tool cached locally; not linked into application"
     }
   ],
-  "architecture_reason": "Independent libraries only: SDL owns window/input; bgfx owns Metal device and draw submission; RmlUi parses local native RML/RCSS and emits triangles; FreeType rasterizes font glyphs; ImageIO decodes JPEG/PNG. No browser and no game engine.",
-  "image_decoder": "Apple system ImageIO; no redistributed image-decoding package",
-  "shader_source": "Pinned bgfx examples/common/debugdraw/vs_debugdraw_fill_texture.bin.h and examples/common/imgui/fs_ocornut_imgui.bin.h; original BSD notices retained in bgfx source archive"
+  "architecture_reason": "Independent libraries only: SDL owns native window/input; bgfx owns Direct3D11 on Windows or Metal on macOS; RmlUi parses local native RML/RCSS and emits triangles; FreeType rasterizes font glyphs. No browser and no game engine.",
+  "image_decoder": "Windows: pinned bimg_decode limited to JPEG/PNG with stb_image and lodepng; macOS: retained system ImageIO. Runtime decoders do not alter source asset bytes.",
+  "shader_source": "Pinned bgfx examples/common/debugdraw/vs_debugdraw_fill_texture.bin.h and examples/common/imgui/fs_ocornut_imgui.bin.h; original BSD notices retained in bgfx source archive",
+  "bimg_decoder_configuration": {
+    "BIMG_CONFIG_PARSE_ENABLE": 0,
+    "BIMG_CONFIG_PARSE_JPEG": 1,
+    "BIMG_CONFIG_PARSE_PNG": 1,
+    "BIMG_CONFIG_USE_STB_IMAGE": 1,
+    "BIMG_CONFIG_USE_WIC": 0,
+    "excluded_sources": [
+      "3rdparty/dav1d/dav1d-amalgamated.c",
+      "3rdparty/dav1d/dav1d-bitdepth-8.c",
+      "3rdparty/dav1d/dav1d-bitdepth-16.c",
+      "3rdparty/libavif/libavif-amalgamated.c"
+    ],
+    "source_archives_modified": false
+  }
 }

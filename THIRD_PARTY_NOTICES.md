@@ -28,8 +28,14 @@
 
 - Copyright 2020 The Cinzel Project Authors（[作者项目](https://github.com/NDISCOVER/Cinzel)）。准确源来自[Google Fonts固定commit](https://github.com/google/fonts/tree/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cinzel)，未改字体字节；本地文件名为`Cinzel.ttf`。
 - SIL Open Font License 1.1：[完整OFL](assets/source/ui/fonts/OFL-Cinzel.txt)。字体、许可、上游metadata的准确URL、字节数与SHA-256见[界面源件清单](assets/manifests/interface_assets.json)。随项目分发时保留作者通知与OFL；不单独出售字体，不变更字体许可。
-- 当前用于浏览器主菜单，本地加载；中文使用系统宋体回退，未打包或声称已许可完整中文字库。原生字体整形尚未接入。
+- Cinzel同时用于浏览器与原生主菜单。原生中文加载独立核验的Noto Serif CJK SC Regular；浏览器仍保留其原有系统回退。
 
 用户提供的公司标志与五幅油画分别见[标志通知](assets/source/ui/branding/NOTICES.md)和[油画通知](assets/source/ui/paintings/NOTICES.md)，不因托管或第三方字体许可获得开放授权。
 
 其他依赖与资产处于选择/准入研究阶段，见[依赖状态](data/dependencies.json)。实际下载之前不得列入已集成分发清单。
+
+## 原生主页面依赖与中文字体
+
+SDL 3.2.28 / RmlUi 5.1 / bgfx、bx、bimg / bgfx.cmake / FreeType 2.13.3 的准确提交、源归档与每项notice哈希见[原生锁](data/native_dependencies.lock.json)。完整发行通知见[Native NOTICES](third_party/native/NOTICES.md)，其中包含FreeType Team credit、FTL及独立模块许可、SDL附属模块、Apple metal-cpp Apache-2.0；源归档原文不修改。
+
+Noto Serif CJK SC Regular Version2.003来自固定notofonts/noto-cjk提交，原始24,543,080字节；[OFL原文](assets/source/ui/fonts/noto-serif-cjk-sc/OFL.txt)、[作者通知](assets/source/ui/fonts/noto-serif-cjk-sc/NOTICE.md)、[源件清单](assets/manifests/native_fonts.json)独立保存。其原始二进制与七份库源码归档使用项目`native-sources-v1` Release托管并逐项验hash；不把第三方许可授给原创游戏内容。

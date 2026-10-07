@@ -6,6 +6,6 @@ FreeType is used under the FreeType License (FTL), rather than the alternate GPL
 
 The application includes the unmodified notices in this directory. Each verified dependency archive in the project `native-sources-v1` GitHub Release retains all its original source notices, including optional components not linked into this client. Archive URLs, commits, sizes and SHA-256 hashes are locked in `data/native_dependencies.lock.json`.
 
-JPEG/PNG decoding uses the macOS system ImageIO framework. No Apple framework binaries or developer tools are redistributed. The local CMake compiler-driver cache is development tooling and is not packaged inside the application.
+Windows JPEG/PNG decoding uses the already pinned bimg source archive, with stb_image under the MIT alternative and lodepng under its Zlib license. Only JPEG/PNG parsers are enabled; AVIF, EXR, WebP and SVG decoding are excluded. The bimg base library also includes astc-encoder under Apache-2.0. These original notices and lodepng source copyright/license headers are retained under `bimg/3rdparty/`. The macOS backend retains system ImageIO. No Apple framework binaries or developer tools are redistributed. The local CMake compiler-driver cache is development tooling and is not packaged inside the application.
 
 Company branding, original compass geometry and supplied paintings are separate project assets and receive no open-content license from these notices.

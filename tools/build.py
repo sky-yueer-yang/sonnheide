@@ -34,7 +34,13 @@ def main():
     subprocess.run([compiler, *flags, "-pthread", str(ROOT / "engine/src/interaction.cpp"),
                     str(ROOT / "tests/interaction_tests.cpp"), "-o", str(interaction)], check=True, cwd=ROOT)
     subprocess.run([str(interaction)], check=True, cwd=ROOT)
+    menu = out / "sonnheide_native_menu_tests"
+    subprocess.run([compiler, *flags, "-I" + str(ROOT / "client/native"),
+                    str(ROOT / "client/native/menu_model.cpp"), str(ROOT / "tests/native_menu_tests.cpp"),
+                    "-o", str(menu)], check=True, cwd=ROOT)
+    subprocess.run([str(menu)], check=True, cwd=ROOT)
     subprocess.run([shutil.which("python3") or "python3", str(ROOT / "tools/validate_project.py")], check=True, cwd=ROOT)
+    subprocess.run([shutil.which("python3") or "python3", str(ROOT / "tools/validate_native.py")], check=True, cwd=ROOT)
     node = os.environ.get("SONNHEIDE_NODE") or shutil.which("node")
     if node:
         for validator in ("validate_interaction_preview.js", "validate_world_inspector.js", "validate_menu_preview.js"):

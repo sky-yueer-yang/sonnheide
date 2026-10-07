@@ -1,0 +1,38 @@
+<rml>
+<head><title>SONNHEIDE</title><link type="text/rcss" href="main-menu.rcss"/></head>
+<body>
+<div id="menu-group">
+<h1 id="main-title">SONNHEIDE</h1>
+<nav>
+<button id="action-new"><span id="text-new">创建世界</span></button>
+<button id="action-continue" disabled><span id="text-continue">继续</span></button>
+<button id="action-load"><span id="text-load">载入世界</span></button>
+<button id="action-settings"><span id="text-settings">设置</span></button>
+<button id="action-quit"><span id="text-quit">退出</span></button>
+</nav>
+</div>
+<div id="overlay">
+<div id="dialog">
+<section id="new-panel">
+<h2 id="title-new">创建世界</h2>
+<p id="text-newbody"></p><p id="text-newdetail"></p>
+</section>
+<section id="load-panel">
+<h2 id="title-load">载入世界</h2>
+<p id="text-loadbody"></p><p id="text-loaddetail"></p>
+</section>
+<section id="settings-panel">
+<h2 id="title-settings">设置</h2>
+<h3 id="text-language">语言</h3>
+<div class="choices"><button id="action-zh">简体中文</button><button id="action-en">English</button><button id="action-de">Deutsch</button></div>
+<h3 id="text-motion">油画动画</h3>
+<div class="choices"><button id="action-normal"><span id="text-normal"></span></button><button id="action-reduced"><span id="text-reduce"></span></button></div>
+<div class="choices"><button id="action-previous"><span id="text-previous"></span></button><button id="action-pause"><span id="text-pause"></span></button><button id="action-play"><span id="text-play"></span></button><button id="action-next"><span id="text-next"></span></button></div>
+<div class="choices"><button id="action-full"><span id="text-full"></span></button><button id="action-window"><span id="text-window"></span></button></div>
+<p id="text-preferror"></p>
+</section>
+<div class="actions"><button id="action-back"><span id="text-back">返回</span></button></div>
+</div>
+</div>
+</body>
+</rml>

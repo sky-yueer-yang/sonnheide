@@ -2,7 +2,7 @@
 
 Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采用游戏引擎；仿真、工程框架与客户端由我们搭建，所有建筑几何与外观由我们制作。** 独立开源库承担窗口、GPU、动画、字体和资产处理；第三方人物、动作、纹理、植物及地理数据按具体文件许可证复用。
 
-本仓库托管初步工程设计与一段可编译的 C++20 内核，**尚不是可游玩的完整游戏**。GitHub：[sky-yueer-yang/sonnheide](https://github.com/sky-yueer-yang/sonnheide)。当前仓库原本即为公开仓库；托管不自动授予原创代码、美术或设计开放许可，见 [原创与第三方权利策略](OWNERSHIP.md)。
+本仓库托管初步工程设计、C++20 有限内核和可运行的原生主页面，**尚不是可游玩的完整游戏**。GitHub：[sky-yueer-yang/sonnheide](https://github.com/sky-yueer-yang/sonnheide)。当前仓库原本即为公开仓库；托管不自动授予原创代码、美术或设计开放许可，见 [原创与第三方权利策略](OWNERSHIP.md)。
 
 ## 从这里阅读
 
@@ -37,7 +37,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 
 本轮新增[集中交互ADR 0005](docs/decisions/0005-unified-inspectors-and-world-tools.md)、[全域信息/编辑合同](docs/architecture/INTERACTION.md)与[40种页面registry](data/interaction_schema.json)。[可点击信息页原型](tools/previews/world-inspector.html)可直接在浏览器离线打开：近景人物→国籍国家→城市/企业/语言等关联页面；远景点国家区域；世界统计/比较、规则、收藏/标记、分类清理、18岁玩家放置与0岁繁衍演示。原型使用明确标注的示例数据，不是可玩的3D世界或生产RmlUi客户端。
 
-前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。最新[ADR 0007](docs/decisions/0007-foundation-experience-first.md)把[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)重排为先主菜单、创建世界、真实初始地表、基础界面和存档往返，通过原生空世界门槛后才开始建筑/人物服装制作。原生主菜单与创建流程仍待实现；浏览器主菜单已可审阅，不先创建空目录。
+前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。最新[ADR 0007](docs/decisions/0007-foundation-experience-first.md)把[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)重排为先主菜单、创建世界、真实初始地表、基础界面和存档往返，通过原生空世界门槛后才开始建筑/人物服装制作。原生主菜单和设置已经接入 SDL3/bgfx/RmlUi；创建和载入入口显示真实的缺源/无存档状态，尚未创建生产世界。
 
 独立C++ `sonnheide_interaction` oracle验证人口来源、全龄同BodySpec、typed引用/档案、单写者原子命令、世界规则、去重统计及清理保护；它尚未连接kernel、服装Ledger、完整法务/交通或生产存档。所有新增人物只允许玩家亲自放置（固定18岁）或合法繁衍（0岁）；年龄不生成儿童体型。
 
@@ -56,6 +56,18 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 - 独立C++服装经济oracle：真实投入/劳时、工资、资金托管、预约/交付、两槽有界衣橱、整数穿用损耗/有限修补与购买需求。公司正装规范只提高购买优先级，无正装仍能工作并获得正常工资；具体已执行场景与长期循环范围见[验证记录](docs/planning/VALIDATION.md)。
 
 建筑施工的新设计为：小人实际把材料送到前侧接货区，到齐后建筑自动推进工期；无人物砌筑动作。原创长方体铁丝网约3秒逐层围起，中段完全包围，完工后约3秒反向拆去。已有[可播放视觉预览](tools/previews/building-construction.html)和参数示例，生产建筑/物流与GPU动画尚未实现；填海仍沿用真实材料和劳动规则。
+
+## 运行原生主页面
+
+发行目标为 **Steam**。当前已在开发设备上验证 macOS/Metal 原生窗口，不涉及 Mac App Store；Windows 图形端与 Steam 发行打包尚未完成。程序没有浏览器、JavaScript或游戏引擎运行时。
+
+```sh
+python3 tools/build_native.py --run
+```
+
+脚本从本项目固定 Release 恢复七套准确源归档与原始中文字体，逐项验 SHA-256；编译缓存、工具缓存和可执行文件都在忽略的 `.build`。首次来源包发布前可显式加 `--allow-upstream` 从固定官方来源 bootstrap；已有缓存可以 `--offline`。仅本机缺 CMake 时恢复官方校验过的便携工具。资源随程序打包，偏好写入用户目录。当前原生菜单有中文、English、Deutsch、油画交叠/极慢微移/微放大、原始Logo与原创圆环射线、全屏/窗口、降低动态、键盘焦点/返回/退出。无有效地形包时创建入口明确不可用，无存档时继续不可用。
+
+生产入口为 [apps/game/main.cpp](apps/game/main.cpp)，平台/渲染桥为 [platform](platform) 与 [presentation/native](presentation/native)，菜单行为为 [client/native](client/native)，原生界面为 [ui/application](ui/application)。来源与许可见 [锁](data/native_dependencies.lock.json)、[字体清单](assets/manifests/native_fonts.json)和[独立审查](docs/research/NATIVE_SOURCE_AUDIT.md)。真实地表、生产世界、地图底栏、世界保存载入和原生水体仍须按后续阶段接入。
 
 ## 运行现有切片
 
@@ -94,4 +106,4 @@ headless 演示会施工两格人工陆地、建一个港口、验证天然底�
 
 内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
 
-SDL3、bgfx、ozz、RmlUi仍未集成；MakeHuman正式路线已保留选定源件，游戏角色输出未完成。仓库没有为了增加文件数量创建空的渲染器或社会系统。下一步按[新路线](docs/planning/ROADMAP.md)做原生启动/主菜单、创建与初始地表、基础游戏界面和保存载入；建筑及服装接入在此门槛以后，随后按真实贯穿切片完成其余设计。
+SDL3、bgfx/bx/bimg、RmlUi与FreeType已接入原生主页面；ozz未接入；MakeHuman正式路线已保留选定源件，游戏角色输出未完成。仓库没有为了增加文件数量创建空的渲染器或社会系统。用户当前要求仅完成原生接入，暂缓真实区域地理包和创建世界实现。后续仍按[新路线](docs/planning/ROADMAP.md)施工；建筑及服装接入在此门槛以后，随后按真实贯穿切片完成其余设计。

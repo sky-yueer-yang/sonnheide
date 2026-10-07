@@ -21,9 +21,9 @@
 
 ## 2. 构建与依赖
 
-当前仅C++标准库/Python标准库，所以无需联网获取依赖即可编译已有切片。Python3.9+兼容；CMake3.24+、C++20编译器。CMake负责生产构建图，`tools/build.py`提供当前macOS/Linux编译器回退，Windows用MSVC/CMake。[CMake官方Preset规范](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
+无窗口的核心切片仍仅需C++标准库/Python标准库。原生主页面使用可选SDL3、bgfx/bx/bimg、RmlUi和FreeType，准确提交、原始归档/许可哈希与构建工具见`data/native_dependencies.lock.json`；窗口/GPU不进入kernel链接图。Python3.9+兼容；CMake3.24+、C++20编译器。CMake负责生产构建图，`tools/build.py`提供当前macOS/Linux编译器回退，Windows用MSVC/CMake。[CMake官方Preset规范](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
 
-图形接入时将SDL3、bgfx/bx/bimg、shaderc/texturec及其传递依赖用已构建验证的准确commit冻结。`data/dependencies.json`目前是选择清单，所有未接入项明确planned，不叫lockfile。真正lock包含source archive SHA-256、许可证路径、补丁、编译选项、平台、toolchain、shader profile和来源副本。允许从本项目固定Release源归档恢复，不能构建时偷偷取master。
+当前原生菜单已冻结并实际构建SDL3/bgfx/RmlUi/FreeType；预编译UI shader取自锁定bgfx原始归档，无本机shaderc依赖。后续新增shaderc/texturec时仍须独立准入。`data/dependencies.json`区分已集成的可选native菜单依赖与未接入项；它仍是状态清单，真正构建lock独立保存。真正lock包含source archive SHA-256、许可证路径、补丁、编译选项、平台、toolchain、shader profile和来源副本。允许从本项目固定Release源归档恢复，不能构建时偷偷取master。
 
 第三方vendored代码/源归档与自研代码分目录，修改上游保留补丁与原许可。SDL/bgfx窗口桥以锁定头文件为准；研究发现bgfx master与在线文档存在接口漂移，不复制旧SDL2/nwh教程。工具/依赖安装和编译cache不是项目作者源，不提交。
 
@@ -33,7 +33,7 @@
 
 Linux/macOS测试Debug，Windows测试Release以避免MSVC Debug容器对整状态复制oracle的额外开销；所有断言使用显式异常/返回值检查，不依赖会被NDEBUG删除的assert。内核场景设置120秒、其他测试60秒上限；测试耗时不代表生产算法的性能。
 
-Actions引用固定commit（checkout v5.0.0、setup-python v5.6.0此次已解析上游tag），contents只读，checkout不保留凭证，不用高权限pull_request_target。[GitHub官方固定SHA建议](https://docs.github.com/en/actions/reference/security/secure-use)
+Actions引用固定commit（checkout v5.0.0、setup-python v5.6.0此次已解析上游tag），普通构建工作流contents只读；原始源包发布工作流仅为项目Release上传使用contents: write。checkout不保留凭证，不用高权限pull_request_target。[GitHub官方固定SHA建议](https://docs.github.com/en/actions/reference/security/secure-use)
 
 图形GPU/IME、内容压缩、地球转换、完整经济/重放场景分别在实现时增CI作业。无GPU的runner不假称Metal画面通过；需真实设备手动场景记录。机型/OS/编译器/viewport/seed/定义hash一起记录，否则性能无法比较。
 
@@ -54,3 +54,7 @@ Actions引用固定commit（checkout v5.0.0、setup-python v5.6.0此次已解析
 完成定义：需求ID→权威领域→输入/授权→事务→表现/检查器→失败恢复→不变量/场景→来源/notice→文档状态→可复现构建。不能只提交UI按钮、漂亮模型或一份json就把整项标完成。
 
 发布顺序：验证真实切片→记录平台/性能证据→冻结源commit/依赖/定义/资产→重建pack→核验许可与manifest→生成checksums/notices→版本tag和GitHubRelease。自动发布流程在实际有游戏发行包时增加，本轮只有源码/工程基线，没有发布游戏二进制。
+
+## Steam 发行目标
+
+用户已明确游戏上架Steam。原生菜单的本机macOS/Metal证据只用于开发验证；不建设Mac App Store上架流程。Windows原生平台桥、GPU实机验证、Steam游戏包及后续发行功能按阶段施工，不能用当前headless Windows CI或库本身的跨平台能力宣称Windows游戏已可运行。Steam发行不得成为核心仿真的依赖；当前没有引入任何商店SDK。

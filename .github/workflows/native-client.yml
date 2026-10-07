@@ -1,0 +1,31 @@
+name: Native desktop client
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-client-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  desktop:
+    name: Native / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, macos-14]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Build the native application from project-hosted locked sources
+        run: python tools/build_native.py --jobs 3
+      - name: Build all finite correctness targets
+        run: cmake --build .build/native --config RelWithDebInfo --parallel 3
+      - name: Test actual native UI layout, presentation and core invariants
+        run: ctest --test-dir .build/native -C RelWithDebInfo --output-on-failure
+      # Hosted runners have no player desktop. Compilation and NullRenderer layout tests
+      # do not establish Windows GPU/Steam Overlay/device behavior.
