@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 import re
 import struct
+import import_etopo_sample
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -83,6 +84,22 @@ def validate_manifest(manifest):
 
 
 def main():
+    dependencies = read(ROOT / "data/dependencies.json")
+    for source in dependencies["retained_geographic_sources"]:
+        require(sha(local_path(source["license_file"])) == source["license_sha256"], "Geographic license text changed")
+    ocean = ROOT / "third_party/abyssal-ocean"
+    upstream = read(ocean / "UPSTREAM.json")
+    require(upstream["commit"] == "142265f5013b6f27bea4f4f819b832dec75c7bad" and upstream["license"] == "MIT", "Abyssal source lock changed")
+    require({f["path"] for f in upstream["files"]} == {"LICENSE", "README.md", "index.html"}, "Abyssal source set changed")
+    for item in upstream["files"]:
+        path = local_path("third_party/abyssal-ocean/" + item["path"])
+        require(path.stat().st_size == item["bytes"] and sha(path) == item["sha256"], "Abyssal exact source bytes changed: " + item["path"])
+    for path in upstream["derived_files"]:
+        local_path(path)
+    bundle = import_etopo_sample.BUNDLE_PATH.read_bytes()
+    metadata = import_etopo_sample.METADATA_PATH.read_bytes()
+    rebuilt = import_etopo_sample.json_bytes(import_etopo_sample.make_sample(bundle, metadata))
+    require(rebuilt == import_etopo_sample.SAMPLE_PATH.read_bytes(), "Real ETOPO sample differs from offline source rebuild")
     provenance = read(ROOT / "data/catalogs/design_source.json")
     require(sha(local_path(provenance["source"])) == provenance["sha256"], "Design baseline changed without regeneration")
     catalog = read(ROOT / "data/catalogs/technology.json")
@@ -131,7 +148,7 @@ def main():
                 continue
             base = target.split("#", 1)[0]
             require((path.parent / base).exists(), "Broken local link in {}: {}".format(path, target))
-    print("PASS: baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, documentation links")
+    print("PASS: pinned Abyssal MIT sources, offline real ETOPO sample, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, documentation links")
 
 
 

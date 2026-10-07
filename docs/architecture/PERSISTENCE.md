@@ -8,6 +8,8 @@
 |---|---|
 |schema/协议/定义集/内容包/GeoSourceManifest哈希与版本|GPU句柄、视锥列表、LOD当前级别、阴影缓存|
 |投影、EarthMapSelection、cellSize、唯一worldScale、冻结natural mask/hash|地球全球浏览视窗缓存、表现岸线LOD|
+|冻结高程瓦片/hash、EGM2008/转换、XYZ同尺度、NoData/三角化版本与误差|GPU地形LOD、Abyssal波相位/RT与视觉水下效果|
+|固定地基bottom/floor、入口/配送绑定、永久/阶段claims、接入证书/profile/portal/权利版本|地基/坡道表现网格、可重建的空间查询索引|
 |reclaimed、未完工工程、真实材料/劳动投入、空间约束|effectiveSurface、landOrigin派生值、导航索引与mesh|
 |建筑本体等待/自动施工/完成状态、实际到货/投入、startedTick/durationTicks/completedTick、工程定义版本|围网层数采样、表现时钟、pendingComplete、临时网罩GPU资源|
 |SimTick、TimeConfig、独立RNG流/计数器、due tasks|渲染frameDelta、线程完成顺序、墙钟时间|
@@ -22,6 +24,8 @@
 死者压成保留稳定ID的档案，亲属、发明、文化、先知和历史引用不断链。ID不回收给新人。名称历史不依赖当前显示名。
 
 建筑本体采用[ADR 0002](../decisions/0002-building-construction.md)的材料实送与自动工期，没有现场砌筑人物预约；填海真实劳动仍保存。载入WAITING_DELIVERY只恢复工地/配送且无网罩，载入AUTOMATIC_BUILD直接重建完整网罩，载入已完成/已取消时直接成品/无网罩，不重播围/拆动画、材料交付或完成事务。现场货物和在途货物继续保留唯一真实位置。
+
+[ADR 0003](../decisions/0003-terrain-and-site-access.md)要求载入保留已批准地基/入口/通道几何；不得从新版DEM重新抬高楼板或移动旧门。读入staging时按原冻结地形重验完整保护域、路线连续/坡度/profile、前侧现状配送与车库要求；跨项目矛盾拒绝而不自动拆邻楼。旧平地world保留自己的profile，新版真实地形需新世界或显式迁移。当前独立site oracle尚无存档格式，本段为生产合同。
 
 ## 2. 生产存档包
 

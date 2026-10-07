@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "name": "abyssal-ocean",
+  "repository": "https://github.com/squall01337/abyssal-ocean",
+  "commit": "142265f5013b6f27bea4f4f819b832dec75c7bad",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 Sacha (@squall01337)",
+  "license_file": "LICENSE",
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 1077,
+      "sha256": "90adab8a633db9147c4e1b6df58e8817ead63b578f83c25bed503fb36f3d0dd3",
+      "modification_status": "unmodified"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4818,
+      "sha256": "bce5b9cc0e721e685c842c7d22f845545a2c9f11d8b103ad5ec52b21d65837b0",
+      "modification_status": "unmodified"
+    },
+    {
+      "path": "index.html",
+      "bytes": 83466,
+      "sha256": "db2849045aaeb5ff92cef9742a61a1954bd94468d49fa2d84715cd897d946d4e",
+      "modification_status": "unmodified"
+    }
+  ],
+  "omitted_non_runtime_upstream_files": [
+    ".gitignore",
+    "docs/preview.gif",
+    "docs/underwater.gif"
+  ],
+  "upstream_runtime": {
+    "backend": "WebGL2",
+    "library": "three.js",
+    "version": "0.180.0",
+    "import_url": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "vendored": false
+  },
+  "derived_files": [
+    "presentation/include/sonnheide/ocean_fft.hpp",
+    "presentation/src/ocean_fft.cpp"
+  ],
+  "integration_status": "CPU butterfly and 2D inverse FFT reference extracted; native GPU ocean not ported",
+  "notes": [
+    "Upstream files are exact bytes from the fixed commit.",
+    "Original browser demo still imports three.js from CDN; it is not an offline or native client.",
+    "The native reference has no three.js, window or GPU dependency.",
+    "MIT notice must accompany upstream and derived algorithm portions in distributed copies."
+  ]
+}

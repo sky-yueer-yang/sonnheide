@@ -73,9 +73,9 @@ SDL 事件 → InputRouter → 当前 Tool / CameraController / UI
 |---|---|---|
 |1|资源上传与可见集|缓存资源；空间 chunk 与视锥剔除；不逐对象创建材质|
 |2|阴影|日光级联阴影；近景重要人物；远景不做高成本动态阴影|
-|3|不透明世界|平面陆地、人工平台、道路、原创建筑、人物、树木与交通资产|
+|3|不透明世界|冻结真实高程地表、人工平台、地基/坡道、道路、原创建筑、人物、树木与交通资产|
 |4|水前颜色/深度准备|仅在水体质量等级需要时复制或解析采样源；禁止读写同一 attachment|
-|5|水与透明世界|按质量等级绘制平面水；限制透明层数量与 overdraw|
+|5|水与透明世界|Abyssal谱波位移水面与独立WATER遮罩；限制透明层数量与overdraw|
 |6|领域 overlay|国旗裁切、疆界、矿物曲面、文化场、命令预览；按模式只开必要层|
 |7|后处理|固定曝光基线、色调映射、轻量抗锯齿；UI 之前完成|
 |8|界面与标签|检查器、工具状态、标签、选择轮廓；UI 像素色与地图灯光分离|
@@ -87,9 +87,9 @@ SDL 事件 → InputRouter → 当前 Tool / CameraController / UI
 
 可有选择地移植 bgfx 官方 IBL/阴影示例代码并保留 BSD notices；生产材质的公式与能量响应参考 Filament 的官方 PBR 文档。代码复用需要具体文件许可，示例配套模型、HDRI、贴图、字体分别审查。不能将整份示例资产包视为 BSD。[bgfx IBL shader](https://github.com/bkaradzic/bgfx/blob/master/examples/18-ibl/fs_ibl_mesh.sc)、[Filament PBR 文档源码](https://github.com/google/filament/blob/main/docs/Filament.md.html)、[bgfx 示例资产许可](https://bkaradzic.github.io/bgfx/license.html)
 
-## 5. 平坦世界、天然海岸与人工港区
+## 5. 真实地形、天然海岸与人工港区
 
-天然陆地来自冻结矢量轮廓，渲染切成空间 chunk；只有统一基准平面与薄岸缘，**没有 gameplay height/slope**。天然岸线附近提供 `CoastCoverageIndex` 供预览识别部分覆盖格。人工造陆来自稀疏完成掩码，生成格网平台顶面与直线挡墙；挡墙模块、时代材质和港口建筑全部由我们制作。不能为了自然外观平滑人工直岸或扩大规则 footprint。
+天然陆地由冻结矢量岸线与真实高程场共同生成，渲染切成空间chunk；坡度影响地面可达与建址，详见[ADR 0003](../decisions/0003-terrain-and-site-access.md)与[地形/建址合同](TERRAIN_AND_SITES.md)。近景网格和远景LOD使用同一源/基准/比例；视觉误差不能作为建造或通行依据。天然岸线附近提供 `CoastCoverageIndex`。人工造陆另有固定工程表面，生成格网平台与原创直线挡墙；地基/坡道是独立实体，不修改天然高程。挡墙、建筑与坡道几何全部由我们制作，不能平滑人工直岸或扩大规则footprint。
 
 人工陆地完成事务发布 chunk generation。网格任务只接受该版本，并将其结果与当前 generation 比较；落后的结果直接丢弃。施工时显示桩/驳船/进度，底面继续 WATER；导航临时障碍不等于已完成陆地。提交完成后，权威可通行性立即更新；渲染若尚未重建，先用简单完成平台覆盖，禁止让 UI 呈现“可行走但仍显示水”的长窗口。
 
@@ -97,21 +97,19 @@ Port 预览只画四项：已完成 RECLAIMED footprint、整排 sea-facing edge
 
 **切片 A 必须冻结的岸线决定**：v0.6 明确冻结逻辑地表与矢量天然岸线，却未完整给出“天然岸线部分覆盖格内建筑 footprint”的覆盖阈值。应明确哪些天然临海格可支撑整个 footprint，并让同一覆盖查询用于放置、鼠标预览和场景一致性检查。它不允许通过 water shader 的 alpha 或 GPU 像素决定法律边界。规则冻结前，天然临海部分格只允许展示，不应宣称完整建设交互已经验收。
 
-## 6. 水体：复用底层能力，自写本游戏所需的薄模块
+## 6. 水体：Abyssal Ocean 原生移植
 
-首版不引入 FFT 物理海洋、水动力、侵蚀或潮汐。世界没有海底高度数据；水的“浅深”着色由有效岸线的视觉距离和材质参数派生，不伪造新地形字段。水面保持固定平面，法线运动提供细波纹，航行和碰撞仍依据有效 WATER 及领域导航。
+用户指定[abyssal-ocean](https://github.com/squall01337/abyssal-ocean)。锁定commit `142265f5013b6f27bea4f4f819b832dec75c7bad`、MIT原文与三个上游源文件的准确字节，见[来源清单](../../third_party/abyssal-ocean/UPSTREAM.json)。上游是WebGL2/three.js 0.180.0浏览器实现；我们复用其算法/shader并移植到自研C++/bgfx客户端，不把浏览器运行时链接进核心。当前已构建的部分是独立[presentation CPU FFT参考](../../presentation/src/ocean_fft.cpp)，尚无GPU水面或实机帧率证据。
 
-`WaterRenderer` 输入只有：水面高度常数、可见 WATER chunk、天然/人工岸缘、材质、日光/IBL、相机与纯表现时间。输出：水面 draw 与可选反射 pass，不输出任何模拟修改。船尾迹可以消费船舶已提交位置生成短寿命效果；其粒子消亡不影响 Ship/Cargo。
+原生端应依次接入：seeded谱初始化→时间演化→横/纵inverse FFT ping-pong→位移/导数合成→多cascade采样→折射/反射/泡沫/水下表现。上游默认512²×3 cascades的FFT链约63个pass/帧，仿真render targets估算约52MiB，尚未含颜色/深度/反射与窗口缓冲。此为源码预算估算，不是目标设备测量；首轮低/中/高质量冻结cascade尺寸与更新频率，逐步对照参考输出，不在游戏CPU每帧执行此参考FFT。
 
-|质量等级|实现|禁用或回退|
-|---|---|---|
-|基线|两层法线/自制噪声、Fresnel、IBL、吸收色、岸缘克制泡沫|没有屏幕深度可采样时仍正确绘制；不依赖 compute|
-|近景增强|水前 scene color/depth、受限制折射与软交界|MSAA 深度无法可靠采样则关闭；不要重复读写 attachment|
-|高质量候选|低分辨率平面反射，按可见面积/镜头移动更新|有显著 GPU 余量才开启；屏幕反射失败不会留下空洞|
+关键移植门槛：GLSL3改为所锁shaderc的uniform/sampler/varying和矩阵约定；每个依赖pass用有序view，显式声明RT读写/格式与floating-point renderability。当前CPU参考保留上游正指数inverse、centered谱的checkerboard修正与不除N²约定，并用直接2D IDFT核对。禁止换一套FFT归一化后仅靠调波高掩盖错误。世界位置用相机相对float，但谱相位用冻结的全局位置对cascade周期取模，浮动原点不能让波跳动。同步GPU高度回读替换为异步且只供表现；核心不消费非确定波高。
 
-所有 shader 写在 bgfx 的 shader 方言和封装采样接口内，经相同 shaderc 生成 Metal/D3D/Vulkan 产物。开源复用优先是 bgfx 的跨后端 shader 基础、IBL/阴影代码、合法 CC0 的材质/HDRI；未发现已完成审查、可不改动跨这些后端接入的成熟“海水库”，因此不在计划中编造一个现成依赖。
+`WaterRenderer`输入：独立权威WATER mask、完成填海更新、同一datum下的平均水位/真实海底高程、可见chunk、风/谱质量profile、日光/IBL、相机与纯表现时间。高程负值不能代替mask；低于海平面的LAND必须保持干燥。上游TMA全局depth和局部浅水衰减不能宣称为真实浅水水动力、河流流动或湖面求解；内陆水域须有单独固定水位profile，不能全套用海平面。默认程序岛生成不进入真实世界。
 
-水回归场景固定：自然弯岸、人工直墙、狭窄通航道、四旋转 Port、船靠泊、相机贴近水面、窗口 resize、国旗/矿曲面叠加。除 frame time，还检查反射倒置、黑边、穿地、泡沫覆盖天然陆地、填海后旧水面残留和工具射线偏移。
+水体输出只含表现draw/pass；视觉浪、泡沫和船尾迹不改水陆、地形、地基、船导航或材料。不加入侵蚀/潮汐/刷地形玩法。水前scene color/depth按caps处理，禁止读写同一attachment；可选低分辨率反射与水下效果以实际预算决定，基础海岸遮罩必须正确。
+
+回归场景：真实弯岸/阿尔卑斯高程、低于海平面LAND、人工直墙与四旋转港口、窄航道、内陆湖、填海完成更新、相机贴水/跨海拔/resize、浮动原点、国旗/矿曲面叠加。必须逐后端核验FFT幅值/方向、反射/深度UV、LAND干燥、GPU资源寿命与frame CPU/GPU p95/p99。CPU数学通过不能替代这些GPU验收。
 
 ## 7. 人物、动画 LOD 与原创建筑 HLOD
 
@@ -143,7 +141,7 @@ GPU 蒙皮按同 mesh/材质/骨架 LOD 批次，姿态 palette 使用受设备�
 
 三种拾取通道分开：
 
-1. `WorldPlanePick`：屏幕射线与固定地图平面求交。用于矿物、人工造陆、道路、阵线和抓取半径中心；无视矿曲面、水波、旗面和文化视觉节点。
+1. `TerrainSurfacePick`：屏幕射线与冻结权威地形/已完成工程表面求交；水域工具命中固定水位。用于矿物、人工造陆、道路、阵线与抓取中心；无视矿曲面、视觉波浪、旗面、文化节点和当前GPU地形LOD。
 2. `SceneObjectPick`：空间 chunk 广阶段 → AABB/简化碰撞体 → 必要时 mesh BVH。建筑、人物、CitySquare 与车辆有不同 pick mask；容纳中对象从世界 pick 集移出但仍可在检查器查询。
 3. `VisibleIdPick`：密集近景需要时做小区域 ID pass；无 MSAA/色调映射/颜色混合，以每帧局部 ID 映射回稳定 ID。GPU 回读携带 frame、camera、snapshot revision 和 generation；过期结果复验/重采，不直接提交命令。首次点击可先给 CPU 预选，不能每帧同步 readback 阻塞 GPU。[bgfx 按需拾取示例](https://github.com/bkaradzic/bgfx/tree/master/examples/30-picking)
 

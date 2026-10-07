@@ -15,6 +15,15 @@
 
 不合法孤岛存档、无支撑未完成工程、极端公开坐标查询整数溢出、epoch/ID/revision耗尽处理、Accepted回执和世界分配失败分离、Observer Accepted伪回执。这些边界均有具体复现，修复没有扩大到无关领域。
 
+## 真实地形、建址与指定水体切片
+
+- NOAA ETOPO 2022 v1 Ice Surface真实N60E000源的TIFF头与tile 201，共199247字节，以固定SHA-256保留；官方metadata/CC0原文已保留。取出25×25原始像元中心，高程1640.096802..3981.594971m。`tools/import_etopo_sample.py --fetch`、默认离线重建、`--verify`均已实际通过；缺源/损坏/NoData不静默伪造。源bundle明确partial，不声称整幅TIFF/global package哈希。
+- `site_geometry`的19组场景：全footprint中心山峰、邻楼保持旧标高/高程、后建楼侵旧坡道拒绝无半写、肩丘全宽检测、网格点之间三次曲线极值、长/短坡道、garage必需独立车辆证书、车轴坡折、门/道路正宽接触、4方向旋转、负高程LAND/NoData/WATER拒绝、未建地基不得送货、权利/预算/恶意数值/陈旧preview、远端或错侧/窄apron、默认front/socket、moved-from查询安全、North/East不同标高坡道自交。严格clang与ASan/UBSan均通过。生产曲线转弯/全车身扫掠/共享路/阶段释放/全局网络尚未实现。
+- Abyssal commit `142265f5013b6f27bea4f4f819b832dec75c7bad`的LICENSE/README/index.html准确字节SHA-256已核验；three.js CDN不是原生依赖。`ocean_fft_reference`五组：尺寸2/4/8/16直接2D IDFT对照，频率方向/centered checkerboard/DC幅值，不除N²的上游约定，Hermitian实值，以及尺寸/NaN/Infinity/overflow/moved-from拒绝。最大数值误差约2.4e-14；严格clang与ASan/UBSan通过。参考只在presentation库，kernel不依赖它或GPU。
+- 项目校验现在还检查上述上游文件准确hash、CC0许可hash及真实ETOPO样本的离线重建一致性；Windows checkout通过LF规则保留官方XML/HTML字节。完整GPU波浪、海岸mask、三后端画面和帧率未验证。
+
+运行所有目标：`python3 tools/build.py`；空间/事务修改另跑 `python3 tools/build.py --sanitizers`。CMake/CI分别运行kernel、allocation、headless、site、ocean与content六个测试；[GitHub Checks](https://github.com/sky-yueer-yang/sonnheide/actions)以各提交的实际结果为准。
+
 ## 当前实现与生产差异
 
 2026-10-06建筑施工变更见[ADR 0002](../decisions/0002-building-construction.md)。本轮已检查材料前侧配送、分层围网、完整顶盖、成品显示及反向撤网的可播放示意，包含320px窄屏；角色与料箱分离，预览状态保存回声不会主动重置本次播放。原稿/提取目录/三份原创灰盒已重建校验且未变。生产建筑自动工期、真实Person搬运和GPU围网仍未实现；现有填海内核没有因此取消劳动。
@@ -22,6 +31,9 @@
 |当前|生产仍需|
 |---|---|
 |合成6×6等小图；安全容量上限100万格|全球真实数据、投影、coast coverage、物理clearance、内存预算|
+|真实25×25 ETOPO窗口/原字节离线重建|完整全球源包/固定EarthPack、datum/投影/NoData/区域精度报告|
+|独立地形/建址oracle，可信level portal，四向直坡与全部保护域|完整world/产权/交通网络、车辆转弯/体积净空、阶段释放、真实物流、存档与GPU|
+|MIT Abyssal源与CPU FFT参考|原生GPU谱/泡沫/折射/水下、海岸/湖水mask、三后端帧率与生命周期|
 |一种通用材料；Scheduler直接给5单位劳动|实名CitySquare库存、真实运输/Person劳动/施工合同、部分投入结算|
 |PlaceRoad无工程成本；KernelPlacePort几何探针|科技、预算、产权、法域、建设流程和广场完整路网|
 |整状态复制、同步全图BFS、map/set|分页写集、SoA、Chunk/门户动态连通、异步三态query|

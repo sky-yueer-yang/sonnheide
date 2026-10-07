@@ -84,5 +84,31 @@
       "source_archive_sha256": null,
       "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
     }
+  ],
+  "vendored_source_components": [
+    {
+      "name": "abyssal-ocean",
+      "upstream": "https://github.com/squall01337/abyssal-ocean",
+      "resolved_commit": "142265f5013b6f27bea4f4f819b832dec75c7bad",
+      "license": "MIT",
+      "source_manifest": "third_party/abyssal-ocean/UPSTREAM.json",
+      "status": "native_CPU_FFT_reference_only",
+      "native_GPU_port_integrated": false,
+      "browser_reference_dependency": "three.js 0.180.0; CDN imported, not vendored or linked to native core"
+    }
+  ],
+  "retained_geographic_sources": [
+    {
+      "name": "NOAA ETOPO 2022 v1 Ice Surface 15 arc-second",
+      "license": "CC0-1.0",
+      "vertical_datum": "EGM2008",
+      "source_manifest": "data/geo/sources/etopo2022_n60e000_tile201.json",
+      "partial_source": true,
+      "full_global_package_downloaded": false,
+      "license_file": "data/geo/sources/CC0-1.0.txt",
+      "license_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
+      "status": "real_25x25_Alps_window_offline_rebuilt"
+    }
   ]
 }

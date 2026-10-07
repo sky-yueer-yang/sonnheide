@@ -8,6 +8,8 @@ UI/输入工具提交`CommandEnvelope{protocolVersion, commandId, commandKind, t
 
 预览返回成本分项、材料来源/预约候选、执行者、目标范围、规则依赖、主要阻碍与替代。预览不预约、不扣款、不创建实体。PreviewToken绑定定义hash、目标/相关产权/法律/空间/市场容量版本、payload hash和授权主体；提交时读取最新权威状态二验。不能只检查建筑version而漏掉海侧造陆、国家法律或已批准市场项目。
 
+坡地建筑必须预览完整[SitePlan](TERRAIN_AND_SITES.md)：固定地基底/顶、人行与车库每个必需入口的接入证书、当前地面前侧接货路线、罩范围及永久/阶段占用。token绑定高程/三角化/profile/portal/保护域和通行权版本；批准一次预约所有关联claims，不准只先占主楼再期望未来修出坡道。完工启用全部永久表面/入口并按claim角色释放临时占用；同一矩形的临时配送claim消失不能删掉永久坡道claim。当前SiteRegistry只做有限preview/reserve，不是完整生产命令或去重协议。
+
 结果为Accepted / Rejected / RequiresRepreview，含稳定reasonKey、参数、事件ID、改变实体修订、createdIDs与可选retryHint。界面先显示一个主因，可展开全部。预览缓存过期是重预览，不等于永久禁止。多选先知等原子批量操作必须完整校验再统一提交。
 
 ## 2. 幂等与提交屏障
@@ -43,6 +45,7 @@ UI/输入工具提交`CommandEnvelope{protocolVersion, commandId, commandKind, t
 |Primary Genesis|RootLanguage→正式姓名→Culture→成员→State文化化→正式City/旗|任何中间失败无半语言/文化；节点不会二次触发；姓名历史保留|
 |Secondary Culture|新Culture/父源/成员/历史|绝不包含CreateLanguage；独立语言分化另走命令|
 |逐格造陆（含港口地基）|材料/劳动预约、任务、地表来源、空间禁占、路径版本|未完工保持水；取消只退未发生投入；完成不可挖回；港口本体另走建筑工程|
+|坡地建址批准/合法改路|地基固定标高、全入口证书、现状配送、施工/永久占用、用地/通行权、材料与事件|地表只读；侵旧通道拒绝；改路先预约合格替代后同屏障切换，失败保旧路|
 |建筑本体开始/完成|实际SiteStorage批次、配方投入、自动工期/到期任务、Building容量/入口、事件/回执|无砌筑工人；到货未齐不启动；取消已投入不全退；完成不等待撤网，动画不结算|
 |生产线|市场容量/资金/材料/工厂槽/任务|tooling一次性；取消释放未投入；已消耗不全退；换家族另建线|
 |教会分裂|新同根教派/章程、冻结争议资产、限制性捐赠、债务/员工、合法转移|成员改派不等于财产自动迁移；旧charterHash不改|

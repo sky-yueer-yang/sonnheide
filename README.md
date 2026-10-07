@@ -14,6 +14,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |真实地球、投影、岸线、格网、填海与导航|[世界工程](docs/architecture/WORLD.md)|
 |原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
 |材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
+|真实高程、长方体地基、人/车入口与邻楼保护|[最新变更ADR 0003](docs/decisions/0003-terrain-and-site-access.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
 |命令、预览、授权、共享合同与错误协议|[接口契约](docs/architecture/CONTRACTS.md)|
 |存档、恢复、版本迁移与确定性级别|[持久化](docs/architecture/PERSISTENCE.md)|
 |自制建筑、人体、材质、LOD、资产编译与流送|[内容流水线](docs/architecture/CONTENT_PIPELINE.md)|
@@ -32,6 +33,9 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 - 从原稿实际提取40能力突破＋96谱系＋288槽位、35类法律、13类业务；未提供的原参考代码和配置没有被伪称导入。
 - 3份原创建筑几何配方及自包含 glTF 灰盒：住宅、CitySquare 的 CivicHall 组件、港口。它们用于格式/空间验证，正式写实模型、三时代外观与全建筑目录尚待制作。
 - CMake 构建、三平台 GitHub Actions 与 Linux sanitizer 作业、内容/来源哈希校验、LFS 规则。
+- 真实ETOPO阿尔卑斯25×25高程窗口，必要TIFF原字节/官方metadata/CC0原文与标准库离线重建器；尚未下载完整全球包。
+- C++20独立建址oracle：只读高程、整块长方体地基、四向全宽C1坡道、人行/车库分别验收、前侧现状配送、旧通道保护与原子预约。19组反例/贯穿场景；尚未合入完整world/物流/存档。
+- 用户指定Abyssal Ocean的MIT准确源文件与commit/hash，已提取原生CPU蝶形/二维inverse FFT参考并用直接IDFT验证；native GPU海洋尚未移植。见[第三方通知](THIRD_PARTY_NOTICES.md)。
 
 建筑施工的新设计为：小人实际把材料送到前侧接货区，到齐后建筑自动推进工期；无人物砌筑动作。原创长方体铁丝网约3秒逐层围起，中段完全包围，完工后约3秒反向拆去。已有[可播放视觉预览](tools/previews/building-construction.html)和参数示例，生产建筑/物流与GPU动画尚未实现；填海仍沿用真实材料和劳动规则。
 
@@ -57,10 +61,13 @@ ctest --preset debug -C Debug
 ```sh
 python3 tools/extract_catalogs.py
 python3 tools/build_grayboxes.py
+python3 tools/import_etopo_sample.py --verify
 python3 tools/validate_project.py
 ```
 
 headless 演示会施工两格人工陆地、建一个港口、验证天然底图未变并执行存档往返。它没有窗口、真实地球数据、人物劳动分配、经济循环或写实水体。`KernelPlacePort` 只实现空间/导航子集；生产 `PlacePort` 的科技、产权、预算和许可尚待接入。
+
+真实高程与建址测试是另外的有限切片：`sonnheide_site_tests` 验证合成起伏地面上完整建址/邻楼不变量，ETOPO导入器验证实际源数据，`sonnheide_ocean_fft_tests`验证上游FFT数学。这三者尚未连接成可玩的真实坡地场景。原稿平地条款由最新ADR覆盖，原稿本身逐字保留。
 
 ## 当前实现不能直接作为生产规模方案
 

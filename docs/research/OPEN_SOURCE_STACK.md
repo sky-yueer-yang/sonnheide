@@ -1,6 +1,6 @@
 # 开源复用决定、许可边界与锁定计划
 
-核验日期：2026-10-06。资料全部来自上游项目、作者或官方规格。**“选择”是工程决策，“集成”必须有实际构建与运行证据；本表没有将未下载的库写成已集成。** 本次不编造未经构建验证的 release/commit。每项版本均待接入时锁定，并将准确 commit、源归档 SHA-256 与许可证写入依赖清单。
+核验日期：2026-10-06。资料来自上游项目、作者或官方规格。**“选择”是工程决策，“集成”必须有实际构建与运行证据。** Abyssal已固定commit/原文件SHA-256并构建CPU参考；下表其他库仍待接入时锁定兼容版本，不编造未经构建验证的release/commit。状态与许可写入依赖清单。
 
 ## 1. 选择独立库，不引入游戏引擎
 
@@ -33,15 +33,15 @@
 
 不将 raylib、Sokol、Diligent 等再堆成第二套候选依赖目录。改变上述选择必须由可复现的阻塞或测量支持，不能用不断换库替代水/角色/交互切片的推进。
 
-## 3. 开源水体怎样复用
+## 3. 用户指定的 Abyssal Ocean 复用
 
-本世界只有平面水和陆地，没有动态高度场、潮汐、水动力或天然岸线编辑。初版 water 是我们自己的薄模块：共享 PBR/IBL、两层法线、Fresnel、吸收色、岸缘表现；可选低分辨率平面反射。水表现读已有 WATER 与完成填海结果，不生成海洋模拟。
+采用[abyssal-ocean](https://github.com/squall01337/abyssal-ocean)，固定commit `142265f5013b6f27bea4f4f819b832dec75c7bad`。上游LICENSE、README、index.html准确字节已进入本仓库，MIT作者通知和每文件SHA-256见[UPSTREAM](../../third_party/abyssal-ocean/UPSTREAM.json)及[第三方通知](../../THIRD_PARTY_NOTICES.md)。这是已实际归档的选定来源，覆盖旧版“拒绝FFT海洋”的决定。
 
-**已决定的复用**：bgfx shader 基础与官方 IBL/阴影示例中许可明确的代码；合法 CC0 法线/材质/HDRI。使用其 shaderc 把同一源码变成目标后端产物，并自行测试投影/depth/RT 方向。[bgfx Shader 工具](https://bkaradzic.github.io/bgfx/tools.html)、[IBL shader 来源](https://github.com/bkaradzic/bgfx/blob/master/examples/18-ibl/fs_ibl_mesh.sc)
+原项目WebGL2/three.js 0.180.0调度须移植到C++20/bgfx；不采用浏览器作为生产客户端。已从上游蝶形与inverse FFT流程提取独立CPU正确性参考，并核对直接2D IDFT、幅值/方向/Hermitian谱及错误边界。CPU参考不执行全谱海洋、GPU材质或实际帧渲染；上游HTML的three.js CDN依赖未归档，不声称完整离线浏览器demo。
 
-**不接入的资源**：Unity/Godot 专用水体插件、只实现 OpenGL framebuffer 假设的 demo、未明确许可 shader、要求真实海底高度/复杂海洋 compute 的 FFT 项目。它们可以是算法研究线索，但不能登记为“可直接使用的跨平台 water library”。没有确认合适依赖时自写本游戏的有限需求，比移植完整海洋系统更具体。
+native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有序pass、shaderc采样/uniform、depth/UV、浮动原点相位和独立海陆mask。真实海底高程用于表现时须与ETOPO/世界datum一致，低于海平面LAND不能被shader淹没。TMA/浅水衰减不等于真实河湖/水动力；海面浪高仍不写仿真。成本与跨后端验收见[RENDERING](../architecture/RENDERING.md)。
 
-从教程得知的公式与复制教程代码不是同一授权；GPU Gems、博客、视频网站内容不能仅因免费阅读而进入 GitHub 仓库。保留公式参考链接，代码以我们的实现或明确开源许可文件为准。bgfx 示例里的 HDRI、模型与字体与代码许可证不同，不能整包复制。[bgfx 资产清单](https://bkaradzic.github.io/bgfx/license.html)
+仍拒绝游戏引擎运行时、未明确许可shader、许可不明的示例HDRI/贴图，以及直接依赖WebGL framebuffer假设的生产代码。bgfx基础和合法CC0材质可以补充该移植，保留各自通知。[bgfx shader工具](https://bkaradzic.github.io/bgfx/tools.html)、[示例资产许可](https://bkaradzic.github.io/bgfx/license.html)。
 
 ## 4. 人物、材质与字体的可用来源
 

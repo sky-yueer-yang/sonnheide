@@ -1,6 +1,6 @@
 # 开源资源来源与准入记录
 
-核验日期：2026-10-06。本文是工程选型与采购约束，不表示已经下载、制作、集成或完成逐文件许可审查。规范来源是 [Sonnheide v0.6](../design/Sonnheide_Complete_Design_v0.6.md)；用户追加的“不用游戏引擎、建筑全部自己做”优先于原稿允许引擎的备选措辞。
+核验日期：2026-10-06。本文区分候选与已归档来源：Abyssal原始代码及ETOPO窗口已逐文件核验，其余名单为准入研究。规范来源是 [Sonnheide v0.6](../design/Sonnheide_Complete_Design_v0.6.md)；用户追加的“不用游戏引擎、建筑全部自己做”优先于原稿允许引擎的备选措辞。
 
 ## 1. 先解决真正的复用边界
 
@@ -22,7 +22,9 @@
 |Poly Haven 材质、HDRI、非建筑植物|官方资产许可页明确 CC0，允许原始资产再分发|**正式 PBR／环境光优先候选**。砖、石、木、灰泥、土、织物及少量植物；不取任何建筑模型|网站页面、商标和示例渲染不自动同许可；资产许可与 API／网站下载条款分开，使用单项下载或遵守官方 API 条款|
 |ambientCG 材质|官方说明资产 CC0，允许游戏包含原始文件|**正式 PBR 备选**。用具体资产 ID 锁定版本与物理纹理尺寸|只下载实际需要的分辨率；不把整库搬进 GitHub；保持每张贴图的来源、通道和颜色空间记录|
 |Blender Sapling Tree Gen 0.3.7|官方扩展版本页标 GPL-3.0-or-later|**离线树形生成候选**。参数化生成树干和枝条，叶材用开放纹理或原创|工具代码许可与输出分开；检查模板／预设与输出有无第三方素材，不因工具 GPL 就给原创树mesh误标 GPL，也不把插件链接进运行时|
-|2Retr0/GodotOceanWaves|仓库 LICENSE 为 MIT；README 单列 OTFFT Stockham 算法 MIT、天空图 CC0|**水体算法移植优先参考**。只挑选并审查谱／FFT／着色算法，移植到自研渲染器|这是 Godot 工程，不运行 Godot、不复用其场景／插件；保留复制代码和 OTFFT 的通知；不是直接可用的海洋模块|
+|Abyssal Ocean|固定commit的MIT原文及三个准确源文件已归档|**用户指定水体来源**；原生CPU FFT参考已构建，native GPU移植未完成|原项目WebGL2/three.js，需shaderc/pass/岸线mask移植；HTML CDN依赖未归档，不能标为完整离线客户端|
+|NOAA ETOPO 2022 v1 Ice Surface|官方metadata明确CC0-1.0，完整许可原文已保留|**全球高程基底**；当前取入25×25阿尔卑斯真实像元及必要TIFF原字节范围，离线可重建|15角秒、WGS84/EGM2008；尚非全球包或房屋尺度测绘；NoData与独立水陆mask不可省略|
+|2Retr0/GodotOceanWaves|仓库 LICENSE 为 MIT；README 单列 OTFFT Stockham 算法 MIT、天空图 CC0|**历史对照来源；本次选用Abyssal**。只挑选并审查谱／FFT／着色算法，移植到自研渲染器|这是 Godot 工程，不运行 Godot、不复用其场景／插件；保留复制代码和 OTFFT 的通知；不是直接可用的海洋模块|
 |gasgiant/FFT-Ocean|仓库 LICENSE 为 MIT；README 明确是 Unity 原型，且不推荐实际项目直接使用|**对照参考**，不作为生产直接依赖|只在需要时审查独立 shader／数学代码；不运行 Unity；注意其他包、素材及上游说明的逐项许可|
 
 对应官方证据：
@@ -32,7 +34,8 @@
 - 动作：[Universal Animation Library 1](https://quaternius.com/packs/universalanimationlibrary.html)、[Library 2](https://quaternius.com/packs/universalanimationlibrary2.html)。
 - 材质：[Poly Haven 资产与网站许可](https://polyhaven.com/license)、[API 独立说明](https://polyhaven.com/our-api)、[ambientCG 许可](https://docs.ambientcg.com/license/)。
 - 植物：[Sapling 官方版本与许可](https://extensions.blender.org/add-ons/sapling-tree-gen/versions/)。
-- 水体：[GodotOceanWaves 来源及上游通知](https://github.com/2Retr0/GodotOceanWaves)、[MIT 许可](https://raw.githubusercontent.com/2Retr0/GodotOceanWaves/main/LICENSE)、[FFT-Ocean 原型说明](https://github.com/gasgiant/FFT-Ocean)、[MIT 许可](https://raw.githubusercontent.com/gasgiant/FFT-Ocean/master/LICENSE)。
+- 高程：[NOAA官方数据页](https://www.ncei.noaa.gov/products/etopo-global-relief-model)、[原字节/许可证据](../../data/geo/sources/etopo2022_n60e000_tile201.json)、[CC0原文](../../data/geo/sources/CC0-1.0.txt)。
+- 水体：[Abyssal原始项目](https://github.com/squall01337/abyssal-ocean)、[固定版本/哈希/范围](../../third_party/abyssal-ocean/UPSTREAM.json)、[MIT原文](../../third_party/abyssal-ocean/LICENSE)；历史参考：[GodotOceanWaves 来源及上游通知](https://github.com/2Retr0/GodotOceanWaves)、[MIT 许可](https://raw.githubusercontent.com/2Retr0/GodotOceanWaves/main/LICENSE)、[FFT-Ocean 原型说明](https://github.com/gasgiant/FFT-Ocean)、[MIT 许可](https://raw.githubusercontent.com/gasgiant/FFT-Ocean/master/LICENSE)。
 
 ## 3. 不进入默认白名单的资源
 
@@ -104,4 +107,4 @@ Releases 官方说明每个对象小于 2 GiB、一个 Release 最多 1000 个�
 5. 本项目 GitHub 原始文件副本、源和产物哈希、署名／许可通知全部完整后，状态才从 pending 转 approved。
 6. 在 Sonnheide 实际场景中验证近景写实、中景识别、远景 LOD、资源流送和占地／人物语义；合格许可不能替代这一步。
 
-本轮工作不下载大型第三方资源。上述名单留下的是可执行的采购路线、边界与证据，而不是已经完成的美术资产库。
+本轮已保留Abyssal准确源码与ETOPO真实源窗口，不下载整套全球DEM或大型人物/材质库；原始范围不是完整文件。上表其余条目仍是准入路线，不能写成已完成美术资产库。更细DTM与Copernicus DSM的建筑/植被偏差见[地形数据合同](../architecture/TERRAIN_AND_SITES.md)。
