@@ -226,7 +226,7 @@ async function check(name,run){await run();checks++;process.stdout.write(`PASS $
     assert.match(initial,/<h1>SONNHEIDE<\/h1>/);assert.doesNotMatch(initial,/<(?:header|footer)\b/);
     assert.doesNotMatch(initial,/class="(?:eyebrow|tagline|painting-caption|prototype-label|utilities|crest|monogram)"/);
     const navigationStyle=css.match(/\.main-nav\{([^}]+)\}/);assert.ok(navigationStyle);
-    assert.match(navigationStyle[1],/right:/);assert.match(navigationStyle[1],/bottom:/);assert.match(navigationStyle[1],/align-items:flex-end/);
+    assert.match(navigationStyle[1],/right:/);assert.match(navigationStyle[1],/top:/);assert.match(navigationStyle[1],/align-items:flex-end/);
     assert.match(css,/\.menu-action\{[^}]*text-align:right/);
   });
   await check("continue remains disabled and disclosures appear only on invocation",async()=>{
