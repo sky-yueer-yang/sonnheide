@@ -157,9 +157,9 @@ GPU 蒙皮按同 mesh/材质/骨架 LOD 批次，姿态 palette 使用受设备�
 
 生产 UI 使用 RmlUi + FreeType；Dear ImGui 限开发者面板。RmlUi 提供保留式文档、样式、布局和输入接口，我们实现 SDL3 事件桥、bgfx RenderInterface、数据绑定与行为；不导入一个浏览器或将 DOM 对象变为领域事实。RmlUi 本体是 MIT，但字体与示例资产另有许可证。[RmlUi 官方集成说明与许可证](https://github.com/mikke89/RmlUi)
 
-输入经过唯一 `InputRouter`：UI 焦点/捕获优先 → 当前工具 capture → 临时相机修饰 → 观察默认动作。一旦 pointerDown 开始 stroke/阵线/抓取，记录 capture owner，松键、出窗口、取消时由同一个 owner 清理；切模式先取消草稿。Esc 先取消未提交草稿，再退出当前工具。资源模式滚轮调笔刷；显式修饰键才缩放；空格临时平移，中键旋转。所有映射进入配置并在底部状态显示，不在不同 subsystem 各自读键盘。
+输入经过唯一 `InputRouter`：UI 焦点/捕获优先 → 当前工具 capture → 临时相机修饰 → 观察默认动作。一旦 pointerDown 开始 stroke/阵线/抓取，记录 capture owner，松键、出窗口、取消时由同一个 owner 清理；切模式终止尚未提交地图stroke，不静默丢弃对象表单。Esc按最上层窗口/地图预览/浏览层处理，脏表单保留或显式选择丢弃。资源模式滚轮调笔刷；显式修饰键才缩放；空格临时平移，中键旋转，但文本框和IME composition优先。所有映射进入配置并在底部状态显示，不在不同 subsystem 各自读键盘。全局工具按[ADR 0006](../decisions/0006-bottom-toolbar-trilingual-editing.md)集中底部分区栏，详见[UI_ARCHITECTURE](UI_ARCHITECTURE.md)。
 
-中英文、希腊码、IME composition、粘贴与 UTF-8 名称从切片 A 开始验证。FreeType 负责字形光栅化；复杂 shaping 可启用 RmlUi 的 HarfBuzz 示例字体引擎并固化适配，不能把“能加载中文字体”误认作已支持中文输入与换行。字体采用可分发 Noto Sans CJK 的指定子集/文件，逐页加载字形 atlas，避免一次栅格化全部 CJK。字号、DPI 与 atlas 页数共同受预算限制。[FreeType 许可](https://freetype.org/license.html)、[Noto CJK 字体许可](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)
+中文、英文、德文、希腊码、IME composition、粘贴与 UTF-8 名称从切片 A 开始验证。UI locale独立于游戏Language，消息、动态错误、辅助名称和工具提示按同一message key表；德文长文本/逗号小数/ÄÖÜß与中文组合输入分别验收。FreeType 负责字形光栅化；复杂 shaping 可启用 RmlUi 的 HarfBuzz 示例字体引擎并固化适配，不能把“能加载中文字体”误认作已支持中文输入与换行。字体采用可分发 Noto Sans CJK 的指定子集/文件，逐页加载字形 atlas，避免一次栅格化全部 CJK。字号、DPI 与 atlas 页数共同受预算限制。[FreeType 许可](https://freetype.org/license.html)、[Noto CJK 字体许可](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)
 
 检查器遵循统一结构：名称/归属 → 四项核心事实与当前任务 → 三至六个动作 → 可展开细节。可用动作与拒绝原因来自领域查询；UI disabled 不替代后端校验。异步加载未完成时使用自制中性代理；代理不得伪装为建筑最终美术或改变实体位置。
 
@@ -179,7 +179,7 @@ shader 源码、varying 定义、include 树、材质 schema 都进入 Git；生
 2. 一座原创 CitySquare + 原创住屋 + 一个合法人物基体；360°相机、PBR、日光阴影；基本内存稳定。
 3. 天然弯岸 + 单格人工填海 + 正交原创 Port；可行域、预览、网格版本和航路更新一致。
 4. 矿峰后的画笔仍命中原地面点；相机 0/90/180/270°、HiDPI 与多个后端投影/反投影一致；锚定夷平不漂移。
-5. 旗整体世界投影、政治层切换、占领层、国家主题色人物批次、中英文检查器与 IME 可用。
+5. 旗整体世界投影、政治层切换、占领层、国家主题色人物批次、英汉德检查器与中文 IME 可用。
 6. 连续拉远/拉近与跟随时动画/HLOD不闪切，不重置任务；选中对象优先；异步拾取不选择已回收 ID。
 7. 真实负载与长期运行记录，并证明相机/渲染开关不改变权威仿真结果。
 

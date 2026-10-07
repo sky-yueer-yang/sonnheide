@@ -46,6 +46,17 @@ World fixture() {
     record(Kind::State, 2, "Sonne"), record(Kind::Language, 3, "Sonnisch"), record(Kind::Enterprise, 4, "Textiles"),
     record(Kind::Road, 5, "Old access", Position{4, 0}), house, store, tree, record(Kind::Plant, 9, "Grass", Position{3, 0}), mineral, garment, stock, record(Kind::Document, 13, "Book"), record(Kind::State, 14, "Other state")}, 3.5);
 }
+World policy_fixture(bool imperial = false) {
+  auto state = record(Kind::State, 2, "Policy state"); state.statePolicy = StatePolicy{};
+  auto& policy = *state.statePolicy; policy.cultural = true; policy.administrationReady = true;
+  policy.religionBinding = ReligionBinding::OfficialTolerant; policy.officialReligion = ref(Kind::Religion, 3);
+  policy.unlockedLaws = {"LAW_OFFICIAL_RELIGION", "LAW_INCOME_TAX", "LAW_COMPANY_ADMISSION", "LAW_RELIGIOUS_TOLERANCE"};
+  policy.imperial = imperial; if (imperial) policy.divineGrantRoot = policy.officialReligion;
+  auto inactive = record(Kind::Religion, 5, "Archived root"); inactive.active = false;
+  auto company = record(Kind::Enterprise, 6, "Public textile company"); company.links = {{Relation::Owner, state.ref}};
+  auto stock = record(Kind::StockBatch, 7, "Real fabric"); stock.inventoryUnits = 25; stock.links = {{Relation::Owner, company.ref}};
+  return World(worldId, {{{0, 0}, {Surface::Land, 3333, 32}}}, {state, record(Kind::Religion, 3, "First root"), record(Kind::Religion, 4, "Second root"), inactive, company, stock}, 4.5);
+}
 Result send(World& world, Id id, Payload payload, Authority authority = Authority::Player) {
   return world.apply({id, world.snapshot().revision, std::move(payload)}, authority);
 }
@@ -142,6 +153,144 @@ int main() {
       auto event = record(Kind::HistoryEvent, 2, "Historical event"); auto name = record(Kind::NameRecord, 3, "Original name fact"); auto account = record(Kind::Account, 4, "Account identity");
       World world(worldId, {{{0, 0}, {}}}, {event, name, account}); const auto before = world.snapshot();
       check(send(world, 1, Rename{event.ref, "Rewrite"}).status == Status::Invalid && send(world, 2, Rename{name.ref, "Rewrite"}).status == Status::Invalid && send(world, 3, Rename{account.ref, "Rewrite"}).status == Status::Invalid && world.snapshot() == before, "free rename rewrote immutable historical/account facts");
+    });
+    test("six personality axes are bounded decision edits without changing resources body age or identity", [] {
+      auto world = policy_fixture(); const auto person = place(world, 1); relate(world, 2, person, Relation::Nationality, ref(Kind::State, 2));
+      const auto before = world.snapshot(); const Personality axes{100, 0, 83, 51, 72, 17};
+      const auto preview = world.preview_edit(SetPersonality{person, axes}, Authority::Player);
+      check(preview.status == Status::Applied && preview.affectedPeople == 1 && world.snapshot() == before, "personality preview mutated world or fabricated effect");
+      check(send(world, 3, SetPersonality{person, axes}, Authority::Scheduler).status == Status::Unauthorized, "scheduler supplied divine personality edit");
+      check(send(world, 4, SetPersonality{person, Personality{101, 0, 0, 0, 0, 0}}).status == Status::Invalid && send(world, 5, SetPersonality{ref(Kind::State, 2), axes}).status == Status::Invalid && world.snapshot() == before, "invalid trait edit partly committed");
+      const Command command{6, before.revision, SetPersonality{person, axes}};
+      const auto result = world.apply(command, Authority::Player); check(result.status == Status::Applied, "six-axis edit failed");
+      const auto once = world.snapshot(); check(world.apply(command, Authority::Player) == result && world.snapshot() == once, "trait retry duplicated history");
+      auto afterRecord = *world.inspect(person); afterRecord.personality = before.records.at(person).personality;
+      check(afterRecord == before.records.at(person) && world.inspect(ref(Kind::StockBatch, 7))->inventoryUnits == 25 && world.snapshot().cells == before.cells && world.snapshot().worldScale == before.worldScale, "traits rewrote facts or granted wealth/stock/body");
+      check(world.snapshot().history.back().detail.find("curiosity=50->100") != std::string::npos && world.validate(), "trait history lost before/after values");
+    });
+    test("religion binding has explicit roots and preserves personal faith family nationality and church property", [] {
+      auto world = policy_fixture(); const auto person = place(world, 1); relate(world, 2, person, Relation::Religion, ref(Kind::Religion, 3)); relate(world, 3, person, Relation::Nationality, ref(Kind::State, 2));
+      const auto before = world.snapshot(); const SetStateReligionBinding change{ref(Kind::State, 2), ReligionBinding::StateFaith, ref(Kind::Religion, 4)};
+      const auto preview = world.preview_edit(change, Authority::Player);
+      check(preview.status == Status::Applied && preview.affectedPeople == 1 && preview.affectedEnterprises == 1 && !preview.financialConsequencesAvailable && world.snapshot() == before, "binding preview fabricated money or changed state");
+      check(send(world, 4, change).status == Status::Applied, "ordinary state binding edit failed");
+      check(world.inspect(person) == before.records.at(person) && world.inspect(ref(Kind::StockBatch, 7)) == before.records.at(ref(Kind::StockBatch, 7)), "state conversion rewrote citizens or property");
+      check(world.follow_links(ref(Kind::State, 2)).front().ref == ref(Kind::Religion, 4), "official root does not resolve through same inspector graph");
+      check(send(world, 5, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::NoOfficial, {}}).status == Status::Applied && world.inspect(person)->links == before.records.at(person).links && world.validate(), "unbinding deleted faith or identity");
+    });
+    test("binding rejects cross-world wrong-kind inactive roots and imperial or sacred grant bypasses atomically", [] {
+      auto world = policy_fixture(); const auto before = world.snapshot();
+      check(send(world, 1, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::StateFaith, EntityRef{999, Kind::Religion, 3}}).status == Status::Invalid, "cross-world root accepted");
+      check(send(world, 2, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::StateFaith, ref(Kind::Enterprise, 6)}).status == Status::Invalid, "company mistaken for root");
+      check(send(world, 3, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::StateFaith, ref(Kind::Religion, 5)}).status == Status::Archived, "archived root accepted");
+      check(send(world, 4, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::NoOfficial, ref(Kind::Religion, 3)}).status == Status::Invalid && send(world, 5, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::SacredCrown, ref(Kind::Religion, 3)}).status == Status::Dependency && world.snapshot() == before, "invalid binding partly changed ordinary state");
+      auto empire = policy_fixture(true); const auto imperialBefore = empire.snapshot();
+      check(send(empire, 1, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::NoOfficial, {}}).status == Status::Dependency && send(empire, 2, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::OfficialTolerant, ref(Kind::Religion, 4)}).status == Status::Dependency && empire.snapshot() == imperialBefore, "imperial grant was bypassed");
+      check(send(empire, 3, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::SacredCrown, ref(Kind::Religion, 3)}).status == Status::Applied, "matching grant failed");
+      const auto sacred = empire.snapshot(); check(send(empire, 4, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::OfficialTolerant, ref(Kind::Religion, 3)}).status == Status::Dependency && empire.snapshot() == sacred, "generic form silently revoked sacred crown");
+    });
+    test("law policy approval requires exact trusted authorization and records future transition without settling economy", [] {
+      auto world = policy_fixture(); const auto person = place(world, 1); relate(world, 2, person, Relation::Nationality, ref(Kind::State, 2));
+      const StateLawProposal proposal{ref(Kind::State, 2), "LAW_INCOME_TAX", {"assessed", 1250, 90, 30}}; const auto before = world.snapshot();
+      check(world.preview_edit(SetStateLaw{proposal}, Authority::Player).status == Status::Dependency && send(world, 3, SetStateLaw{proposal}).status == Status::Dependency && world.snapshot() == before, "player bypassed constitutional authorization");
+      check(send(world, 4, AuthorizeStateLaw{proposal}).status == Status::Unauthorized, "player manufactured approval");
+      check(send(world, 5, AuthorizeStateLaw{proposal}, Authority::Scheduler).status == Status::Applied, "trusted approval failed");
+      const auto authorized = world.snapshot(); const auto preview = world.preview_edit(SetStateLaw{proposal}, Authority::Player);
+      check(preview.status == Status::Applied && preview.affectedPeople == 1 && !preview.financialConsequencesAvailable && world.snapshot() == authorized, "preview consumed approval or invented budget");
+      auto tampered = proposal; tampered.setting.rateBasisPoints = 2500;
+      check(send(world, 6, SetStateLaw{tampered}).status == Status::Dependency && world.snapshot() == authorized, "approval reused for changed tax rate");
+      const Command commit{7, authorized.revision, SetStateLaw{proposal}}; const auto result = world.apply(commit, Authority::Player);
+      check(result.status == Status::Applied && world.inspect(ref(Kind::State, 2))->statePolicy->laws.at(proposal.lawId) == proposal.setting && !world.inspect(ref(Kind::State, 2))->statePolicy->authorization, "law policy approval did not consume exact proof");
+      const auto once = world.snapshot(); check(world.apply(commit, Authority::Player) == result && world.snapshot() == once, "law retry duplicated history");
+      check(send(world, 8, SetStateLaw{proposal}).status == Status::Dependency && world.inspect(person) == before.records.at(person) && world.inspect(ref(Kind::StockBatch, 7)) == before.records.at(ref(Kind::StockBatch, 7)) && world.snapshot().day == 0 && world.snapshot().cells == before.cells && world.validate(), "policy record pretended to settle tax or reused approval");
+      check(once.history.back().action == "law_policy_approved" && once.history.back().detail.find("LAW_INCOME_TAX") != std::string::npos, "policy history omitted clause identity");
+    });
+    test("law authorization becomes stale after another commit and calendar can advance with an expired proposal", [] {
+      auto world = policy_fixture(); const StateLawProposal proposal{ref(Kind::State, 2), "LAW_COMPANY_ADMISSION", {"mixed_licensed", {}, 30, 30}};
+      check(send(world, 1, AuthorizeStateLaw{proposal}, Authority::Scheduler).status == Status::Applied, "approval failed");
+      const Command queued{2, world.snapshot().revision, SetStateLaw{proposal}};
+      check(send(world, 3, Advance{60}, Authority::Scheduler).status == Status::Applied, "expired draft stopped calendar");
+      const auto before = world.snapshot(); check(world.apply(queued, Authority::Player).status == Status::StaleRevision && send(world, 4, SetStateLaw{proposal}).status == Status::Dependency && world.snapshot() == before, "stale proof committed after world advanced");
+      auto fresh = proposal; fresh.setting.effectiveDay = 90;
+      check(send(world, 5, AuthorizeStateLaw{fresh}, Authority::Scheduler).status == Status::Applied && send(world, 6, SetStateLaw{fresh}).status == Status::Applied && world.validate(), "fresh preview/reapproval could not recover");
+    });
+    test("law values capability religion and treaty constraints reject without partial policy writes", [] {
+      auto world = policy_fixture(); const auto before = world.snapshot();
+      const auto rejected = [&](Id id, StateLawProposal proposal, Status status) { check(send(world, id, AuthorizeStateLaw{std::move(proposal)}, Authority::Scheduler).status == status && world.snapshot() == before, "invalid law partly changed policy/approval/history"); };
+      rejected(1, {ref(Kind::State, 2), "LAW_INVENTED", {"assessed", 500, 30, 30}}, Status::Invalid);
+      rejected(2, {ref(Kind::State, 2), "LAW_INCOME_TAX", {"free_money", 500, 30, 30}}, Status::Invalid);
+      rejected(3, {ref(Kind::State, 2), "LAW_INCOME_TAX", {"assessed", 10001, 30, 30}}, Status::Invalid);
+      rejected(4, {ref(Kind::State, 2), "LAW_INCOME_TAX", {"exempt", 500, 30, 30}}, Status::Invalid);
+      rejected(5, {ref(Kind::State, 2), "LAW_COMPANY_ADMISSION", {"mixed_licensed", 50, 30, 30}}, Status::Invalid);
+      rejected(6, {ref(Kind::State, 2), "LAW_COMPANY_ADMISSION", {"mixed_licensed", {}, 0, 30}}, Status::Dependency);
+      rejected(7, {ref(Kind::State, 2), "LAW_COMPANY_ADMISSION", {"mixed_licensed", {}, 30, 0}}, Status::Invalid);
+      rejected(8, {ref(Kind::State, 2), "LAW_BANKING", {"licensed_reserved", {}, 30, 30}}, Status::Dependency);
+      rejected(9, {{999, Kind::State, 2}, "LAW_INCOME_TAX", {"assessed", 500, 30, 30}}, Status::Invalid);
+      auto state = record(Kind::State, 2, "Reserved state"); state.statePolicy = StatePolicy{}; state.statePolicy->cultural = true; state.statePolicy->administrationReady = true; state.statePolicy->unlockedLaws = {"LAW_INCOME_TAX", "LAW_OFFICIAL_RELIGION"}; state.statePolicy->reservedLaws = state.statePolicy->unlockedLaws;
+      World reserved(worldId, {{{0, 0}, {}}}, {state, record(Kind::Religion, 3, "Root")}); const auto frozen = reserved.snapshot();
+      check(send(reserved, 1, AuthorizeStateLaw{{state.ref, "LAW_INCOME_TAX", {"assessed", 500, 30, 30}}}, Authority::Scheduler).status == Status::Dependency && send(reserved, 2, SetStateReligionBinding{state.ref, ReligionBinding::OfficialTolerant, ref(Kind::Religion, 3)}).status == Status::Dependency && reserved.snapshot() == frozen, "inspector overrode reserved treaty powers");
+    });
+    test("pre-cultural capabilities do not permit private property mature finance or official religion", [] {
+      auto state = record(Kind::State, 2, "Early state"); state.statePolicy = StatePolicy{}; state.statePolicy->administrationReady = true;
+      state.statePolicy->unlockedLaws = {"LAW_PROPERTY_REGIME", "LAW_BANKING", "LAW_OFFICIAL_RELIGION"};
+      World world(worldId, {{{0, 0}, {}}}, {state, record(Kind::Religion, 3, "Root")}); const auto before = world.snapshot();
+      const StateLawProposal privateProperty{state.ref, "LAW_PROPERTY_REGIME", {"private_open", {}, 30, 30}};
+      check(send(world, 1, AuthorizeStateLaw{privateProperty}, Authority::Scheduler).status == Status::Dependency && send(world, 2, AuthorizeStateLaw{{state.ref, "LAW_BANKING", {"licensed_reserved", {}, 30, 30}}}, Authority::Scheduler).status == Status::Dependency && send(world, 3, SetStateReligionBinding{state.ref, ReligionBinding::OfficialTolerant, ref(Kind::Religion, 3)}).status == Status::Dependency && world.snapshot() == before, "early capability record bypassed cultural maturity");
+      auto publicProperty = privateProperty; publicProperty.setting.option = "public";
+      check(send(world, 4, AuthorizeStateLaw{publicProperty}, Authority::Scheduler).status == Status::Applied && send(world, 5, SetStateLaw{publicProperty}).status == Status::Applied && world.validate(), "early public land policy incorrectly blocked");
+    });
+    test("all thirty-five catalog law IDs accept bounded authorized policy records with full effects explicit pending", [] {
+      const char* ids[] = {"LAW_SUCCESSION", "LAW_CENTRALISATION", "LAW_LEGISLATURE", "LAW_FISCAL_SHARE", "LAW_OFFICIAL_RELIGION", "LAW_PROPERTY_REGIME", "LAW_COMPANY_ADMISSION", "LAW_FOREIGN_COMPANY", "LAW_GROUP_OWNERSHIP", "LAW_BANKING", "LAW_CHURCH_BUSINESS", "LAW_LAND_TAX", "LAW_INCOME_TAX", "LAW_SALES_TAX", "LAW_PROFIT_TAX", "LAW_CUSTOMS", "LAW_DIVIDEND_TAX", "LAW_INHERITANCE", "LAW_INHERITANCE_TAX", "LAW_RESOURCE_FEE", "LAW_TITHE_COLLECTION", "LAW_INSOLVENCY", "LAW_EXPROPRIATION", "LAW_LABOR", "LAW_CONSCRIPTION", "LAW_MIGRATION_GENERAL", "LAW_MIGRATION_INVESTMENT", "LAW_MIGRATION_FAITH", "LAW_MIGRATION_TALENT", "LAW_RELIGIOUS_TOLERANCE", "LAW_CULTURE_POLICY", "LAW_KNOWLEDGE_RIGHTS", "LAW_SUBJECT_TREATY", "LAW_IMPERIAL_CHARTER", "LAW_TERRITORIAL_TRANSITION"};
+      auto state = record(Kind::State, 2, "Qualified imperial fixture"); state.statePolicy = StatePolicy{};
+      auto& context = *state.statePolicy; context.cultural = true; context.administrationReady = true; context.imperial = true; context.officialReligion = ref(Kind::Religion, 3); context.divineGrantRoot = context.officialReligion; context.religionBinding = ReligionBinding::OfficialTolerant;
+      for (const auto* id : ids) context.unlockedLaws.insert(id);
+      World world(worldId, {{{0, 0}, {}}}, {state, record(Kind::Religion, 3, "Root")}); Id command = 1;
+      for (const auto* id : ids) {
+        const auto* definition = law_definition(id); check(definition != nullptr, "catalog ID not implemented");
+        auto option = std::string(definition->options.substr(0, definition->options.find('|'))); if (std::string_view(id) == "LAW_OFFICIAL_RELIGION") option = "official_tolerant";
+        const StateLawProposal proposal{state.ref, id, {option, definition->rate ? std::optional<std::uint32_t>{option == "exempt" ? 0U : 2500U} : std::nullopt, 30, 30}};
+        check(send(world, command++, AuthorizeStateLaw{proposal}, Authority::Scheduler).status == Status::Applied && send(world, command++, SetStateLaw{proposal}).status == Status::Applied, "qualified bounded policy refused");
+      }
+      check(world.inspect(state.ref)->statePolicy->laws.size() == 35 && world.snapshot().day == 0 && world.validate(), "catalog records missing or tax/business rules falsely executed");
+    });
+    test("official religion policy has one canonical authority and binding changes archive superseded pending summaries", [] {
+      auto world = policy_fixture(); const StateLawProposal matching{ref(Kind::State, 2), "LAW_OFFICIAL_RELIGION", {"official_tolerant", {}, 30, 30}};
+      auto bypass = matching; bypass.setting.option = "no_official"; const auto original = world.snapshot();
+      check(send(world, 1, AuthorizeStateLaw{bypass}, Authority::Scheduler).status == Status::Dependency && world.snapshot() == original, "official law bypassed canonical root/binding");
+      check(send(world, 2, AuthorizeStateLaw{matching}, Authority::Scheduler).status == Status::Applied && send(world, 3, SetStateLaw{matching}).status == Status::Applied, "matching pending official policy failed");
+      check(send(world, 4, SetStateReligionBinding{ref(Kind::State, 2), ReligionBinding::NoOfficial, {}}).status == Status::Applied, "ordinary binding could not supersede pending summary");
+      const auto state = *world.inspect(ref(Kind::State, 2)); check(!state.statePolicy->laws.contains("LAW_OFFICIAL_RELIGION") && !state.statePolicy->officialReligion && world.snapshot().history.back().detail.find("superseded_pending_official_policy=official_tolerant") != std::string::npos && world.validate(), "two contradictory official religion authorities survived");
+    });
+    test("enabled religion dependent policies block root removal until explicit authorized deactivation", [] {
+      auto state = record(Kind::State, 2, "Bound state"); state.statePolicy = StatePolicy{}; auto& policy = *state.statePolicy;
+      policy.cultural = true; policy.administrationReady = true; policy.officialReligion = ref(Kind::Religion, 3); policy.religionBinding = ReligionBinding::StateFaith;
+      policy.unlockedLaws = {"LAW_OFFICIAL_RELIGION", "LAW_CHURCH_BUSINESS", "LAW_RELIGIOUS_TOLERANCE"};
+      World world(worldId, {{{0, 0}, {}}}, {state, record(Kind::Religion, 3, "Root"), record(Kind::Religion, 4, "Other root")});
+      const StateLawProposal church{state.ref, "LAW_CHURCH_BUSINESS", {"charter_intersection", {}, 30, 30}};
+      check(send(world, 1, AuthorizeStateLaw{church}, Authority::Scheduler).status == Status::Applied && send(world, 2, SetStateLaw{church}).status == Status::Applied, "dependent pending church policy failed");
+      const auto before = world.snapshot();
+      check(send(world, 3, SetStateReligionBinding{state.ref, ReligionBinding::NoOfficial, {}}).status == Status::Dependency && send(world, 4, SetStateReligionBinding{state.ref, ReligionBinding::StateFaith, ref(Kind::Religion, 4)}).status == Status::Dependency && world.snapshot() == before, "binding removed or reassigned pending policy root");
+      auto stop = church; stop.setting.option = "disallowed";
+      check(send(world, 5, AuthorizeStateLaw{stop}, Authority::Scheduler).status == Status::Applied && send(world, 6, SetStateLaw{stop}).status == Status::Applied && send(world, 7, SetStateReligionBinding{state.ref, ReligionBinding::NoOfficial, {}}).status == Status::Applied && world.validate(), "explicit pending-policy deactivation could not allow unbinding");
+      const StateLawProposal restriction{state.ref, "LAW_RELIGIOUS_TOLERANCE", {"state_faith_restrictions", {}, 30, 30}}; const auto unbound = world.snapshot();
+      check(send(world, 8, AuthorizeStateLaw{restriction}, Authority::Scheduler).status == Status::Dependency && world.snapshot() == unbound, "faith restrictions approved without valid state faith binding");
+    });
+    test("allocation failures preserve personality edits and exact pending law authorization for retry", [] {
+      for (int mode = 0; mode < 2; ++mode) {
+        bool finished = false; std::size_t failures = 0;
+        for (long point = 0; point < 1500; ++point) {
+          auto world = policy_fixture(); const auto person = place(world, 1);
+          const StateLawProposal proposal{ref(Kind::State, 2), "LAW_INCOME_TAX", {"assessed", 1750, 30, 30}};
+          if (mode) check(send(world, 2, AuthorizeStateLaw{proposal}, Authority::Scheduler).status == Status::Applied, "allocation fixture approval failed");
+          const Payload edit = mode ? Payload{SetStateLaw{proposal}} : Payload{SetPersonality{person, Personality{99, 98, 97, 96, 95, 94}}};
+          const Command command{3, world.snapshot().revision, edit}; const auto before = world.snapshot();
+          failAllocationAfter = point; const auto result = world.apply(command, Authority::Player); failAllocationAfter = -1;
+          if (result.status == Status::Applied) { finished = true; break; }
+          check(result.status == Status::AllocationFailure && world.snapshot() == before && world.validate(), "allocation failure leaked trait/policy/history change or consumed proof");
+          ++failures; check(world.apply(command, Authority::Player).status == Status::Applied && world.validate(), "failed edit retry could not use preserved state/proof");
+        }
+        check(finished && failures > 20, "edit allocation test did not traverse actual copy and history writes");
+      }
     });
     test("map inspection typed link navigation and filters share stable references", [] {
       auto world = fixture(); const auto person = place(world, 1, "Qian"); relate(world, 2, person, Relation::Nationality, ref(Kind::State, 2)); relate(world, 3, person, Relation::Language, ref(Kind::Language, 3));

@@ -44,10 +44,47 @@ enum class PlantClass { Tree, Other };
 enum class Relation { Nationality, Household, Home, Employer, Language, Culture, Religion,
                       Partner, Parent, Author, Owner, Controller, Custodian, Location, AccessRoad, Related };
 struct Link { Relation relation{}; EntityRef target{}; auto operator<=>(const Link&) const = default; };
+// These are decision preferences, never health, skill, income or legal qualifications.
+struct Personality {
+  std::uint32_t curiosity{50}, piety{50}, altruism{50}, riskTolerance{50}, orderliness{50}, ambition{50};
+  auto operator<=>(const Personality&) const = default;
+};
+enum class ReligionBinding { NoOfficial, OfficialTolerant, StateFaith, SacredCrown };
+struct LawSetting {
+  std::string option; std::optional<std::uint32_t> rateBasisPoints;
+  std::uint64_t effectiveDay{}; std::uint32_t transitionDays{};
+  auto operator<=>(const LawSetting&) const = default;
+};
+struct StateLawProposal {
+  EntityRef state{}; std::string lawId; LawSetting setting;
+  auto operator<=>(const StateLawProposal&) const = default;
+};
+struct LawAuthorization {
+  StateLawProposal proposal; std::uint64_t revision{};
+  auto operator<=>(const LawAuthorization&) const = default;
+};
+struct StatePolicy {
+  ReligionBinding religionBinding{ReligionBinding::NoOfficial}; std::optional<EntityRef> officialReligion;
+  // Trusted institutional context imported by this finite oracle, not editable UI values.
+  bool cultural{}, administrationReady{}, imperial{};
+  std::optional<EntityRef> divineGrantRoot;
+  std::set<std::string> unlockedLaws, reservedLaws;
+  // Approved pending policy records. No record here is an active, executed production law.
+  std::map<std::string, LawSetting> laws;
+  std::optional<LawAuthorization> authorization;
+  auto operator<=>(const StatePolicy&) const = default;
+};
+struct LawDefinition {
+  std::string_view id, options; bool rate{}, needsReligion{}, needsDivineGrant{}, early{};
+  std::uint32_t minimumTransitionDays{};
+};
+// IDs match the immutable 35-law catalog; these are bounded policy-record choices.
+const LawDefinition* law_definition(std::string_view id);
 struct Record {
   EntityRef ref{}; std::string name; std::vector<std::string> previousNames; bool active{true}; std::optional<Position> position;
   Origin origin{Origin::None}; Sex sex{Sex::Male}; std::uint64_t initialAgeDays{}, ageDays{}, createdDay{};
   BodySpec body{}; PlantClass plantClass{PlantClass::Other};
+  Personality personality{}; std::optional<StatePolicy> statePolicy;
   std::vector<Link> links; std::uint64_t inventoryUnits{};
   std::vector<Position> protectedAccess;
   auto operator<=>(const Record&) const = default;
@@ -62,12 +99,20 @@ struct PlacePerson { std::string name; Position position{}; Sex sex{}; auto oper
 struct Birth { std::string name; EntityRef firstParent{}, secondParent{}; Sex sex{}; auto operator<=>(const Birth&) const = default; };
 struct Rename { EntityRef target{}; std::string name; auto operator<=>(const Rename&) const = default; };
 struct SetRule { Rule rule{}; bool enabled{}; auto operator<=>(const SetRule&) const = default; };
+struct SetPersonality { EntityRef target{}; Personality value; auto operator<=>(const SetPersonality&) const = default; };
+struct SetStateReligionBinding {
+  EntityRef target{}; ReligionBinding binding{}; std::optional<EntityRef> religion;
+  auto operator<=>(const SetStateReligionBinding&) const = default;
+};
+struct AuthorizeStateLaw { StateLawProposal proposal; auto operator<=>(const AuthorizeStateLaw&) const = default; };
+struct SetStateLaw { StateLawProposal proposal; auto operator<=>(const SetStateLaw&) const = default; };
 struct FormPartners { EntityRef first{}, second{}; auto operator<=>(const FormPartners&) const = default; };
 struct SetRelation { EntityRef source{}; Relation relation{}; EntityRef target{}; auto operator<=>(const SetRelation&) const = default; };
 enum class ClearCategory { Trees, Plants, Minerals, Buildings, Roads, People };
 struct Clear { ClearCategory category{}; std::vector<EntityRef> targets; auto operator<=>(const Clear&) const = default; };
 struct Advance { std::uint64_t days{}; auto operator<=>(const Advance&) const = default; };
-using Payload = std::variant<PlacePerson, Birth, Rename, SetRule, FormPartners, SetRelation, Clear, Advance>;
+using Payload = std::variant<PlacePerson, Birth, Rename, SetRule, SetPersonality,
+  SetStateReligionBinding, AuthorizeStateLaw, SetStateLaw, FormPartners, SetRelation, Clear, Advance>;
 struct Command { Id id{}; std::uint64_t expectedRevision{}; Payload payload; auto operator<=>(const Command&) const = default; };
 enum class Status { Applied, Invalid, Unauthorized, StaleRevision, CommandConflict, NotFound,
                     Archived, Capacity, Dependency, WrongWriter, Limit, AllocationFailure };
@@ -77,6 +122,7 @@ struct Result {
 };
 struct HistoryEntry {
   Id command{}; std::uint64_t day{}; std::vector<EntityRef> subjects; std::string action;
+  std::string detail;
   auto operator<=>(const HistoryEntry&) const = default;
 };
 struct Snapshot {
@@ -92,6 +138,13 @@ struct Statistics {
   EntityRef scope{}; std::uint64_t day{}, revision{}, livePeople{}, archivedPeople{}, placedPeople{}, bornPeople{}, adults{};
   std::uint64_t physicalItems{}, itemUnits{};
   auto operator<=>(const Statistics&) const = default;
+};
+struct EditPreview {
+  Status status{Status::Invalid}; std::uint64_t revision{};
+  std::vector<EntityRef> subjects; std::uint64_t affectedPeople{}, affectedEnterprises{};
+  bool financialConsequencesAvailable{};
+  std::vector<std::string> consequenceKeys;
+  auto operator<=>(const EditPreview&) const = default;
 };
 
 // Finite headless interaction oracle, not the production economy/navigation/save system.
@@ -110,6 +163,8 @@ public:
   std::vector<Record> search(const Search& query) const;
   std::vector<Record> follow_links(EntityRef ref) const;
   std::vector<Statistics> compare(const std::vector<EntityRef>& scopes) const;
+  // Supported edit previews are detached and never consume command IDs or authorizations.
+  EditPreview preview_edit(const Payload& payload, Authority authority) const;
   bool validate() const;
 private:
   struct Storage;

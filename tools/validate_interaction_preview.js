@@ -362,4 +362,173 @@ test("player markers persist in a separate view snapshot and clearing them never
   assert.deepEqual(plain(store.inspectReferences()), []);
 });
 
-process.stdout.write("Validated " + count + " interaction scenarios from the shipped HTML model.\n");
+
+
+test("interface locales share all messages and are exact offline mirrors", () => {
+  const registry = JSON.parse(fs.readFileSync(path.join(root,"data/ui_locales.json"),"utf8"));
+  const embedded = JSON.parse(html.match(/<script id="world-inspector-locales" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+  assert.deepEqual(embedded, registry.messages);
+  assert.deepEqual(Object.keys(registry.messages).sort(), ["de","en","zh"]);
+  const keys = Object.keys(embedded.zh).sort();
+  ["en","de"].forEach(locale => assert.deepEqual(Object.keys(embedded[locale]).sort(),keys));
+  M.KINDS.forEach(kind=>assert.ok(embedded.en["kind."+kind] && embedded.de["kind."+kind]));
+  M.LAW_IDS.forEach(id=>assert.ok(embedded.en["law."+id] && embedded.de["law."+id]));
+  M.LAW_DEFINITIONS.forEach(d=>d.options.forEach(option=>assert.ok(embedded.en["option."+option] && embedded.de["option."+option])));
+  assert.deepEqual(plain(M.FRONTEND_SECTIONS),["observe","people","civilization","construction","economy","world","settings"]);
+});
+
+test("UI locale changes preserve simulation language, object names and world draft revision", () => {
+  const store=fresh(),refs=store.fixtureRefs(),before=worldSnapshot(store),draft=store.beginEdit(refs.person);
+  ["en","de","zh"].forEach(locale=>{store.setLocale(locale);assert.equal(store.locale(),locale);assert.equal(worldSnapshot(store),before);assert.equal(store.resolve(refs.language).name,"青岬语");});
+  expectUnchanged(store,()=>store.setLocale("fr"),/语言无效/);
+  draft.fields.traits.curiosity=95;store.commitEdit(draft);assert.equal(store.resolve(refs.person).traits.curiosity,95);
+});
+
+test("six personality axes are bounded independent integers and cannot grant traits or property", () => {
+  const store=fresh(),ref=store.fixtureRefs().person;
+  const draft=store.beginEdit(ref);M.TRAIT_IDS.forEach(axis=>draft.fields.traits[axis]=100);store.commitEdit(draft);
+  assert.deepEqual(plain(store.resolve(ref).traits),Object.fromEntries(plain(M.TRAIT_IDS).map(axis=>[axis,100])));
+  [-1,101,1.5,"50"].forEach(value=>{const bad=store.beginEdit(ref);bad.fields.traits.curiosity=value;expectUnchanged(store,()=>store.commitEdit(bad),/0–100/);});
+  const extra=store.beginEdit(ref);extra.fields.traits.immortal=1;expectUnchanged(store,()=>store.commitEdit(extra),/0–100/);
+  const missing=store.beginEdit(ref);delete missing.fields.traits.piety;expectUnchanged(store,()=>store.commitEdit(missing),/0–100/);
+});
+
+test("state religion edits validate refs and preserve citizens, faith and church property", () => {
+  const store=fresh(),refs=store.fixtureRefs(),person=plain(store.resolve(refs.person)),church=plain(store.resolve(refs.church));
+  let draft=store.beginEdit(refs.state);draft.fields.religionBinding="state_faith";draft.fields.officialReligion=refs.religion;store.commitEdit(draft);
+  assert.equal(store.resolve(refs.state).religionBinding,"state_faith");assert.ok(M.sameRef(store.resolve(refs.state).officialReligion,refs.religion));
+  draft=store.beginEdit(refs.state);draft.fields.religionBinding="no_official";draft.fields.officialReligion=null;store.commitEdit(draft);
+  assert.deepEqual(plain(store.resolve(refs.person)),person);assert.deepEqual(plain(store.resolve(refs.church)),church);
+  [null,refs.person,{...plain(refs.religion),world_id:"foreign"}].forEach(religion=>{const bad=store.beginEdit(refs.state);bad.fields.religionBinding="state_faith";bad.fields.officialReligion=religion;expectUnchanged(store,()=>store.commitEdit(bad),/Religion|kind|跨世界/);});
+  const sacred=store.beginEdit(refs.state);sacred.fields.religionBinding="sacred_crown";sacred.fields.officialReligion=refs.religion;expectUnchanged(store,()=>store.commitEdit(sacred),/资格/);
+  const forged=store.beginEdit(refs.state);forged.fields.divineGrantRoot=refs.religion;expectUnchanged(store,()=>store.commitEdit(forged),/字段不可编辑/);
+});
+
+test("all 35 law schemas match and a proposal needs exact one-use Scheduler authorization", () => {
+  const schema=JSON.parse(fs.readFileSync(path.join(root,"data/interaction_schema.json"),"utf8"));
+  assert.deepEqual(plain(M.LAW_DEFINITIONS),schema.editing_contract.state_laws.definitions);
+  const store=fresh(),refs=store.fixtureRefs(),draft=store.beginEdit(refs.state);
+  draft.fields.laws.LAW_INCOME_TAX={option:"assessed",rateBasisPoints:1500,effectiveDay:90,transitionDays:90};
+  expectUnchanged(store,()=>store.commitEdit(draft),/Scheduler批准/);
+  expectUnchanged(store,()=>store.authorizeLawDraft(draft,"player"),/可信Scheduler/);
+  const before=worldSnapshot(store);store.authorizeLawDraft(draft,"scheduler");assert.equal(worldSnapshot(store),before);
+  draft.fields.laws.LAW_INCOME_TAX.rateBasisPoints=1600;
+  expectUnchanged(store,()=>store.commitEdit(draft),/Scheduler批准/);
+  store.authorizeLawDraft(draft,"scheduler");store.commitEdit(draft);
+  assert.equal(store.resolve(refs.state).laws.LAW_INCOME_TAX.rateBasisPoints,1600);
+  expectUnchanged(store,()=>store.commitEdit(draft),/过期/);
+  assert.equal(store.resolve(refs.person).fields.食物单位,5);
+});
+
+test("invalid tax rates, options, dates and unapproved capability cannot partially change country religion", () => {
+  const store=fresh(),refs=store.fixtureRefs();
+  const cases=[{option:"invalid",rateBasisPoints:0,effectiveDay:30,transitionDays:30},{option:"assessed",rateBasisPoints:10001,effectiveDay:30,transitionDays:30},{option:"exempt",rateBasisPoints:1,effectiveDay:30,transitionDays:30},{option:"assessed",rateBasisPoints:500,effectiveDay:29,transitionDays:30},{option:"assessed",rateBasisPoints:500,effectiveDay:30,transitionDays:1}];
+  cases.forEach(setting=>{const draft=store.beginEdit(refs.state);draft.fields.religionBinding="state_faith";draft.fields.officialReligion=refs.religion;draft.fields.laws.LAW_INCOME_TAX=setting;expectUnchanged(store,()=>store.authorizeLawDraft(draft,"scheduler"),/法条|税率/);expectUnchanged(store,()=>store.commitEdit(draft),/法条|税率/);});
+  ["unlocked","constitution","treaty"].forEach(mode=>{const fixture=M.createFixture(),r=fixture.fixtureRefs,state=fixture.objects[r.state.id];if(mode==="unlocked")state.unlockedLawIds=[];if(mode==="constitution")state.constitutionalApproval=false;if(mode==="treaty")state.reservedLawIds=["LAW_INCOME_TAX"];const s=M.createStore(fixture),draft=s.beginEdit(r.state);draft.fields.laws.LAW_INCOME_TAX={option:"assessed",rateBasisPoints:500,effectiveDay:30,transitionDays:30};expectUnchanged(s,()=>s.authorizeLawDraft(draft,"scheduler"),/能力|批准|条约/);});
+});
+
+test("imperial and sacred roots cannot be removed through ordinary edits", () => {
+  const fixture=M.createFixture(),refs=fixture.fixtureRefs,state=fixture.objects[refs.state.id];state.religionBinding="sacred_crown";state.officialReligion=refs.religion;state.divineGrantRoot=refs.religion;state.imperial=true;
+  const store=M.createStore(fixture),draft=store.beginEdit(refs.state);draft.fields.religionBinding="no_official";draft.fields.officialReligion=null;
+  expectUnchanged(store,()=>store.commitEdit(draft),/合法程序/);
+});
+
+// A small DOM adapter executes the shipped UI script itself, rather than a duplicate UI model.
+class TestElement {
+  constructor(tag,document){this.tagName=tag.toUpperCase();this.document=document;this.children=[];this.attributes={};this.listeners={};this.style={};this.hidden=false;this.disabled=false;this._value=undefined;this.textContent="";this.isConnected=true;}
+  append(...children){children.forEach(child=>{this.children.push(child);child.parentElement=this;});}
+  replaceChildren(...children){this.children=[];this.append(...children);}
+  setAttribute(key,value){this.attributes[key]=String(value);}
+  getAttribute(key){return this.attributes[key];}
+  addEventListener(type,listener){(this.listeners[type]||(this.listeners[type]=[])).push(listener);}
+  fire(type){(this.listeners[type]||[]).slice().forEach(listener=>listener({target:this,key:null,preventDefault(){},stopPropagation(){}}));}
+  focus(){this.document.activeElement=this;}
+  getClientRects(){return [{}];}
+  querySelectorAll(selector){const tags=selector.split(",").map(x=>x.trim().toUpperCase());const found=[];const walk=node=>node.children.forEach(child=>{if(tags.includes(child.tagName)||(selector.includes("tabindex")&&child.attributes.tabindex==="0"))found.push(child);walk(child);});walk(this);return found;}
+  set value(v){this._value=String(v);}
+  get value(){if(this._value!==undefined)return this._value;if(this.tagName==="SELECT"){const selected=this.children.find(x=>x.selected)||this.children[0];return selected?selected.value:"";}return "";}
+}
+function uiFixture(){
+  const document={activeElement:null,listeners:{},documentElement:{lang:""},addEventListener(type,listener){(this.listeners[type]||(this.listeners[type]=[])).push(listener);},createElement(tag){return new TestElement(tag,this);},createElementNS(ns,tag){return new TestElement(tag,this);}};
+  const roots={};["world-inspector-locales","app-title","prototype-label","app-hint","disclaimer","status-bar","toolbar-sections","toolbar-tools","dock-hint","world-map","map-mode-label","map-hint","inspector","object-content","object-title","object-tabs","nav-back","nav-forward","inspector-close","nav-position","favorite-current","dialog-title","modal-close","modal","dialog-content","toast"].forEach(id=>{roots[id]=new TestElement("div",document);roots[id].id=id;});
+  roots["modal"].hidden=true;roots["world-inspector-locales"].textContent=html.match(/<script id="world-inspector-locales" type="application\/json">([\s\S]*?)<\/script>/)[1];
+  document.getElementById=id=>{if(roots[id])return roots[id];let result=null;const walk=node=>{if(node.id===id)result=node;node.children.forEach(walk);};Object.values(roots).forEach(walk);return result;};
+  const ctx=vm.createContext({document,setTimeout(){return 1;},clearTimeout(){}});vm.runInContext(extract("world-inspector-model"),ctx);vm.runInContext(extract("world-inspector-ui"),ctx);return{ctx,document,roots,P:ctx.SonnheideInspectorPreview};
+}
+
+test("actual UI keeps global tools in bottom groups and cancels placement when switching section", () => {
+  const {document,roots}=uiFixture();document.getElementById("section-people").fire("click");document.getElementById("tool-spawn").fire("click");assert.ok(document.getElementById("tool-cancel"));
+  document.getElementById("section-world").fire("click");assert.equal(document.getElementById("tool-cancel"),null);assert.ok(document.getElementById("tool-clear"));assert.equal(roots.modal.hidden,true,"Section must not automatically arm clear");
+  const footer=html.match(/<footer class="tool-dock"[\s\S]*?<\/footer>/)[0];assert.ok(footer.includes("toolbar-sections")&&footer.includes("toolbar-tools"));
+  assert.ok(!html.includes("top-actions")&&!html.includes('class="panel directory"'));
+});
+
+test("actual UI preserves dirty form through section and locale changes, then guards close", () => {
+  const {document,roots,P}=uiFixture(),before=worldSnapshot(P.store);P.openObject(P.store.fixtureRefs().person);
+  const edit=roots["object-tabs"].children.find(button=>button.textContent==="编辑");edit.fire("click");let name=document.getElementById("edit-name");name.value="保留草稿";name.fire("input");
+  document.getElementById("section-settings").fire("click");assert.equal(document.getElementById("edit-name").value,"保留草稿");document.getElementById("tool-locale").fire("click");document.getElementById("locale-en").fire("click");assert.equal(document.getElementById("edit-name").value,"保留草稿");assert.equal(document.documentElement.lang,"en");
+  document.getElementById("locale-de").fire("click");assert.equal(document.getElementById("edit-name").value,"保留草稿");assert.equal(document.documentElement.lang,"de");assert.equal(worldSnapshot(P.store),before);
+  document.getElementById("modal-close").fire("click");document.getElementById("inspector-close").fire("click");assert.equal(roots["dialog-title"].textContent,"Es gibt einen nicht angewandten Entwurf");assert.equal(roots.inspector.hidden,false);
+});
+
+
+
+test("pre-cultural capability alone cannot enable private property or religious institutions", () => {
+  const fixture=M.createFixture(),refs=fixture.fixtureRefs,state=fixture.objects[refs.state.id];state.cultural=false;state.laws={};
+  const store=M.createStore(fixture),draft=store.beginEdit(refs.state);draft.fields.laws.LAW_PROPERTY_REGIME={option:"public",rateBasisPoints:null,effectiveDay:30,transitionDays:30};store.authorizeLawDraft(draft,"scheduler");store.commitEdit(draft);
+  const bad=store.beginEdit(refs.state);bad.fields.laws.LAW_PROPERTY_REGIME.option="private_open";expectUnchanged(store,()=>store.authorizeLawDraft(bad,"scheduler"),/前文化/);
+  const religion=store.beginEdit(refs.state);religion.fields.religionBinding="state_faith";religion.fields.officialReligion=refs.religion;expectUnchanged(store,()=>store.commitEdit(religion),/文化/);
+});
+
+test("religion changes supersede old official-policy summaries and require dependency transitions", () => {
+  const fixture=M.createFixture(),refs=fixture.fixtureRefs,state=fixture.objects[refs.state.id];state.religionBinding="state_faith";state.officialReligion=refs.religion;state.laws.LAW_OFFICIAL_RELIGION={option:"state_faith",rateBasisPoints:null,effectiveDay:30,transitionDays:30};
+  const store=M.createStore(fixture),draft=store.beginEdit(refs.state);draft.fields.religionBinding="official_tolerant";store.commitEdit(draft);const after=store.resolve(refs.state);assert.equal(after.laws.LAW_OFFICIAL_RELIGION,undefined);assert.equal(after.supersededLaws[0].option,"state_faith");assert.ok(after.history.some(h=>h.source==="state:policy_superseded"));
+  const f=M.createFixture(),r=f.fixtureRefs,s=f.objects[r.state.id];s.religionBinding="state_faith";s.officialReligion=r.religion;s.laws.LAW_CHURCH_BUSINESS={option:"charter_intersection",rateBasisPoints:null,effectiveDay:30,transitionDays:30};const st=M.createStore(f),unbinding=st.beginEdit(r.state);unbinding.fields.religionBinding="no_official";unbinding.fields.officialReligion=null;expectUnchanged(st,()=>st.commitEdit(unbinding),/停用|过渡/);
+});
+
+test("actual German directory search uses localized type labels", () => {
+  const {document,roots,P}=uiFixture();P.store.setLocale("de");document.getElementById("tool-search").fire("click");const search=document.getElementById("search");search.value="Sprache";search.fire("input");const buttons=roots["dialog-content"].querySelectorAll("button");assert.ok(buttons.some(b=>b.textContent.includes("青岬语")));
+});
+
+
+test("actual UI preserves unsaved readonly-object notes through locale changes and guards navigation", () => {
+  const {document,roots,P}=uiFixture();P.openObject(P.store.fixtureRefs().account);
+  roots["object-tabs"].children.find(button=>button.textContent==="编辑").fire("click");const note=document.getElementById("edit-note");note.value="等待核对的未保存备注";note.fire("input");document.getElementById("section-settings").fire("click");document.getElementById("tool-locale").fire("click");document.getElementById("locale-en").fire("click");assert.equal(document.getElementById("edit-note").value,note.value);document.getElementById("modal-close").fire("click");P.openObject(P.store.fixtureRefs().state);assert.equal(roots["dialog-title"].textContent,"You have an unapplied draft");assert.equal(P.store.current().kind,"account");
+});
+
+
+test("actual preview lists only actual changes, with explicit before and after values", () => {
+  const {P,document,roots}=uiFixture(),ref=P.store.fixtureRefs().person;P.openObject(ref);
+  roots["object-tabs"].children.find(button=>button.textContent==="编辑").fire("click");
+  const draft=P.store.beginEdit(ref);draft.originalFields=JSON.stringify(draft.fields);assert.deepEqual(plain(P.draftChanges(draft)),[]);
+  draft.fields.traits.curiosity=95;assert.deepEqual(plain(P.draftChanges(draft)),[{label:"求知",before:70,after:95}]);
+  const preview=roots["object-content"].querySelectorAll("button").find(b=>b.textContent==="预览变更");preview.fire("click");assert.equal(roots["dialog-content"].children[0].textContent,"草稿没有实际变化，无需提交。");assert.ok(roots["dialog-content"].querySelectorAll("button").find(b=>b.textContent==="提交草稿").disabled);
+  document.getElementById("modal-close").fire("click");const axis=document.getElementById("trait-curiosity");axis.value="95";axis.fire("input");preview.fire("click");assert.equal(roots["dialog-content"].children[0].textContent,"实际变更1项；确认后一起提交。");
+  const change=roots["dialog-content"].children.find(child=>child.attributes["data-change"]==="true");assert.equal(change.children[0].textContent,"求知");assert.equal(change.children[1].children[0].textContent,"70");assert.equal(change.children[1].children[2].textContent,"95");
+});
+
+test("new, changed and removed laws preview all parameters, including unchanged law-count tax edits", () => {
+  const {P}=uiFixture(),ref=P.store.fixtureRefs().state;P.store.setLocale("en");
+  const draft=P.store.beginEdit(ref);draft.originalFields=JSON.stringify(draft.fields);draft.fields.laws.LAW_INCOME_TAX={option:"assessed",rateBasisPoints:1250,effectiveDay:90,transitionDays:90};
+  let changes=plain(P.draftChanges(draft));assert.equal(changes.length,4);assert.ok(changes.every(row=>row.label.startsWith("Personal Income Tax · ")));assert.deepEqual(changes.map(row=>row.after),["Assessed","1250","90","90"]);assert.ok(changes.every(row=>row.before==="Not recorded"));
+  draft.originalFields=JSON.stringify(draft.fields);draft.fields.laws.LAW_INCOME_TAX.rateBasisPoints=1500;changes=plain(P.draftChanges(draft));assert.deepEqual(changes,[{label:"Personal Income Tax · Rate / share (basis points, 100=1%)",before:"1250",after:"1500"}]);
+  draft.originalFields=JSON.stringify(draft.fields);delete draft.fields.laws.LAW_INCOME_TAX;changes=plain(P.draftChanges(draft));assert.equal(changes.length,4);assert.ok(changes.every(row=>row.after==="Not recorded"));assert.ok(changes.some(row=>row.before==="1500"));
+});
+
+test("state edit controls have explicit translated accessible labels and war status stays outside its name", () => {
+  const {P,document,roots}=uiFixture();P.store.setLocale("de");P.openObject(P.store.fixtureRefs().state);roots["object-tabs"].children.find(button=>button.textContent==="Bearbeiten").fire("click");
+  assert.equal(document.getElementById("edit-religion-binding").attributes["aria-label"],"Staat-Religion-Regelung");assert.equal(document.getElementById("edit-official-religion").attributes["aria-label"],"Offizielle Religion");assert.equal(document.getElementById("law-rate-LAW_INCOME_TAX").attributes["aria-label"],"Einkommensteuer · Satz / Anteil (Basispunkte, 100=1 %)");
+  assert.equal(P.store.resolve(P.store.fixtureRefs().war).name,"北岸战争");
+});
+
+
+test("actual UI resets scroll for new objects and tabs but preserves same-page locale and section scroll", () => {
+  const {P,document,roots}=uiFixture();P.openObject(P.store.fixtureRefs().state);
+  roots["object-tabs"].children.find(button=>button.textContent==="编辑").fire("click");roots["object-content"].scrollTop=340;
+  document.getElementById("section-settings").fire("click");assert.equal(roots["object-content"].scrollTop,340);
+  document.getElementById("tool-locale").fire("click");document.getElementById("locale-en").fire("click");assert.equal(roots["object-content"].scrollTop,340,"Locale re-render must preserve same-object same-tab scroll");document.getElementById("modal-close").fire("click");
+  roots["object-tabs"].children.find(button=>button.textContent==="Relations").fire("click");assert.equal(roots["object-content"].scrollTop,0,"New tab must start at its first field");roots["object-content"].scrollTop=180;
+  P.openObject(P.store.fixtureRefs().person);assert.equal(roots["object-content"].scrollTop,0,"New object must not inherit the previous object's scroll");roots["object-tabs"].children.find(button=>button.textContent==="Edit").fire("click");assert.equal(roots["object-content"].scrollTop,0);assert.ok(document.getElementById("edit-name"));
+  roots["object-content"].scrollTop=120;document.getElementById("tool-locale").fire("click");document.getElementById("locale-de").fire("click");assert.equal(roots["object-content"].scrollTop,120);
+});
+process.stdout.write("Validated " + count + " total model and shipped-UI interaction scenarios.\n");

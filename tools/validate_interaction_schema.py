@@ -63,10 +63,33 @@ def validate(root):
     require(all(body[k] is False for k in ('age_dependent_mesh_scale', 'child_body_or_rig', 'growth_size_purchase')), 'child/age size profiles returned')
     require(schema['statistics_contract']['unavailable_is_zero'] is False, 'missing statistics fabricated as zero')
     require(set(schema['clear_tools']['categories']) == {'trees', 'plants', 'mineral_resources', 'buildings', 'roads', 'people'}, 'unsafe clear mask')
+    editing = schema['editing_contract']
+    require(editing['atomic_form_commit'] and editing['preview_requires_expected_revision'], 'unversioned/non-atomic editor')
+    personality = editing['personality']
+    require(personality['axes'] == ['curiosity', 'piety', 'altruism', 'risk_tolerance', 'orderliness', 'ambition'], 'source personality axes drift')
+    require(personality['minimum'] == 0 and personality['maximum'] == 100 and personality['default'] == 50, 'unbounded personality')
+    require(personality['age_origin_body_fit_read_only'], 'personality edit rewrites body or origin')
+    religion = editing['state_religion']
+    require(religion['options'] == ['no_official', 'official_tolerant', 'state_faith', 'sacred_crown'], 'religion status drift')
+    require(religion['no_official_requires_null'] and religion['otherwise_requires_active_typed_religion'] and religion['resident_faith_unchanged'], 'unsafe religious binding')
+    laws = editing['state_laws']
+    catalog = json.loads((root / 'data/catalogs/laws.json').read_text(encoding='utf-8'))['laws']
+    definitions = laws['definitions']
+    law_ids = {law['id'] for law in definitions}
+    require(len(definitions) == len(law_ids) == laws['count'] == 35 and law_ids == {law['id'] for law in catalog}, 'law editor/source catalog mismatch')
+    require(laws['exact_trusted_authorization_required'] and laws['authorization_bound_to_revision_and_exact_proposal'] and laws['authorization_consumed_once'], 'law approval may be forged or reused')
+    require(laws['money_and_inventory_mutation'] is False, 'policy record claims financial settlement')
+    for law in definitions:
+        require(law['options'] and len(law['options']) == len(set(law['options'])), 'empty/duplicate law options')
+        require(0 <= law['rate_basis_points_min'] <= law['rate_basis_points_max'] <= 10000, 'invalid law rate bounds')
+        require(0 < law['minimum_transition_days'] <= law['maximum_transition_days'] <= 3600, 'invalid transition bounds')
+        require(law['status'] == 'bounded_policy_record_oracle_full_legal_effects_pending', 'full legal effects falsely implemented')
     # The code registry is checked for missing kinds; behavioral safety is exercised by C++/JS tests.
     code = (root / 'engine/src/interaction.cpp').read_text(encoding='utf-8')
     array = re.search(r'names\s*\{(.*?)\};', code, re.S)
     require(array is not None and set(re.findall(r'"([a-z_]+)"', array.group(1))) == kinds, 'C++ inspector registry drift')
+    law_array = re.search(r'lawDefinitions\s*\{\{(.*?)\}\};', code, re.S)
+    require(law_array is not None and set(re.findall(r'"(LAW_[A-Z_]+)"', law_array.group(1))) == law_ids, 'C++ law editor registry drift')
     for path in ('docs/architecture/CONTENT_PIPELINE.md', 'docs/architecture/CLOTHING_ECONOMY.md', 'docs/research/MAKEHUMAN_ECOSYSTEM.md'):
         content = (root / path).read_text(encoding='utf-8')
         require(not any(old in content for old in ('成人、儿童比例分别制作', '儿童使用独立、适合年龄', '成人/儿童各有正确比例', '不共用同一组骨长度')), 'obsolete body requirement: ' + path)

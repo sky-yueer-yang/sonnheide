@@ -13,6 +13,9 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |五类共享基础、经济起步、调度、文化、战争与规模|[仿真架构](docs/architecture/SIMULATION.md)|
 |真实地球、投影、岸线、格网、填海与导航|[世界工程](docs/architecture/WORLD.md)|
 |原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
+|底部分区工具栏、地图窗口与英汉德交互|[最新前端ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)、[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[WorldBox参考](docs/research/WORLDBOX_FRONTEND.md)|
+|初步程序目录、构建目标与单一事实接入|[程序结构](docs/architecture/CLIENT_STRUCTURE.md)|
+|40类字段编辑、人物六轴、国家宗教与35法族|[编辑矩阵](docs/architecture/EDITING.md)、[机器合同](data/interaction_schema.json)|
 |材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
 |真实高程、长方体地基、人/车入口与邻楼保护|[最新变更ADR 0003](docs/decisions/0003-terrain-and-site-access.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
 |早期服装业、实物衣物/耐久、购买排序与原创军装|[服装变更ADR 0004](docs/decisions/0004-clothing-and-makehuman.md)、[服装经济](docs/architecture/CLOTHING_ECONOMY.md)|
@@ -24,12 +27,15 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |人物/动作/植物/水体/材质/地理资源及许可证|[资产来源](docs/research/ASSET_SOURCES.md)|
 |构建、GitHub/LFS/Releases、协作与交付|[工程运维](docs/architecture/ENGINEERING.md)|
 |切片顺序、必须先验证的实验与通过标准|[开发路线](docs/planning/ROADMAP.md)|
+|10阶段完整施工，建筑和美术在前两阶段启动|[完整施工计划](docs/planning/IMPLEMENTATION_PLAN.md)|
 |工程风险、决策与当前验证边界|[风险清单](docs/planning/RISKS.md)、[架构决策](docs/decisions/0001-foundation.md)、[验证记录](docs/planning/VALIDATION.md)|
 |原始游戏规则，逐字保留与SHA-256来源|[设计基线v0.6](docs/design/Sonnheide_Complete_Design_v0.6.md)、[来源清单](data/catalogs/design_source.json)|
 
 ## 已经落地
 
 本轮新增[集中交互ADR 0005](docs/decisions/0005-unified-inspectors-and-world-tools.md)、[全域信息/编辑合同](docs/architecture/INTERACTION.md)与[40种页面registry](data/interaction_schema.json)。[可点击信息页原型](tools/previews/world-inspector.html)可直接在浏览器离线打开：近景人物→国籍国家→城市/企业/语言等关联页面；远景点国家区域；世界统计/比较、规则、收藏/标记、分类清理、18岁玩家放置与0岁繁衍演示。原型使用明确标注的示例数据，不是可玩的3D世界或生产RmlUi客户端。
+
+本轮前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。[初步程序结构](docs/architecture/CLIENT_STRUCTURE.md)和[10阶段施工计划](docs/planning/IMPLEMENTATION_PLAN.md)将原创建筑、成年人物/服装及UI美术提前，不先创建空目录。
 
 独立C++ `sonnheide_interaction` oracle验证人口来源、全龄同BodySpec、typed引用/档案、单写者原子命令、世界规则、去重统计及清理保护；它尚未连接kernel、服装Ledger、完整法务/交通或生产存档。所有新增人物只允许玩家亲自放置（固定18岁）或合法繁衍（0岁）；年龄不生成儿童体型。
 

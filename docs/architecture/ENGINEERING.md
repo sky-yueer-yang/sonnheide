@@ -17,6 +17,8 @@
 
 新增生产目录只在有功能时创建。后续依次新增platform、renderer、content-cooker、people等；不是先写一百个空hpp。
 
+最新初步程序结构见[CLIENT_STRUCTURE](CLIENT_STRUCTURE.md)，完整施工顺序见[IMPLEMENTATION_PLAN](../planning/IMPLEMENTATION_PLAN.md)；原创建筑/人物/服装/UI美术与平台/权威World接入并行起步。底部分区栏、英汉德消息与富编辑分别按[UI_ARCHITECTURE](UI_ARCHITECTURE.md)及[EDITING](EDITING.md)。当前项目JSON/HTML本地化镜像由Python标准库校验，实际原型行为由可选Node内建模块验证；Node不是发行游戏运行时依赖。
+
 ## 2. 构建与依赖
 
 当前仅C++标准库/Python标准库，所以无需联网获取依赖即可编译已有切片。Python3.9+兼容；CMake3.24+、C++20编译器。CMake负责生产构建图，`tools/build.py`提供当前macOS/Linux编译器回退，Windows用MSVC/CMake。[CMake官方Preset规范](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)

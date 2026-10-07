@@ -1133,10 +1133,16 @@
       ],
       "procedural_edits": [
         {
+          "action": "religion_binding",
+          "label": "宗教地位与绑定",
+          "command": "SetStateReligionBinding",
+          "policy": "active_root_capability_reserved_powers_and_divine_grant_checked_no_mass_conversion"
+        },
+        {
           "action": "change_law",
           "label": "依法改法",
           "command": "ChangeStateLaw",
-          "policy": "domain_rules_preview_and_single_writer"
+          "policy": "35_catalog_ids_bounded_parameters_unlock_approval_reserved_powers_transition_preview"
         },
         {
           "action": "appointment",
@@ -6538,7 +6544,8 @@
         "payload_type": "SetPersonalityPayload",
         "authority_source": "player",
         "scope": "world_transaction",
-        "implementation_status": "specified_not_production"
+        "implementation_status": "specified_not_production",
+        "independent_oracle_coverage": "implemented_and_tested_bounded_six_axes"
       },
       {
         "kind": "SetCultureAffinity",
@@ -6714,7 +6721,8 @@
         "payload_type": "ChangeStateLawPayload",
         "authority_source": "player",
         "scope": "world_transaction",
-        "implementation_status": "specified_not_production"
+        "implementation_status": "specified_not_production",
+        "independent_oracle_coverage": "implemented_policy_record_and_exact_authorization_only_full_law_effects_pending"
       },
       {
         "kind": "ChangeOfficialReligion",
@@ -7611,6 +7619,15 @@
         "authority_source": "player",
         "scope": "world_transaction",
         "implementation_status": "specified_not_production"
+      },
+      {
+        "kind": "SetStateReligionBinding",
+        "category": "procedural_action",
+        "payload_type": "SetStateReligionBindingPayload",
+        "authority_source": "player",
+        "scope": "world_transaction",
+        "implementation_status": "specified_not_production",
+        "independent_oracle_coverage": "implemented_and_tested_binding_checks"
       }
     ],
     "rename_allowed_kinds": [
@@ -7675,7 +7692,12 @@
     "rules_save_resume_deterministic",
     "life_clear_exactly_one_death",
     "building_and_road_clear_preserve_access",
-    "mineral_clear_preserves_height_and_extracted_stock"
+    "mineral_clear_preserves_height_and_extracted_stock",
+    "six_personality_axes_bounded_no_body_qualification_supply_mutation",
+    "state_binding_no_mass_conversion_no_church_asset_transfer",
+    "law_catalog_id_and_typed_value_validation",
+    "exact_trusted_law_authorization_one_use_revision_binding",
+    "edit_preview_no_revision_receipt_or_history_mutation"
   ],
   "sources": [
     {
@@ -7698,5 +7720,724 @@
       "role": "rule_reference",
       "url": "https://the-official-worldbox-wiki.fandom.com/wiki/World_Laws"
     }
-  ]
+  ],
+  "editing_contract": {
+    "version": 1,
+    "ui_modes": [
+      "direct_divine_edit",
+      "institutional_procedure",
+      "observer_note",
+      "read_only_fact"
+    ],
+    "atomic_form_commit": true,
+    "unknown_consequences": "unavailable_not_zero",
+    "preview_requires_expected_revision": true,
+    "personality": {
+      "field": "traits",
+      "oracle_type": "Personality",
+      "command": "SetPersonality",
+      "axes": [
+        "curiosity",
+        "piety",
+        "altruism",
+        "risk_tolerance",
+        "orderliness",
+        "ambition"
+      ],
+      "value_type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 50,
+      "mutually_exclusive_axes": [],
+      "effects": "decision_preferences_only_no_health_skill_wealth_or_qualification_grant",
+      "age_origin_body_fit_read_only": true
+    },
+    "state_religion": {
+      "command": "SetStateReligionBinding",
+      "binding_field": "religionBinding",
+      "religion_field": "officialReligion",
+      "options": [
+        "no_official",
+        "official_tolerant",
+        "state_faith",
+        "sacred_crown"
+      ],
+      "no_official_requires_null": true,
+      "otherwise_requires_active_typed_religion": true,
+      "cultural_administration_and_capability_required": true,
+      "resident_faith_unchanged": true,
+      "church_assets_unchanged": true,
+      "imperial_or_sacred_root_change": "separate_downgrade_or_reauthorization_procedure_not_generic_form",
+      "new_sacred_crown_requires_matching_divine_grant": true,
+      "reserved_treaty_scope_cannot_be_overridden": true,
+      "canonical_current_authority": "religionBinding_and_officialReligion",
+      "official_law_record": "pending_summary_must_match_canonical_binding_conflicts_explicitly_superseded_in_preview_and_history",
+      "enabled_dependent_policies_on_unbind_or_root_change": "reject_until_explicit_authorized_deactivation_or_production_transition",
+      "restrictive_faith_rights_require_binding": [
+        "state_faith",
+        "sacred_crown"
+      ]
+    },
+    "state_laws": {
+      "field": "laws",
+      "command": "ChangeStateLaw",
+      "oracle_command": "SetStateLaw",
+      "catalog": "data/catalogs/laws.json",
+      "count": 35,
+      "definition_status": "additional_bounded_policy_record_values_not_full_law_implementation",
+      "record_fields": [
+        "option",
+        "rateBasisPoints",
+        "effectiveDay",
+        "transitionDays"
+      ],
+      "record_shape": "map_by_stable_law_id",
+      "exact_trusted_authorization_required": true,
+      "trusted_authorization_command": "AuthorizeStateLaw",
+      "authorization_not_from_player_payload": true,
+      "authorization_bound_to_revision_and_exact_proposal": true,
+      "authorization_consumed_once": true,
+      "minimum_effective_day": "current_day_plus_transition_days",
+      "maximum_day": 360000000,
+      "unlocked_capability_required": true,
+      "constitutional_approval_required": true,
+      "reserved_treaty_powers_checked": true,
+      "income_tax_assessed_rate": "only_bounded_policy_summary_progressive_bands_not_yet_implemented",
+      "money_and_inventory_mutation": false,
+      "definitions": [
+        {
+          "id": "LAW_SUCCESSION",
+          "options": [
+            "hereditary",
+            "elective",
+            "restricted_elective"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_CENTRALISATION",
+          "options": [
+            "central",
+            "local",
+            "member_union"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_LEGISLATURE",
+          "options": [
+            "decree",
+            "estates",
+            "charter_council",
+            "parliament"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_FISCAL_SHARE",
+          "options": [
+            "local_first",
+            "fixed_share",
+            "central_budget"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": true,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_OFFICIAL_RELIGION",
+          "options": [
+            "no_official",
+            "official_tolerant",
+            "state_faith",
+            "sacred_crown"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_PROPERTY_REGIME",
+          "options": [
+            "public",
+            "mixed",
+            "private_open"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": true,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_COMPANY_ADMISSION",
+          "options": [
+            "public_only",
+            "mixed_licensed",
+            "private_licensed"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_FOREIGN_COMPANY",
+          "options": [
+            "closed",
+            "host_registration"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_GROUP_OWNERSHIP",
+          "options": [
+            "disallowed",
+            "licensed_acyclic"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_BANKING",
+          "options": [
+            "disallowed",
+            "licensed_reserved"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_CHURCH_BUSINESS",
+          "options": [
+            "disallowed",
+            "charter_intersection"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": true,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_LAND_TAX",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_INCOME_TAX",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_SALES_TAX",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_PROFIT_TAX",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_CUSTOMS",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_DIVIDEND_TAX",
+          "options": [
+            "exempt",
+            "withheld_credit"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_INHERITANCE",
+          "options": [
+            "public_custody",
+            "legal_heirs"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_INHERITANCE_TAX",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_RESOURCE_FEE",
+          "options": [
+            "exempt",
+            "assessed"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_TITHE_COLLECTION",
+          "options": [
+            "disallowed",
+            "protected_payable"
+          ],
+          "rate_basis_points_required": true,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": true,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_INSOLVENCY",
+          "options": [
+            "court_exit",
+            "supervised_restructure"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_EXPROPRIATION",
+          "options": [
+            "disallowed",
+            "compensated"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_LABOR",
+          "options": [
+            "public_assignment",
+            "single_contract"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_CONSCRIPTION",
+          "options": [
+            "voluntary",
+            "bounded_adult_duty"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": true,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_MIGRATION_GENERAL",
+          "options": [
+            "closed",
+            "registered_residence"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_MIGRATION_INVESTMENT",
+          "options": [
+            "closed",
+            "locked_real_capital"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_MIGRATION_FAITH",
+          "options": [
+            "closed",
+            "sponsored_membership"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": true,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_MIGRATION_TALENT",
+          "options": [
+            "closed",
+            "verified_skill_slot"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_RELIGIOUS_TOLERANCE",
+          "options": [
+            "tolerant",
+            "state_faith_restrictions"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_CULTURE_POLICY",
+          "options": [
+            "registered_nonempty_set"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_KNOWLEDGE_RIGHTS",
+          "options": [
+            "public_access",
+            "licensed_access"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_SUBJECT_TREATY",
+          "options": [
+            "explicit_reserved_scope"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_IMPERIAL_CHARTER",
+          "options": [
+            "divine_charter"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": true,
+          "requires_divine_grant": true,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        },
+        {
+          "id": "LAW_TERRITORIAL_TRANSITION",
+          "options": [
+            "rights_preserving_transition"
+          ],
+          "rate_basis_points_required": false,
+          "rate_basis_points_min": 0,
+          "rate_basis_points_max": 10000,
+          "exempt_rate_must_be_zero": true,
+          "minimum_transition_days": 30,
+          "maximum_transition_days": 3600,
+          "requires_official_religion": false,
+          "requires_divine_grant": false,
+          "available_before_culture": false,
+          "status": "bounded_policy_record_oracle_full_legal_effects_pending"
+        }
+      ],
+      "record_lifecycle": "approved_pending_domain_execution_never_active_production_law",
+      "disabled_options_do_not_require_official_religion": [
+        "disallowed",
+        "closed"
+      ],
+      "official_religion_option_must_match_canonical_binding": true,
+      "pre_cultural_property_options": [
+        "public"
+      ]
+    },
+    "oracle_scope": [
+      "personality_transaction",
+      "religion_binding_transaction",
+      "law_proposal_authorization",
+      "bounded_law_policy_record_approval",
+      "detached_edit_preview"
+    ],
+    "production_scope_pending": [
+      "full_legal_service",
+      "constitution_vote_service",
+      "treaty_service",
+      "tax_bands_and_assessment",
+      "transition_exit_jobs",
+      "money_and_goods_settlement",
+      "personality_behavior_in_native_world"
+    ],
+    "batch": {
+      "shared_supported_fields_only": true,
+      "expected_revision_per_target": true,
+      "explicit_preview_groups": true,
+      "no_implicit_partial_commit": true,
+      "invalid_targets_have_actionable_reasons": true
+    }
+  }
 }

@@ -2,6 +2,8 @@
 
 本合同落实 [ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)。机器注册表为 [interaction_schema.json](../../data/interaction_schema.json)。注册不等于对应生产领域已实现；可运行展示原型、独立有界 oracle、完整 World 接入分别登记证据。
 
+最新布局、英汉德三语与富编辑变更见[ADR 0006](../decisions/0006-bottom-toolbar-trilingual-editing.md)、[前端结构](UI_ARCHITECTURE.md)与[编辑矩阵](EDITING.md)。40类注册保持；全局入口改为地图中心的底部分区工具栏，目录按需打开，对象窗口保留局部页签、关系与编辑。程序/阶段见[CLIENT_STRUCTURE](CLIENT_STRUCTURE.md)及[施工计划](../planning/IMPLEMENTATION_PLAN.md)。
+
 ## 1. UI 与核心之间只有一份事实
 
 ```text

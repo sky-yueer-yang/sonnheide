@@ -10,6 +10,7 @@ import struct
 import import_etopo_sample
 import import_makehuman_sources
 import validate_interaction_schema
+import validate_ui_locales
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -145,6 +146,7 @@ def main():
     require(character["source_manifest"] == import_makehuman_sources.MANIFEST and character["game_ready"] is False and character["program_code_imported"] is False, "MakeHuman source scope mismatch")
     import_makehuman_sources.verify(ROOT)
     interaction_summary = validate_interaction_schema.validate(ROOT)
+    ui_summary = validate_ui_locales.validate(ROOT)
     # Check actual relative Markdown links, excluding URLs, anchors and inline examples.
     for path in [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md"))]:
         if path == ROOT / provenance["source"]:
@@ -156,6 +158,7 @@ def main():
             require((path.parent / base).exists(), "Broken local link in {}: {}".format(path, target))
     print("PASS: pinned Abyssal MIT sources, offline real ETOPO sample, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, selected MakeHuman sources, documentation links")
     print("PASS: " + interaction_summary)
+    print("PASS: " + ui_summary)
 
 
 
