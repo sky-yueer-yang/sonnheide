@@ -1,0 +1,238 @@
+# 服装经济、真实衣橱与角色资源合同
+
+本文件落实 [ADR 0004](../decisions/0004-clothing-and-makehuman.md)。这是生产设计与有限经济 oracle 的对照合同；现有世界仍没有完整人物物流/资本市场/服装渲染。原稿及提取目录逐字保留，用明确 runtime overlay 覆盖原 20.2 极简服饰和晚期抽象衣物规则。
+
+## 1. 六个真正的缺口
+
+|边界|错误捷径|必须证明的事情|
+|初期行业起步|服装也卡大学、金工、私企与专用流水线|家户/公共手工可用真实纤维、劳动做基本衣物|
+|高优先非致死|所有消费优先买衣或缺衣降低粮食供给资格|粮房预算先保留，缺衣只形成需要/不舒适而不致死|
+|规范与劳动|没正装不准上班，收入停掉无法买衣|规范只增购买优先级，出勤/岗位/工资完全不受缺衣影响|
+|耐久与市场|按人口年年刷新购买，修一次变永久新品|整数寿命、有限 repair、旧物继承损耗、真实替换缺口|
+|有限衣橱与资本|每种款式都要一件、十厂抢同一需要|容量/在途/备用共同扣除，实名需求/已批产能去重|
+|开放人物规模|全站素材都当 CC0，每人加载独立人体/衣库|逐文件来源、体型/组合验证、共享数据与分层 LOD|
+
+## 2. 文明、文化与消费阶段
+
+`State.phase=PRE_CULTURAL` 与 `CULTURAL` 是已有社会正式化事实。前文化有 State、劳动、住房和 Army，不等于已文化化。Culture 与 Language 独立；Primary Genesis 的共同创建不允许之后用是否有 LanguageId 代替文明状态。Secondary Culture/改宗/迁居不自动造衣。
+
+生产层由正式社区/CULTURAL 转变与个人正式文化接纳建立 `ClothingNeedActivation`：正式社区居民的需要由社区阶段驱动，已文化化个人迁到其他地区也不会丢掉已有服装需要。它只发布需要/基本工艺组织任务，不能创建衣物或改变国籍。具体居民/临时来客的公共配给资格由既有居留、家庭和预算规则决定，不以“Culture=国籍”混同。
+
+阶段与衣物现实状态分开：
+
+|情形|基础表现/需要|物理变更|
+|前文明|黑内裤；女性另有黑胸罩；基本生活覆盖|fallback 不创造商品，已有实际衣物仍可使用|
+|初期文化文明/上古|高优先 T 恤与短裤需要；基础 T 恤合法国家色、短裤白|家户/公共生产与真实交付后装备，不能 Genesis 免费换全身|
+|后期多样消费|已知/可供应款式、自由色与个人偏好|有预算和容量才买；不存在全目录一次性需求|
+|公司正装规范|提高合适正装购买优先级|无现货也能启用成熟规范；未穿正装仍正常工作|
+|军队服役|真实原创军装发放/维修需要|服务 State、所有权与 issue contract，非个人国籍替代|
+
+fallback 是最低覆盖的共享表现，不属于 StockBatch/GarmentInstance，不满足文明服装 need，不结算寿命、不用于转卖/修补/军装/正装合规。它与破损真实衣物不会互相复制：实际衣物耗尽仍退役，不能通过换到 fallback 再装备重置 condition。
+
+## 3. 有限品类与可扩展衣橱
+
+生产先定义有限功能类别，再增加美术选择。最低覆盖、日常上/下装、连身衣、外层、鞋、有限头部附件等用固定 slot/coverage mask；连身衣占多个槽，不能同时叠两件有冲突的主服。初期只需少量款式，后期可逐步引入衬衫、长裤、裙/连衣裙、外套、背心、正装与鞋帽；新增品类仍要材料/工艺/fit/层次合同，不随职业自动免费换装。复杂布料物理、无上限首饰或逐人任意雕衣不是本轮目标。
+
+每人/家户的容量包含已拥有的可穿衣物、备用、借用/雇主保管套装和为其预约/在途的到货槽。可作为起点的配置是 6 件，硬上限 12 件；生产多槽方案再由实际尺寸/配给需求校准。数量是游戏值，不是法规或完成平衡。强制用途若占满容量，先完成合法转卖/归还/退役或调整可支持容量，不能凭空删掉另一件衣物。
+
+同一套实体衣物可以同时满足“日常遮蔽”和“正装偏好”，不能因此要求再买一套日常装。个人可拥有有限备用；满足当前和短期合理替换后，时尚订单属于有预算的可选升级，而不是无限基本需要。
+
+```text
+GarmentDefinition
+  productId, functionalFamilyId, recipeVersion, knowledgeRequirements
+  coverageMask, slotConflicts, size/FitProfile, layerCompatibility
+  qualityClass, initialCondition, wearProfile, repairLimit
+  styleOptions, colourMode, renderingAssetBindings
+
+GarmentInstance / homogeneous WearCohort
+  stableId, product/recipe/qualityVersion, quantity
+  legalOwner, custodian, location, reservation/issueContract
+  condition, permanentWear/repairAdded, decayRemainder
+  lastWearTick, activeWearContext, colour/fit/style
+```
+
+库存同批、同版本、同损耗可按 cohort 记录，不对库存每件强制建人物级对象。装备、二手转移、修补或独立磨损前拆分 cohort，原量与新量守恒。游戏商品、资产文件、mesh、材质和皮肤 ID 不是同一 ID。贴图变更不能修改容量、拥有者、价格回执或 condition。
+
+## 4. 产业链与公共起步
+
+|环节|早期实际执行|后续改良与成本|
+|植物纤维|已有农田/可持续采集作业生产有限纤维|土地/劳动/产率受既有规则约束，不能库存不足就生纤维|
+|纺线|家户/公共手工纺制|F1101 的工具/效率版本，真实工装与维护|
+|织布|简易手工织造，纤维/线＋劳动→布|F1102 与机器能力；只按最短板生产|
+|裁剪/缝制|布＋有时间预算的真实劳动→具体款式|F1103/F1106 的版型、做法与质量要求|
+|染整|可追溯有限染料与劳动，或合法默认基础识别参数|F1104，物理自由色有投入；不增加炼油工业树|
+|修补/二手/回收|真实旧衣、布/劳动、转移或回收任务|F1105 的耐久与回收质量版本，输出小于可回收投入|
+|分配/出售|公共实物配给或真实买方订单，实际提取/搬运|CitySquare 账本、合法私企、交通、市场与税务|
+
+植物纤维、线、布、染料、回收纤维使用有限 commodity 目录。早期实现可把线合并在织布 recipe 中，但必须记录输入产出，不以“抽象工艺”免掉原料/劳动。默认不为服装添加羊群生态或独立化工/炼油系统。已有社会任务先供粮与维持基础物流，再分配基本制衣劳动；不是同时给一个农工、军人和裁缝三份全天产能。
+
+制度顺序仍为共同供给→公营专业化→混合企业。家户/公共工坊不用工商注册、银行和工资货币才能缝衣；使用口粮/住房权益和劳动记录。零货币价格公共发放也是有来源的物资出库，配给权不能复制衣物。成熟私人服装企业满足法律、资本、劳动、投入、交通和真实订单门槛后成立，不把基本服装业整体推迟到 T036 晚期文化消费。
+
+供应不足时可以实际进口、增加有材料的公共作业、修补、使用二手或节约新款；没有资源时缺口继续存在。不得随机送衣、按年刷新衣柜、给公共主体无限预算或为某家厂保证固定利润。
+
+## 5. 科技、版型与生产线兼容
+
+原始目录仍是 40 项能力突破、96 谱系、288 个改良槽。`T015 Craft Training` 依赖教育 T006 与制造 T014，适用于专业工艺，不能成为基础手工制衣门锁。基础 recipe 以现有生活技能和文明起步实践的 runtime overlay 启动。
+
+|原有节点|服装 runtime overlay 的用途|
+|T015|专业工匠训练与复杂工艺，不否定早期手工|
+|F1101/F1102|纺线/织布装置及同槽有界效率|
+|F1103/F1104|裁剪、染整知识与可追溯投入|
+|F1105|耐久/质量、修补和回收规则，不能所有效果同时翻倍|
+|F1106|服装版型/制作方法；正装知识/规范可用 F1106-S3 具体版本|
+|T025/既有生产线|成熟专用流水线；早期公共手工无需先购买它|
+|T031|私营法人准入；不是全社会开始穿衣的前置|
+
+正装发明是可传播的 Knowledge/Blueprint/standard 记录，不是“某年以后所有人必然知道”。公司/制作者分别验证 Awareness、Access、Competence、License、Adoption；从开放网站下载 mesh 不等于游戏内取得制造知识。法律规范/版型改变保留作者与历史版本。
+
+同一服装家族的小尺寸、颜色和兼容裁片调整是 recipe/config/changeover，不各建一条昂贵完整流水线；织布机改汽车线仍是新家族。版型超出设备/工艺兼容组时需真实调校或新工装。生产线只消耗一次实际工装成本，改名/换颜色不能返还材料刷资产。新工艺只影响之后实际采用的产品，旧衣的 recipe、耐久、质量与已付成本不被全世界研究事件重写。
+
+## 6. 预算和需要排序
+
+生产账本优先保护食物、住房、必要安全/已有义务与紧急基本衣物：
+
+```text
+essentialReserve = food + housing + configuredCriticalObligations
+spendable = max(0, funds − essentialReserve − existingEscrow)
+purchaseOrder: urgentBasicCoverage → necessaryReplacement/repair
+               → employerFormalPreference → optionalStyle/qualityUpgrade
+```
+
+这里的`funds`指现金与本人已有托管款合计；若账本直接提供已扣预约款的`freeCash`，则用`max(0, freeCash − essentialReserve)`，不能再次扣同一escrow。有限Ledger的`reserve`已经从个人现金扣款，采用后一种算法。
+
+同一家庭所有成员共享资金保护，不能每人看到全部家庭现金各下一个订单。需要并非可支付订单；超过预算、没现货/通道或没有可用槽的 desire 可被记录，不能计成已经签约收入。正装排序高于时尚，但无可买正装不导致全家庭资金冻结、禁止别的合法消费或强制欠债。
+
+缺衣不直接扣生命、不使人因服装资格失去食物/住房/基本劳动，也不创建随机病害。它可形成可解释的基本需要未满足与舒适缺口，数值影响后续校准；不得绕道使用“工作产能归零→饿死”恢复被用户禁止的硬阻断。
+
+公司自愿补贴、租借、发衣是独立真实采购/转移合同，不覆盖所有公司的常规成本。若补贴承诺失败，记录合同事实并按既有责任处理，员工仍正常工作。免费实物来自真实公共/雇主库存，而非需求函数生成。
+
+## 7. 正装规范的精确语义
+
+`EmployerDressPreference` 是已采用的着装规范，不是 `WorkEligibility`。启用条件为公司实际可得蓝图/规范、能力/许可与采用版本成熟；**没有库存或发放能力仍可启用**。所有价格、尺码与供应困难影响购买满足程度，不影响员工出勤、工资、岗位或进楼。
+
+员工穿适用旧正装即可满足偏好；没穿时检查器显示“正装购买优先”，按可负担需求排序。缺货、资金不足、在途、刚改变规范、衣物损坏或没有雇主福利均不设置倒计时禁入、不扣工资、不解雇、不处罚。此语义没有宽限到期后的隐藏硬约束。
+
+雇主可自愿出资、补贴、借出服装或组织团购；这些措施不成为政策生效门槛。员工可继续取得工资来购买正装，公共裁缝/农工/搬运服务也照常供给，从而避免“无衣→无工作→无工资→无衣”的因果环。实际劳动时间仍受既有通勤/服役/受伤/任务占用约束，正常工作不意味着一天可无限注入劳动。
+
+## 8. 实际订单、交付与需求去重
+
+```text
+NeedIntent → FeasibleOrder → Stock/Funds/DeliverySlotReserved
+           → Dispatch → InTransit → Delivered → Equipped
+                              ↘ delayed / returned / cancelled legally
+```
+
+订单绑定真实产品、质量、fit、所需 style/colour、付款主体和交付者，不从“库存总共还有衣服”随机拿一件不适用物品。源库存、在途、衣柜只有一份；款项预约不是已成交货物，dispatch/放料动画不是自动收货。退货/取消释放未发生部分，已在途按真实地点恢复，不瞬移回店。
+
+基本需要计算时先选择可用已穿/衣柜备用或修补计划，再减该功能覆盖的有效预约/在途。规范需要使用同一覆盖关系；已买合格套装同时满足基本与正装时只算一份。建议 `NeedKey=(person/household, coverageRequirement, purposeEpoch)`、replacement generation 与稳定订单 ID 去重；喜好改变不为同一槽连续创建未交付订单。
+
+市场容量只累计可支付、可交付的实名缺口，减现有适用库存、已有生产/维修承诺、在建获批产能与预留项目份额。十家工厂并行预览同一缺口时，批准事务检查共同容量版本并锁份额；不能十家都称自己有全额订单。预计未来衣物寿命产生预测，不等于已经收到未来现金。
+
+二手卖方也必须取得同一实际库存/所有权预约；商品描述带 condition、累积 repair、fit 与版本。生产二手/回收和复杂市场撮合尚需接入，不把有限 oracle 的 workshop stock 购买写成完整二手市场。
+
+## 9. 耐久、修补、旧衣与升级
+
+穿着/活动、储存、运输和工序有固定 wear profile。只按仿真时间或真实活动分段结算，保留 integer remainder：
+
+```text
+numerator = oldRemainder + rate × elapsedTicks
+loss = numerator / denominator
+newRemainder = numerator % denominator
+condition = max(0, condition − loss)
+```
+
+活动/穿脱/交付/修补切换时先积分到准确 tick，再换 profile；跨一个替换阈值时安排实际到期事件，不能某个粗 dt 一口气错过消费与订单。相同活动时间线下分割 dt 与一次积分一致，LOD 或离屏不暂停磨损。
+
+实际闭环：
+
+- **继续穿**：仍有 condition 与所需覆盖/fit，可暂不购买新款。
+- **换备用**：装备已有实体，旧衣移到有限衣橱，不能复制已穿 item。
+- **修补**：旧衣进入修补任务，消耗布/劳动/款项；有效恢复量受累计上限/不可逆寿命约束。穿着与修补不能同一件同时使用。
+- **转卖/借用**：保留 ID、剩余 condition、repair history 与权利；新主人不获得新品寿命。借用不等于产权变更。
+- **升级/改尺寸/染色**：真实工序与投入；小改不刷新耐久，重做等价替换须消费新料并结算旧衣去向。
+- **退役/回收**：只结算一次，回收产出受剩余可回收质量与损耗限制，不能回收出超过投入的全新纤维。无回收配方时记为真实报废。
+
+优质衣物寿命更长可以降低长期购买频率，修补也可以减少新品销售。二手市场不是必然压垮行业，工艺/款式/收入增长也不保证每厂扩张；企业真实收入来自已成交衣物、维修等服务，不以硬编码需求保证利润。
+
+储存老化是否计入由 profile 明确配置；生产可采用低/零储存损耗。不能为了消费循环强迫未穿库存高速损坏。本轮 oracle 的不同穿着/非穿着率只是初始校准，用于测试长期替换与 dt 一致，尚非平衡结论。
+
+## 10. 国籍、服役国家与颜色
+
+|表现通道|绑定|不能代替它的字段|
+|上古基础 T 恤国家识别|法定 `primaryStateId`；无当前国家时最近合法色/中性白|物理所在地、城市控制者、Culture、宗教、雇主|
+|上古短裤|白；内层默认覆盖黑|把世界升时代当免费物资换装|
+|后期自由衣物|实物选择的 style/PhysicalColour|强制所有国民和所有衣服继续国家色|
+|原创军装主识别|`Army.servingStateId` 与实际 issue contract/制服定义|外籍兵法定国籍、驻扎国、占领国|
+
+IdentityTheme 与 PhysicalColour 分开：国家识别读取合法 State/theme 参数，旗/主题变化不会创造或修复实物衣物；自由染色是有材料和工时的实际改制。国家主题色仍属于旗中实际合法颜色，不新增任意国家 RGB，也不把买衣颜色反向写入国旗。
+
+军装所有国家同款 geometry/cut；源与自制配方保留原创证明。可共享骨架/材质技术和明确许可的通用布料纹理，但军装几何、剪裁/识别构件不从外部制服套件改名。服役国改变时检查既有制服的 issue/owner/themeCountry，不把旧部队的物品瞬间改给新部队；归还/购买/再发放按真实合同。失去军装也不改变 Person 国籍/Army ID，不由衣物函数裁定死亡。
+
+不另加外国兵第二套主体国家制服；个人国籍由检查器/既有身份显示。一个军装主色只有一个合法服役来源，防止把法定身份和服役关系揉成一个 affiliation。
+
+## 11. MakeHuman 资产与人物服装管线
+
+实际锁定与逐文件证据见 [makehuman_sources.json](../../assets/manifests/makehuman_sources.json)：核心人体/骨架/权重来自 MakeHuman v1.3.0，commit `1f508f6083b2f823dab15de924b3bde72e08d77c`。上游 [分项 LICENSE](../../assets/source/third_party/makehuman/core/LICENSE.md) 区分程序 AGPL 与核心图形 CC0；本项目只导入核验过的图形源。MPFB v2.0.17 commit `80919fa4682335c41847f761a4d79dcad4124732` 是离线 Blender 工具（最低 Blender 4.2），程序 GPL-3.0-or-later，不进入 runtime。
+
+当前选择的 [shirts01](https://static.makehumancommunity.org/assets/assetpacks/shirts01.html) 男/女基础 T 恤和 [pants01](https://static.makehumancommunity.org/assets/assetpacks/pants01.html) 短裤条目按官方逐项 CC0 核验。仅文本源/必要原字节成员归档不等于完整 ZIP/贴图/游戏角色已导入；缺失贴图、hm08 targets、眼睛/头发、导出与 fit 验证仍需落实。牛仔短裤源码不直接作为上古白短裤输出，适配内容保留新配方和哈希。
+
+其他社区素材均逐项核验作者、许可版本、原文件和相应 attribution。包名含 cc0、免费下载或 MakeHuman 支持导入不构成许可；已知有以 cc0 命名却条目使用 CC-BY 的包，不能整体批准。具体 [候选许可状态](../../assets/manifests/makehuman_candidates.json) 与 [生态取入研究](../research/MAKEHUMAN_ECOSYSTEM.md) 保留冲突/缺件事实；胸罩、完整正装与其他晚期服装没有来源与完整 runtime 证据时标候选，不能宣称已经交付。原始可再分发来源、转换脚本、manifest 与 notices 一起在 GitHub/LFS/Releases 保存。
+
+```text
+verified source → fixed body/age FitProfiles → rig/weights cleanup
+ → garment fit + layer/coverage tests → glTF exchange
+ → runtime asset compile + LOD/body masks → shared renderer bindings
+```
+
+基体 helpers 与非游戏部件在导出时去除；原始权重需要归一化、骨名映射及 runtime influences 上限验证。成人/儿童各有正确比例和 fit，不把成人整体缩放当儿童。简易人物也保持正确覆盖，fallback 和实物 slot 并存时不会因 LOD 切换露出被屏蔽的身体区域。
+
+每件 garment 绑定有限 `FitProfile/shapeBucket` 与 canonical skeleton，通过共享 mesh/weights、材质图集/数组与 tint 参数批次化。层次表/身体遮罩声明可兼容组合；walking/carrying/turning/enter/vehicle 坐姿等 reference poses 验证穿插。换肤/LOD 和物理 condition 表现只读快照，不从动画 marker 产出衣服或扣经济耐久。
+
+## 12. 事件化性能与存档
+
+不能每 tick 对全人口衣柜遍历全部衣物，也不能预生成“每人×每款×每色×每体型”的 mesh。热数据只保 equipped IDs、coverage/condition 摘要、下次阈值与小数量备用；库存 cohort 与冷历史分池。进门隐藏、镜头远离、战略 LOD 不停止寿命。
+
+穿脱/活动/所有权/政策改变触发小范围需要重算；衣物阈值用事件队列或时间桶，替换/退休按固定顺序处理；整城市场清算按日/更粗周期汇总实名需求。整数余数/lastWearTick/上下文保存在权威存档。预算耗尽返回待计算/延后，不创造一次需求或停止损耗。
+
+存档保存商品/配方/fit/颜色模式、所有者/保管/位置、quantity/cohort splits、condition/repair/remainder、穿着槽、订单/escrow/运输、公共配给/issue、偏好/规范知识与采用版本、next IDs 与相应 hash。派生 mesh/渲染 LOD 不保存为经济真相。
+
+旧极简服装存档没有实物衣物：保留旧世界 profile 或作显式一次迁移。迁移不能每次加载免费补衣；若选择把旧显示衣服转成初始遗留实物，必须登记一次有标识的 MigrationEndowment、物资/所有权/寿命来源与 schema 标记，明确它是版本迁移而非经济生产。更换开放资产文件不重置旧衣寿命或改变其国籍绑定。
+
+## 13. 有限 C++ oracle 与未实现部分
+
+当前 [clothing.hpp](../../engine/include/sonnheide/clothing.hpp)/[clothing.cpp](../../engine/src/clothing.cpp) 是独立 headless `Ledger`，尚未连接 production World 的 commands、日历、Person 全任务/交通、知识图、税务、资本或存档。
+
+实际接口包括 `add_person/add_workshop/add_employer`、可信材料 handoff `supply`、有限 Person 劳动/工资 `work`、可信蓝图采用 `adopt(workshop, era, formalDesign, uniformDesign)`、`weave/sew`、`demands/reserve/dispatch/deliver/cancel`、`equip/retire/repair/advance` 及工作/穿着状态查询。`return_order` 要求可信输入证明在途实物已返抵原卖家后才退款；`return_issued` 要求实际归还原机构，不能转雇主吞掉旧制服。个人`retire`只允许处置本人所有的衣物，机构借用品不能由穿用者直接报废绕过归还；自动寿命耗尽仍按损耗规则退役。已交付/取消的订单不再标在途，escrow归零。完整返程路网尚未实现。`Person.civilized` 是可信上层阶段输入，`Era{Primitive,Ancient,Later}` 是有限产品层级，不从 Language/国籍推导；`set_civilization` 不创造衣物。生产 Cultural/State 触发与实际知识采用尚需接入。
+
+有限模型只有 `Slot{Lower,Upper}` 和 10 种 product，上限衣柜、真实 cloth/material 消耗、订单/资金预约与累计 repair。初始 `condition=10000`、`replacementCondition=2500`、累计修补恢复最多 3000、每次最多 2000；整数分钟与余数构成步长一致检查。Person 现金保护食物/住房，生产共享家户资金与更完整安全义务另行接入。
+
+有限 `Need{Basic,FormalPriority,WorkSupply,Preference}` 区分个人正装排序与机构实际发放。Formal 默认由个人购买，`Employer.suppliesFormal` 是可选福利；Uniform 使用实际服役机构的发放需求。`work_admitted` 不读取穿着合规来裁决工作/工资。场景见 [clothing_tests.cpp](../../tests/clothing_tests.cpp)；固定人数/原料/工资/价格下的多年闭环压力测试证明这些有限守恒和替换规则可重复运行，不证明真实世界经济平衡、市场资本或永久利润。
+
+本轮 14 组 oracle 场景包含 100 人、100 个 360 游戏日年（30 日月×12 月）的有限原料循环：实际制衣 34,400 件、成交款 1,720,000、工资 1,376,000，初始 200,000 纤维剩 62,400；每年有实际替换交易。它使用 oracle 的游戏分钟，日历映射由生产 TimeConfig 接入，不能当成现实 365 日年或实时间性能。严格编译与 ASan/UBSan 验证的是这套小模型，不是完整公共经济平衡。
+
+该 Ledger 在小规模基准上扫描活衣物和订单，不能作为大人口性能证明。dispatch 的 carrier 输入与 supply 的外部物料 handoff 是可信 fixture，不是已实现真实配送/植物种植。当前按个体 garment 分配 ID 是 oracle 简化，生产批次/cohort 尚未实现；完整二手、回收、升级、尺码/层次、知识产权和事件化调度也仍是上述合同。MakeHuman 源归档不等于 GPU 角色已运行，原创军装尚须创作与验证。
+
+## 14. 贯穿验收与失败场景
+
+|场景|必须成立|
+|Primary Genesis/升时代/载入|只激活需要与定义；不生成免费实物或第二次起始衣物|
+|公共手工先于钱/私企/T015/T025|真实纤维、劳动、布、成衣和配给守恒|
+|贫困家庭需要衣服|食物/住房预约不被抢，缺衣不致死|
+|无正装、规范启用、缺货或在途|出勤/岗位/正常工资不变；formal 优先于 novelty|
+|规范无雇主补贴/公司库存为零|成熟知识/采用允许启用，个人订单仍可选择|
+|服装工人未穿正装|照常生产/领工资，没有供给自锁|
+|买一套正装同时满足基础覆盖|不另自动下第二套基本衣物订单|
+|已有适用备用衣或同槽在途|需求去重，不填满无限衣柜|
+|两厂抢一件真库存、十项目抢同一市场缺口|同一预约/容量版本只有合法一份，失败无重复收入|
+|预约后取消、运途中取消/损失、目的衣柜满|实际款/货/位置保留，不能瞬移或吞货|
+|连续 1 分钟与一次 N 分钟/不同镜头|同一活动时间线 condition/余数/退休/订单相同|
+|无限重复修补/转卖/换国家/换 style|累积寿命预算不重置，不产生无限新品|
+|重做/回收同件两次|只有一次旧物消耗，回收不超投入|
+|外籍士兵、国外驻扎、城市被占|军装 serving/issue State 正确，法定国籍不变|
+|换军队/退伍/军队雇主破产|旧制服物权和真实归还保留，不复制或吞客户财产|
+|国家改旗/自由后期色/皮肤更新|不生衣、不修衣、不改历史成本；国旗与商品色独立|
+|开源包 mixed license 或缺贴图/targets|未核验项不进入 approved runtime；状态明确|
+|儿童/不同体型/多层服装/near-far LOD|覆盖/fit/共同骨架/性能成立，资产不复制经济实体|
+|长期高耐久/二手市场/公司亏损|真实需求可变低，允许企业整顿/退出，不硬编码利润|
+
+先跑公共纤维到基本成衣交付、文明需要、预算保护、柔性正装、有限磨损/修补、外国兵实发与两家供应竞争，再接实际 3D 人物和规模场景。验收记录投入、货权、订单、资金、condition、CPU/内存及第一个不变量失败，不用只换模型截图宣称服装经济完成。

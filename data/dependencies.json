@@ -110,5 +110,38 @@
       "license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
       "status": "real_25x25_Alps_window_offline_rebuilt"
     }
+  ],
+  "retained_character_sources": [
+    {
+      "name": "MakeHuman v1.3.0 core and three selected community garments",
+      "upstream": "https://github.com/makehumancommunity/makehuman",
+      "resolved_commit": "1f508f6083b2f823dab15de924b3bde72e08d77c",
+      "license": "CC0-1.0 for selected graphical assets; upstream license documents retain their notices",
+      "source_manifest": "assets/manifests/makehuman_sources.json",
+      "status": "exact_selected_source_members_only",
+      "program_code_imported": false,
+      "game_ready": false,
+      "full_ecosystem_downloaded": false
+    }
+  ],
+  "selected_offline_tools": [
+    {
+      "name": "MakeHuman",
+      "release": "v1.3.0",
+      "resolved_commit": "1f508f6083b2f823dab15de924b3bde72e08d77c",
+      "license": "AGPL-3.0-or-later; per-file exceptions in upstream LICENSE",
+      "status": "not_installed_or_executed",
+      "linked_to_runtime": false
+    },
+    {
+      "name": "MPFB",
+      "release": "v2.0.17",
+      "resolved_commit": "80919fa4682335c41847f761a4d79dcad4124732",
+      "upstream": "https://github.com/makehumancommunity/mpfb2",
+      "license": "GPL-3.0-or-later",
+      "status": "not_installed_or_executed",
+      "linked_to_runtime": false,
+      "minimum_blender": "4.2.0"
+    }
   ]
 }

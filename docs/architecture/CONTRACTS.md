@@ -51,11 +51,15 @@ UI/输入工具提交`CommandEnvelope{protocolVersion, commandId, commandKind, t
 |教会分裂|新同根教派/章程、冻结争议资产、限制性捐赠、债务/员工、合法转移|成员改派不等于财产自动迁移；旧charterHash不改|
 |主权和约|城市主权、过渡法律/税/权益、驻军补给、无环依附图|占领者≠owner；附属保留原StateId；不直接覆盖city.stateId|
 |进入建筑/船|地图位置释放、InteriorContainer引用、容量预约、人/车/货状态|显示隐藏但实体和货物仍存在；出口无空位等待/恢复|
+|衣物购买/运输/交付/穿着|实际批次/单件、需求ID、资金escrow、库存/在途/衣柜/穿着引用、耐久与版本|支付不等于穿上；取消按实际退货；重复交付不复制衣物；缺衣不直接致死|
+|正装规范/军装发放|已获且采纳的规范、员工购买排序；军方真实资金/衣物和issue contract、服役国theme绑定|缺正装仍可工作/领薪；不自动扣员工钱；军装保管/所有者/服役国/法定国籍分开|
 |法定改旗|13模板/23色、themeColor有效、历史|主题色若移除同事务重选；不修改人物的国籍/服饰经济|
 
 ## 6. 查询与快照
 
 RenderSnapshot只含视觉所需EntityId、变换、任务表达、外观/旗色、选择proxy和revision；不含可写World指针。InspectSnapshot包含四项摘要、合法动作、主要原因与展开数据；账本按需分页查询，不能每帧复制全世界货物/知识/历史。
+
+服装扩展为实际 `WornItemSnapshot`：每槽只引用当前真实衣物的asset/cut/size/color policy、必要耐久视觉分桶和item revision。检查器另显示缺衣、维修/替换、优先正装与自由消费、预约/在途和预算主因。服装目录点击不直接创建衣物；换穿先结算旧衣损耗，再原子切换衣柜/穿着位置，昂贵mesh加载失败不取消已提交经济事实。
 
 快照带simTick、committedRevision、definitionHash与空间epoch。渲染插值只用于图像。双/三缓冲保持生命周期；收到较旧picker结果必须校验EntityId仍有效，不能因GPU迟一帧选择已拆楼。地图工具草稿在presentation，不进正式存档。
 

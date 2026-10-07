@@ -15,6 +15,8 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
 |材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
 |真实高程、长方体地基、人/车入口与邻楼保护|[最新变更ADR 0003](docs/decisions/0003-terrain-and-site-access.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
+|早期服装业、实物衣物/耐久、购买排序与原创军装|[服装变更ADR 0004](docs/decisions/0004-clothing-and-makehuman.md)、[服装经济](docs/architecture/CLOTHING_ECONOMY.md)|
+|正式MakeHuman/MPFB路线、选定源件与逐项许可|[人物生态接入](docs/research/MAKEHUMAN_ECOSYSTEM.md)、[源件manifest](assets/manifests/makehuman_sources.json)|
 |命令、预览、授权、共享合同与错误协议|[接口契约](docs/architecture/CONTRACTS.md)|
 |存档、恢复、版本迁移与确定性级别|[持久化](docs/architecture/PERSISTENCE.md)|
 |自制建筑、人体、材质、LOD、资产编译与流送|[内容流水线](docs/architecture/CONTENT_PIPELINE.md)|
@@ -36,6 +38,8 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 - 真实ETOPO阿尔卑斯25×25高程窗口，必要TIFF原字节/官方metadata/CC0原文与标准库离线重建器；尚未下载完整全球包。
 - C++20独立建址oracle：只读高程、整块长方体地基、四向全宽C1坡道、人行/车库分别验收、前侧现状配送、旧通道保护与原子预约。19组反例/贯穿场景；尚未合入完整world/物流/存档。
 - 用户指定Abyssal Ocean的MIT准确源文件与commit/hash，已提取原生CPU蝶形/二维inverse FFT参考并用直接IDFT验证；native GPU海洋尚未移植。见[第三方通知](THIRD_PARTY_NOTICES.md)。
+- MakeHuman v1.3.0核心身体/骨架/权重及三款CC0服装的14份准确源文件，合计3,129,823字节；标准库离线核验覆盖hash、网格/fit索引、骨架父图、权重和材质属性。未运行DCC或生成游戏glTF/LOD/动画，未导入缺失纹理与许可冲突的胸罩。
+- 独立C++服装经济oracle：真实投入/劳时、工资、资金托管、预约/交付、两槽有界衣橱、整数穿用损耗/有限修补与购买需求。公司正装规范只提高购买优先级，无正装仍能工作并获得正常工资；具体已执行场景与长期循环范围见[验证记录](docs/planning/VALIDATION.md)。
 
 建筑施工的新设计为：小人实际把材料送到前侧接货区，到齐后建筑自动推进工期；无人物砌筑动作。原创长方体铁丝网约3秒逐层围起，中段完全包围，完工后约3秒反向拆去。已有[可播放视觉预览](tools/previews/building-construction.html)和参数示例，生产建筑/物流与GPU动画尚未实现；填海仍沿用真实材料和劳动规则。
 
@@ -62,15 +66,16 @@ ctest --preset debug -C Debug
 python3 tools/extract_catalogs.py
 python3 tools/build_grayboxes.py
 python3 tools/import_etopo_sample.py --verify
+python3 tools/import_makehuman_sources.py --verify
 python3 tools/validate_project.py
 ```
 
 headless 演示会施工两格人工陆地、建一个港口、验证天然底图未变并执行存档往返。它没有窗口、真实地球数据、人物劳动分配、经济循环或写实水体。`KernelPlacePort` 只实现空间/导航子集；生产 `PlacePort` 的科技、产权、预算和许可尚待接入。
 
-真实高程与建址测试是另外的有限切片：`sonnheide_site_tests` 验证合成起伏地面上完整建址/邻楼不变量，ETOPO导入器验证实际源数据，`sonnheide_ocean_fft_tests`验证上游FFT数学。这三者尚未连接成可玩的真实坡地场景。原稿平地条款由最新ADR覆盖，原稿本身逐字保留。
+真实高程与建址测试是另外的有限切片：`sonnheide_site_tests`验证合成起伏地面上完整建址/邻楼不变量，ETOPO导入器验证实际源数据，`sonnheide_ocean_fft_tests`验证上游FFT数学。`sonnheide_clothing_tests`核对独立服装实物循环；没有连接全世界道路货运、公共生存、科技传播或生产存档。它们尚未组成可玩的3D场景；新ADR覆盖旧平地/极简服饰条款，原稿本身逐字保留。
 
 ## 当前实现不能直接作为生产规模方案
 
 内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
 
-SDL3、bgfx、ozz、RmlUi 与正式第三方资源处于**已选择/已研究、未集成**状态；仓库没有为了增加文件数量创建空的渲染器、社会系统或经济系统。下一步进入 [A1 平台与写实客户端实验](docs/planning/ROADMAP.md)，再按贯穿切片实现全部设计。
+SDL3、bgfx、ozz、RmlUi仍未集成；MakeHuman正式路线已保留选定源件，游戏角色输出未完成。仓库没有为了增加文件数量创建空的渲染器或社会系统。下一步进入[A1平台与写实客户端实验](docs/planning/ROADMAP.md)，并将服装oracle接入共享库存/劳动/物流/知识/存档，按贯穿切片实现全部设计。

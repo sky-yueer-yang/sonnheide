@@ -17,4 +17,11 @@
 - 官方[原始metadata/CC0声明](data/geo/sources/etopo2022_noaa_metadata.xml)提供数据授权与垂直基准证据。许可：[CC0-1.0完整文本](data/geo/sources/CC0-1.0.txt)，来自[Creative Commons官方原文](https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt)，SHA-256 `a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499`。
 - 由[标准库导入器](tools/import_etopo_sample.py)离线解码25×25原始像元中心：[阿尔卑斯样本](data/geo/etopo2022_alps_sample.json)。保留出处、datum、NoData、源分辨率与转换配方；样本不是全球游戏地形，也不是房屋/车道测绘。
 
+## MakeHuman核心数据与三款社区服装
+
+- 核心来源：[MakeHuman v1.3.0](https://github.com/makehumancommunity/makehuman/tree/v1.3.0)，commit `1f508f6083b2f823dab15de924b3bde72e08d77c`。实际源件是`base.obj`、`default.mhskel`、`default_weights.mhw`及两份上游许可原文；核心图形数据适用[上游CC0原文](assets/source/third_party/makehuman/core/LICENSE.ASSETS.md)，程序代码适用[AGPL等分项说明](assets/source/third_party/makehuman/core/LICENSE.md)。程序代码未导入/链接。
+- 社区衣物作者Makehuman（男款经Elvaerwyn编辑）、Joel Palmius、Cortu Johnstone；实际使用男女crude T-shirt、jeans shorts的OBJ、MHClO、MHMat源成员。每项作者、准确下载来源、资产表/文件头证据、字节数和SHA-256见[源件清单](assets/manifests/makehuman_sources.json)。这三款明确CC0；社区其他资产不因此获得相同许可。整ZIP未归档、未声明全包hash，缺失贴图明确登记。
+- MPFB v2.0.17 commit `80919fa4682335c41847f761a4d79dcad4124732`仅锁定为离线工具路线；未导入或运行插件。其GPL-3.0-or-later与核心图形CC0分别适用。MakeClothes/MakeTarget同属离线生态，后续实际引入时保留自身许可，不当运行时库。
+- [标准库离线核验器](tools/import_makehuman_sources.py)复核实际源件、索引、绑定和证据；这些源数据尚未输出游戏glTF/LOD、材质、动作或GPU角色。详细准入与缺口见[生态记录](docs/research/MAKEHUMAN_ECOSYSTEM.md)。
+
 其他依赖与资产处于选择/准入研究阶段，见[依赖状态](data/dependencies.json)。实际下载之前不得列入已集成分发清单。

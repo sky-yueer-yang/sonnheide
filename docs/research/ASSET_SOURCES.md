@@ -1,6 +1,6 @@
 # 开源资源来源与准入记录
 
-核验日期：2026-10-06。本文区分候选与已归档来源：Abyssal原始代码及ETOPO窗口已逐文件核验，其余名单为准入研究。规范来源是 [Sonnheide v0.6](../design/Sonnheide_Complete_Design_v0.6.md)；用户追加的“不用游戏引擎、建筑全部自己做”优先于原稿允许引擎的备选措辞。
+核验日期：2026-10-06。本文区分候选与已归档来源：Abyssal原始代码、ETOPO窗口、MakeHuman人体/骨架/权重与三款服装的选定源件已逐文件核验，其余名单为准入研究。规范来源是 [Sonnheide v0.6](../design/Sonnheide_Complete_Design_v0.6.md)；用户追加的“不用游戏引擎、建筑全部自己做”和正式MakeHuman/服装经济规则优先于原稿旧措辞。
 
 ## 1. 先解决真正的复用边界
 
@@ -15,8 +15,9 @@
 |资源|公开许可核验|工程用途与决定|技术／内容限制|
 |---|---|---|---|
 |GSHHG 2.3.7|官方数据主页说明从 2.2.2 开始使用 LGPL；官方维护仓库 LICENSE 为 LGPL v3 文本|**可准入，版本固定 2.3.7**。作为天然 LAND/WATER 的离线源；保留原包、许可、转换脚本与 GeoSourceManifest|GSHHG 的上游原始数据来自公有领域，不代表加工后的 GSHHG 可标成 CC0；源、修改与转换产物分别保留许可记录|
-|MakeHuman 官方核心资产／导出|官方 LICENSE 区分 AGPL 程序与 CC0 核心资产；官方 FAQ 确认核心资产导出可再分发|**正式人体优先候选**。只取可验证的核心人体、目标、皮肤；在离线 DCC 中生成成人及儿童的合理比例基础|社区资产不自动 CC0。生产需重新拓扑、LOD、皮肤校准及自制简单服装；不能把默认高密网格直接用于全城人口|
-|MPFB|官方说明代码 GPL、核心资产 CC0|**离线工具候选**。便于在 Blender 内制作 MakeHuman 人体输出|不作为游戏运行时库；插件脚本与导出图形分开存放和记录许可|
+|MakeHuman 官方核心资产／导出|官方 LICENSE 区分 AGPL 程序与 CC0 核心资产；官方 FAQ 确认核心资产导出可再分发|**正式人体来源**。已锁v1.3.0并归档base.obj、default骨架/权重及许可证原文；体型targets、皮肤/头发/眼睛仍待选取|源件不是已运行角色。必须统一单位、权重/骨架、体型、隐藏面、LOD与动画；不把默认高密网格用于全城。准确范围见[生态核验](MAKEHUMAN_ECOSYSTEM.md)|
+|MPFB / MakeClothes / MakeTarget|官方说明MPFB/离线工具GPL与核心资产CC0分别适用|**正式离线生态路线**。MPFB v2.0.17 commit已锁；用Blender制作体型/服装适配与原创军装|未安装/运行工具，不复制整个工具包，也不链接运行时。社区材质/衣物逐项授权，不继承插件许可|
+|MakeHuman社区服装包|官方资产表、成员头部与源件许可逐项相互核对|**已归档三款CC0源件**：男女crude T-shirt、jeans shorts；与[manifest](../../assets/manifests/makehuman_sources.json)逐文件对应|不是整个包/全套衣柜；未归档纹理须列出缺口。胸罩候选授权冲突不能当CC0导入；内衣/正装/鞋等逐步准入，军装原创建模|
 |Quaternius Universal Base Characters|官方包页标 CC0；含 Regular 与 Teen 等比例|**动画绑定／渲染测试备选**，不直接认定为最终写实人体|风格需审查。Teen 不是所有年龄儿童。公开免费子集与付费 Source 子集逐项核验，不以主页 CC0 替代包内内容审查|
 |Quaternius Universal Animation Library 1／2|官方包页标 CC0，提供 humanoid 动作及可重定向格式|**首选开放动作候选**。只选站立、行走、奔跑、搬运、采集、劳动、上下马和必要成年战斗动作|接入 Sonnheide 语义骨架；引擎兼容说明不等于无引擎客户端可直接加载；删除设计范围外动作，不引入其衣服或建筑|
 |Poly Haven 材质、HDRI、非建筑植物|官方资产许可页明确 CC0，允许原始资产再分发|**正式 PBR／环境光优先候选**。砖、石、木、灰泥、土、织物及少量植物；不取任何建筑模型|网站页面、商标和示例渲染不自动同许可；资产许可与 API／网站下载条款分开，使用单项下载或遵守官方 API 条款|
@@ -107,4 +108,4 @@ Releases 官方说明每个对象小于 2 GiB、一个 Release 最多 1000 个�
 5. 本项目 GitHub 原始文件副本、源和产物哈希、署名／许可通知全部完整后，状态才从 pending 转 approved。
 6. 在 Sonnheide 实际场景中验证近景写实、中景识别、远景 LOD、资源流送和占地／人物语义；合格许可不能替代这一步。
 
-本轮已保留Abyssal准确源码与ETOPO真实源窗口，不下载整套全球DEM或大型人物/材质库；原始范围不是完整文件。上表其余条目仍是准入路线，不能写成已完成美术资产库。更细DTM与Copernicus DSM的建筑/植被偏差见[地形数据合同](../architecture/TERRAIN_AND_SITES.md)。
+本轮保留Abyssal准确源码、ETOPO真实源窗口和MakeHuman选定源件，不下载整套全球DEM或大型人物/材质库。MakeHuman身体/绑定与三款衣物经过离线源格式检查，尚缺游戏转换/材质/动画/性能验收；原始ZIP只保留实际使用成员，整包hash未冒称已知。更细DTM与Copernicus DSM的建筑/植被偏差见[地形数据合同](../architecture/TERRAIN_AND_SITES.md)。

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-06",
+  "scope": "Selection evidence only; these garment source files are not in the project.",
+  "candidates": [
+    {
+      "asset_id": "joepal_plain_bra",
+      "game_role": "primitive_adult_female_upper_coverage",
+      "author_on_official_page": "Joel Palmius",
+      "pack": "underwear03",
+      "evidence_page": "https://static.makehumancommunity.org/assets/assetpacks/underwear03.html",
+      "source_archive": "https://files.makehumancommunity.org/asset_packs/underwear03/underwear03_cc-by.zip",
+      "page_license": "CC-BY (version not specified)",
+      "member_header_author": "unknown",
+      "member_header_license": "CC0",
+      "inspected_mhclo_sha256": "20f84c6bb90c5200d126221b641ae8f7ee55f3128aadaf4361b1e4773aaf8c81",
+      "status": "held_license_conflict",
+      "imported": false,
+      "resolution": "Choose a consistently licensed plain coverage garment or obtain authoritative clarification; do not assume exporter defaults override the pack license."
+    },
+    {
+      "asset_id": "elvs_crude_bootyshorts",
+      "game_role": "primitive_lower_coverage_candidate",
+      "author_on_official_page": "Elvaerwyn",
+      "pack": "underwear02",
+      "evidence_page": "https://static.makehumancommunity.org/assets/assetpacks/underwear02.html",
+      "source_archive": "https://files.makehumancommunity.org/asset_packs/underwear02/underwear02_cc0.zip",
+      "page_license": "CC-BY (version not specified)",
+      "status": "pending_individual_license_and_fit_review",
+      "imported": false,
+      "resolution": "The archive filename contains cc0 but the official per-item table states CC-BY; filename is not license evidence."
+    },
+    {
+      "asset_id": "mindfront_male_swimming_trunks_01",
+      "game_role": "primitive_adult_male_lower_coverage_candidate",
+      "author_on_official_page": "Mindfront",
+      "pack": "pants03",
+      "evidence_page": "https://static.makehumancommunity.org/assets/assetpacks/pants03.html",
+      "page_license": "CC-BY (version not specified)",
+      "status": "pending_individual_license_and_fit_review",
+      "imported": false
+    },
+    {
+      "asset_id": "toigo_female_suit",
+      "game_role": "formal_female_candidate",
+      "author_on_official_page": "MargaretToigo",
+      "pack": "suits01",
+      "evidence_page": "https://static.makehumancommunity.org/assets/assetpacks/suits01.html",
+      "page_license": "CC0",
+      "status": "candidate_page_reviewed_members_not_imported",
+      "imported": false
+    },
+    {
+      "asset_id": "toigo_male_suit_tie_and_jacket",
+      "game_role": "formal_male_candidate",
+      "author_on_official_page": "MargaretToigo",
+      "pack": "suits01",
+      "evidence_page": "https://static.makehumancommunity.org/assets/assetpacks/suits01.html",
+      "page_license": "CC0",
+      "status": "candidate_page_reviewed_members_not_imported",
+      "imported": false
+    }
+  ]
+}

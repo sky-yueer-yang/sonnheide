@@ -22,7 +22,14 @@
 - Abyssal commit `142265f5013b6f27bea4f4f819b832dec75c7bad`的LICENSE/README/index.html准确字节SHA-256已核验；three.js CDN不是原生依赖。`ocean_fft_reference`五组：尺寸2/4/8/16直接2D IDFT对照，频率方向/centered checkerboard/DC幅值，不除N²的上游约定，Hermitian实值，以及尺寸/NaN/Infinity/overflow/moved-from拒绝。最大数值误差约2.4e-14；严格clang与ASan/UBSan通过。参考只在presentation库，kernel不依赖它或GPU。
 - 项目校验现在还检查上述上游文件准确hash、CC0许可hash及真实ETOPO样本的离线重建一致性；Windows checkout通过LF规则保留官方XML/HTML字节。完整GPU波浪、海岸mask、三后端画面和帧率未验证。
 
-运行所有目标：`python3 tools/build.py`；空间/事务修改另跑 `python3 tools/build.py --sanitizers`。CMake/CI分别运行kernel、allocation、headless、site、ocean与content六个测试；[GitHub Checks](https://github.com/sky-yueer-yang/sonnheide/actions)以各提交的实际结果为准。
+## 服装、正装修正与MakeHuman切片
+
+- `clothing_economy`实际16组场景：文明/升时代仅改变需要而不赠衣；零币公共制衣仍消耗纤维/布/劳动；预约/托管款/配送/返还只结算一次；未穿备用衣与已有正装抑制重复需求；知识已采用且零雇主库存仍能启用正装规范；无正装正常工作并领取全额工资；粮房预算不被购衣抢占；外籍士兵服役国配色与国籍分离；整数损耗步长一致、较慢存放老化；交付不恢复耐久、累计修补上限；劳动/衣柜上限；在途货腐烂仍保留托管款且必须收到实际退回后退款；缺原料不自动补货；旧军装/机构在途订单先真实交接再换机构；个人不能报废机构所有的完好衣物绕过归还，初始款式与setter/生产目录采用同一上限，已交付订单清除在途标记/托管款。
+- 长期场景是**100人×100游戏年，30日/月、360日/年，共36,000游戏日**。有限初始200,000纤维，不再注入资金/原料；实际生产/购买/交付/穿用34,400件，支付1,720,000，工资1,376,000，纤维剩62,400，每年均有替换成交。核对现金＋escrow、纤维/布/染料和劳时守恒。它证明该有限物料/资金规则的长期替换，未模拟供粮/住房消耗、植物种植、物价变化、市场竞争或企业利润平衡，不能当完整城市100年验证。
+- MakeHuman取入14份准确源文件，共3,129,823字节；MakeHuman v1.3.0与MPFB v2.0.17的commit明确，三个衣物各自CC0证据与程序AGPL/GPL分开。默认离线、`--verify`及实际`--fetch --verify`通过；hm08 19,158顶点/18,486面、163骨/326joint helpers、57,107原始权重记录及三款衣物fit/mask/索引/材质属性经过检查。原始权重总和0.321～1.673，不冒称已归一游戏权重；独立归一检查最大误差2.22e-16。10项损坏输入实验均被拒绝，包括父图循环、缺joint、非法权重/索引、错alpha7基底、affine/遮罩与原字节破坏。
+- 四张引用纹理未导入，胸罩候选许可冲突保留为pending；没有DCC导出、体型targets、GPU蒙皮、服装穿插或完整动作库证据。军装几何仍需原创制作。源件归档和oracle不能替代这些验收。
+
+运行所有目标：`python3 tools/build.py`；事务/空间/存档修改另跑`python3 tools/build.py --sanitizers`，本轮服装切片也跑sanitizer。CMake/CI分别运行kernel、allocation、headless、site、ocean、clothing与content七个测试；[GitHub Checks](https://github.com/sky-yueer-yang/sonnheide/actions)以各提交实际结果为准。本机Python3.9/Apple clang21的正常构建与ASan/UBSan整仓检查均已通过，包含上述16组服装场景；三平台结果在最终交付中按实际Checks报告。
 
 ## 当前实现与生产差异
 
@@ -34,6 +41,8 @@
 |真实25×25 ETOPO窗口/原字节离线重建|完整全球源包/固定EarthPack、datum/投影/NoData/区域精度报告|
 |独立地形/建址oracle，可信level portal，四向直坡与全部保护域|完整world/产权/交通网络、车辆转弯/体积净空、阶段释放、真实物流、存档与GPU|
 |MIT Abyssal源与CPU FFT参考|原生GPU谱/泡沫/折射/水下、海岸/湖水mask、三后端帧率与生命周期|
+|独立两槽服装Ledger、16组场景、100人100年有限原料/资金循环|World命令/完整交易/存档/交通、公共生存闭环、批次/多层fit/二手回收/市场竞争及性能|
+|MakeHuman身体/绑定和三款CC0衣物源件、离线结构核验|DCC固定环境、targets/皮肤/头发/眼睛/纹理、canonical骨架/LOD/动画/GPU与原创军装|
 |一种通用材料；Scheduler直接给5单位劳动|实名CitySquare库存、真实运输/Person劳动/施工合同、部分投入结算|
 |PlaceRoad无工程成本；KernelPlacePort几何探针|科技、预算、产权、法域、建设流程和广场完整路网|
 |整状态复制、同步全图BFS、map/set|分页写集、SoA、Chunk/门户动态连通、异步三态query|

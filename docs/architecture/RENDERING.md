@@ -113,9 +113,9 @@ Port 预览只画四项：已完成 RECLAIMED footprint、整排 sea-facing edge
 
 ## 7. 人物、动画 LOD 与原创建筑 HLOD
 
-人物优先取可确认 CC0 的 MakeHuman **随发行包附带**基体，再统一拓扑、骨架、皮肤和 LOD；作者资产仓库的其它项目不自动继承该许可。动画运行时采用 ozz-animation，其采样、混合及压缩不负责 AI、碰撞、路径或伤害。重定向器、任务到动画的映射与动作资源需要我们制作或单项筛选，不能声称引入 ozz 就获得动作库。[MakeHuman 代码/资产/输出许可边界](https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md)、[ozz-animation](https://github.com/guillaumeblanc/ozz-animation)
+人体正式采用MakeHuman/MPFB生态中经准入的CC0核心基体、rig/weights/targets，再统一拓扑、骨架、皮肤和LOD；社区资产逐文件授权，具体已取入范围见[MakeHuman记录](../research/MAKEHUMAN_ECOSYSTEM.md)。动画运行时采用 ozz-animation，其采样、混合及压缩不负责 AI、碰撞、路径或伤害。重定向器、任务到动画的映射与动作资源需要我们制作或单项筛选，不能声称引入 ozz 就获得动作库。[MakeHuman 代码/资产/输出许可边界](https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md)、[ozz-animation](https://github.com/guillaumeblanc/ozz-animation)
 
-共享外观严格是前文化黑草裙/女性基础胸罩，以及文化化后的国家主题色 T 恤 + 白短裤。Army 身份不生成制服，不用导入模型自带服装扩展需求。武器/工具只映射已有领域资产和当前任务；可见附件不创造装备库存。国家颜色变化修改实例数据，法定国籍变化才改变归属颜色。
+服装按[ADR 0004](../decisions/0004-clothing-and-makehuman.md)由真实穿着快照决定：前文明黑内裤/女性胸罩，上古国家主题色T恤+白短裤，后期已购置多样自由衣物。军装原创且各国家共用同款，颜色取实际服役国家，法定国籍另存；公司正装规范只提高员工购买优先级，缺正装仍正常工作/领薪。共享mesh/骨架/LOD/材质组合，theme binding与自由colorway分开，换国家主题色不增衣物或重置耐久。真实耐久在仿真侧，与相机/LOD无关。衣物不足用覆盖fallback显示经济缺口，不以显示皮肤奖励或绕过实际购买。
 
 按屏幕投影尺寸和迟滞选择 LOD，同时设置动画预算；以下为首轮实验配置，**不是实测性能承诺**。
 

@@ -22,7 +22,7 @@ def main():
     if args.sanitizers:
         flags += ["-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
     core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp"))]
-    for name, source in [("sonnheide_headless", ROOT / "apps/headless/main.cpp"), ("sonnheide_kernel_tests", ROOT / "tests/kernel_tests.cpp"), ("sonnheide_allocation_tests", ROOT / "tests/transaction_allocation_tests.cpp"), ("sonnheide_site_tests", ROOT / "tests/site_tests.cpp")]:
+    for name, source in [("sonnheide_headless", ROOT / "apps/headless/main.cpp"), ("sonnheide_kernel_tests", ROOT / "tests/kernel_tests.cpp"), ("sonnheide_allocation_tests", ROOT / "tests/transaction_allocation_tests.cpp"), ("sonnheide_site_tests", ROOT / "tests/site_tests.cpp"), ("sonnheide_clothing_tests", ROOT / "tests/clothing_tests.cpp")]:
         subprocess.run([compiler, *flags, *core, str(source), "-o", str(out / name)], check=True, cwd=ROOT)
         subprocess.run([str(out / name)], check=True, cwd=ROOT)
     ocean = out / "sonnheide_ocean_fft_tests"

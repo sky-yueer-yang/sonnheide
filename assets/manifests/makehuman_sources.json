@@ -1,0 +1,414 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-06",
+  "selection": "MakeHuman hm08 graphical sources and selected official CC0 garment member bytes",
+  "runtime_status": "source_ingestion_verified_only",
+  "makehuman": {
+    "repository": "https://github.com/makehumancommunity/makehuman",
+    "tag": "v1.3.0",
+    "commit": "1f508f6083b2f823dab15de924b3bde72e08d77c",
+    "program_license": "AGPL-3.0-or-later",
+    "graphical_assets_license": "CC0-1.0",
+    "program_code_imported": false
+  },
+  "mpfb": {
+    "repository": "https://github.com/makehumancommunity/mpfb2",
+    "tag": "v2.0.17",
+    "commit": "80919fa4682335c41847f761a4d79dcad4124732",
+    "release_url": "https://github.com/makehumancommunity/mpfb2/releases/tag/v2.0.17",
+    "manifest_url": "https://raw.githubusercontent.com/makehumancommunity/mpfb2/80919fa4682335c41847f761a4d79dcad4124732/src/mpfb/blender_manifest.toml",
+    "blender_version_min": "4.2.0",
+    "program_license": "GPL-3.0-or-later",
+    "tool_executed": false,
+    "scope": "offline_character_and_clothes_authoring_only"
+  },
+  "files": [
+    {
+      "path": "assets/source/third_party/makehuman/core/LICENSE.md",
+      "upstream_path": "LICENSE.md",
+      "source_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/1f508f6083b2f823dab15de924b3bde72e08d77c/LICENSE.md",
+      "size_bytes": 3598,
+      "sha256": "edd99571ca62698f78c943fd4fffb159a413c315fa0d4819d3cec5cadaf8b4f1",
+      "git_blob_sha1": "5d1a49d31ebdaa46b06c52eae2c005c678a63ffa",
+      "license": "LicenseRef-MakeHuman-Split-Notice",
+      "role": "upstream_license_evidence",
+      "license_evidence": [
+        "assets/source/third_party/makehuman/core/LICENSE.md",
+        "assets/source/third_party/makehuman/core/LICENSE.ASSETS.md"
+      ]
+    },
+    {
+      "path": "assets/source/third_party/makehuman/core/LICENSE.ASSETS.md",
+      "upstream_path": "LICENSE.ASSETS.md",
+      "source_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/1f508f6083b2f823dab15de924b3bde72e08d77c/LICENSE.ASSETS.md",
+      "size_bytes": 6962,
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+      "git_blob_sha1": "f3ede1fc3318f8d794e2cb51924186c62f02f71a",
+      "license": "CC0-1.0",
+      "role": "upstream_license_evidence",
+      "license_evidence": [
+        "assets/source/third_party/makehuman/core/LICENSE.md",
+        "assets/source/third_party/makehuman/core/LICENSE.ASSETS.md"
+      ]
+    },
+    {
+      "path": "assets/source/third_party/makehuman/core/makehuman/data/3dobjs/base.obj",
+      "upstream_path": "makehuman/data/3dobjs/base.obj",
+      "source_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/1f508f6083b2f823dab15de924b3bde72e08d77c/makehuman/data/3dobjs/base.obj",
+      "size_bytes": 1749303,
+      "sha256": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+      "git_blob_sha1": "d26635e9326e3cca30778fd7b9c00062b03cce09",
+      "license": "CC0-1.0",
+      "role": "core_graphical_data",
+      "license_evidence": [
+        "assets/source/third_party/makehuman/core/LICENSE.md",
+        "assets/source/third_party/makehuman/core/LICENSE.ASSETS.md",
+        "assets/source/third_party/makehuman/core/makehuman/data/3dobjs/base.obj (original inline CC0 metadata)"
+      ]
+    },
+    {
+      "path": "assets/source/third_party/makehuman/core/makehuman/data/rigs/default.mhskel",
+      "upstream_path": "makehuman/data/rigs/default.mhskel",
+      "source_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/1f508f6083b2f823dab15de924b3bde72e08d77c/makehuman/data/rigs/default.mhskel",
+      "size_bytes": 117790,
+      "sha256": "99f179bce0aa850b45d4191a1d0d234c5851f881c057439470ded3bddf729a24",
+      "git_blob_sha1": "b02cbecae00143856410d7561adf006d83bf9b3e",
+      "license": "CC0-1.0",
+      "role": "core_graphical_data",
+      "license_evidence": [
+        "assets/source/third_party/makehuman/core/LICENSE.md",
+        "assets/source/third_party/makehuman/core/LICENSE.ASSETS.md",
+        "assets/source/third_party/makehuman/core/makehuman/data/rigs/default.mhskel (original inline CC0 metadata)"
+      ]
+    },
+    {
+      "path": "assets/source/third_party/makehuman/core/makehuman/data/rigs/default_weights.mhw",
+      "upstream_path": "makehuman/data/rigs/default_weights.mhw",
+      "source_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/1f508f6083b2f823dab15de924b3bde72e08d77c/makehuman/data/rigs/default_weights.mhw",
+      "size_bytes": 897521,
+      "sha256": "0f3641d651ae3d00ad6b4ccee43142edb109d3bd909d27d9e4139ef1beed8625",
+      "git_blob_sha1": "66185806afacf87749be8e5cf6dbf66496b2a6b0",
+      "license": "CC0-1.0",
+      "role": "core_graphical_data",
+      "license_evidence": [
+        "assets/source/third_party/makehuman/core/LICENSE.md",
+        "assets/source/third_party/makehuman/core/LICENSE.ASSETS.md",
+        "assets/source/third_party/makehuman/core/makehuman/data/rigs/default_weights.mhw (original inline CC0 metadata)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 2342716285,
+      "compressed_size": 28587,
+      "size_bytes": 75660,
+      "header_offset": 14400494,
+      "pack": "shirts01",
+      "sha256": "64dd3e6e2fbba39cc792854e0ae3e2c4829a37fa4e4b690f463c2956476294da",
+      "range_bytes": [
+        14400494,
+        14429427
+      ],
+      "range_sha256": "5023cf36941ec0fc7311da5ff56d21fb31d9fb8dfe5eb8632dd2dc031fb00e30",
+      "range_size_bytes": 28934,
+      "local_file_data_offset": 119,
+      "path": "assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "upstream_member": "clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo",
+      "git_blob_sha1": "447c73acd53b66db6352bcfe0f52188b173f3563",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "elvs_crude_t-shirt_male",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+        "assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 3162875427,
+      "compressed_size": 27206,
+      "size_bytes": 80940,
+      "header_offset": 14429200,
+      "pack": "shirts01",
+      "sha256": "3389b981a826396213cce2e69f40b3d9eca6cdfadcfcbee2774acb1dfb322fa7",
+      "range_bytes": [
+        14429200,
+        14456743
+      ],
+      "range_sha256": "4d35d277b8968aee97682c344ef4a551c2e47de959a4921a975c84e3e9b07290",
+      "range_size_bytes": 27544,
+      "local_file_data_offset": 110,
+      "path": "assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/crude_male_shirt.obj",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "upstream_member": "clothes/elvs_crude_t-shirt_male/crude_male_shirt.obj",
+      "git_blob_sha1": "e33e8c20e60157d803ea9f5976702d0543abff47",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "elvs_crude_t-shirt_male",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+        "assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 2799776738,
+      "compressed_size": 354,
+      "size_bytes": 794,
+      "header_offset": 14488786,
+      "pack": "shirts01",
+      "sha256": "4e456f7b85ff3023b2ec3b4ed58b0ccceac621f3a02f4887d04eaa2a781b229a",
+      "range_bytes": [
+        14488786,
+        14489479
+      ],
+      "range_sha256": "b7587f4bea99b87f93e64455438253127a6846ff5548c5e3f4e3e4af729acbb9",
+      "range_size_bytes": 694,
+      "local_file_data_offset": 112,
+      "path": "assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/crude_male_shirt.mhmat",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "upstream_member": "clothes/elvs_crude_t-shirt_male/crude_male_shirt.mhmat",
+      "git_blob_sha1": "eb0c227119dad69544cd7ce85b6b646890cec396",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "elvs_crude_t-shirt_male",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+        "assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 822933293,
+      "compressed_size": 251,
+      "size_bytes": 494,
+      "header_offset": 21940023,
+      "pack": "shirts01",
+      "sha256": "69749cb47afa4184ea3978153f34e1160a61675cf6ad7dce4f650a4bf1cacc1c",
+      "range_bytes": [
+        21940023,
+        21940618
+      ],
+      "range_sha256": "bacc0e405a010d7684aa95c9bcb64e502b1c3cc329982f178eabedeff721a2ed",
+      "range_size_bytes": 596,
+      "local_file_data_offset": 117,
+      "path": "assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/crudefemaletshirt.mhmat",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "upstream_member": "clothes/joepal_crude_t-shirt_female/crudefemaletshirt.mhmat",
+      "git_blob_sha1": "64a76e78cc473b35620c3171ece22bf9b35ce3c8",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "joepal_crude_t-shirt_female",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+        "assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 412045165,
+      "compressed_size": 25608,
+      "size_bytes": 80936,
+      "header_offset": 21940391,
+      "pack": "shirts01",
+      "sha256": "83d20bb41bd5335d020c7e8b6bf5f969dd6cd93a5d5e84bac63cb222a135e9b4",
+      "range_bytes": [
+        21940391,
+        21966341
+      ],
+      "range_sha256": "3178021b3112bfa59d9130e93f7d1085f3106263faef009a7830acfa7afc6feb",
+      "range_size_bytes": 25951,
+      "local_file_data_offset": 115,
+      "path": "assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/crudefemaletshirt.obj",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "upstream_member": "clothes/joepal_crude_t-shirt_female/crudefemaletshirt.obj",
+      "git_blob_sha1": "49858979239dde02ef7f48ea737d0ea3aa3624b2",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "joepal_crude_t-shirt_female",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+        "assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 3789915494,
+      "compressed_size": 28406,
+      "size_bytes": 74804,
+      "header_offset": 21966114,
+      "pack": "shirts01",
+      "sha256": "4feb91f93f9228d0ba3c030cf325f5896143583d81025311ae37b1c9c2dc04a7",
+      "range_bytes": [
+        21966114,
+        21994874
+      ],
+      "range_sha256": "5a0ddbbdb1c6cc517c43f73f3880beaccdebb9d1fc482bb67e8ac9fe11f3ff06",
+      "range_size_bytes": 28761,
+      "local_file_data_offset": 127,
+      "path": "assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "upstream_member": "clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo",
+      "git_blob_sha1": "ca837e139c33ff29063a9a2f5d5f12905ba26c3a",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "joepal_crude_t-shirt_female",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+        "assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 3063697914,
+      "compressed_size": 356,
+      "size_bytes": 803,
+      "header_offset": 19740097,
+      "pack": "pants01",
+      "sha256": "91234aad335549161f166b4c9fae8322d6896469efcbf8c64d84ffd56747675c",
+      "range_bytes": [
+        19740097,
+        19740782
+      ],
+      "range_sha256": "98eaaa9abf31f4778111af570132b1646b3ead7cadada49f075c306f8bc39f91",
+      "range_size_bytes": 686,
+      "local_file_data_offset": 102,
+      "path": "assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/jean_shorts.mhmat",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip",
+      "upstream_member": "clothes/cortu_jeans_shorts/jean_shorts.mhmat",
+      "git_blob_sha1": "421891f8e16ea9e6db1e31cf564a27510be03d55",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "cortu_jeans_shorts",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/pants01.html",
+        "assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 4129175979,
+      "compressed_size": 6761,
+      "size_bytes": 19794,
+      "header_offset": 19795073,
+      "pack": "pants01",
+      "sha256": "f26d763703d6730789df5b9818e4871665928d502b4f68762c8aa96fd3779fab",
+      "range_bytes": [
+        19795073,
+        19802170
+      ],
+      "range_sha256": "4a2014a130f8bd51d1fd8d778e2b02e61fd17c03733f1716e21e98ab964a6aea",
+      "range_size_bytes": 7098,
+      "local_file_data_offset": 109,
+      "path": "assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip",
+      "upstream_member": "clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
+      "git_blob_sha1": "da228a0f19c6714b797c88433d7c75a3c7fb2462",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "cortu_jeans_shorts",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/pants01.html",
+        "assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo (original author and CC0 header)"
+      ]
+    },
+    {
+      "method": 8,
+      "crc32": 3167568722,
+      "compressed_size": 6071,
+      "size_bytes": 20424,
+      "header_offset": 19801943,
+      "pack": "pants01",
+      "sha256": "b541561dbe3eef586b643a1e38e15c5bbabce0f46ed7d1f75326b9cfcfd467a1",
+      "range_bytes": [
+        19801943,
+        19808341
+      ],
+      "range_sha256": "51eadc09f39998f784df26c59e00ea4ce411080721d99ddca607d1da074eb4e5",
+      "range_size_bytes": 6399,
+      "local_file_data_offset": 100,
+      "path": "assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/jean_shorts.obj",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip",
+      "upstream_member": "clothes/cortu_jeans_shorts/jean_shorts.obj",
+      "git_blob_sha1": "6205020c97ae7d13168f040681adfbce18d18f39",
+      "license": "CC0-1.0",
+      "role": "garment_source_text",
+      "asset_id": "cortu_jeans_shorts",
+      "license_evidence": [
+        "https://static.makehumancommunity.org/assets/assetpacks/pants01.html",
+        "assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo (original author and CC0 header)"
+      ]
+    }
+  ],
+  "garments": [
+    {
+      "asset_id": "elvs_crude_t-shirt_male",
+      "pack": "shirts01",
+      "author": "Makehuman, edited by Elvaerwyn",
+      "license": "CC0-1.0",
+      "evidence": "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+      "mhclo": "clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo",
+      "missing_textures": [
+        "crude_male_tex.png"
+      ],
+      "runtime_ready": false
+    },
+    {
+      "asset_id": "joepal_crude_t-shirt_female",
+      "pack": "shirts01",
+      "author": "Joel Palmius",
+      "license": "CC0-1.0",
+      "evidence": "https://static.makehumancommunity.org/assets/assetpacks/shirts01.html",
+      "mhclo": "clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo",
+      "missing_textures": [
+        "CrudeFemaleTshirtDiffuse.png"
+      ],
+      "runtime_ready": false
+    },
+    {
+      "asset_id": "cortu_jeans_shorts",
+      "pack": "pants01",
+      "author": "Cortu Johnstone",
+      "license": "CC0-1.0",
+      "evidence": "https://static.makehumancommunity.org/assets/assetpacks/pants01.html",
+      "mhclo": "clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
+      "missing_textures": [
+        "jean_shorts_diff.png",
+        "jean_shorts_norm.png"
+      ],
+      "runtime_ready": false,
+      "adaptation_required": "remove denim appearance; early short trousers use approved existing palette"
+    }
+  ],
+  "source_archives": [
+    {
+      "pack": "shirts01",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "total_bytes": 24479483,
+      "full_archive_sha256": null,
+      "full_archive_downloaded": false
+    },
+    {
+      "pack": "pants01",
+      "source_url": "https://files.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip",
+      "total_bytes": 21908723,
+      "full_archive_sha256": null,
+      "full_archive_downloaded": false
+    }
+  ],
+  "limitations": [
+    "No textures, morph targets, eyes, hair, exported game characters, GPU skinning or animations imported.",
+    "Base OBJ has body plus helpers; runtime export must remove helpers.",
+    "Legacy alpha_7 base.mhclo is intentionally excluded from the hm08 source set.",
+    "Raw skeleton weights are source inputs, not normalized runtime influences.",
+    "Military uniform geometry and trim remain original Sonnheide content; no blanket open source grant."
+  ],
+  "source_coordinate_contract": {
+    "basemesh": "hm08",
+    "source_unit": "decimeter",
+    "meters_per_source_unit": 0.1,
+    "source_axis": "Y-up, facing positive Z",
+    "export_requirement": "convert units and orientation once; remove helpers only after fitting and rigging; record feet-on-ground transform",
+    "evidence": "https://static.makehumancommunity.org/makehuman/docs/exports_and_file_formats.html"
+  }
+}

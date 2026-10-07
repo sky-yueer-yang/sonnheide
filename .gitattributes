@@ -21,3 +21,4 @@ third_party/abyssal-ocean/LICENSE text eol=lf
 *.ogg filter=lfs diff=lfs merge=lfs -text
 *.pack filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
+assets/source/third_party/makehuman/** -text

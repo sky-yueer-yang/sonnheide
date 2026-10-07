@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import struct
 import import_etopo_sample
+import import_makehuman_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -135,10 +136,13 @@ def main():
     for chapter in chapters:
         require(chapter["status"] in ["planned", "partial_kernel"], "False implementation claim")
         local_path(chapter["architecture_document"])
-    manifests = sorted((ROOT / "assets/manifests").glob("*.json"))
+    manifests = sorted((ROOT / "assets/manifests").glob("*_graybox.json"))
     require(len(manifests) == 3, "Expected three original pipeline fixtures")
     for manifest in manifests:
         validate_manifest(read(manifest))
+    character = dependencies["retained_character_sources"][0]
+    require(character["source_manifest"] == import_makehuman_sources.MANIFEST and character["game_ready"] is False and character["program_code_imported"] is False, "MakeHuman source scope mismatch")
+    import_makehuman_sources.verify(ROOT)
     # Check actual relative Markdown links, excluding URLs, anchors and inline examples.
     for path in [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md"))]:
         if path == ROOT / provenance["source"]:
@@ -148,7 +152,7 @@ def main():
                 continue
             base = target.split("#", 1)[0]
             require((path.parent / base).exists(), "Broken local link in {}: {}".format(path, target))
-    print("PASS: pinned Abyssal MIT sources, offline real ETOPO sample, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, documentation links")
+    print("PASS: pinned Abyssal MIT sources, offline real ETOPO sample, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, selected MakeHuman sources, documentation links")
 
 
 

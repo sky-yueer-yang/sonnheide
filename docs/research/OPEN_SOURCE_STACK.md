@@ -1,6 +1,6 @@
 # 开源复用决定、许可边界与锁定计划
 
-核验日期：2026-10-06。资料来自上游项目、作者或官方规格。**“选择”是工程决策，“集成”必须有实际构建与运行证据。** Abyssal已固定commit/原文件SHA-256并构建CPU参考；下表其他库仍待接入时锁定兼容版本，不编造未经构建验证的release/commit。状态与许可写入依赖清单。
+核验日期：2026-10-06。资料来自上游项目、作者或官方规格。**“选择”是工程决策，“集成”必须有实际构建与运行证据。** Abyssal已固定commit/原文件SHA-256并构建CPU参考；MakeHuman人体/骨架/权重及三款服装的选定源件已归档，尚未变成游戏角色。下表运行时库仍待接入时锁定兼容版本，不编造未经构建验证的release/commit。状态与许可写入依赖清单。
 
 ## 1. 选择独立库，不引入游戏引擎
 
@@ -47,9 +47,9 @@ native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有�
 
 |资产/工具|决定|许可、边界与进入工程方式|
 |---|---|---|
-|人物基体|采用 MakeHuman 随发行包附带的 CC0 数据作为基体候选；选少量男女/年龄体型，统一拓扑与骨架|官方将程序代码列为 AGPL-3.0-or-later，随包图形数据列为 CC0，输出不是程序逻辑；第三方社区资产须查各自许可。MakeHuman 是离线工具，不链接进游戏。[官方许可说明](https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md)|
+|人物基体与工具生态|正式采用MakeHuman v1.3.0人体数据与MPFB v2.0.17离线路线；少量男女/年龄体型统一拓扑/骨架|MakeHuman程序AGPL-3.0-or-later、MPFB程序GPL-3.0-or-later、核心图形CC0分开；工具未运行且不链接游戏。已归档源件/锁定commit与限制见[生态核验](MAKEHUMAN_ECOSYSTEM.md)、[精确manifest](../../assets/manifests/makehuman_sources.json)。[官方许可说明](https://static.makehumancommunity.org/about/license.html)|
 |人物动作|先制作最小 idle/walk/work/carry/attack/enter/exit 套件；只有单项来源/许可清楚的外部动作才导入|ozz 提供运行能力，不意味着动作资产 MIT。动作须统一骨架、单位、loop、root motion 与事件时序；战斗/劳动事件只读仿真|
-|服装|极少共享 mesh，依据设计稿 20.2 改制或自制|不得通过外部套装把服饰扩为经济装备系统。人体、服装、贴图分别记录来源，不能继承人物导出文件旁随便一项许可|
+|服装|正式复用MakeHuman社区逐项许可清楚的衣物；军装统一款式由项目原创|[ADR 0004](../decisions/0004-clothing-and-makehuman.md)按用户要求覆盖旧极简服饰约束，衣物成为耐久/库存/产业系统。首批男女T恤和短裤源件已归档，缺贴图与游戏适配另验；胸罩候选存在许可证据冲突，未导入。共享mesh不等于没有实物衣橱；不用自由布料物理|
 |材料/HDRI|Poly Haven 的纹理与 HDRI 候选；不采购其建筑模型|官方资产为 CC0，可再分发；页面文字、logo、渲染展示图并非同样授权。只下载明确资产原文件及许可证据，不复制预览图作为贴图。[官方许可页](https://polyhaven.com/license)|
 |字体|指定 Noto Sans CJK 字体文件，覆盖中英与希腊码；不依赖玩家系统字体|指定目录 LICENSE 为 SIL OFL 1.1。保留许可及字体命名约束；文件/子集 hash 入资产清单。[Noto CJK Sans LICENSE](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)|
 |建模工具|Blender 作为离线创作工具|Blender 自身 GPL 与用户创作模型是不同对象；官方说明创作输出归创作者。保留脚本、`.blend`、材质、导出配置，而不是只留最终 GLB。[Blender 官方授权说明](https://www.blender.org/about/license/)|
