@@ -29,9 +29,18 @@
 - MakeHuman取入14份准确源文件，共3,129,823字节；MakeHuman v1.3.0与MPFB v2.0.17的commit明确，三个衣物各自CC0证据与程序AGPL/GPL分开。默认离线、`--verify`及实际`--fetch --verify`通过；hm08 19,158顶点/18,486面、163骨/326joint helpers、57,107原始权重记录及三款衣物fit/mask/索引/材质属性经过检查。原始权重总和0.321～1.673，不冒称已归一游戏权重；独立归一检查最大误差2.22e-16。10项损坏输入实验均被拒绝，包括父图循环、缺joint、非法权重/索引、错alpha7基底、affine/遮罩与原字节破坏。
 - 四张引用纹理未导入，胸罩候选许可冲突保留为pending；没有DCC导出、体型targets、GPU蒙皮、服装穿插或完整动作库证据。军装几何仍需原创制作。源件归档和oracle不能替代这些验收。
 
-运行所有目标：`python3 tools/build.py`；事务/空间/存档修改另跑`python3 tools/build.py --sanitizers`，本轮服装切片也跑sanitizer。CMake/CI分别运行kernel、allocation、headless、site、ocean、clothing与content七个测试；[GitHub Checks](https://github.com/sky-yueer-yang/sonnheide/actions)以各提交实际结果为准。本机Python3.9/Apple clang21的正常构建与ASan/UBSan整仓检查均已通过，包含上述16组服装场景；三平台结果在最终交付中按实际Checks报告。
+运行所有目标：`python3 tools/build.py`；事务/空间/存档修改另跑`python3 tools/build.py --sanitizers`，本轮服装与交互切片也跑sanitizer。CMake/CI运行kernel、allocation、headless、site、ocean、clothing、interaction与content八个测试；找到Node时另运行interaction_preview_contracts。[GitHub Checks](https://github.com/sky-yueer-yang/sonnheide/actions)以各提交实际结果为准。本机Python3.9/Apple clang21的正常构建与ASan/UBSan整仓检查均已通过；三平台结果在最终交付中按实际Checks报告。
 
-## 当前实现与生产差异
+## 集中信息页、世界工具与人口来源切片
+
+- [ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)、[交互架构](../architecture/INTERACTION.md)与`data/interaction_schema.json`共同定义40类对象、251条有类型的关系路由和136项**待接入生产系统的命令意图**。目录校验检查引用、页面章节、编辑白名单、规则与清理边界；136项不是已经实现的命令。
+- 独立C++20 `interaction::World`实际19组场景：40类稳定名称；固定18岁放置及无赠物/身份；禁止隐式人物导入与越权放置；地面和容量；已配对成年双亲的Scheduler出生0岁；提交时复核繁衍规则；年龄冻结但日历继续及统一成年rig/fit；规则不凭空造粮或删除战争；修订/幂等/草稿；事实记录不可自由改名；类型导航/筛选；收藏标记与世界修订分离；死亡档案保留亲缘/作者/所有者/保管者；统计去重；旧通行保护；住户/存货建筑保护；分类清理不改天然高程和已采库存；极值/跨世界/第二写者拒绝；所有本切片事务分配位置失败无半写且原命令可重试。所有公开World读取也受单写者线程约束，跨线程必须使用分离快照。
+- `tools/previews/world-inspector.html`是原创地图与示例对象的离线可点击原型。Node v24.19.0仅用内建模块执行实际HTML中的模型；22组场景覆盖全部类型和引用、关系导航、视图隔离、18岁/0岁生成与事件幂等、规则、可编辑草稿/只读事实/视图别名、清理预览/陈旧拒绝/死亡档案、矿源停止与已采货保留、树木与植物子集、统计单位与去重、未知数量返回null、真实Home/库存位置/通行引用的反向保护和独立标记快照。缓存计数被故意归零后，真实引用仍阻止错误清理。
+- 实际浏览器核验近景人物拾取→人物页→国籍→国家页、出生0岁档案、远观装饰道路上的国家区域选择、四项规则界面以及建筑/道路清理的允许2项/阻止3项依赖预览。修复透明拾取范围、人物绘制顺序和远观区域兜底，显示身体圆在0/18/42/44/72岁均为r8；320px宽页面无横向溢出。SVG最小高度造成留白时使用逆screenCTM，窄屏实际放置成功且为18岁、无自动国籍/文化语言。最终页面截图保存在本机忽略的`.build/previews`，不作为资产或项目源文件提交。
+- 本机设置`SONNHEIDE_NODE`为已发现的Node v24.19.0运行时后，`python3 tools/build.py`与`python3 tools/build.py --sanitizers`均实际退出0；最新sanitizer整仓执行包含18内核、11分配故障、19建址、16服装、5FFT、19交互及22原型场景。原稿SHA-256、生成目录、三份原创glTF和已固定上游原始字节仍通过校验。Node为可选开发验证工具，缺失时本机明确SKIP；CI单独运行原型检查。
+- 当前C++与HTML分别是有限oracle与示例状态，尚未互相连接，也没有接入原有World、生产经济/自然死亡、GPU地图、RmlUi客户端或生产存档。规则测试确认切片权限与边界，不能替代完整饥饿/战争后果的业务实现。原型比较限同类对象；生产跨类型比较必须先选择共同统计口径。
+
+## 当前实现与生产差异表
 
 2026-10-06建筑施工变更见[ADR 0002](../decisions/0002-building-construction.md)。本轮已检查材料前侧配送、分层围网、完整顶盖、成品显示及反向撤网的可播放示意，包含320px窄屏；角色与料箱分离，预览状态保存回声不会主动重置本次播放。原稿/提取目录/三份原创灰盒已重建校验且未变。生产建筑自动工期、真实Person搬运和GPU围网仍未实现；现有填海内核没有因此取消劳动。
 
@@ -43,6 +52,7 @@
 |MIT Abyssal源与CPU FFT参考|原生GPU谱/泡沫/折射/水下、海岸/湖水mask、三后端帧率与生命周期|
 |独立两槽服装Ledger、16组场景、100人100年有限原料/资金循环|World命令/完整交易/存档/交通、公共生存闭环、批次/多层fit/二手回收/市场竞争及性能|
 |MakeHuman身体/绑定和三款CC0衣物源件、离线结构核验|DCC固定环境、targets/皮肤/头发/眼睛/纹理、canonical骨架/LOD/动画/GPU与原创军装|
+|40类集中页面合同、可点击示例原型、独立19场景交互oracle|正式World单一事实源、完整业务命令/统计、类型拾取、原生客户端、人口全生命周期与保存迁移|
 |一种通用材料；Scheduler直接给5单位劳动|实名CitySquare库存、真实运输/Person劳动/施工合同、部分投入结算|
 |PlaceRoad无工程成本；KernelPlacePort几何探针|科技、预算、产权、法域、建设流程和广场完整路网|
 |整状态复制、同步全图BFS、map/set|分页写集、SoA、Chunk/门户动态连通、异步三态query|

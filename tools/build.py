@@ -21,7 +21,7 @@ def main():
     flags = ["-std=c++20", "-O1", "-g", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-I" + str(ROOT / "engine/include")]
     if args.sanitizers:
         flags += ["-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
-    core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp"))]
+    core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp")) if p.name != "interaction.cpp"]
     for name, source in [("sonnheide_headless", ROOT / "apps/headless/main.cpp"), ("sonnheide_kernel_tests", ROOT / "tests/kernel_tests.cpp"), ("sonnheide_allocation_tests", ROOT / "tests/transaction_allocation_tests.cpp"), ("sonnheide_site_tests", ROOT / "tests/site_tests.cpp"), ("sonnheide_clothing_tests", ROOT / "tests/clothing_tests.cpp")]:
         subprocess.run([compiler, *flags, *core, str(source), "-o", str(out / name)], check=True, cwd=ROOT)
         subprocess.run([str(out / name)], check=True, cwd=ROOT)
@@ -30,7 +30,16 @@ def main():
                     str(ROOT / "presentation/src/ocean_fft.cpp"), str(ROOT / "tests/ocean_fft_tests.cpp"),
                     "-o", str(ocean)], check=True, cwd=ROOT)
     subprocess.run([str(ocean)], check=True, cwd=ROOT)
+    interaction = out / "sonnheide_interaction_tests"
+    subprocess.run([compiler, *flags, "-pthread", str(ROOT / "engine/src/interaction.cpp"),
+                    str(ROOT / "tests/interaction_tests.cpp"), "-o", str(interaction)], check=True, cwd=ROOT)
+    subprocess.run([str(interaction)], check=True, cwd=ROOT)
     subprocess.run([shutil.which("python3") or "python3", str(ROOT / "tools/validate_project.py")], check=True, cwd=ROOT)
+    node = os.environ.get("SONNHEIDE_NODE") or shutil.which("node")
+    if node:
+        subprocess.run([node, str(ROOT / "tools/validate_interaction_preview.js")], check=True, cwd=ROOT)
+    else:
+        print("SKIP: optional Node.js interaction preview checks; set SONNHEIDE_NODE to run them")
 
 
 if __name__ == "__main__":

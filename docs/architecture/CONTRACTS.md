@@ -68,3 +68,9 @@ RenderSnapshot只含视觉所需EntityId、变换、任务表达、外观/旗色
 ID永不复用；数值先验证非负、有界、有限，整数加减检查溢出。NaN/Infinity、超大数组/footprint、非法旋转、未知required extension、无源资源路径均拒绝。固定文本走zh-CN/en key，错误参数是结构化事实；玩家名字不是可执行脚本。存档读入还要重验关系、不变量和定义兼容，JSON Schema只能检查形状。
 
 开发Debug命令和测试Scheduler的劳动注入不会暴露给生产UI；玩家Divine Hand只能搬位置、保留身份/财产/服役，不成为任意World改写入口。
+
+## ADR 0005：交互合同与人口/清理命令
+
+[INTERACTION](INTERACTION.md)与[data/interaction_schema.json](../../data/interaction_schema.json)是原稿23条命令之外的明确追加合同，不改写源提取目录。全域信息页返回typed稳定引用与只读快照；自由名称/性格编辑和程序性身份/法律/资产操作分开，无通用JSON对象写入口。当前新增C++interaction库是独立有限oracle，不属于kernel的五种payload。
+
+PlayerPlacePerson只接受可信Player且初龄固定18；ReproductionBirth只接受可信Scheduler，创建0岁Person；所有其他领域只能消费已有Person引用。ClearTargets按分类及预览revision提交，不能借生命清理扩大到财产、借建筑清理删住户或借道路清理废旧入口。World Rules命令只影响后续受控过程，禁止免费货物/人口和天然地形重写。收藏、镜头与页面导航是PlayerView行为，不占世界事务。

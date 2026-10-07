@@ -62,7 +62,7 @@
 
 本轮已归档核心人体/骨架/权重源，以及官方 [shirts01](https://static.makehumancommunity.org/assets/assetpacks/shirts01.html)/[pants01](https://static.makehumancommunity.org/assets/assetpacks/pants01.html) 中逐项核验 CC0 的选定 T 恤/短裤源文本，共 14 份、3,129,823 字节，详见 [生态取入研究](../research/MAKEHUMAN_ECOSYSTEM.md)。它们尚缺完整贴图、体型 targets、导出与 GPU 验证；牛仔短裤必须改成上古白短裤的合适外观。其他服装、胸罩、正装各按自己的条目许可核验，免费包/名称带 cc0 不足以继承许可。原创建筑和原创军装也不因托管而自动获得 CC0/MIT 授权。
 
-人体、衣物商品、mesh 资源与材质变体 ID 分离。采用有限体型 profile、共享 skeleton/mesh/材质、服装覆盖/层次兼容表、预编译 fit/LOD 和身体遮罩；不能为每人复制完整 MakeHuman 数据或运行时执行 Blender。儿童使用正确比例与适配衣物，不能缩小成人冒充。首个可玩样本须验证走路/携货/入门、穿插、覆盖、批次和内存。
+人体、衣物商品、mesh 资源与材质变体 ID 分离。采用有限体型 profile、共享 skeleton/mesh/材质、服装覆盖/层次兼容表、预编译 fit/LOD 和身体遮罩；不能为每人复制完整 MakeHuman 数据或运行时执行 Blender。全龄身体尺寸/骨架/fit现按后续[ADR 0005](0005-unified-inspectors-and-world-tools.md)统一成人规格，覆盖本ADR最初的儿童独立体型方案。首个可玩样本须验证走路/携货/入门、穿插、覆盖、批次和内存。
 
 ## 8. 当前实现与生产接入门槛
 

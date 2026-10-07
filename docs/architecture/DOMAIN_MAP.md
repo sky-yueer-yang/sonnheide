@@ -256,3 +256,9 @@ known_gap: concrete remaining behavior
 每个新领域接入时都运行前面已有场景，特别是保存续跑/镜头变化/企业退出/路径封闭。不能让后期功能通过给早期系统插入免费资源、自动身份转换或全世界旗标来“完成”。
 
 详细调度、拓扑更新、性能目标和spike门槛见 [SIMULATION.md](SIMULATION.md)。
+
+## ADR 0005追加域：全域信息/编辑与世界工具
+
+原27章映射逐字来源不变；本轮追加[ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)、[INTERACTION](INTERACTION.md)与40种实体信息页registry。人口origin/模拟年龄归Person域；关系与页面导航不改变法定身份；世界统计是有口径的查询域；收藏/marker归PlayerView；规则/分类清理通过World命令。禁止以UI统一为由合并Culture/Language，或合并owner/controller/custodian/location。
+
+追加验收关注：Person→State→City→Enterprise→Contract→Shipment→StockBatch/Garment无死链；0岁与18岁同BodySpec但成人资格不同；禁自动spawn；清理后的稳定引用能打开档案；跨世界ref拒绝；视图操作不改模拟；全球/跨实体统计去重且单位/时窗明确。40个信息页kind不代表40种业务已实现。

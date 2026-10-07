@@ -143,5 +143,21 @@
       "linked_to_runtime": false,
       "minimum_blender": "4.2.0"
     }
+  ],
+  "optional_development_tools": [
+    {
+      "name": "Node.js",
+      "purpose": "Execute the original offline inspector model regression in vm; no npm packages, no production runtime dependency",
+      "tested_version": "24.19.0",
+      "accepted_major_versions": [
+        20,
+        22,
+        24
+      ],
+      "upstream": "https://nodejs.org/",
+      "license_reference": "https://github.com/nodejs/node/blob/main/LICENSE",
+      "distribution": "not_vendored; use installed/bundled runtime",
+      "configuration": "SONNHEIDE_NODE or node on PATH"
+    }
   ]
 }

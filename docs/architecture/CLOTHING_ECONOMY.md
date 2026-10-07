@@ -179,12 +179,12 @@ IdentityTheme 与 PhysicalColour 分开：国家识别读取合法 State/theme �
 其他社区素材均逐项核验作者、许可版本、原文件和相应 attribution。包名含 cc0、免费下载或 MakeHuman 支持导入不构成许可；已知有以 cc0 命名却条目使用 CC-BY 的包，不能整体批准。具体 [候选许可状态](../../assets/manifests/makehuman_candidates.json) 与 [生态取入研究](../research/MAKEHUMAN_ECOSYSTEM.md) 保留冲突/缺件事实；胸罩、完整正装与其他晚期服装没有来源与完整 runtime 证据时标候选，不能宣称已经交付。原始可再分发来源、转换脚本、manifest 与 notices 一起在 GitHub/LFS/Releases 保存。
 
 ```text
-verified source → fixed body/age FitProfiles → rig/weights cleanup
+verified source → one age-independent canonical adult FitProfile → rig/weights cleanup
  → garment fit + layer/coverage tests → glTF exchange
  → runtime asset compile + LOD/body masks → shared renderer bindings
 ```
 
-基体 helpers 与非游戏部件在导出时去除；原始权重需要归一化、骨名映射及 runtime influences 上限验证。成人/儿童各有正确比例和 fit，不把成人整体缩放当儿童。简易人物也保持正确覆盖，fallback 和实物 slot 并存时不会因 LOD 切换露出被屏蔽的身体区域。
+基体 helpers 与非游戏部件在导出时去除；原始权重需要归一化、骨名映射及 runtime influences 上限验证。按[ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)全龄共用成人身体尺寸、骨架和fit，年龄不产生儿童比例或换尺码需求。简易人物也保持正确覆盖，fallback 和实物 slot 并存时不会因 LOD 切换露出被屏蔽的身体区域。
 
 每件 garment 绑定有限 `FitProfile/shapeBucket` 与 canonical skeleton，通过共享 mesh/weights、材质图集/数组与 tint 参数批次化。层次表/身体遮罩声明可兼容组合；walking/carrying/turning/enter/vehicle 坐姿等 reference poses 验证穿插。换肤/LOD 和物理 condition 表现只读快照，不从动画 marker 产出衣服或扣经济耐久。
 
@@ -232,7 +232,11 @@ verified source → fixed body/age FitProfiles → rig/weights cleanup
 |换军队/退伍/军队雇主破产|旧制服物权和真实归还保留，不复制或吞客户财产|
 |国家改旗/自由后期色/皮肤更新|不生衣、不修衣、不改历史成本；国旗与商品色独立|
 |开源包 mixed license 或缺贴图/targets|未核验项不进入 approved runtime；状态明确|
-|儿童/不同体型/多层服装/near-far LOD|覆盖/fit/共同骨架/性能成立，资产不复制经济实体|
+|0岁/18岁/老年统一身体规格、多层服装/near-far LOD|覆盖/fit/共同骨架/性能成立，资产不复制经济实体|
 |长期高耐久/二手市场/公司亏损|真实需求可变低，允许企业整顿/退出，不硬编码利润|
 
 先跑公共纤维到基本成衣交付、文明需要、预算保护、柔性正装、有限磨损/修补、外国兵实发与两家供应竞争，再接实际 3D 人物和规模场景。验收记录投入、货权、订单、资金、condition、CPU/内存及第一个不变量失败，不用只换模型截图宣称服装经济完成。
+
+## ADR 0005：全龄身体与全域信息页
+
+玩家新放置Person固定18岁；自然Birth从0岁开始，但两者共享同一成人身体、骨架、碰撞净空和fit规格。年龄不是外观缩放参数。服装页、衣柜页、企业/订单/运输页通过同一typed EntityRef相互跳转，显示所有者、保管者、位置及预约/在途/已交付的区别；详情见[集中交互合同](INTERACTION.md)。现有服装oracle的add_person是有限测试初始化接口，生产World不得借此自动生成工人、移民或士兵；只能导入已有Person引用。

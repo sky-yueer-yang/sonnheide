@@ -459,3 +459,11 @@ P1/P2/P3相互交叉迭代，但不能跳过P0守恒/幂等先做宏大展示。
 - 自制建筑不能只做漂亮mesh：每个资产还要提供footprint、入口、容量兼容、LOD、碰撞/遮挡与Port特殊规则元数据，交付规则与视觉的一致性证据。
 
 需求与对象的逐章映射见 [DOMAIN_MAP.md](DOMAIN_MAP.md)。
+
+## ADR 0005：人口来源、规则切换和集中查询
+
+生产Person只从PlayerPlacePerson（可信Player；固定18岁）或ReproductionBirth（可信Scheduler；真实成年双亲、关系、出生条件；0岁）创建。所有工人、移民、军队和殖民者均引用已存在Person，不允许为补缺直接spawn；空世界没有隐藏初始人口。玩家可以在运行中继续亲自放置18岁人物，不仅限于创世。测试fixture显式独立，不能冒称自然出生或游戏初态。
+
+人口保存origin、creationTick、初始年龄、模拟年龄及parents；Placement不捏造过去18年的出生/学习历史。全龄身体尺寸/骨架/fit固定，但成年与兵役资格仍按实际模拟年龄。World Rules的reproduction/aging/hunger_consequences/ai_new_wars由Player单写者命令修改并记录生效revision；排队Birth/AI宣战提交时重验规则。aging冻结模拟年龄但日历继续；hunger_consequences关闭惩罚，不赠食物或抹除真实消耗；既有战争不因ai_new_wars关闭而消失。
+
+所有信息页、统计、关系、历史、收藏状态和清理预览按[INTERACTION](INTERACTION.md)的分页/快照/typed引用合同接入。有限interaction oracle只验证这些来源、事务、引用、统计和保护边界，没有接入完整经济/社会/交通/生产存档。

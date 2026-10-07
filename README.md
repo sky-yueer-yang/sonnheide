@@ -29,6 +29,10 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 
 ## 已经落地
 
+本轮新增[集中交互ADR 0005](docs/decisions/0005-unified-inspectors-and-world-tools.md)、[全域信息/编辑合同](docs/architecture/INTERACTION.md)与[40种页面registry](data/interaction_schema.json)。[可点击信息页原型](tools/previews/world-inspector.html)可直接在浏览器离线打开：近景人物→国籍国家→城市/企业/语言等关联页面；远景点国家区域；世界统计/比较、规则、收藏/标记、分类清理、18岁玩家放置与0岁繁衍演示。原型使用明确标注的示例数据，不是可玩的3D世界或生产RmlUi客户端。
+
+独立C++ `sonnheide_interaction` oracle验证人口来源、全龄同BodySpec、typed引用/档案、单写者原子命令、世界规则、去重统计及清理保护；它尚未连接kernel、服装Ledger、完整法务/交通或生产存档。所有新增人物只允许玩家亲自放置（固定18岁）或合法繁衍（0岁）；年龄不生成儿童体型。
+
 - C++20 headless 内核：只读天然底图、整数施工材料预约、分步劳动、取消、完工永久造陆、道路与正交港口几何、泊位保护、导航版本失效与全图连通正确性基准。
 - 命令 ID 去重、负载/授权冲突拒绝、预览修订检查；世界与回执在同一屏障提交；存档重载检查空间、材料、身份、回执及历史约束。
 - 18组内核场景、2000条确定种子压力命令、分配失败注入事务测试、headless 贯穿演示。
@@ -75,6 +79,8 @@ headless 演示会施工两格人工陆地、建一个港口、验证天然底�
 真实高程与建址测试是另外的有限切片：`sonnheide_site_tests`验证合成起伏地面上完整建址/邻楼不变量，ETOPO导入器验证实际源数据，`sonnheide_ocean_fft_tests`验证上游FFT数学。`sonnheide_clothing_tests`核对独立服装实物循环；没有连接全世界道路货运、公共生存、科技传播或生产存档。它们尚未组成可玩的3D场景；新ADR覆盖旧平地/极简服饰条款，原稿本身逐字保留。
 
 ## 当前实现不能直接作为生产规模方案
+
+信息页前端行为验收可运行 `node tools/validate_interaction_preview.js`；没有PATH中的Node时可用`SONNHEIDE_NODE`指定已有运行时再执行`python3 tools/build.py`。Node仅用于原型JavaScript验证，无npm包或生产引擎依赖。收藏、导航与地图marker属于PlayerView，不改变世界事务revision。40种有内容的示例页面不代表40个领域业务已实现；程序性编辑的生产法务命令仍须按各域实现。
 
 内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
 

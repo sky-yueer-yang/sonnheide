@@ -184,3 +184,9 @@ shader 源码、varying 定义、include 树、材质 schema 都进入 Git；生
 7. 真实负载与长期运行记录，并证明相机/渲染开关不改变权威仿真结果。
 
 以上门槛完成前可交付可执行 headless 核心、设计及资源约束，但不能声称已交付写实三维客户端。
+
+## ADR 0005：集中信息页与统一身体规格
+
+生产UI按[INTERACTION](INTERACTION.md)建立全域InspectorRegistry、关系跳转、历史前后导航、全局搜索/收藏/地图标记、World Laws和统计比较。近景Person/建筑/物品代理、远景国家/城市区域都只返回typed稳定EntityRef；Person→国籍→State→所属City等链接进入同一页面系统。所有页面先读已提交snapshot；编辑以草稿、expectedRevision、命令回执提交，不持有可写World。导航/收藏/镜头保存在PlayerView，不改变模拟或RNG。
+
+从0岁到老死使用同一成人尺寸、骨长度、绑定矩阵、碰撞净空和服装fit；年龄不选择儿童mesh或缩放。基础覆盖与生命周期年龄独立。浏览器的[可点击原型](../../tools/previews/world-inspector.html)是示例数据的交互验收，不是RmlUi/bgfx生产客户端，也没有接入真实地球拾取或GPU。
