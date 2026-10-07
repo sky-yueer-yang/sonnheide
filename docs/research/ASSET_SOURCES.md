@@ -24,7 +24,7 @@
 |ambientCG 材质|官方说明资产 CC0，允许游戏包含原始文件|**正式 PBR 备选**。用具体资产 ID 锁定版本与物理纹理尺寸|只下载实际需要的分辨率；不把整库搬进 GitHub；保持每张贴图的来源、通道和颜色空间记录|
 |Blender Sapling Tree Gen 0.3.7|官方扩展版本页标 GPL-3.0-or-later|**离线树形生成候选**。参数化生成树干和枝条，叶材用开放纹理或原创|工具代码许可与输出分开；检查模板／预设与输出有无第三方素材，不因工具 GPL 就给原创树mesh误标 GPL，也不把插件链接进运行时|
 |Abyssal Ocean|固定commit的MIT原文及三个准确源文件已归档|**用户指定水体来源**；原生CPU FFT参考已构建，native GPU移植未完成|原项目WebGL2/three.js，需shaderc/pass/岸线mask移植；HTML CDN依赖未归档，不能标为完整离线客户端|
-|NOAA ETOPO 2022 v1 Ice Surface|官方metadata明确CC0-1.0，完整许可原文已保留|**全球高程基底**；当前取入25×25阿尔卑斯真实像元及必要TIFF原字节范围，离线可重建|15角秒、WGS84/EGM2008；尚非全球包或房屋尺度测绘；NoData与独立水陆mask不可省略|
+|NOAA ETOPO 2022 v1 Ice Surface|官方metadata明确CC0-1.0，完整许可原文已保留|**历史研究，已停止作为地表依赖**；25×25阿尔卑斯原字节及配方保留可核验，停止新增高程采集|ADR 0010只用真实海陆/岸线；新世界不消费ETOPO/DEM或垂直datum，不删改原始许可证据|
 |2Retr0/GodotOceanWaves|仓库 LICENSE 为 MIT；README 单列 OTFFT Stockham 算法 MIT、天空图 CC0|**历史对照来源；本次选用Abyssal**。只挑选并审查谱／FFT／着色算法，移植到自研渲染器|这是 Godot 工程，不运行 Godot、不复用其场景／插件；保留复制代码和 OTFFT 的通知；不是直接可用的海洋模块|
 |gasgiant/FFT-Ocean|仓库 LICENSE 为 MIT；README 明确是 Unity 原型，且不推荐实际项目直接使用|**对照参考**，不作为生产直接依赖|只在需要时审查独立 shader／数学代码；不运行 Unity；注意其他包、素材及上游说明的逐项许可|
 
@@ -108,4 +108,4 @@ Releases 官方说明每个对象小于 2 GiB、一个 Release 最多 1000 个�
 5. 本项目 GitHub 原始文件副本、源和产物哈希、署名／许可通知全部完整后，状态才从 pending 转 approved。
 6. 在 Sonnheide 实际场景中验证近景写实、中景识别、远景 LOD、资源流送和占地／人物语义；合格许可不能替代这一步。
 
-本轮保留Abyssal准确源码、ETOPO真实源窗口和MakeHuman选定源件，不下载整套全球DEM或大型人物/材质库。MakeHuman身体/绑定与三款衣物经过离线源格式检查，尚缺游戏转换/材质/动画/性能验收；原始ZIP只保留实际使用成员，整包hash未冒称已知。更细DTM与Copernicus DSM的建筑/植被偏差见[地形数据合同](../architecture/TERRAIN_AND_SITES.md)。
+保留Abyssal准确源码、历史ETOPO源窗口和MakeHuman选定源件。按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)停止新增高程采集，取消全球DEM/局部DTM/Copernicus DSM作为未来地表依赖；只推进真实海陆/岸线来源准入。MakeHuman身体/绑定与三款衣物经过离线源格式检查，尚缺游戏转换/材质/动画/性能验收；原始ZIP只保留实际使用成员，整包hash未冒称已知，不下载大型人物/材质整库。

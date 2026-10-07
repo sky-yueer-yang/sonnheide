@@ -34,4 +34,4 @@
 
 `observe / people / civilization / construction / economy / world / settings`是我们按文明、建设、实物经济与世界管理设计的七组，详见[UI_ARCHITECTURE](../architecture/UI_ARCHITECTURE.md)。每个工具有模式、对象目标和可用能力；未接入者显示具体依赖，禁止假提交。对象页可继续包含局部编辑/跳转按钮，用户不会为关闭人物窗去切工具栏分类。
 
-不会迁移WorldBox的刷天然地形、幻想种族、灾害、现代爆炸武器或城防；原始人口来源、真实高程、实物衣服、港口与原创建筑是本项目规则。参考交互不能顺便改写这些因果不变量。施工与艺术的具体前置任务和贯穿门槛见[施工计划](../planning/IMPLEMENTATION_PLAN.md)。
+不会迁移WorldBox的刷天然地形、幻想种族、灾害、现代爆炸武器或城防；原始人口来源、冻结真实海陆/岸线与派生岸坡、实物衣服、港口与原创建筑是本项目规则。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)取消真实高程和内陆找平基；参考交互不能顺便改写这些因果不变量。施工与艺术的具体前置任务和贯穿门槛见[施工计划](../planning/IMPLEMENTATION_PLAN.md)。

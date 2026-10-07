@@ -7,9 +7,9 @@
 |必须保存|可重建/不保存为权威|
 |---|---|
 |schema/协议/定义集/内容包/GeoSourceManifest哈希与版本|GPU句柄、视锥列表、LOD当前级别、阴影缓存|
-|投影、EarthMapSelection、cellSize、唯一worldScale、冻结natural mask/hash|地球全球浏览视窗缓存、表现岸线LOD|
-|冻结高程瓦片/hash、EGM2008/转换、XYZ同尺度、NoData/三角化版本与误差|GPU地形LOD、Abyssal波相位/RT与视觉水下效果|
-|固定地基bottom/floor、入口/配送绑定、永久/阶段claims、接入证书/profile/portal/权利版本|地基/坡道表现网格、可重建的空间查询索引|
+|水平投影、EarthMapSelection、cellSize、冻结worldScale、天然mask与完整岸线/CoastCoverageIndex的版本及hash|地球全球浏览视窗缓存、表现岸线LOD|
+|统一陆面/水面、近岸宽度、水侧浅滩规则、表面配方/profile及参数hash、接触采样/精度版本|可按同一冻结规则重建的表面缓存/GPU网格、Abyssal波相位/RT与视觉水下效果|
+|固定楼板、`Foundation = None`或必要近岸支撑的bottom/floor、入口/前侧配送绑定、永久/阶段claims、接入证书/运动profile/portal/权利版本|可选地基/连接构件表现网格、可重建的空间查询索引|
 |reclaimed、未完工工程、真实材料/劳动投入、空间约束|effectiveSurface、landOrigin派生值、导航索引与mesh|
 |建筑本体等待/自动施工/完成状态、实际到货/投入、startedTick/durationTicks/completedTick、工程定义版本|围网层数采样、表现时钟、pendingComplete、临时网罩GPU资源|
 |SimTick、TimeConfig、独立RNG流/计数器、due tasks|渲染frameDelta、线程完成顺序、墙钟时间|
@@ -27,7 +27,9 @@
 
 建筑本体采用[ADR 0002](../decisions/0002-building-construction.md)的材料实送与自动工期，没有现场砌筑人物预约；填海真实劳动仍保存。载入WAITING_DELIVERY只恢复工地/配送且无网罩，载入AUTOMATIC_BUILD直接重建完整网罩，载入已完成/已取消时直接成品/无网罩，不重播围/拆动画、材料交付或完成事务。现场货物和在途货物继续保留唯一真实位置。
 
-[ADR 0003](../decisions/0003-terrain-and-site-access.md)要求载入保留已批准地基/入口/通道几何；不得从新版DEM重新抬高楼板或移动旧门。读入staging时按原冻结地形重验完整保护域、路线连续/坡度/profile、前侧现状配送与车库要求；跨项目矛盾拒绝而不自动拆邻楼。旧平地world保留自己的profile，新版真实地形需新世界或显式迁移。当前独立site oracle尚无存档格式，本段为生产合同。
+[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)规定新世界不保存或要求真实DEM、垂直基准转换或三轴真实地理缩放。保存天然mask/完整岸线和固定表面配方及参数；重建时必须恢复同一统一陆台和天然岸坡，不采用新版资料或动态填海结果重新生成它们。普通内陆建筑明确保存无独立找平地基的状态，不能在载入时按旧默认参数补一个；必要近岸地基、楼板、入口和通道几何保持已批准事实。
+
+读入staging时按原冻结mask/岸线/profile及已完成工程表面，重验完整占地支持、保护域、路线连续/宽度/净空/运动profile、近岸必要坡度、前侧现状配送与车库要求；跨项目矛盾拒绝而不自动拆邻楼。人工填筑表面及其与较低天然岸坡的显式连接也需恢复，不能抬高旧天然地面。若未来读取旧profile存档，按其原规则加载或进行显式迁移，不能把旧高度事实重解释为新平面；当前不存在生产高程World存档需要转换。已归档ETOPO样本和旧site oracle是历史研究/测试，没有生产存档格式，本段是待接入合同。
 
 ## 2. 生产存档包
 

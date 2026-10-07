@@ -1,4 +1,6 @@
 #pragma once
+// Historical ADR 0003 slope oracle only. ADR 0010 uses flat inland ground and
+// optional coastal support. This interface is not part of the current kernel.
 #include "sonnheide/types.hpp"
 #include <limits>
 #include <map>

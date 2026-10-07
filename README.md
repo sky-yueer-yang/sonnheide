@@ -19,7 +19,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |油画艺术主菜单、极简无框交互、光暗纪元|[最新视觉ADR 0009](docs/decisions/0009-monumental-minimal-interface.md)、[光暗ADR 0008](docs/decisions/0008-sacred-interface-and-light-ages.md)、[视觉合同](docs/architecture/VISUAL_STYLE.md)、[Light/Darkness规则](docs/architecture/LIGHT_AGES.md)|
 |40类字段编辑、人物六轴、国家宗教与35法族|[编辑矩阵](docs/architecture/EDITING.md)、[机器合同](data/interaction_schema.json)|
 |材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
-|真实高程、长方体地基、人/车入口与邻楼保护|[最新变更ADR 0003](docs/decisions/0003-terrain-and-site-access.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
+|统一平坦陆地、近岸下降、沿海可选地基与通道保护|[最新变更ADR 0010](docs/decisions/0010-flat-land-and-coastal-transition.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
 |早期服装业、实物衣物/耐久、购买排序与原创军装|[服装变更ADR 0004](docs/decisions/0004-clothing-and-makehuman.md)、[服装经济](docs/architecture/CLOTHING_ECONOMY.md)|
 |正式MakeHuman/MPFB路线、选定源件与逐项许可|[人物生态接入](docs/research/MAKEHUMAN_ECOSYSTEM.md)、[源件manifest](assets/manifests/makehuman_sources.json)|
 |命令、预览、授权、共享合同与错误协议|[接口契约](docs/architecture/CONTRACTS.md)|
@@ -49,8 +49,8 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 - 从原稿实际提取40能力突破＋96谱系＋288槽位、35类法律、13类业务；未提供的原参考代码和配置没有被伪称导入。
 - 3份原创建筑几何配方及自包含 glTF 灰盒：住宅、CitySquare 的 CivicHall 组件、港口。它们用于格式/空间验证，正式写实模型、三时代外观与全建筑目录尚待制作。
 - CMake 构建、三平台 GitHub Actions 与 Linux sanitizer 作业、内容/来源哈希校验、LFS 规则。
-- 真实ETOPO阿尔卑斯25×25高程窗口，必要TIFF原字节/官方metadata/CC0原文与标准库离线重建器；尚未下载完整全球包。
-- C++20独立建址oracle：只读高程、整块长方体地基、四向全宽C1坡道、人行/车库分别验收、前侧现状配送、旧通道保护与原子预约。19组反例/贯穿场景；尚未合入完整world/物流/存档。
+- 历史ETOPO阿尔卑斯25×25高程窗口及原始来源/许可保留；ADR 0010已取消真实高程，停止新高程采集，新世界只需要海陆/岸线包。
+- 旧ADR 0003坡地建址oracle保留19组历史反例/贯穿回归，现独立为test-only库，不再链接当前kernel。新的平地零找平地基/沿海可选支撑合同已确定，实际生产建址尚未实现。
 - 用户指定Abyssal Ocean的MIT准确源文件与commit/hash，已提取原生CPU蝶形/二维inverse FFT参考并用直接IDFT验证；native GPU海洋尚未移植。见[第三方通知](THIRD_PARTY_NOTICES.md)。
 - MakeHuman v1.3.0核心身体/骨架/权重及三款CC0服装的14份准确源文件，合计3,129,823字节；标准库离线核验覆盖hash、网格/fit索引、骨架父图、权重和材质属性。未运行DCC或生成游戏glTF/LOD/动画，未导入缺失纹理与许可冲突的胸罩。
 - 独立C++服装经济oracle：真实投入/劳时、工资、资金托管、预约/交付、两槽有界衣橱、整数穿用损耗/有限修补与购买需求。公司正装规范只提高购买优先级，无正装仍能工作并获得正常工资；具体已执行场景与长期循环范围见[验证记录](docs/planning/VALIDATION.md)。
@@ -98,7 +98,7 @@ python3 tools/validate_project.py
 
 headless 演示会施工两格人工陆地、建一个港口、验证天然底图未变并执行存档往返。它没有窗口、真实地球数据、人物劳动分配、经济循环或写实水体。`KernelPlacePort` 只实现空间/导航子集；生产 `PlacePort` 的科技、产权、预算和许可尚待接入。
 
-真实高程与建址测试是另外的有限切片：`sonnheide_site_tests`验证合成起伏地面上完整建址/邻楼不变量，ETOPO导入器验证实际源数据，`sonnheide_ocean_fft_tests`验证上游FFT数学。`sonnheide_clothing_tests`核对独立服装实物循环；没有连接全世界道路货运、公共生存、科技传播或生产存档。它们尚未组成可玩的3D场景；新ADR覆盖旧平地/极简服饰条款，原稿本身逐字保留。
+`sonnheide_site_tests`仅回归历史ADR 0003坡地数学，ETOPO导入器仅核验保留的历史研究来源，二者不再是新世界的地表方案。新世界按ADR 0010保留真实海陆轮廓、统一陆面和狭窄水边过渡，内陆普通房屋无额外找平地基；原生地表/新建址尚未实现。`sonnheide_ocean_fft_tests`验证上游FFT数学；`sonnheide_clothing_tests`核对独立服装实物循环，没有连接全世界道路货运、公共生存、科技传播或生产存档。原稿本身逐字保留。
 
 ## 当前实现不能直接作为生产规模方案
 

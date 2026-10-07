@@ -200,7 +200,7 @@ def main():
                 continue
             base = target.split("#", 1)[0]
             require((path.parent / base).exists(), "Broken local link in {}: {}".format(path, target))
-    print("PASS: pinned Abyssal MIT sources, offline real ETOPO sample, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, selected MakeHuman sources, documentation links")
+    print("PASS: pinned Abyssal MIT sources, historical ETOPO sample integrity, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, selected MakeHuman sources, documentation links")
     print("PASS: " + interaction_summary)
     print("PASS: " + ui_summary)
     print("PASS: " + painting_summary)

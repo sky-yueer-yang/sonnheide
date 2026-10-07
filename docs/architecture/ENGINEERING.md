@@ -21,6 +21,8 @@
 
 ## 2. 构建与依赖
 
+最新地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：只保留真实海陆/岸线，普通陆地统一标高，局部水边过渡；世界创建不要求ETOPO/DEM或真实垂直datum。旧`engine/src/site.cpp`只构建为`BUILD_TESTING`下独立`sonnheide_legacy_slope_oracle`，不再进入kernel/headless链接图；保留历史回归不代表新建址已经接入。
+
 无窗口的核心切片仍仅需C++标准库/Python标准库。原生主页面使用可选SDL3、bgfx/bx/bimg、RmlUi和FreeType，准确提交、原始归档/许可哈希与构建工具见`data/native_dependencies.lock.json`；窗口/GPU不进入kernel链接图。Python3.9+兼容；CMake3.24+、C++20编译器。CMake负责生产构建图，`tools/build.py`提供当前macOS/Linux编译器回退，Windows用MSVC/CMake。[CMake官方Preset规范](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
 
 当前原生菜单已冻结并实际构建SDL3/bgfx/RmlUi/FreeType；预编译UI shader取自锁定bgfx原始归档，无本机shaderc依赖。后续新增shaderc/texturec时仍须独立准入。`data/dependencies.json`区分已集成的可选native菜单依赖与未接入项；它仍是状态清单，真正构建lock独立保存。真正lock包含source archive SHA-256、许可证路径、补丁、编译选项、平台、toolchain、shader profile和来源副本。允许从本项目固定Release源归档恢复，不能构建时偷偷取master。

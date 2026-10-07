@@ -39,7 +39,7 @@
 
 原项目WebGL2/three.js 0.180.0调度须移植到C++20/bgfx；不采用浏览器作为生产客户端。已从上游蝶形与inverse FFT流程提取独立CPU正确性参考，并核对直接2D IDFT、幅值/方向/Hermitian谱及错误边界。CPU参考不执行全谱海洋、GPU材质或实际帧渲染；上游HTML的three.js CDN依赖未归档，不声称完整离线浏览器demo。
 
-native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有序pass、shaderc采样/uniform、depth/UV、浮动原点相位和独立海陆mask。真实海底高程用于表现时须与ETOPO/世界datum一致，低于海平面LAND不能被shader淹没。TMA/浅水衰减不等于真实河湖/水动力；海面浪高仍不写仿真。成本与跨后端验收见[RENDERING](../architecture/RENDERING.md)。
+native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有序pass、shaderc采样/uniform、depth/UV、浮动原点相位和独立海陆mask。按ADR 0010不采真实海底高程；统一静水面与派生水边浅滩只供受限表现，不得移岸线、赠陆地或随填海抬天然岸坡。TMA/浅水衰减不等于真实河湖/水动力；海面浪高仍不写仿真。成本与跨后端验收见[RENDERING](../architecture/RENDERING.md)。
 
 仍拒绝游戏引擎运行时、未明确许可shader、许可不明的示例HDRI/贴图，以及直接依赖WebGL framebuffer假设的生产代码。bgfx基础和合法CC0材质可以补充该移植，保留各自通知。[bgfx shader工具](https://bkaradzic.github.io/bgfx/tools.html)、[示例资产许可](https://bkaradzic.github.io/bgfx/license.html)。
 

@@ -103,7 +103,9 @@
       "license_file": "data/geo/sources/CC0-1.0.txt",
       "license_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
       "license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
-      "status": "real_25x25_Alps_window_offline_rebuilt"
+      "status": "historical_research_only_retired_by_ADR_0010",
+      "required_for_new_world": false,
+      "additional_acquisition_planned": false
     }
   ],
   "retained_character_sources": [

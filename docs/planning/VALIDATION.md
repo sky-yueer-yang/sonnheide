@@ -133,3 +133,11 @@
 ### Windows 构建与跨平台检查
 
 [原生构建 run 37581479771](https://github.com/sky-yueer-yang/sonnheide/actions/runs/37581479771) 从项目 Release 获取锁定源件，Windows MSVC 完整构建客户端和所有有限正确性目标。三项原生测试（模型、真实 Rml 布局、JPEG/PNG/中文路径）以及其余 core 测试通过；首次完整 CTest 最后一项原始许可哈希因 Windows checkout 换行转换失败。已通过 `third_party/native/** -text` 保留原字节，未改变锁定哈希。既有菜单 JS 校验另有 LF 专用正则，现支持 CRLF，UI/build 源显式固定 LF；LF 与真实 CRLF 文件分别运行16项检查通过。修复后 CI 结果另行记录。唯一发行渠道为 Steam，Windows GPU 实机/Steam Overlay 未由构建 runner 验证。
+
+## 2026-10-07 Flat-land decision and removal of real-height dependencies
+
+ADR 0010 replaces the real-height product route with the real land/water outline, a uniform inland platform and a frozen narrow coastal transition. Inland buildings have no independent levelling foundation; optional coastal support retains full footprint, pedestrian/garage access, current front-side delivery and old-access protection. ETOPO original bytes/notices and prior validation remain historical records, not new-world dependencies. No global source import, native map or World creation was implemented in this revision.
+
+The retired ADR 0003 site implementation now builds only as `sonnheide_legacy_slope_oracle` under BUILD_TESTING. `site.cpp` is absent from current kernel/headless sources. The portable builder likewise compiles it only with its historical site test. The original v0.6 source SHA-256 remains `cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6`.
+
+Normal `tools/build.py` and `tools/build.py --sanitizers` both exited 0: the existing 18 kernel, 11 allocation-failure, 16 clothing, 19 historical slope, 5 FFT and 30 interaction scenarios, native menu model, project/native-source validation and 39+9+16 browser regressions passed. Fresh CMake configured and linked headless/kernel and the separately linked historical site test; the three selected CTests passed (3.21s). `nm -C` confirmed no TerrainGrid/SiteRegistry symbols in the current kernel archive. A separate BUILD_TESTING=OFF configuration exposes neither legacy slope nor site-test targets. These checks prove isolation and unchanged finite invariants; they do not prove the planned coastal geometry or new building rules are implemented.

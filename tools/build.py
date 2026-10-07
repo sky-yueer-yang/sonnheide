@@ -21,10 +21,14 @@ def main():
     flags = ["-std=c++20", "-O1", "-g", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-I" + str(ROOT / "engine/include")]
     if args.sanitizers:
         flags += ["-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
-    core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp")) if p.name != "interaction.cpp"]
-    for name, source in [("sonnheide_headless", ROOT / "apps/headless/main.cpp"), ("sonnheide_kernel_tests", ROOT / "tests/kernel_tests.cpp"), ("sonnheide_allocation_tests", ROOT / "tests/transaction_allocation_tests.cpp"), ("sonnheide_site_tests", ROOT / "tests/site_tests.cpp"), ("sonnheide_clothing_tests", ROOT / "tests/clothing_tests.cpp")]:
+    core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp")) if p.name not in ("interaction.cpp", "site.cpp")]
+    for name, source in [("sonnheide_headless", ROOT / "apps/headless/main.cpp"), ("sonnheide_kernel_tests", ROOT / "tests/kernel_tests.cpp"), ("sonnheide_allocation_tests", ROOT / "tests/transaction_allocation_tests.cpp"), ("sonnheide_clothing_tests", ROOT / "tests/clothing_tests.cpp")]:
         subprocess.run([compiler, *flags, *core, str(source), "-o", str(out / name)], check=True, cwd=ROOT)
         subprocess.run([str(out / name)], check=True, cwd=ROOT)
+    legacy_site = out / "sonnheide_site_tests"
+    subprocess.run([compiler, *flags, str(ROOT / "engine/src/site.cpp"),
+                    str(ROOT / "tests/site_tests.cpp"), "-o", str(legacy_site)], check=True, cwd=ROOT)
+    subprocess.run([str(legacy_site)], check=True, cwd=ROOT)
     ocean = out / "sonnheide_ocean_fft_tests"
     subprocess.run([compiler, *flags, "-I" + str(ROOT / "presentation/include"),
                     str(ROOT / "presentation/src/ocean_fft.cpp"), str(ROOT / "tests/ocean_fft_tests.cpp"),
