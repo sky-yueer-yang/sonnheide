@@ -44,7 +44,7 @@ std::string validate_delivery_front(const TerrainGrid& terrain,const SiteRequest
   // Check the bounded coordinate before +/- half-width, including hostile int64 input.
   if(!attached || socket<footprintSpan.first || socket>footprintSpan.second)return "DELIVERY_FRONT_NOT_CONTINUOUS";
   const auto halfWidth=(pedestrian_profile().widthMm+1)/2;
-  for(const auto contact:std::array{footprintSpan,envelopeSpan,apronSpan})
+  for(const auto& contact:std::array{footprintSpan,envelopeSpan,apronSpan})
     if(socket-halfWidth<contact.first || socket+halfWidth>contact.second)return "DELIVERY_FRONT_NOT_CONTINUOUS";
   return {};
 }
@@ -75,7 +75,7 @@ bool ramp_clear(const TerrainGrid& terrain,const Ramp& ramp,bool axisX,Height y0
   for(int z=ramp.area.z0;z<ramp.area.z1;++z) for(int x=ramp.area.x0;x<ramp.area.x1;++x){
     const auto a=point(x,z), b=point(x+1,z), c=point(x+1,z+1), d=point(x,z+1);
     for(const auto& triangle:std::array<std::array<Vertex,3>,2>{{{a,b,c},{a,c,d}}})
-      for(int i=0;i<3;++i) if(!clear_edge(triangle[static_cast<std::size_t>(i)],triangle[static_cast<std::size_t>((i+1)%3)],origin,length,y0,static_cast<long double>(y1)-y0)) return false;
+      for(int i=0;i<3;++i) if(!clear_edge(triangle[static_cast<std::size_t>(i)],triangle[static_cast<std::size_t>((i+1)%3)],origin,length,static_cast<long double>(y0),static_cast<long double>(y1)-y0)) return false;
   }
   return true;
 }
