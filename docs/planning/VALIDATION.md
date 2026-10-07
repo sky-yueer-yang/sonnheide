@@ -129,3 +129,7 @@
 - 项目GitHub Release八份原始文件已实际上传并从项目下载URL逐个回读校验长度和SHA-256。原始设计基线、油画、Logo和已有Cinzel字体字节不变；本轮未修改核心世界事务。
 - 发行目标Steam；本机窗口证据是开发验证，不安排App Store工作。Windows native构建与具体结果将在CI完成后单独记录，不能用headless Windows绿勾代替图形客户端构建。
 - 用户最新明确暂缓真实地形包/创建World，本轮只完成接入。
+
+### Windows 构建与跨平台检查
+
+[原生构建 run 37581479771](https://github.com/sky-yueer-yang/sonnheide/actions/runs/37581479771) 从项目 Release 获取锁定源件，Windows MSVC 完整构建客户端和所有有限正确性目标。三项原生测试（模型、真实 Rml 布局、JPEG/PNG/中文路径）以及其余 core 测试通过；首次完整 CTest 最后一项原始许可哈希因 Windows checkout 换行转换失败。已通过 `third_party/native/** -text` 保留原字节，未改变锁定哈希。既有菜单 JS 校验另有 LF 专用正则，现支持 CRLF，UI/build 源显式固定 LF；LF 与真实 CRLF 文件分别运行16项检查通过。修复后 CI 结果另行记录。唯一发行渠道为 Steam，Windows GPU 实机/Steam Overlay 未由构建 runner 验证。

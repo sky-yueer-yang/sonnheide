@@ -31,3 +31,14 @@ assets/source/ui/fonts/*.ttf -text
 assets/source/ui/fonts/*.pb text eol=lf
 
 *.svg text eol=lf
+
+# Keep UI/build source line endings reproducible across Windows checkouts.
+*.js text eol=lf
+*.css text eol=lf
+*.rcss text eol=lf
+*.rml text eol=lf
+*.cmake text eol=lf
+*.mm text eol=lf
+
+# Original upstream notices are byte-locked; never convert their newlines.
+third_party/native/** -text

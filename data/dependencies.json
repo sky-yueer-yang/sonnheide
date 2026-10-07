@@ -7,7 +7,7 @@
       "resolved_commit": "7f3ae3d57459e59943a4ecfefc8f6277ec6bf540",
       "source_archive_sha256": "7a8347c770b90b33daac2352858ca03f9c9a2ccc8ce711054870361d1a6b32e5",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_macos_Metal",
+      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
       "linked_to_kernel": false
     },
     {
@@ -15,7 +15,7 @@
       "resolved_commit": "40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9",
       "source_archive_sha256": "59cc05404011645873048fbf7aac5131ac4c8c304853fa448d1aa43b4e2ba340",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_macos_Metal",
+      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
       "linked_to_kernel": false
     },
     {
@@ -23,7 +23,7 @@
       "resolved_commit": "42608f77f20749dd6ddc9e0536788eaad70ea4b5",
       "source_archive_sha256": "68ce87bb59ea209eb7350f41a94a27519ce16b37011b475a1e62d4abee154b66",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_macos_Metal",
+      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
       "linked_to_kernel": false
     },
     {
@@ -31,7 +31,7 @@
       "resolved_commit": "cca91681c953d2de9531197b0f580c866ffaa775",
       "source_archive_sha256": "fdf2642d58327bee772eb06e4fdb32aef4c53c0d17325820a848d1628e01a24e",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_macos_Metal",
+      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
       "linked_to_kernel": false
     },
     {
@@ -39,7 +39,7 @@
       "resolved_commit": "d86e4ea9d9da6e832a3ff41398587d82b772c69b",
       "source_archive_sha256": "ebceffb7cba8d29dc0931de6b2fd2a700f26fbd5a3b978ee92398b91f2260956",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_macos_Metal",
+      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
       "linked_to_kernel": false
     },
     {
@@ -47,7 +47,7 @@
       "resolved_commit": "101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1",
       "source_archive_sha256": "efb47d1ee18a653658c04e3aabbafd4e302b17a191c18cfe2ca64b6892761f94",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_macos_Metal",
+      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
       "linked_to_kernel": false
     }
   ],

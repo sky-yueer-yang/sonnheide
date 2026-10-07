@@ -208,7 +208,7 @@ async function check(name,run){await run();checks++;process.stdout.write(`PASS $
     h.tick(1000);assert.ok(h.state().motion.zoomElapsed[1]>0);
   });
   await check("three locale dictionaries match and no world API is required",async()=>{
-    const match=source.match(/const messages = ([\s\S]+?);\n  const preferenceKey/);assert.ok(match);
+    const match=source.match(/const messages = ([\s\S]+?);\r?\n  const preferenceKey/);assert.ok(match);
     const messages=vm.runInNewContext(`(${match[1]})`);const keys=Object.keys(messages.zh).sort();
     for(const locale of ["zh","en","de"]){
       assert.deepEqual(Object.keys(messages[locale]).sort(),keys);

@@ -59,7 +59,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 
 ## 运行原生主页面
 
-发行目标为 **Steam**。当前已在开发设备上验证 macOS/Metal 原生窗口，不涉及 Mac App Store；Windows 图形端与 Steam 发行打包尚未完成。程序没有浏览器、JavaScript或游戏引擎运行时。
+唯一发行渠道为 **Steam**。Windows Direct3D11 原生客户端已由 MSVC 完整编译链接，三项原生交互/解码测试通过；开发设备已实测 Metal 原生窗口。Windows GPU 实机与 Steam 发行打包仍需后续验证。程序没有浏览器、JavaScript或游戏引擎运行时。
 
 ```sh
 python3 tools/build_native.py --run

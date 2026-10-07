@@ -57,4 +57,4 @@ Actions引用固定commit（checkout v5.0.0、setup-python v5.6.0此次已解析
 
 ## Steam 发行目标
 
-用户已明确游戏上架Steam。原生菜单的本机macOS/Metal证据只用于开发验证；不建设Mac App Store上架流程。Windows原生平台桥、GPU实机验证、Steam游戏包及后续发行功能按阶段施工，不能用当前headless Windows CI或库本身的跨平台能力宣称Windows游戏已可运行。Steam发行不得成为核心仿真的依赖；当前没有引入任何商店SDK。
+用户明确唯一发行渠道为Steam。原生菜单的本机Metal证据只用于开发验证。Windows HWND/Direct3D11平台桥已接入，MSVC客户端完整编译链接与三项原生测试通过；Windows GPU实机、Steam游戏包及后续发行功能按阶段施工。Steam发行不得成为核心仿真的依赖；当前没有引入任何商店SDK。
