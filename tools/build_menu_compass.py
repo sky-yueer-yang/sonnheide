@@ -83,7 +83,7 @@ def compose():
             end, width, opacity = 240, .50, .56
         else:
             end, width, opacity = (240, .35, .50) if i % 2 == 0 else (226, .30, .45)
-        rays.append(radial(145, end - 67, i, width, opacity * .60))
+        rays.append(radial(145, end - 67, i, width, opacity * .40))
     parts += group("360-attached-dense-rays", rays)
     parts.append('</svg>')
     return "\n".join(parts) + "\n"

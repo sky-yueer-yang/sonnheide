@@ -141,6 +141,50 @@
   let fallbackAnnounced = false;
   const holdDuration = 68000;
   const fadeDuration = 12000;
+  // Local presentation randomness never shares a clock or RNG with a simulated World.
+  // Both decoded layers follow one slow path so changing paintings cannot restart the drift.
+  const motionDirections = [
+    {name:"lower-left",x:-1,y:1}, {name:"upper-right",x:1,y:-1},
+    {name:"lower-right",x:1,y:1}, {name:"upper-left",x:-1,y:-1}
+  ];
+  const motionLimits={x:.55,y:.4};
+  const zoomDuration = 240000;
+  const layerZoomElapsed = [0,0];
+  let previousMotionDirection = null;
+  function nextMotionTarget(from) {
+    // Select an actual diagonal displacement, not a fixed corner that could produce a
+    // horizontal/vertical segment. Exclude directions with too little room to move.
+    const candidates=motionDirections.filter(direction=>direction.name!==previousMotionDirection && motionLimits.x-direction.x*from.x>=.075 && motionLimits.y-direction.y*from.y>=.055);
+    const direction=candidates[Math.floor(Math.random()*candidates.length)];
+    previousMotionDirection=direction.name;
+    return {name:direction.name,x:from.x+direction.x*(motionLimits.x-direction.x*from.x)*(.35+Math.random()*.4),y:from.y+direction.y*(motionLimits.y-direction.y*from.y)*(.35+Math.random()*.4)};
+  }
+  const paintingMotion={from:{x:0,y:0},target:nextMotionTarget({x:0,y:0}),elapsed:0,duration:140000+Math.random()*60000};
+  let motionCanAdvance=!document.hidden && !reducedMotion && !paintingPaused;
+  let motionClockNeedsReset=false;
+  const smoothMotion=fraction=>fraction*fraction*fraction*(fraction*(fraction*6-15)+10);
+  function motionPose() {
+    const fraction=smoothMotion(paintingMotion.elapsed/paintingMotion.duration);
+    return {x:paintingMotion.from.x+(paintingMotion.target.x-paintingMotion.from.x)*fraction,y:paintingMotion.from.y+(paintingMotion.target.y-paintingMotion.from.y)*fraction};
+  }
+  function renderPaintingMotion() {
+    const pose=motionPose();
+    layers.forEach((layer,index)=>{
+      const scale=1.018+.018*smoothMotion(layerZoomElapsed[index]/zoomDuration);
+      layer.style.transform=`translate3d(${pose.x.toFixed(6)}%,${pose.y.toFixed(6)}%,0) scale(${scale.toFixed(6)})`;
+    });
+  }
+  function advancePaintingMotion(delta) {
+    paintingMotion.elapsed+=delta;
+    while(paintingMotion.elapsed>=paintingMotion.duration){
+      paintingMotion.elapsed-=paintingMotion.duration;
+      paintingMotion.from={x:paintingMotion.target.x,y:paintingMotion.target.y};
+      paintingMotion.target=nextMotionTarget(paintingMotion.from);paintingMotion.duration=140000+Math.random()*60000;
+    }
+    layerZoomElapsed[frontLayer]=Math.min(layerZoomElapsed[frontLayer]+delta,zoomDuration);
+    if(transition && transition.ready)layerZoomElapsed[transition.targetLayer]=Math.min(layerZoomElapsed[transition.targetLayer]+delta,zoomDuration);
+    renderPaintingMotion();
+  }
 
   function t(key) { return messages[locale][key] || key; }
   function announce(key, replacements={}) { let value=t(key); for(const [name,replacement] of Object.entries(replacements)) value=value.replace(`{${name}}`,String(replacement)); document.getElementById("announcer").textContent=value; }
@@ -150,6 +194,8 @@
     for(const element of root.querySelectorAll("[data-label]")) { const label=t(element.dataset.label); element.setAttribute("aria-label",label); if(element.matches("button")) element.title=label; }
   }
   function updateControls() {
+    const canAdvance=!document.hidden && !reducedMotion && !paintingPaused;
+    if(canAdvance!==motionCanAdvance){motionCanAdvance=canAdvance;motionClockNeedsReset=true;}
     document.body.classList.toggle("reduced-motion", reducedMotion);
     document.body.classList.toggle("motion-enabled", !reducedMotion);
     document.body.classList.toggle("motion-paused",paintingPaused || document.hidden || reducedMotion);
@@ -252,6 +298,8 @@
     if(next===currentPainting)return;
     const targetLayer=1-frontLayer;
     layerPaintings[targetLayer]=next;
+    // Only the hidden candidate gets a new zoom clock; cancellation preserves the old front.
+    layerZoomElapsed[targetLayer]=0;renderPaintingMotion();
     transition={index:next,targetLayer,elapsed:0,duration:manual?900:fadeDuration,manual,ready:false,decoding:false};
     const request=transition;
     layers[targetLayer].classList.remove("is-failed");layers[targetLayer].style.objectPosition=positions[next];layers[targetLayer].style.opacity="0";
@@ -274,7 +322,9 @@
   if(reducedQuery.addEventListener)reducedQuery.addEventListener("change",onMotionPreference);else reducedQuery.addListener(onMotionPreference);
   function frame(timestamp) {
     const delta=lastTimestamp?Math.min(timestamp-lastTimestamp,250):0;lastTimestamp=timestamp;
+    const motionDelta=motionClockNeedsReset?0:delta;motionClockNeedsReset=false;
     if(!document.hidden && !reducedMotion && !paintingPaused){
+      advancePaintingMotion(motionDelta);
       if(transition && transition.ready){
         transition.elapsed+=delta;const fraction=Math.min(transition.elapsed/transition.duration,1);const eased=fraction*fraction*(3-2*fraction);
         layers[transition.targetLayer].style.opacity=String(eased);layers[frontLayer].style.opacity=String(1-eased);
@@ -284,8 +334,8 @@
     requestAnimationFrame(frame);
   }
   // Read-only metadata for browser review; intentionally exposes no world mutation API.
-  window.SonnheideMenuPreview=Object.freeze({getState:()=>({locale,reducedMotion,paintingPaused,currentPainting:currentPainting+1,paintingStatuses:paintings.map(p=>p.status),transitioning:Boolean(transition),pendingPainting:transition?transition.index+1:null,transitionReady:Boolean(transition && transition.ready),holdElapsed:elapsed,fadeElapsed:transition?transition.elapsed:0,openPanel,storageAvailable,holdDuration,fadeDuration,nativeWorldConnected:false})});
+  window.SonnheideMenuPreview=Object.freeze({getState:()=>({locale,reducedMotion,paintingPaused,currentPainting:currentPainting+1,paintingStatuses:paintings.map(p=>p.status),transitioning:Boolean(transition),pendingPainting:transition?transition.index+1:null,transitionReady:Boolean(transition && transition.ready),holdElapsed:elapsed,fadeElapsed:transition?transition.elapsed:0,motion:{direction:paintingMotion.target.name,from:{...paintingMotion.from},target:{x:paintingMotion.target.x,y:paintingMotion.target.y},segmentElapsed:paintingMotion.elapsed,segmentDuration:paintingMotion.duration,phase:paintingMotion.elapsed/paintingMotion.duration,translation:motionPose(),zoomElapsed:layerZoomElapsed.slice(),scales:layerZoomElapsed.map(value=>1.018+.018*smoothMotion(value/zoomDuration)),zoomDuration},openPanel,storageAvailable,holdDuration,fadeDuration,nativeWorldConnected:false})});
   layers[frontLayer].style.opacity="1";layers[1-frontLayer].style.opacity="0";
   layers[frontLayer].style.objectPosition=positions[currentPainting];
-  applyLocale();requestAnimationFrame(frame);
+  applyLocale();renderPaintingMotion();requestAnimationFrame(frame);
 })();
