@@ -17,6 +17,8 @@ void arm(const char* phase,long index){
  sweep=phase;sweep_index=index;
 #ifdef _WIN32
  std::fprintf(stderr,"ALLOCATION BEGIN phase=%s index=%ld\n",sweep,sweep_index);
+#else
+ if(phase[0]!='g'||index%128==0)std::fprintf(stderr,"ALLOCATION BEGIN phase=%s index=%ld\n",sweep,sweep_index);
 #endif
  injected=false;fail_after=index;
 }
@@ -45,6 +47,8 @@ void fail_point(){
   fail_after=-1;injected=true;
 #ifdef _WIN32
   std::fprintf(stderr,"ALLOCATION INJECT phase=%s index=%ld\n",sweep,sweep_index);
+#else
+  if(sweep[0]!='g'||sweep_index%128==0)std::fprintf(stderr,"ALLOCATION INJECT phase=%s index=%ld\n",sweep,sweep_index);
 #endif
   throw std::bad_alloc();
  }

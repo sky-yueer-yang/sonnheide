@@ -87,7 +87,7 @@
   "creation_scenarios": 18,
   "real_allocation_failure_counts": {
     "geometry": 644,
-    "owner_start": 25,
+    "owner_start": 22,
     "owner_poll": 13
   },
   "normal_core": "passed",
@@ -161,5 +161,6 @@
     "upload_and_download_sha_verified": true,
     "original_archive_bytes": 118617033,
     "assets": 5
-  }
+  },
+  "async_ownership": "explicit packaged_task + owned/joined thread; UI geography/preview/load and checkpoint worker"
 }

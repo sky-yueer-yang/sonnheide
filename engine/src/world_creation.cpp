@@ -248,6 +248,12 @@ struct CreateCoordinator::Pending {
  std::shared_ptr<std::atomic<bool>> cancelled;
  std::filesystem::path checkpoint;
  std::future<std::shared_ptr<WorldSession>> prepared;
+ // Own the one worker directly. MSVC async uses PPL, whose internal failure
+ // boundaries cannot unwind every allocation safely; an explicit thread keeps
+ // launch failure recoverable and makes cancellation/join ownership visible.
+ std::thread worker;
+ void join() { if (worker.joinable()) worker.join(); }
+ ~Pending() { join(); }
 };
 CreateCoordinator::CreateCoordinator(std::filesystem::path saves, std::shared_ptr<const earth::GeoAtlas> atlas,
                                    std::string admitted_presentation_recipe_hash)
@@ -287,7 +293,7 @@ std::string CreateCoordinator::validate_readiness(const earth::EarthWorldDefinit
  return {};
 }
 CreateCoordinator::~CreateCoordinator() {
- if (pending_) { pending_->cancelled->store(true); pending_->prepared.wait();
+ if (pending_) { pending_->cancelled->store(true); pending_->join();
   std::error_code ignored; std::filesystem::remove(pending_->checkpoint, ignored); }
 }
 bool CreateCoordinator::busy() const { require_writer(); return pending_ != nullptr; }
@@ -310,7 +316,7 @@ CreationResult CreateCoordinator::start(CreationTicket ticket,
   auto checkpoint = pending->checkpoint;
   const auto directory = saves_; const auto atlas = atlas_; const auto presentation_hash = presentation_hash_;
   const auto cancelled = pending->cancelled; const auto injector = injector_;
-  pending->prepared = std::async(std::launch::async, [session, checkpoint, directory, atlas, presentation_hash, cancelled, injector] {
+  std::packaged_task<std::shared_ptr<WorldSession>()> work([session, checkpoint, directory, atlas, presentation_hash, cancelled, injector] {
    try {
     DirectoryLock lock(directory);
     require(!std::filesystem::exists(checkpoint), "WorldId collision");
@@ -329,6 +335,8 @@ CreationResult CreateCoordinator::start(CreationTicket ticket,
     std::error_code ignored; std::filesystem::remove(checkpoint, ignored); throw;
    }
   });
+  pending->prepared = work.get_future();
+  pending->worker = std::thread(std::move(work));
   pending_ = std::move(pending);
   return {CreateStatus::Preparing, {}, {}};
  } catch (const std::exception& exception) { return {CreateStatus::Failed, exception.what(), {}}; }
@@ -342,6 +350,7 @@ std::optional<CreationResult> CreateCoordinator::poll() {
  std::optional<std::string> old_pointer; bool pointer_attempted = false;
  std::unique_ptr<DirectoryLock> commit_lock;
  try {
+  pending->join();
   pointer = saves_ / "continue.pointer";
   auto session = pending->prepared.get();
   if (!current(pending->ticket) || cancelled_ || pending->cancelled->load()) {

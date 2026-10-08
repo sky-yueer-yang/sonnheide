@@ -21,6 +21,27 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
+      - name: Select Xcode 16.2 for the pinned Tint C++20 compiler
+        if: runner.os == 'macOS'
+        shell: bash
+        env:
+          # macos-14 defaults to Xcode 15.4; pinned Tint needs aggregate CTAD.
+          # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md#xcode
+          DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
+        run: |
+          xcodebuild -version
+          xcrun clang++ --version
+          printf 'DEVELOPER_DIR=%s\n' "$DEVELOPER_DIR" >> "$GITHUB_ENV"
+          printf 'CC=%s\n' "$(xcrun --find clang)" >> "$GITHUB_ENV"
+          printf 'CXX=%s\n' "$(xcrun --find clang++)" >> "$GITHUB_ENV"
+          xcrun clang++ -std=c++20 -x c++ -fsyntax-only - <<'CPP'
+          #include <variant>
+          template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+          int main() {
+            std::variant<int, float> value{1};
+            return std::visit(overloaded{[](int) { return 0; }, [](float) { return 0; }}, value);
+          }
+          CPP
       - name: Prepare the pinned native compiler and independent libraries
         run: python tools/vendor_native.py --allow-upstream
       - name: Verify full global geography and cook real PBR skies and native shaders

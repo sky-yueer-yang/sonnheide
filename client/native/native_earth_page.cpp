@@ -14,9 +14,33 @@
 #include <sstream>
 #include <stdexcept>
 #include <string_view>
+#include <thread>
+#include <type_traits>
+#include <utility>
 
 namespace sonnheide::client {
 namespace {
+// A recoverable launch and explicit join also cover UI geography/preview/load
+// work; std::async's platform runtime can terminate under launch allocation failure.
+template<class T> class JoinedFuture {
+ std::future<T> future_; std::thread worker_;
+public:
+ JoinedFuture()=default;
+ JoinedFuture(JoinedFuture&&)=default;
+ JoinedFuture& operator=(JoinedFuture&& other) {
+  wait(); future_=std::move(other.future_); worker_=std::move(other.worker_); return *this;
+ }
+ ~JoinedFuture(){wait();}
+ bool valid()const{return future_.valid();}
+ template<class Rep,class Period> std::future_status wait_for(std::chrono::duration<Rep,Period> d)const{return future_.wait_for(d);}
+ void wait(){if(worker_.joinable())worker_.join();}
+ T get(){wait();return future_.get();}
+ template<class F> static JoinedFuture launch(F f) {
+  JoinedFuture result; std::packaged_task<T()> task(std::move(f));
+  result.future_=task.get_future(); result.worker_=std::thread(std::move(task)); return result;
+ }
+};
+template<class F> auto launch_joined(F f){return JoinedFuture<std::invoke_result_t<F>>::launch(std::move(f));}
 struct Label {const char* key;const char* zh;const char* en;const char* de;};
 constexpr Label labels[]={
  {"title","创建世界","Create World","Welt erschaffen"},
@@ -75,9 +99,9 @@ struct NativeEarthPage::Impl {
  AtlasNavigation view;earth::WorldConfig config;native::EarthCamera camera;
  std::uint64_t revision{1},job_revision{};int material{-1};std::string error,status,world_name{"Sonnheide"};
  std::shared_ptr<std::atomic<bool>> stop;
- std::future<std::shared_ptr<earth::GeoAtlas>> atlas_job;
- std::future<std::shared_ptr<const earth::EarthWorldDefinition>> preview_job;
- std::future<std::shared_ptr<const creation::WorldSession>> load_job;
+ JoinedFuture<std::shared_ptr<earth::GeoAtlas>> atlas_job;
+ JoinedFuture<std::shared_ptr<const earth::EarthWorldDefinition>> preview_job;
+ JoinedFuture<std::shared_ptr<const creation::WorldSession>> load_job;
  std::shared_ptr<earth::GeoAtlas> atlas;
  std::shared_ptr<const earth::EarthWorldDefinition> candidate;
  std::unique_ptr<native::EarthRenderer> renderer;
@@ -107,13 +131,13 @@ struct NativeEarthPage::Impl {
   if(!atlas||!renderer||busy())return;
   error.clear();status="previewing";stop=std::make_shared<std::atomic<bool>>(false);job_revision=revision;
   const auto source=atlas;const auto cfg=config;const auto token=stop;
-  preview_job=std::async(std::launch::async,[source,cfg,token]{return earth::EarthWorldDefinition::create(source,cfg,[token]{return token->load();});});
+  preview_job=launch_joined([source,cfg,token]{return earth::EarthWorldDefinition::create(source,cfg,[token]{return token->load();});});
  }
  void prepare_load(){
   if(!coordinator||busy())return;
   cancelled_load=false;status="loadingworld";job_revision=revision;stop=std::make_shared<std::atomic<bool>>(false);
   ticket=coordinator->begin(revision);const auto token=stop;
-  const auto* writer=coordinator.get();load_job=std::async(std::launch::async,[writer,token]{return writer->prepare_continue([token]{return token->load();});});
+  const auto* writer=coordinator.get();load_job=launch_joined([writer,token]{return writer->prepare_continue([token]{return token->load();});});
  }
  void refresh(){
   if(!document)return;
@@ -140,10 +164,10 @@ struct NativeEarthPage::Impl {
 
 NativeEarthPage::NativeEarthPage(Rml::Context& c,std::filesystem::path r,std::filesystem::path s):impl_(std::make_unique<Impl>(c,std::move(r),std::move(s))){}
 NativeEarthPage::~NativeEarthPage(){auto& p=*impl_;if(p.stop)p.stop->store(true);if(p.coordinator)p.coordinator->cancel(p.ticket);if(p.load_job.valid())p.load_job.wait();if(p.preview_job.valid())p.preview_job.wait();if(p.atlas_job.valid())p.atlas_job.wait();if(p.document){p.document->RemoveEventListener("click",this);p.document->RemoveEventListener("keydown",this);p.document->RemoveEventListener("change",this);p.document->Close();}}
-bool NativeEarthPage::initialize(std::string& error){auto& p=*impl_;auto path=(p.root/"ui/application/create-world.rml").u8string();p.document=p.context.LoadDocument(std::string(path.begin(),path.end()));if(!p.document){error="Cannot load create-world.rml";return false;}for(const auto* event:{"click","keydown","change"})p.document->AddEventListener(event,this);p.refresh();p.document->Hide();const auto source=p.root/"assets/runtime/geography";p.atlas_job=std::async(std::launch::async,[source]{return earth::GeoAtlas::load(source);});error.clear();return true;}
+bool NativeEarthPage::initialize(std::string& error){auto& p=*impl_;auto path=(p.root/"ui/application/create-world.rml").u8string();p.document=p.context.LoadDocument(std::string(path.begin(),path.end()));if(!p.document){error="Cannot load create-world.rml";return false;}for(const auto* event:{"click","keydown","change"})p.document->AddEventListener(event,this);p.refresh();p.document->Hide();const auto source=p.root/"assets/runtime/geography";try{p.atlas_job=launch_joined([source]{return earth::GeoAtlas::load(source);});}catch(const std::exception& e){p.error=e.what();p.status.clear();p.refresh();}error.clear();return true;}
 void NativeEarthPage::open(Locale locale,bool saved){auto& p=*impl_;p.locale=locale;p.shown=true;p.returned=false;p.mode=Impl::Mode::Atlas;p.open_saved=saved;p.error.clear();p.status="loading";p.candidate.reset();p.material=-1;p.resource_attempted=false;if(p.renderer)p.renderer->clear_world();p.document->Show();
- if(!p.atlas&&!p.atlas_job.valid()){const auto path=p.root/"assets/runtime/geography";p.atlas_job=std::async(std::launch::async,[path]{return earth::GeoAtlas::load(path);});}
- if(p.atlas&&p.renderer){p.status.clear();if(saved)p.prepare_load();}p.refresh();}
+ try{if(!p.atlas&&!p.atlas_job.valid()){const auto path=p.root/"assets/runtime/geography";p.atlas_job=launch_joined([path]{return earth::GeoAtlas::load(path);});}
+ if(p.atlas&&p.renderer){p.status.clear();if(saved)p.prepare_load();}}catch(const std::exception& e){p.error=e.what();p.status.clear();}p.refresh();}
 void NativeEarthPage::update(){auto& p=*impl_;const auto size=p.context.GetDimensions();const float density=std::max(.1f,p.context.GetDensityIndependentPixelRatio());p.width=int(size.x/density);p.height=int(size.y/density);
  try{
   if(p.atlas_job.valid()&&done(p.atlas_job.wait_for(std::chrono::seconds(0)))){p.atlas=p.atlas_job.get();p.status="renderloading";p.refresh();}
@@ -180,7 +204,7 @@ void NativeEarthPage::activate(const std::string& action){auto& p=*impl_;
  else if(action=="cancel"){if(p.stop)p.stop->store(true);if(p.coordinator)p.coordinator->cancel(p.ticket);p.cancelled_load=true;p.status.clear();}
  else if(action=="sources")p.show_sources=!p.show_sources;
  else if(action=="select"&&!p.busy())p.selecting=!p.selecting;
- else if(action=="preview")p.prepare_preview();
+ else if(action=="preview"){try{p.prepare_preview();}catch(const std::exception& e){p.error=e.what();p.status.clear();}}
  else if(action=="atlas"&&!p.busy()){p.mode=Impl::Mode::Atlas;p.invalidate();p.status.clear();p.renderer->clear_world();}
  else if(action=="scale"&&!p.busy()){p.config.world_scale=p.config.world_scale<.08?.1:p.config.world_scale<.8?1:.04;p.invalidate();}
  else if(action=="light"&&p.mode==Impl::Mode::Preview)p.darkness=false;
