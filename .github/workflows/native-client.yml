@@ -1,6 +1,7 @@
 name: Native desktop client
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -44,6 +45,11 @@ jobs:
           CPP
       - name: Prepare the pinned native compiler and independent libraries
         run: python tools/vendor_native.py --allow-upstream
+      - name: Reuse the pinned shader compiler for this source and toolchain
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: .build/shader-tools
+          key: shaderc-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('data/native_dependencies.lock.json', 'tools/cook_ground_sky.py', '.github/workflows/native-client.yml') }}
       - name: Verify full global geography and cook real PBR skies and native shaders
         run: python tools/prepare_phase1.py --allow-upstream
       - name: Verify portable World presentation identity against actual Metal evidence
@@ -53,11 +59,7 @@ jobs:
           actual=json.loads(pathlib.Path('.build/ground-sky-runtime/runtime.json').read_text(encoding='utf-8'))['recipe_hash'];
           assert actual == expected, (actual, expected);
           print('PASS: Windows/Metal share canonical World presentation identity', actual)"
-      - name: Build the actual application entirely from verified offline resources
+      - name: Build all targets and run complete acceptance once from verified offline resources
         run: python tools/build_native.py --offline --jobs 3
-      - name: Build all finite correctness targets
-        run: cmake --build .build/native --config RelWithDebInfo --parallel 3
-      - name: Test actual native UI layout, presentation and core invariants
-        run: ctest --test-dir .build/native -C RelWithDebInfo --output-on-failure
       # Hosted runners have no player desktop. Compilation and NullRenderer layout tests
       # do not establish Windows GPU/Steam Overlay/device behavior.

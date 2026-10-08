@@ -1,5 +1,7 @@
 #include "native_menu.hpp"
 #include "native_earth_page.hpp"
+#include <sonnheide/native_platform.hpp>
+#include <SDL3/SDL_main.h>
 #include <RmlUi/Core.h>
 #include <cmath>
 #include <filesystem>
@@ -7,6 +9,10 @@
 #include <stdexcept>
 
 namespace {
+std::string path_utf8(const std::filesystem::path& path) {
+    const auto value=path.u8string();
+    return {reinterpret_cast<const char*>(value.data()),value.size()};
+}
 void require(bool value,const char* message) { if (!value) throw std::runtime_error(message); }
 struct TestSystem final : Rml::SystemInterface {
     double GetElapsedTime() override { return 0; }
@@ -99,13 +105,14 @@ void exercise(const std::filesystem::path& root,int width,int height,float densi
 }
 }
 int main(int argc,char** argv) {
-    TestSystem system; NullRenderer renderer; Rml::SetSystemInterface(&system); Rml::SetRenderInterface(&renderer);
+    TestSystem system; NullRenderer renderer; sonnheide::native::UnicodeFileInterface files;
+    Rml::SetSystemInterface(&system); Rml::SetRenderInterface(&renderer); Rml::SetFileInterface(&files);
     if (!Rml::Initialise()) { std::cerr << "RmlUi initialization failed\n"; return 1; }
     int result=0;
     try {
-        const auto root=argc>1 ? std::filesystem::path(argv[1]) : std::filesystem::current_path();
-        require(Rml::LoadFontFace((root/"assets/source/ui/fonts/Cinzel.ttf").string(),true),"Packaged Roman font failed");
-        require(Rml::LoadFontFace((root/"assets/source/ui/fonts/noto-serif-cjk-sc/NotoSerifCJKsc-Regular.otf").string(),true),"Packaged Chinese font failed");
+        const auto root=argc>1 ? std::filesystem::u8path(argv[1]) : std::filesystem::current_path();
+        require(Rml::LoadFontFace(path_utf8(root/"assets/source/ui/fonts/Cinzel.ttf"),true),"Packaged Roman font failed");
+        require(Rml::LoadFontFace(path_utf8(root/"assets/source/ui/fonts/noto-serif-cjk-sc/NotoSerifCJKsc-Regular.otf"),true),"Packaged Chinese font failed");
         for (float density:{1.f,2.f}) { exercise(root,1280,800,density); exercise(root,400,600,density);exercise_earth(root,1280,800,density);exercise_earth(root,400,600,density); }
     } catch (const std::exception& exception) { std::cerr << exception.what() << '\n'; result=1; }
     Rml::Shutdown(); return result;

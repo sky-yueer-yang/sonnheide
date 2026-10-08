@@ -4,7 +4,7 @@
 
 ## 当前基线
 
-已有27章映射、424科技定义（40突破/96家族/288slots）、35法律族/13业务、自研技术栈、GitHub/LFS/CI、3份原创灰盒，以及内核/服装/交互/FFT有限切片。SDL3/bgfx/RmlUi/FreeType已接入原生菜单，完整地理/经济/自然生命史/渲染与ozz未实现。最新[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)只保留真实海陆/岸线、统一陆台和局部水边过渡，取消真实高程；旧ETOPO窗口和坡地oracle仅历史研究/测试，不作为创建依赖。已有资产不宣称新的资产阶段已开工。范围以[VALIDATION](VALIDATION.md)为准，源稿逐字保留；唯一发行渠道为Steam。
+已有27章映射、424科技定义（40突破/96家族/288slots）、35法律族/13业务、自研技术栈、GitHub/LFS/CI、3份原创灰盒，以及内核/服装/交互/FFT有限切片。SDL3/bgfx/RmlUi/FreeType已接入原生菜单；阶段1的真实全球海陆导航、同路径PBR/天空/静态远海预览与可靠空世界首存档已接入，见[阶段1验收](PHASE1_ACCEPTANCE.md)。完整经济、自然生命史、动态Abyssal水体与ozz仍未实现。最新[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)只保留真实海陆/岸线、统一陆台和局部水边过渡，取消真实高程；旧ETOPO窗口和坡地oracle仅历史研究/测试，不作为创建依赖。已有资产不宣称新的资产阶段已开工。范围以[VALIDATION](VALIDATION.md)为准，源稿逐字保留；唯一发行渠道为Steam。
 
 ## 0—10阶段
 

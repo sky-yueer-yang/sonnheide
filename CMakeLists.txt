@@ -87,7 +87,14 @@ if(SONNHEIDE_BUILD_NATIVE)
     MACOSX_BUNDLE_BUNDLE_VERSION "0.1.0"
     MACOSX_BUNDLE_SHORT_VERSION_STRING "0.1.0"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/apps/game/Info.plist.in")
-  add_custom_command(TARGET sonnheide_game POST_BUILD
+  # Explicit preparation performs all locked source validation and cooking once.
+  # This build step only packages admitted bytes; it never accesses the network.
+  if(NOT EXISTS "${CMAKE_SOURCE_DIR}/.build/phase1/ADMITTED.json")
+    message(FATAL_ERROR "Phase-one resources are not admitted. Run python3 tools/prepare_phase1.py (or --offline with complete locked source caches).")
+  endif()
+  add_custom_target(sonnheide_earth_resources
+    # UI/assets/notices refresh even when no C++ source changed and the native
+    # executable does not relink. Tests and the packaged UI consume the same files.
     COMMAND ${CMAKE_COMMAND} -E make_directory "${SONNHEIDE_RESOURCE_DEST}/ui"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${SONNHEIDE_RESOURCE_DEST}/assets/source"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/ui/application" "${SONNHEIDE_RESOURCE_DEST}/ui/application"
@@ -95,13 +102,7 @@ if(SONNHEIDE_BUILD_NATIVE)
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/third_party/native" "${SONNHEIDE_RESOURCE_DEST}/third_party/native"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/THIRD_PARTY_NOTICES.md" "${SONNHEIDE_RESOURCE_DEST}/THIRD_PARTY_NOTICES.md"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/third_party/hextile" "${SONNHEIDE_RESOURCE_DEST}/third_party/hextile"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets/source/third_party/poly_haven" "${SONNHEIDE_RESOURCE_DEST}/third_party/poly_haven")
-  # Explicit preparation performs all locked source validation and cooking once.
-  # This build step only packages admitted bytes; it never accesses the network.
-  if(NOT EXISTS "${CMAKE_SOURCE_DIR}/.build/phase1/ADMITTED.json")
-    message(FATAL_ERROR "Phase-one resources are not admitted. Run python3 tools/prepare_phase1.py (or --offline with complete locked source caches).")
-  endif()
-  add_custom_target(sonnheide_earth_resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets/source/third_party/poly_haven" "${SONNHEIDE_RESOURCE_DEST}/third_party/poly_haven"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/geography"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_f.b" "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_h.b"
@@ -111,7 +112,8 @@ if(SONNHEIDE_BUILD_NATIVE)
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${SONNHEIDE_GEOGRAPHY_SOURCES}/notices" "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/geography/notices"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/.build/ground-sky-runtime" "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/ground-sky"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/.build/ground-sky-shaders" "${SONNHEIDE_RESOURCE_DEST}/shaders"
-    COMMENT "Packaging admitted Earth geometry, PBR materials, fixed Age skies and shaders")
+    COMMENT "Packaging native UI/assets/notices and admitted Earth geometry, PBR materials, fixed Age skies and shaders"
+    VERBATIM)
   add_dependencies(sonnheide_game sonnheide_earth_resources)
 endif()
 if(BUILD_TESTING)
@@ -163,4 +165,6 @@ if(Python3_FOUND AND BUILD_TESTING)
   set_tests_properties(project_content_contracts PROPERTIES TIMEOUT 60)
   add_test(NAME native_source_contracts COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validate_native.py)
   set_tests_properties(native_source_contracts PROPERTIES TIMEOUT 60)
+  add_test(NAME phase1_resource_contracts COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/phase1_resource_tests.py)
+  set_tests_properties(phase1_resource_contracts PROPERTIES TIMEOUT 60)
 endif()

@@ -1,6 +1,6 @@
 {
   "renderer": "actual Metal",
-  "recipe_hash": "d01b731ff0f6358c53037fe0793719bba6717a4510b8e39dda02db459c03c941",
+  "recipe_hash": "2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552",
   "frames": [
     {
       "material": 0,
@@ -101,7 +101,7 @@
   "normal_core": "passed",
   "asan_ubsan_core": "passed",
   "native_ctest": {
-    "passed": 16,
+    "passed": 17,
     "failed": 0
   },
   "native_rml_layout": {
@@ -155,18 +155,34 @@
     "phase1-hlsl-smoke.log": {
       "sha256": "6cc956eba3755229ce45c501997a5e1ec7bcdf4d14f742d1de60bfc4bc00fc1a",
       "committed": false
+    },
+    "phase1-batch-native.log": {
+      "sha256": "2d1d03808f84810707d859487ccdd67bd4bf0d1189e1691e75919bd6063d5dc3",
+      "committed": false
+    },
+    "phase1-batch-smoke.log": {
+      "sha256": "94dd977740de89cf6c419ade2eb444fa4f42f4939b65bf73f41dadea6952fa4e",
+      "committed": false
+    },
+    "phase1-batch-project.log": {
+      "sha256": "5eb06ec6c4d4dc0f1a8112d57a1b9f0143ee732b3454fbb89485acd35e743091",
+      "committed": false
+    },
+    "phase1-batch-resource-preflight.log": {
+      "sha256": "6d94495f7e40157f048d9c556d6038c6cef1e2f2ebfed076d7972bbd6f45a293",
+      "committed": false
     }
   },
   "native_scenario": {
-    "world_id": "1f7c6fe509cb21766658ff3d0ead1069",
-    "frames": 8159,
+    "world_id": "31988a7904e1316c0c48395337368e9c",
+    "frames": 273,
     "passed": true,
     "utf8_name": "世界 · Sonnheide",
     "stable_capture_hashes": {
-      "step-1": "f0aec8a8b1807a356b8c112d3848164df6dafb23bf021b5e98ceace9238e6eb6",
+      "step-1": "d621cea2d98a4f4ef0964363f505df51e6f143cac358744b0c5dc61c20bb3400",
       "step-12": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261",
-      "step-2": "9d23eee4526b860765447c988588b1de80f3be13c3b154df2e849dadff5e5934",
-      "step-3": "f028ae0e1b46a84453140b662a4d55471411223b3cbae7ce1164308be8c012b0",
+      "step-2": "a5f3ae29ff68b46bda8cdcb09f39de7fa231c194c8f7bcb5fc39afa03fd10dd0",
+      "step-3": "1910e91522982c6474352e02329230bc71d24cb378375332c24ffeab907f1e38",
       "step-5": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261",
       "step-7": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261"
     }
@@ -179,7 +195,7 @@
     "assets": 5
   },
   "async_ownership": "explicit packaged_task + owned/joined thread; UI geography/preview/load and checkpoint worker",
-  "admission_fingerprint": "3a3a2b768ceefd91152b4dacb9ef441bf91d25ad189226708a765ed72fb5be1a",
+  "admission_fingerprint": "d74ef95b537ad4b5b8fda535bd9419c4ccfbd4278a83b63e3f15ed3f776ef901",
   "hosted_core_ci": {
     "implementation_commit": "8adf517740bf0316e5e29f416d01fbd09e2ae220",
     "workflow": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/37742563215",
@@ -207,5 +223,9 @@
     }
   ],
   "orthographic_framebuffer_sha256": "076055330524bf6099aced3683f3ef5bcefc8e69691c86c805341076bc438bc8",
-  "water_scope": "static mean-water; no Abyssal FFT completion claim"
+  "water_scope": "static mean-water; no Abyssal FFT completion claim",
+  "resource_identity_format": "sonnheide-python-ast-json-v1; canonical POSIX relative paths; source-only cold/warm identity",
+  "build_policy": "Complete all edits and reviews before one full native build and one complete CTest; reuse byte-admitted unchanged sources/shaders/skies; fix only actual failed gates",
+  "phase1_resource_regressions": 14,
+  "packaged_source_files_byte_verified": 50
 }

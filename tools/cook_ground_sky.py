@@ -20,9 +20,18 @@ import prepare_ground_sources as sources
 ROOT = Path(__file__).resolve().parents[1]
 RECIPE = 'sonnheide-ground-sky-v2-rgba16f-sh9-ggx-fixed-age'
 RENDERER_ALGORITHM_VERSION = 'earth-pbr-hex-ggx-orthographic-ocean-v3'
+AST_FINGERPRINT_FORMAT = 'sonnheide-python-ast-json-v1'
 # Exact pre-split implementation identities; legacy migration requires both.
 LEGACY_TOOL_SHA256 = '86a5783c4aee4f7bdfcc15dfb1b36795e3a9fae50bcf409675604d6a58a8cdd4'
 LEGACY_IMAGE_AST_SHA256 = '8f56c74f368a990dede5f9974903b11e7b1441fe08b47c1e69eb6bfbd6f10109'
+# The exact unchanged image functions under Python 3.9, 3.12 and 3.14 ast.dump.
+# Migration still requires their new stable identity AND both actual output SHA.
+LEGACY_IMAGE_DUMP_HASHES = (
+    LEGACY_IMAGE_AST_SHA256,
+    'f84e727064af85c2dad0fbb3f1210d5aad8ba7f91142032e7aa9c968c615b5fa',
+    '6a489c4a0aed78b6782c92abb97c6abab8d009aaae939e94c89280c26308800d',
+)
+UNCHANGED_IMAGE_CANONICAL_SHA256 = 'ac3ddb3d6d649d141cb4e9614f598c5ec442c7d9f4ca72d29cea25e47eccafa7'
 
 
 def radiance_rows(path):
@@ -221,18 +230,38 @@ def ggx_prefilter(source_path, output):
             'roughness_levels':10,'resolution':[512,256]}
 
 
+def canonical_ast(node):
+    """Own versioned AST encoding, independent of Python's debug ast.dump.
+
+    Python 3.12 added empty type_params; 3.14 dump hides empty lists. Neither
+    changes these algorithms. Absent/None/empty optional grammar fields encode
+    identically, while every nonempty field, node kind and literal is retained.
+    """
+    if isinstance(node, ast.AST):
+        return [type(node).__name__, {name: canonical_ast(value)
+            for name, value in ast.iter_fields(node) if value is not None and value != []}]
+    if isinstance(node, list):
+        return [canonical_ast(value) for value in node]
+    if isinstance(node, bytes):
+        return {'bytes_hex': node.hex()}
+    return node
+
+
 def function_ast_hash(names):
     tree=ast.parse(Path(__file__).read_text(encoding='utf-8'))
-    functions=[ast.dump(node,include_attributes=False) for node in tree.body
-               if isinstance(node,ast.FunctionDef) and node.name in names]
-    return hashlib.sha256('\n'.join(functions).encode()).hexdigest()
+    nodes=[node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name in names]
+    if {node.name for node in nodes} != set(names):
+        raise ValueError('Missing function in the fixed cook fingerprint')
+    payload=json.dumps([canonical_ast(node) for node in nodes],sort_keys=True,
+                       separators=(',',':'),allow_nan=False)
+    return hashlib.sha256((AST_FINGERPRINT_FORMAT+'\n'+payload).encode('utf-8')).hexdigest()
 
 
 def shader_sources():
     folder=ROOT/'presentation/native/shaders'
     paths=sorted(p for p in folder.iterdir() if p.suffix in ('.sc','.sh'))
     paths.append(ROOT/'data/native_dependencies.lock.json')
-    return {str(p.relative_to(ROOT)):sources.digest(p) for p in paths}
+    return {p.relative_to(ROOT).as_posix():sources.digest(p) for p in paths}
 
 
 def admitted_shaders(folder):
@@ -281,10 +310,37 @@ def cook_shaders(output, compiler=None):
                 '-i',str(ROOT/'.build/native-sources/bgfx/src')+';'+str(ROOT/'presentation/native/shaders'),'-O','3'],check=True)
     compiled=[]
     for path in sorted(folder.glob('*.bin')):
-        compiled.append({'path':str(path.relative_to(output)),'sha256':sources.digest(path),'bytes':path.stat().st_size})
+        compiled.append({'path':path.relative_to(output).as_posix(),'sha256':sources.digest(path),'bytes':path.stat().st_size})
     (output/'compiled_shaders.json').write_text(json.dumps({'sources':shader_sources(),
         'compile_ast_sha256':function_ast_hash({'cook_shaders'}),'outputs':compiled},sort_keys=True,indent=2)+'\n')
     print('PASS: pinned native Earth shaders',target)
+
+
+def runtime_identity(lock):
+    """Only immutable source/algorithm inputs; no cache, cooked byte or backend."""
+    presentation_sources=shader_sources()
+    for relative in ('presentation/native/earth_renderer.cpp','presentation/native/earth_renderer.hpp',
+                     'platform/src/image_decode_bimg.cpp'):
+        presentation_sources[relative]=sources.digest(ROOT/relative)
+    runtime={'schema_version':1,'recipe':RECIPE,'source_lock_sha256':sources.digest(sources.MANIFEST),
+             'fingerprint_format':AST_FINGERPRINT_FORMAT,
+             'image_algorithm_sha256':function_ast_hash({'radiance_rows','sky_cook','ggx_prefilter'}),
+             'presentation':{'algorithm_version':RENDERER_ALGORITHM_VERSION,'sources':presentation_sources,
+                 'compile_ast_sha256':function_ast_hash({'cook_shaders'})},
+             'material_ids':[],'sky_ids':[]}
+    for entry in lock['assets']:
+        if entry['kind']=='ground':
+            runtime['material_ids'].append({'id':entry['id'],'physical_size_m':entry['physical_size_m'],
+                'files':{f['slot']:entry['id']+'/'+f['filename'] for f in entry['files']}})
+        else:
+            runtime['sky_ids'].append({'id':entry['id'],'role':entry['role'],'file':entry['id']+'/radiance.bin'})
+    return runtime
+
+
+def canonical_recipe_hash(runtime):
+    canonical={key:value for key,value in runtime.items() if key not in ('outputs','recipe_hash')}
+    return hashlib.sha256(json.dumps(canonical,sort_keys=True,separators=(',',':'),
+                                     allow_nan=False).encode('utf-8')).hexdigest()
 
 
 def main():
@@ -301,16 +357,8 @@ def main():
     lock,packs=sources.prepare(fetch=args.fetch)
     args.output.mkdir(parents=True,exist_ok=True)
     compiled_shaders=admitted_shaders(args.shader_output)
-    presentation_sources=shader_sources()
-    for relative in ('presentation/native/earth_renderer.cpp','presentation/native/earth_renderer.hpp',
-                     'platform/src/image_decode_bimg.cpp'):
-        path=ROOT/relative
-        presentation_sources[str(path.relative_to(ROOT))]=sources.digest(path)
-    runtime={'schema_version':1,'recipe':RECIPE,'source_lock_sha256':sources.digest(sources.MANIFEST),
-             'image_algorithm_sha256':function_ast_hash({'radiance_rows','sky_cook','ggx_prefilter'}),
-             'presentation':{'algorithm_version':RENDERER_ALGORITHM_VERSION,'sources':presentation_sources,
-                 'compile_ast_sha256':function_ast_hash({'cook_shaders'})},
-             'material_ids':[],'sky_ids':[],'outputs':[]}
+    runtime=runtime_identity(lock)
+    runtime['outputs']=[]
     for entry,pack in zip(lock['assets'],packs):
         folder=args.output/entry['id'];folder.mkdir(exist_ok=True)
         with zipfile.ZipFile(pack) as archive:
@@ -320,18 +368,16 @@ def main():
                     destination.write_bytes(archive.read(item['filename']))
                 sources.verify_image(destination,item)
                 if entry['kind']=='ground':
-                    runtime['outputs'].append({'path':str(destination.relative_to(args.output)),'sha256':item['sha256']})
-        if entry['kind']=='ground':
-            runtime['material_ids'].append({'id':entry['id'],'physical_size_m':entry['physical_size_m'],
-                'files':{f['slot']:entry['id']+'/'+f['filename'] for f in entry['files']}})
-        else:
+                    runtime['outputs'].append({'path':destination.relative_to(args.output).as_posix(),'sha256':item['sha256']})
+        if entry['kind']!='ground':
             output=folder/'radiance.bin';receipt=folder/'recipe.json'
             image_ast=function_ast_hash({'radiance_rows','sky_cook','ggx_prefilter'})
             key=hashlib.sha256((RECIPE+entry['files'][0]['sha256']+image_ast).encode()).hexdigest()
             specular=folder/'specular.bin'
             previous=json.loads(receipt.read_text()) if receipt.exists() else {}
-            legacy_key=hashlib.sha256((RECIPE+entry['files'][0]['sha256']+LEGACY_TOOL_SHA256).encode()).hexdigest()
-            compatible_legacy=(image_ast==LEGACY_IMAGE_AST_SHA256 and previous.get('key')==legacy_key)
+            legacy_keys={hashlib.sha256((RECIPE+entry['files'][0]['sha256']+old).encode()).hexdigest()
+                         for old in (*LEGACY_IMAGE_DUMP_HASHES,LEGACY_TOOL_SHA256)}
+            compatible_legacy=(image_ast==UNCHANGED_IMAGE_CANONICAL_SHA256 and previous.get('key') in legacy_keys)
             valid=(output.exists() and specular.exists() and (previous.get('key')==key or compatible_legacy)
                 and previous.get('radiance_sha256')==sources.digest(output)
                 and previous.get('specular_sha256')==sources.digest(specular))
@@ -339,25 +385,25 @@ def main():
                 cooked=sky_cook(folder/entry['files'][0]['filename'],output,entry['role']=='age_of_darkness')
                 ggx=ggx_prefilter(output,specular)
                 cooked['specular']=ggx
-                receipt.write_text(json.dumps({'key':key,'radiance_sha256':sources.digest(output),
+                receipt.write_text(json.dumps({'key':key,'image_algorithm_sha256':image_ast,
+                    'fingerprint_format':AST_FINGERPRINT_FORMAT,'radiance_sha256':sources.digest(output),
                     'specular_sha256':sources.digest(specular),**cooked},sort_keys=True,indent=2)+'\n')
             if valid and compatible_legacy:
+                previous['migrated_legacy_key']=previous.get('migrated_legacy_key',previous['key'])
                 previous['key']=key
                 previous['image_algorithm_sha256']=image_ast
-                previous['migrated_exact_legacy_tool_sha256']=LEGACY_TOOL_SHA256
+                previous['fingerprint_format']=AST_FINGERPRINT_FORMAT
                 receipt.write_text(json.dumps(previous,sort_keys=True,indent=2)+'\n')
                 print('PASS: unchanged image algorithm + exact legacy key + both file SHA; migrated image cache',entry['id'])
-            runtime['sky_ids'].append({'id':entry['id'],'role':entry['role'],'file':entry['id']+'/radiance.bin'})
-            runtime['outputs'].append({'path':str(output.relative_to(args.output)),'sha256':sources.digest(output)})
-            runtime['outputs'].append({'path':str(specular.relative_to(args.output)),'sha256':sources.digest(specular)})
+            runtime['outputs'].append({'path':output.relative_to(args.output).as_posix(),'sha256':sources.digest(output)})
+            runtime['outputs'].append({'path':specular.relative_to(args.output).as_posix(),'sha256':sources.digest(specular)})
             # Runtime bundle only needs cooked binary, source remains immutable Release pack.
             (folder/entry['files'][0]['filename']).unlink()
     # World presentation identity names original inputs and deterministic recipes.
     # Per-build image bytes and backend binaries are separately SHA-admitted in the
     # compiled header; libm last-bit or Metal/D3D compilation differences cannot
     # silently change source identity or make the same World non-portable.
-    canonical={key:value for key,value in runtime.items() if key!='outputs'}
-    runtime['recipe_hash']=hashlib.sha256(json.dumps(canonical,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    runtime['recipe_hash']=canonical_recipe_hash(runtime)
     (args.output/'runtime.json').write_text(json.dumps(runtime,sort_keys=True,indent=2)+'\n')
     records=[{'path':item['path'],'sha256':item['sha256'],
               'bytes':(args.output/item['path']).stat().st_size} for item in runtime['outputs']]
