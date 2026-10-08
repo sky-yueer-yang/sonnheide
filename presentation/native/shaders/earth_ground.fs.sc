@@ -30,9 +30,9 @@ void main(){
  if(v_world.y<0.0)discard;
  vec2 st=v_uv+vec2(u_profile.w,u_profile.w*0.37);vec2 p=st*3.464101615;vec2 sk=vec2(p.x-0.57735027*p.y,1.15470054*p.y);vec2 b=floor(sk),f=fract(sk);
  float z=1.0-f.x-f.y,s=step(0.0,-z),ss=2.0*s-1.0;
- vec3 w=max(vec3(-z*ss,s-f.y*ss,s-f.x*ss),vec3(0.0));
+ vec3 w=max(vec3(-z*ss,s-f.y*ss,s-f.x*ss),vec3_splat(0.0));
  // Same sharpened candidates/weights for every PBR channel, never three unrelated patterns.
- w=pow(w,vec3(4.0));w/=max(dot(w,vec3(1.0)),0.0001);
+ w=pow(w,vec3_splat(4.0));w/=max(dot(w,vec3_splat(1.0)),0.0001);
  vec3 c1,c2,c3,n1,n2,n3,a1,a2,a3;vec2 dx=dFdx(st),dy=dFdy(st);
  samplePBR(st,b+vec2(s,s),dx,dy,c1,n1,a1);
  samplePBR(st,b+vec2(s,1.0-s),dx,dy,c2,n2,a2);
@@ -43,7 +43,7 @@ void main(){
  vec3 n=normalize(tx*tangent.x+tz*tangent.y+gn*tangent.z);
  vec3 v=u_cameraForward.w>0.5?-normalize(u_cameraForward.xyz):normalize(u_eye.xyz-v_world),r=reflect(-v,n);float nv=max(dot(n,v),0.001);
  float rough=clamp(arm.y,0.06,1.0),metal=clamp(arm.z,0.0,1.0);
- vec3 f0=mix(vec3(0.04),albedo,metal);vec3 F=f0+(1.0-f0)*pow(1.0-nv,5.0);
+ vec3 f0=mix(vec3_splat(0.04),albedo,metal);vec3 F=f0+(1.0-f0)*pow(1.0-nv,5.0);
  vec3 diffuse=albedo*(1.0-F)*(1.0-metal)*diffuseSH(n)*arm.x;
  vec4 br=rough*vec4(-1.0,-0.0275,-0.572,0.022)+vec4(1.0,0.0425,1.04,-0.04);
  float a004=min(br.x*br.x,exp2(-9.28*nv))*br.x+br.y;

@@ -40,9 +40,10 @@ python3 tools/build_native.py --run
 
 - 已通过：16组真实源地理场景；18组真实创建/持久化场景；指针锚定导航。包含真实湖/小岛/极区/日期线、full字节位翻转拒绝、连续水域与粗格独立、13个落盘故障边界、最后指针重命名取消回滚、跨线程拒绝、迟到/取消及UTF-8命名。normal及ASan/UBSan均实际运行。
 - 已通过：实际Metal独立渲染探针加载全部原材质/天空，近景材质与天空/海面截图；损坏天空文件在GPU上传前被SHA拒绝。
-- 已通过：最终配方 `da73eeca6a0c8649f5cdec4dbb4a8814ecb3f9bf54dffc53e30dca58afbb0d4e` 的实际Metal整机窗口贯穿，真实创建→返回→继续同WorldId→取消新候选→载入旧世界；八套材质2560×1600实际GPU输出各异，正射海面平行射线修复与shader字节篡改拒绝验证。
+- 已通过：最终配方 `d01b731ff0f6358c53037fe0793719bba6717a4510b8e39dda02db459c03c941` 的实际Metal整机窗口贯穿，真实创建→返回→继续同WorldId→取消新候选→载入旧世界；八套材质2560×1600实际GPU输出各异，正射海面平行射线修复与shader字节篡改拒绝验证。
 - 已通过：真实分配失败扫点644个冻结几何、22个所有者start、13个durable poll；普通与ASan/UBSan均通过。生产及原生地理/预览/载入工作显式持有线程和packaged_task，启动失败可回退，取消/析构join，发布前线程已收尾。测试覆盖当前线程实际分配，后台线程分配不注入；各标准库具体分配数量可以不同。
 - 已通过：英汉德原生Rml布局、真实指针/键盘/Escape，1280×800与400×600、DPI 1与2，来源窗口不遮挡底栏；完整native CTest 16/16，项目准入校验及原生offline复建。
+- 已通过：[跨平台核心CI](https://github.com/sky-yueer-yang/sonnheide/actions/runs/37742563215)，Ubuntu Debug、Linux ASan/UBSan、Windows Release、macOS Debug分别15/15。原生Direct3D shader统一使用bgfx跨后端向量构造，实际Metal再次复验；Windows原生编译结果单独记录在PR，不能替代显卡实测。
 - 验收摘要和实际GPU帧hash见 [PHASE1_EVIDENCE.json](PHASE1_EVIDENCE.json)。本机未设置Node，旧网页验证在CI单独运行；本机不以此声称浏览器检查通过。
 
 当前未做Windows GPU实机/Steam Overlay/发行包；CI编译和NullRenderer不能替代它们。纹理采用未压缩RGBA8/RGBA16F完整mip，上限约1.26 GB纹理显存（8套2K约537 MB，两套8K约716 MB，GGX约2.8 MB）；这是实际格式字节预算，不是此前BC压缩128 MB估计。后续压缩/流送和完整游戏性能另行测量。

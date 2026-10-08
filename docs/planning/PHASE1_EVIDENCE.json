@@ -1,54 +1,62 @@
 {
   "renderer": "actual Metal",
-  "recipe_hash": "da73eeca6a0c8649f5cdec4dbb4a8814ecb3f9bf54dffc53e30dca58afbb0d4e",
+  "recipe_hash": "d01b731ff0f6358c53037fe0793719bba6717a4510b8e39dda02db459c03c941",
   "frames": [
     {
       "material": 0,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "70c4517da6039ef4b48d24c4560547e32a593a9aa8435fec40bdfaa6faaf91c4"
+      "framebuffer_sha256": "280cd53d2c972b70f1713cb46aa54a60c45c6c057e8569bd6132683f635a7c5d",
+      "file_sha256": "70c4517da6039ef4b48d24c4560547e32a593a9aa8435fec40bdfaa6faaf91c4"
     },
     {
       "material": 1,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "b0f2b39cdea39fb5677447e2e95a7bd9278359347c4c4d51f91494802a6a1e00"
+      "framebuffer_sha256": "81620bc602ebc52806062370a3ae526d7b687454bcca7ccd5384176dd7baed08",
+      "file_sha256": "b0f2b39cdea39fb5677447e2e95a7bd9278359347c4c4d51f91494802a6a1e00"
     },
     {
       "material": 2,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "8a9fd4a49660ea90776f5d878b0dacf0a376bb0a0d8dd36ee82ecccca28aad67"
+      "framebuffer_sha256": "e5b7d0b6bf6eb3fd63e859c6a2c07f257edc42160c80d7a8453f9f37c7b9b5c7",
+      "file_sha256": "8a9fd4a49660ea90776f5d878b0dacf0a376bb0a0d8dd36ee82ecccca28aad67"
     },
     {
       "material": 3,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "f4882d8bf454caaa1d9d378dd62f99a738a6565632528b72a7be43b121e13cf4"
+      "framebuffer_sha256": "dd0452b6caf7d3bf3cc5d52bdcddb750f6365b56fcb593f3076d44b8b641d339",
+      "file_sha256": "f4882d8bf454caaa1d9d378dd62f99a738a6565632528b72a7be43b121e13cf4"
     },
     {
       "material": 4,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "070c4f670905d20f4527e36ea0055ea59fd0188af6980b08276c004101108069"
+      "framebuffer_sha256": "38c324e19d39d5d525acc2d3c916e6d48b6a39764c3841475c3dca69eac6a205",
+      "file_sha256": "070c4f670905d20f4527e36ea0055ea59fd0188af6980b08276c004101108069"
     },
     {
       "material": 5,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "3b56e74803094daf4967852f42e122b12dc9be9f03e8c4e52bb7010a6faf735e"
+      "framebuffer_sha256": "6a351197d29929357a27d5d0f4f28c20fb453fac2b6008427b4d9a49b98f359b",
+      "file_sha256": "3b56e74803094daf4967852f42e122b12dc9be9f03e8c4e52bb7010a6faf735e"
     },
     {
       "material": 6,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "a7449d1ac9b917381e3c87abdaab7010f40cdadf8157191a3faabb44de614ddd"
+      "framebuffer_sha256": "6831aae6be5d040f690ac074e5dfe6a2a4706f5b781c915d724052fa29b6045c",
+      "file_sha256": "a7449d1ac9b917381e3c87abdaab7010f40cdadf8157191a3faabb44de614ddd"
     },
     {
       "material": 7,
       "width": 2560,
       "height": 1600,
-      "framebuffer_sha256": "a1c645ab14f2f6ff41775376d3688e5a640923e68cdd5beff835fe7b3496f210"
+      "framebuffer_sha256": "f08287b84b09689c0b884708b4edb6d156b0bbb95065dd422bba907c19224c3b",
+      "file_sha256": "a1c645ab14f2f6ff41775376d3688e5a640923e68cdd5beff835fe7b3496f210"
     }
   ],
   "orthographic_sea_corners_bgr": [
@@ -76,7 +84,7 @@
   "orthographic_sea_constant_ray_pass": true,
   "compiled_shader_tamper_rejected_before_program_creation": true,
   "tamper_probe_log": "earth-shader-tamper-probe.log",
-  "tamper_probe_log_sha256": "1a9ace2669d785c7f913a9d5d89fe4832985e490d07c44d2608e4addcdaa3046",
+  "tamper_probe_log_sha256": "ab083bbc93252767b187286805cfd88ca7834521892ff2bfe3353929f31b6d56",
   "date": "2026-10-08",
   "device": {
     "os": "macOS-26.6.2-arm64-arm-64bit",
@@ -139,13 +147,21 @@
     "phase1-stable-smoke.log": {
       "sha256": "d69804090ab29fe09b9b668790c1e9f21f29d612d7cbc21c4836f26392541122",
       "committed": false
+    },
+    "phase1-hlsl-native-tests.log": {
+      "sha256": "9222ef98bd059564afe70e94bbe81815654734918586025c171c3b17cbc324bb",
+      "committed": false
+    },
+    "phase1-hlsl-smoke.log": {
+      "sha256": "6cc956eba3755229ce45c501997a5e1ec7bcdf4d14f742d1de60bfc4bc00fc1a",
+      "committed": false
     }
   },
   "native_scenario": {
-    "world_id": "7823c5a3454939c3053bb37d47f5ad1c",
-    "frames": 1457,
+    "world_id": "1f7c6fe509cb21766658ff3d0ead1069",
+    "frames": 8159,
     "passed": true,
-    "utf8_name": "\u4e16\u754c \u00b7 Sonnheide",
+    "utf8_name": "世界 · Sonnheide",
     "stable_capture_hashes": {
       "step-1": "f0aec8a8b1807a356b8c112d3848164df6dafb23bf021b5e98ceace9238e6eb6",
       "step-12": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261",
@@ -162,5 +178,34 @@
     "original_archive_bytes": 118617033,
     "assets": 5
   },
-  "async_ownership": "explicit packaged_task + owned/joined thread; UI geography/preview/load and checkpoint worker"
+  "async_ownership": "explicit packaged_task + owned/joined thread; UI geography/preview/load and checkpoint worker",
+  "admission_fingerprint": "3a3a2b768ceefd91152b4dacb9ef441bf91d25ad189226708a765ed72fb5be1a",
+  "hosted_core_ci": {
+    "implementation_commit": "8adf517740bf0316e5e29f416d01fbd09e2ae220",
+    "workflow": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/37742563215",
+    "result": "passed",
+    "jobs": [
+      "Ubuntu Debug 15/15",
+      "Linux ASan/UBSan 15/15",
+      "Windows Release 15/15",
+      "macOS Debug 15/15"
+    ],
+    "scope": "core/UI-independent correctness; no Windows GPU/Steam claim"
+  },
+  "atlases": [
+    {
+      "name": "earth-atlas-global",
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "2fd18e3192a969b097401c2bcbf458c864ddaf9c98b3ac74c2f2c397b89f868f"
+    },
+    {
+      "name": "earth-atlas-full",
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "842583db8e8c565ceaf3103b9dc1a72d0783a9356060bd05a0db0c8309003593"
+    }
+  ],
+  "orthographic_framebuffer_sha256": "076055330524bf6099aced3683f3ef5bcefc8e69691c86c805341076bc438bc8",
+  "water_scope": "static mean-water; no Abyssal FFT completion claim"
 }
