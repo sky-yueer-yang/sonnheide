@@ -90,6 +90,16 @@
       "status": "native_CPU_FFT_reference_only",
       "native_GPU_port_integrated": false,
       "browser_reference_dependency": "three.js 0.180.0; CDN imported, not vendored or linked to native core"
+    },
+    {
+      "name": "mmikk/hextile-demo",
+      "upstream": "https://github.com/mmikk/hextile-demo",
+      "resolved_commit": "43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3",
+      "license": "MIT",
+      "source_manifest": "third_party/hextile/UPSTREAM.json",
+      "status": "exact_algorithm_sources_only",
+      "native_GPU_port_integrated": false,
+      "runtime_framework_imported": false
     }
   ],
   "retained_geographic_sources": [
@@ -163,6 +173,17 @@
       "resolved_commit": "f2ea8fb0438721d754aefa22b14fe161f948a383",
       "source_manifest": "data/native_dependencies.lock.json",
       "status": "optional_native_build_only"
+    }
+  ],
+  "retained_material_sources": [
+    {
+      "name": "Poly Haven eight PBR surfaces and two Pure Sky environments",
+      "license": "CC0-1.0",
+      "source_manifest": "assets/manifests/ground_sky_sources.json",
+      "status": "original_sources_SHA256_locked",
+      "hosting": "GitHub ground-sky-sources-v1 Release via locked workflow",
+      "runtime_integrated": false,
+      "game_ready": false
     }
   ]
 }

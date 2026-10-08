@@ -1,5 +1,7 @@
 # 开源复用决定、许可边界与锁定计划
 
+最新采用 [Poly Haven＋固定mmikk Hex-Tiling](../decisions/0011-ground-sky-and-bounded-world-preview.md)。四个MIT原始算法文件归档于third_party/hextile；PBR/纯天空的准确原件与来源包见 [资源锁](../../assets/manifests/ground_sky_sources.json)。这不是新增运行时引擎，bgfx GPU移植仍待实施。
+
 2026年10月7日写实平面地表专项比较见 [REALISTIC_GROUND_SYSTEMS](REALISTIC_GROUND_SYSTEMS.md)：扫描材质、离线生成工具、抗重复算法、地被与许可边界分别核验，均明确候选与正式集成的区别。当前原生菜单依赖的实际锁定/集成状态以 [NATIVE_SOURCE_AUDIT](NATIVE_SOURCE_AUDIT.md) 为准，下面早期总览表中的待接入状态不覆盖该记录。
 
 核验日期：2026-10-06。资料来自上游项目、作者或官方规格。**“选择”是工程决策，“集成”必须有实际构建与运行证据。** Abyssal已固定commit/原文件SHA-256并构建CPU参考；MakeHuman人体/骨架/权重及三款服装的选定源件已归档，尚未变成游戏角色。下表运行时库仍待接入时锁定兼容版本，不编造未经构建验证的release/commit。状态与许可写入依赖清单。

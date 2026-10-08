@@ -11,6 +11,7 @@ Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采�
 |架构总览、真正需要攻克的问题、模块边界|[工程总纲](docs/architecture/OVERVIEW.md)|
 |27章逐章对应对象、事务、不变量|[领域映射](docs/architecture/DOMAIN_MAP.md)|
 |五类共享基础、经济起步、调度、文化、战争与规模|[仿真架构](docs/architecture/SIMULATION.md)|
+|Poly Haven/Hex、纯天空、有限世界外海与高清选区|[最新ADR 0011](docs/decisions/0011-ground-sky-and-bounded-world-preview.md)、[实际资源锁](assets/manifests/ground_sky_sources.json)|
 |真实地球、投影、岸线、格网、填海与导航|[世界工程](docs/architecture/WORLD.md)|
 |原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
 |底部分区工具栏、地图窗口与英汉德交互|[最新前端ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)、[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[WorldBox参考](docs/research/WORLDBOX_FRONTEND.md)|

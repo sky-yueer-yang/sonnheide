@@ -1,5 +1,7 @@
 # 原生三维客户端与表现层架构
 
+地表/天空路线已按 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 固定：Poly Haven 2K PBR源＋mmikk Hex-Tiling，两张8K Pure Sky对应Light/Darkness，有限世界外接无终点表现海。源件已锁定，bgfx地表/天空/远海及最高精度预览尚未实现；不能以归档源码或HDR头校验代替GPU画面证据。
+
 设计基线：`Sonnheide_Complete_Design.md` v0.6；本方案更新：2026-10-07。本文是生产客户端的设计与验收契约，不表示图形依赖、PBR、水体、人物或 UI 已经集成。当前可执行能力以仓库构建目标及测试结果为准。油画和Light/Darkness按[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)，纯文字主菜单/静态公司Logo/无不必要小字按[ADR 0009](../decisions/0009-monumental-minimal-interface.md)；原生启动/真实空地图通过后才制作建筑，顺序按[ADR 0007](../decisions/0007-foundation-experience-first.md)。
 
 ## 1. 已作出的选择与真正的难点
@@ -92,7 +94,7 @@ SDL 事件 → InputRouter → 当前 Tool / CameraController / UI
 
 ## 5. 真实地形、天然海岸与人工港区
 
-天然陆地只从冻结矢量海陆/岸线生成：普通陆面统一稍高于静水面，狭窄水边按同一配方平滑降至岸线并接水下浅滩；不加载真实高程场，详见[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)与[地形/建址合同](TERRAIN_AND_SITES.md)。chunk/halo、近远LOD采用同一天然岸线和派生profile，不以选区边代替海岸、不侵蚀窄岛。天然岸线附近提供 `CoastCoverageIndex`，完整footprint仍由权威支持几何终检。人工造陆有自己的固定工程表面及合法衔接，不能重算天然岸坡或抬高旧陆面。普通平地楼体无独立找平地基；仅沿海实际需要时用原创支撑/连接。挡墙、建筑与连接构件均由我们制作，不平滑人工直岸或扩大规则footprint。
+天然陆地只从冻结矢量海陆/岸线生成：普通陆面统一稍高于静水面，狭窄水边按同一配方平滑降至岸线并接水下浅滩；不加载真实高程场，详见[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)与[地形/建址合同](TERRAIN_AND_SITES.md)。chunk/halo、近远LOD采用同一天然岸线和派生profile，不以普通tile边代替海岸、不侵蚀窄岛；ADR0011的选区闭合岸由创建器在预览前派生冻结。天然岸线附近提供 `CoastCoverageIndex`，完整footprint仍由权威支持几何终检。人工造陆有自己的固定工程表面及合法衔接，不能重算天然岸坡或抬高旧陆面。普通平地楼体无独立找平地基；仅沿海实际需要时用原创支撑/连接。挡墙、建筑与连接构件均由我们制作，不平滑人工直岸或扩大规则footprint。
 
 人工陆地完成事务发布 chunk generation。网格任务只接受该版本，并将其结果与当前 generation 比较；落后的结果直接丢弃。施工时显示桩/驳船/进度，底面继续 WATER；导航临时障碍不等于已完成陆地。提交完成后，权威可通行性立即更新；渲染若尚未重建，先用简单完成平台覆盖，禁止让 UI 呈现“可行走但仍显示水”的长窗口。
 

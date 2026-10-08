@@ -1,5 +1,7 @@
 # 初步程序结构：自研客户端、统一对象页与生产接入
 
+补充 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 的责任分配：地理工具生成多级矢量/full包；无GPU候选冻结边缘/海域/精度描述；创建UI负责全球导航和草案；presentation共用PBR/Hex路径绘制最高预览与游戏。`tools/prepare_ground_sources.py`、资源锁及MIT源已实际加入，原生地图模块尚未加入；不创建空目录表示完成。
+
 2026-10-07。本文是生产工程的目标结构与接入顺序；第1节列出当前真实实现和验证范围。最新顺序是主页面与应用启动→创建世界与真实岸线平面初始地表→基础游戏界面、镜头、保存载入和返回→再开始原创建筑与人物服装资产、建设和生活。前三阶段先形成一个可可靠进入、离开和恢复的真实海陆区域空世界。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：不再导入真实高程，普通陆地统一略高于固定海平面，仅狭窄海岸过渡下降入水。计划目录在首次实现对应功能时才创建，不通过空目录或接口数量表示完成；本轮仅修订设计，不启动世界数据或地图工程。应用状态与世界交接见[APPLICATION_FLOW](APPLICATION_FLOW.md)，阶段和退出条件见[完整施工计划](../planning/IMPLEMENTATION_PLAN.md)。
 
 视觉最新按[ADR 0009](../decisions/0009-monumental-minimal-interface.md)，环境按[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)：[油画/极简无框交互](VISUAL_STYLE.md)贯穿菜单、底栏、对象和动态表单；核心只发布[Light/Darkness环境状态](LIGHT_AGES.md)，呈现层消费其快照，不计算自转公转/太阳昼夜。主菜单轮播属于应用可见时间，自动光暗属于仿真tick，不能共用计时器。

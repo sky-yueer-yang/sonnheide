@@ -42,3 +42,7 @@ assets/source/ui/fonts/*.pb text eol=lf
 
 # Original upstream notices are byte-locked; never convert their newlines.
 third_party/native/** -text
+
+# Preserve the exact MIT upstream Hex-Tiling headers and license bytes.
+third_party/hextile/** -text
+third_party/hextile/UPSTREAM.json text eol=lf

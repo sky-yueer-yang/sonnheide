@@ -2,6 +2,17 @@
 
 本文件仅说明实际进入本仓库的第三方内容；原创部分继续适用[OWNERSHIP](OWNERSHIP.md)，不因托管而获得开放许可。
 
+## Hex-Tiling 算法源
+
+- 来源：[mmikk/hextile-demo](https://github.com/mmikk/hextile-demo)，固定 commit `43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3`，Copyright (c) 2022 mmikk。
+- 四个原始 MIT 文件完整保留：[LICENSE](third_party/hextile/LICENSE)、两种 Hex-Tiling header、surface-gradient framework；准确路径、大小及 SHA-256 见 [源锁](third_party/hextile/UPSTREAM.json)。原始换行不修改；分发原始/派生代码保留完整 MIT 文本与作者通知。
+- 未导入 DXUT 工程、第三方示例贴图或示例场景。仅归档移植参考，bgfx GPU 及整套 PBR 通道移植尚未完成，不增加游戏引擎依赖。
+
+## Poly Haven 地表与 Pure Sky
+
+- 八套2K PNG三通道材质与两张8K HDR原始字节已经取得并核验，各项作者、源URL、物理尺度、MD5/SHA-256和不可变ZIP SHA见[资源锁](assets/manifests/ground_sky_sources.json)。完整CC0-1.0文本与[来源通知](assets/source/third_party/poly_haven/NOTICES.md)保留；大文件通过项目 `ground-sky-sources-v1` Release托管，精确原件与配方不依赖本机缓存。
+- 只引入明确CC0资产，不导入网站预览、Logo、网页文案或现成建筑。不将原始源称为GPU ready；PBR转换/Hex、天空卷积和明暗校准仍待实施。资产CC0不授予原创游戏内容开放许可。
+
 ## Abyssal Ocean
 
 - 作者：Sacha (@squall01337)，Copyright (c) 2026。

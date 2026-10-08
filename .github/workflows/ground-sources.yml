@@ -1,0 +1,28 @@
+name: Locked ground and sky source hosting
+on:
+  push:
+    branches: [codex/unified-inspectors-and-world-tools]
+    paths:
+      - 'assets/manifests/ground_sky_sources.json'
+      - 'assets/source/third_party/poly_haven/**'
+      - 'tools/prepare_ground_sources.py'
+      - 'tools/publish_ground_sources.py'
+      - '.github/workflows/ground-sources.yml'
+  workflow_dispatch:
+concurrency:
+  group: ground-sky-sources-v1
+  cancel-in-progress: false
+jobs:
+  sources:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Verify original Poly Haven bytes and publish immutable source packs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/publish_ground_sources.py

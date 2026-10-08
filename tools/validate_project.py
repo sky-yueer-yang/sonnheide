@@ -13,6 +13,7 @@ import validate_interaction_schema
 import validate_ui_locales
 import import_menu_paintings
 import build_menu_compass
+import prepare_ground_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -141,6 +142,17 @@ def main():
         require(path.stat().st_size == item["bytes"] and sha(path) == item["sha256"], "Abyssal exact source bytes changed: " + item["path"])
     for path in upstream["derived_files"]:
         local_path(path)
+    hextile = read(ROOT / "third_party/hextile/UPSTREAM.json")
+    require(hextile["commit"] == "43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3"
+            and hextile["license"] == "MIT" and hextile["runtime_framework_imported"] is False,
+            "Hex-Tiling source/engine boundary changed")
+    require({f["path"] for f in hextile["files"]} == {
+        "LICENSE", "hextiling.h", "hextiling_rws.h", "surfgrad_framework.h"}, "Hex source set changed")
+    for item in hextile["files"]:
+        path = local_path("third_party/hextile/" + item["path"])
+        require(path.stat().st_size == item["bytes"] and sha(path) == item["sha256"],
+                "Hex exact source bytes changed: " + item["path"])
+    prepare_ground_sources.validate_lock()
     bundle = import_etopo_sample.BUNDLE_PATH.read_bytes()
     metadata = import_etopo_sample.METADATA_PATH.read_bytes()
     rebuilt = import_etopo_sample.json_bytes(import_etopo_sample.make_sample(bundle, metadata))
@@ -205,6 +217,7 @@ def main():
     print("PASS: " + ui_summary)
     print("PASS: " + painting_summary)
     print("PASS: " + interface_summary)
+    print("PASS: four byte-locked MIT Hex sources and eight PBR/two Pure Sky CC0 source pack locks (no network)")
 
 
 

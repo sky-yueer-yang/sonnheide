@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "name": "mmikk/hextile-demo",
+  "repository": "https://github.com/mmikk/hextile-demo",
+  "commit": "43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2022 mmikk",
+  "license_file": "LICENSE",
+  "files": [
+    {
+      "path": "LICENSE",
+      "upstream_path": "LICENSE",
+      "bytes": 1062,
+      "sha256": "9999660d22a7791aec03fc66058621ecd76153a6dd43c0b2c4814a775ec7ed5f",
+      "modification_status": "unmodified"
+    },
+    {
+      "path": "hextiling.h",
+      "upstream_path": "hextile-demo/hextiling.h",
+      "bytes": 6109,
+      "sha256": "2d810fb34e8bc8a0cab3ab6e593686f263d036bcda48a21aa33a7bc6c2e373f5",
+      "modification_status": "unmodified"
+    },
+    {
+      "path": "hextiling_rws.h",
+      "upstream_path": "hextile-demo/hextiling_rws.h",
+      "bytes": 5067,
+      "sha256": "4b154346a0fc50f64ecebd961ae835b0a9f8af7043475f67a7bdb03d415c38fa",
+      "modification_status": "unmodified"
+    },
+    {
+      "path": "surfgrad_framework.h",
+      "upstream_path": "hextile-demo/surfgrad_framework.h",
+      "bytes": 12013,
+      "sha256": "86adb79694be13131b085c4d78eafa76b98d7072451dd3e6868301ff0cc177f1",
+      "modification_status": "unmodified"
+    }
+  ],
+  "integration_status": "exact_upstream_algorithm_sources_only_bgfx_GPU_port_not_implemented",
+  "runtime_framework_imported": false,
+  "derived_files": [],
+  "notes": [
+    "DXUT project/demo scene/third-party demo textures are not imported.",
+    "Only the four listed original MIT source files are retained; their original line endings are preserved.",
+    "PBR channel alignment, large-index arithmetic and cross-backend shader adaptation require separate implementation and validation."
+  ]
+}
