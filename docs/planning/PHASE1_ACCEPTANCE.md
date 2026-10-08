@@ -6,7 +6,7 @@
 
 `GSHHG 原版 ZIP → 五级来源独立 SHA 校验 → 全球导航 → full 冻结候选 → 同路径 GPU 预览 → 候选首 checkpoint/回读 → durable continue 指针 → 单写者发布 → 返回/继续同 WorldId`
 
-- 地理原件为 GSHHG 2.3.7，完整 ZIP 118,617,033 字节，SHA-256 `28600e8f7a08645aab43079326df6504212ec5ccb2b4bcf3b5f4f12ed60e82bc`。原件、LGPL/GPL通知、五成员哈希和复建脚本都有锁；归档在本项目 GitHub Release `geography-sources-v1`。最高地表始终读取 full，导航简化不改变 World。源岸线较旧，full 不代表现实米级准确度。
+- 地理原件为 GSHHG 2.3.7，完整 ZIP 118,617,033 字节，SHA-256 `28600e8f7a08645aab43079326df6504212ec5ccb2b4bcf3b5f4f12ed60e82bc`。原件、LGPL/GPL通知、五成员哈希和复建脚本都有锁；归档在本项目 [GitHub Release geography-sources-v1](https://github.com/sky-yueer-yang/sonnheide/releases/tag/geography-sources-v1)，5个原件/通知全部上传后下载逐SHA复核通过。官方GMT镜像恢复同一原ZIP，暂时的网络失败有界重试，哈希不符立即拒绝。最高地表始终读取 full，导航简化不改变 World。源岸线较旧，full 不代表现实米级准确度。
 - 默认首区域为意大利 Amalfi，中心经纬度 14.382/40.626，游戏水平尺寸 4096×4096 m，worldScale 0.04，对应约102.4×102.4 km真实范围。AEQD两轴统一米尺度，支持日期线和极区；每边真实跨度最大4000 km及几何/格数预算，超出拒绝。
 - 普通陆地固定2 m，固定窄水边坡带24 m；没有真实高程。128 m选区内侧带生成冻结不规则闭合，核心保真实海陆；外围512 m纯海缓冲，最外64 m保护带。所有距离均为游戏米。域外海只有表现，不产生实体或航路。
 - 水域身份来自full连续边界，而非粗格中心flood；被闭合边截开的湖与外海相通，完整内部湖保持独立。逻辑格只是摘要，不决定最高地表精度。

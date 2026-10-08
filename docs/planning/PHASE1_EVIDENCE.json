@@ -154,5 +154,12 @@
       "step-5": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261",
       "step-7": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261"
     }
+  },
+  "source_release": {
+    "url": "https://github.com/sky-yueer-yang/sonnheide/releases/tag/geography-sources-v1",
+    "publication_workflow": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/37739923051",
+    "upload_and_download_sha_verified": true,
+    "original_archive_bytes": 118617033,
+    "assets": 5
   }
 }

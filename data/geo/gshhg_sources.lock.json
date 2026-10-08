@@ -10,7 +10,9 @@
     "bytes": 118617033,
     "sha256": "28600e8f7a08645aab43079326df6504212ec5ccb2b4bcf3b5f4f12ed60e82bc",
     "url": "https://www.soest.hawaii.edu/pwessel/gshhg/gshhg-bin-2.3.7.zip",
-    "release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/geography-sources-v1/gshhg-bin-2.3.7.zip"
+    "release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/geography-sources-v1/gshhg-bin-2.3.7.zip",
+    "official_mirror_url": "https://github.com/GenericMappingTools/gshhg-gmt/releases/download/2.3.7/gshhg-bin-2.3.7.zip",
+    "official_mirror_release": "https://github.com/GenericMappingTools/gshhg-gmt/releases/tag/2.3.7"
   },
   "members": [
     {

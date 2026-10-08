@@ -40,7 +40,7 @@ public:
  std::string finish() { auto bits=length_*8;std::uint8_t one=0x80,zero=0;add(&one,1);while(used_!=56)add(&zero,1);std::array<std::uint8_t,8>tail{};for(int i=0;i<8;++i)tail[std::size_t(7-i)]=std::uint8_t(bits>>(8*i));add(tail.data(),8);std::ostringstream s;s.exceptions(std::ios::badbit|std::ios::failbit);s<<std::hex<<std::setfill('0');for(auto v:state_)s<<std::setw(8)<<v;return s.str(); }
 };
 std::string file_hash(const std::filesystem::path& p) {
- std::ifstream f(p,std::ios::binary); require(bool(f),"Missing admitted GSHHG file");Sha256 hash;std::array<char,65536>buf{};while(f){f.read(buf.data(),buf.size());hash.add(buf.data(),std::size_t(f.gcount()));}require(f.eof(),"Failed GSHHG read");return hash.finish();
+ std::ifstream f(p,std::ios::binary); require(bool(f),"Missing admitted GSHHG file");Sha256 hash;std::array<char,65536>buf{};while(f){f.read(buf.data(),static_cast<std::streamsize>(buf.size()));hash.add(buf.data(),std::size_t(f.gcount()));}require(f.eof(),"Failed GSHHG read");return hash.finish();
 }
 std::int32_t read_int(std::istream& f) { std::array<unsigned char,4>b{};f.read(reinterpret_cast<char*>(b.data()),4);require(bool(f),"Truncated GSHHG binary");return std::bit_cast<std::int32_t>((std::uint32_t(b[0])<<24)|(std::uint32_t(b[1])<<16)|(std::uint32_t(b[2])<<8)|b[3]); }
 std::vector<Ring> read_rings(const std::filesystem::path& path,std::uintmax_t bytes,const char* hash) {
@@ -50,7 +50,7 @@ std::vector<Ring> read_rings(const std::filesystem::path& path,std::uintmax_t by
  while(f.peek()!=std::char_traits<char>::eof()) {
   std::array<std::int32_t,11>h{};for(auto&v:h)v=read_int(f);require(h[1]>=4&&h[1]<=8000000,"Invalid GSHHG ring length");auto level=std::uint8_t(h[2]&255);require(level>=1&&level<=6,"Invalid GSHHG topology level");
   Ring ring;ring.id=h[0];ring.container=h[9];ring.level=level;ring.west=h[3]*1e-6;ring.east=h[4]*1e-6;ring.south=h[5]*1e-6;ring.north=h[6]*1e-6;
-  ring.vertices.reserve(std::size_t(h[1])+2);const bool greenwich=(h[2]>>16)&1;
+  ring.vertices.reserve(std::size_t(h[1])+2);const bool greenwich=((h[2]>>16)&1)!=0;
   for(int i=0;i<h[1];++i){double x=read_int(f)*1e-6,y=read_int(f)*1e-6;require(x>=-180&&x<=360&&y>=-90&&y<=90,"Invalid GSHHG coordinate");if(greenwich&&x>270)x-=360;ring.vertices.push_back({x,y});}
   if(level==6)continue; // One Antarctic convention; never double-count both alternatives.
   if(level==5){ring.level=1;
@@ -139,13 +139,18 @@ EarthWorldDefinition::EarthWorldDefinition(std::shared_ptr<const GeoAtlas> atlas
  const double geographic_longitude_reach=std::abs(c.centre.latitude)+geographic_reach>=90.?180.:std::asin(std::clamp(std::sin(geographic_reach*rad)/std::cos(c.centre.latitude*rad),0.,1.))/rad;
  std::size_t counter=0;
  for(const auto&r:atlas_->rings(Detail::Full)) {
-  if((++counter&255)==0)cancel(cancelled);
+  if((++counter&255)==0) {
+   cancel(cancelled);
+  }
   if(r.north<c.centre.latitude-geographic_reach||r.south>c.centre.latitude+geographic_reach)continue;
   double centre_x=c.centre.longitude+360.*std::round(((r.west+r.east)*.5-c.centre.longitude)/360.);
   double lon_reach=geographic_longitude_reach;
   if(centre_x+lon_reach<r.west||centre_x-lon_reach>r.east)continue;
   for(std::size_t j=0;j<r.vertices.size();++j) {
-   if((j&4095)==0)cancel(cancelled);auto a=r.vertices[j],b=r.vertices[(j+1)%r.vertices.size()];
+   if((j&4095)==0) {
+    cancel(cancelled);
+   }
+   auto a=r.vertices[j],b=r.vertices[(j+1)%r.vertices.size()];
    if(std::max(a.latitude,b.latitude)<c.centre.latitude-geographic_reach||std::min(a.latitude,b.latitude)>c.centre.latitude+geographic_reach)continue;
    b.longitude=a.longitude+std::remainder(b.longitude-a.longitude,360.);
    double midpoint=(a.longitude+b.longitude)*.5,origin=c.centre.longitude+360.*std::round((midpoint-c.centre.longitude)/360.);
@@ -155,7 +160,19 @@ EarthWorldDefinition::EarthWorldDefinition(std::shared_ptr<const GeoAtlas> atlas
    auto project=[&](LonLat ll){auto p=projection_.forward(ll);return Point{p.x*c.world_scale,p.y*c.world_scale};};
    Point p=project(a),q=project(b);if(std::max(p.x,q.x)<expanded.min_x||std::min(p.x,q.x)>expanded.max_x||std::max(p.y,q.y)<expanded.min_y||std::min(p.y,q.y)>expanded.max_y)continue;
    double len=std::hypot(q.x-p.x,q.y-p.y);int count=std::max(1,int(std::ceil(len/8.)));require(count<=1000000,"Geographic edge tessellation exceeded");
-   for(int k=1;k<=count;++k){if((k&4095)==0)cancel(cancelled);double t=double(k)/count;Point end=project({a.longitude+(b.longitude-a.longitude)*t,a.latitude+(b.latitude-a.latitude)*t});if(std::max(p.x,end.x)>=expanded.min_x&&std::min(p.x,end.x)<=expanded.max_x&&std::max(p.y,end.y)>=expanded.min_y&&std::min(p.y,end.y)<=expanded.max_y)shore_segments_.push_back({p,end});require(shore_segments_.size()<=500000,"Canonical shoreline segment budget exceeded");p=end;}
+   for(int k=1;k<=count;++k) {
+    if((k&4095)==0) {
+     cancel(cancelled);
+    }
+    double t=double(k)/count;
+    Point end=project({a.longitude+(b.longitude-a.longitude)*t,a.latitude+(b.latitude-a.latitude)*t});
+    if(std::max(p.x,end.x)>=expanded.min_x&&std::min(p.x,end.x)<=expanded.max_x
+        &&std::max(p.y,end.y)>=expanded.min_y&&std::min(p.y,end.y)<=expanded.max_y) {
+     shore_segments_.push_back({p,end});
+    }
+    require(shore_segments_.size()<=500000,"Canonical shoreline segment budget exceeded");
+    p=end;
+   }
   }
  }
  cancel(cancelled);
@@ -173,14 +190,29 @@ EarthWorldDefinition::EarthWorldDefinition(std::shared_ptr<const GeoAtlas> atlas
   WaterRegion water;water.level=r.level;bool closed=true;
   auto project=[&](LonLat ll){auto p=projection_.forward(ll);return Point{p.x*c.world_scale,p.y*c.world_scale};};
   for(std::size_t j=0;j<r.vertices.size()&&closed;++j) {
-   if((j&4095)==0)cancel(cancelled);
+   if((j&4095)==0) {
+    cancel(cancelled);
+   }
    auto a=r.vertices[j],b=r.vertices[(j+1)%r.vertices.size()];b.longitude=a.longitude+std::remainder(b.longitude-a.longitude,360.);
    // Quickly reject far vertices before a projection can encounter antipodes.
    if(std::abs(a.latitude-c.centre.latitude)>geographic_reach||std::abs(std::remainder(a.longitude-c.centre.longitude,360.))>lr){closed=false;break;}
    Point p=project(a),q=project(b);
    if(closure_signed(p,c)<=0||closure_signed(q,c)<=0){closed=false;break;}
    int count=std::max(1,int(std::ceil(std::hypot(q.x-p.x,q.y-p.y)/8.)));
-   for(int k=1;k<=count&&closed;++k){if((k&4095)==0)cancel(cancelled);double t=double(k)/count;Point end=project({a.longitude+(b.longitude-a.longitude)*t,a.latitude+(b.latitude-a.latitude)*t});if(!segment_inside_closure(p,end,c))closed=false;else water.edges.push_back({p,end});require(water.edges.size()<=500000,"Canonical lake segment budget exceeded");p=end;}
+   for(int k=1;k<=count&&closed;++k) {
+    if((k&4095)==0) {
+     cancel(cancelled);
+    }
+    double t=double(k)/count;
+    Point end=project({a.longitude+(b.longitude-a.longitude)*t,a.latitude+(b.latitude-a.latitude)*t});
+    if(!segment_inside_closure(p,end,c)) {
+     closed=false;
+    } else {
+     water.edges.push_back({p,end});
+    }
+    require(water.edges.size()<=500000,"Canonical lake segment budget exceeded");
+    p=end;
+   }
   }
   if(closed&&!water.edges.empty()){water.id=++water_regions_;closed_water_.push_back(std::move(water));}
  }

@@ -10,6 +10,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import time
 import urllib.error
 import urllib.request
 import zipfile
@@ -39,7 +40,8 @@ def validate_lock():
     if (lock["schema_version"] != 1 or lock["dataset"] != "GSHHG"
             or lock["version"] != "2.3.7" or lock["license"] != "LGPL-3.0-or-later"
             or {m["filename"] for m in lock["members"]} != {"gshhs_" + d + ".b" for d in "fhilc"}
-            or lock["archive"]["url"] != "https://www.soest.hawaii.edu/pwessel/gshhg/gshhg-bin-2.3.7.zip"):
+            or lock["archive"]["url"] != "https://www.soest.hawaii.edu/pwessel/gshhg/gshhg-bin-2.3.7.zip"
+            or lock["archive"]["official_mirror_url"] != "https://github.com/GenericMappingTools/gshhg-gmt/releases/download/2.3.7/gshhg-bin-2.3.7.zip"):
         raise ValueError("Invalid complete geography source lock")
     for item in lock["notices"]:
         path = (ROOT / item["path"]).resolve()
@@ -51,15 +53,24 @@ def validate_lock():
 
 def download(url, path, item):
     partial = path.with_suffix(path.suffix + ".partial")
-    try:
-        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(request, timeout=180) as source, partial.open("wb") as target:
-            shutil.copyfileobj(source, target, length=1024 * 1024)
-        verify(partial, item)
-        partial.replace(path)
-    finally:
-        if partial.exists():
-            partial.unlink()
+    for attempt in range(3):
+        try:
+            request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(request, timeout=60) as source, partial.open("wb") as target:
+                shutil.copyfileobj(source, target, length=1024 * 1024)
+            verify(partial, item)
+            partial.replace(path)
+            return
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+            # Missing immutable Releases fail immediately; transient source/network
+            # failures get bounded retries. A size/SHA mismatch is never retried.
+            permanent = isinstance(error, urllib.error.HTTPError) and error.code not in (408, 429, 500, 502, 503, 504)
+            if permanent or attempt == 2:
+                raise
+            time.sleep(2 ** (attempt + 1))
+        finally:
+            if partial.exists():
+                partial.unlink()
 
 
 def prepare(fetch=False, allow_upstream=False, destination=CACHE):
@@ -77,7 +88,10 @@ def prepare(fetch=False, allow_upstream=False, destination=CACHE):
         except (urllib.error.URLError, urllib.error.HTTPError):
             if not allow_upstream:
                 raise
-            download(lock["archive"]["url"], source, lock["archive"])
+            try:
+                download(lock["archive"]["official_mirror_url"], source, lock["archive"])
+            except (urllib.error.URLError, TimeoutError, ConnectionError):
+                download(lock["archive"]["url"], source, lock["archive"])
     with zipfile.ZipFile(source) as archive:
         for item in lock["members"]:
             name = item["filename"]
