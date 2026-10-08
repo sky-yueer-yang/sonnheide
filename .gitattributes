@@ -39,6 +39,9 @@ assets/source/ui/fonts/*.pb text eol=lf
 *.rml text eol=lf
 *.cmake text eol=lf
 *.mm text eol=lf
+*.sh text eol=lf
+*.sc text eol=lf
+*.def text eol=lf
 
 # Original upstream notices are byte-locked; never convert their newlines.
 third_party/native/** -text

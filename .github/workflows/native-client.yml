@@ -46,6 +46,13 @@ jobs:
         run: python tools/vendor_native.py --allow-upstream
       - name: Verify full global geography and cook real PBR skies and native shaders
         run: python tools/prepare_phase1.py --allow-upstream
+      - name: Verify portable World presentation identity against actual Metal evidence
+        run: >-
+          python -c "import json, pathlib;
+          expected=json.loads(pathlib.Path('docs/planning/PHASE1_EVIDENCE.json').read_text(encoding='utf-8'))['recipe_hash'];
+          actual=json.loads(pathlib.Path('.build/ground-sky-runtime/runtime.json').read_text(encoding='utf-8'))['recipe_hash'];
+          assert actual == expected, (actual, expected);
+          print('PASS: Windows/Metal share canonical World presentation identity', actual)"
       - name: Build the actual application entirely from verified offline resources
         run: python tools/build_native.py --offline --jobs 3
       - name: Build all finite correctness targets
