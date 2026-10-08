@@ -1,6 +1,8 @@
 #include "sonnheide/world_creation.hpp"
 #include <chrono>
 #include <cstdlib>
+#include <cstdio>
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -9,8 +11,43 @@
 namespace {
 thread_local long fail_after=-1;
 thread_local bool injected=false;
+thread_local const char* sweep="initialization";
+thread_local long sweep_index=-1;
+void arm(const char* phase,long index){
+ sweep=phase;sweep_index=index;
+#ifdef _WIN32
+ std::fprintf(stderr,"ALLOCATION BEGIN phase=%s index=%ld\n",sweep,sweep_index);
+#endif
+ injected=false;fail_after=index;
+}
+void terminated() noexcept {
+ fail_after=-1;
+ std::fprintf(stderr,"ALLOCATION TERMINATE phase=%s index=%ld injected=%d\n",sweep,sweep_index,int(injected));
+ if(auto exception=std::current_exception()){
+  try{std::rethrow_exception(exception);}
+  catch(const std::exception& error){std::fprintf(stderr,"ACTIVE EXCEPTION: %s\n",error.what());}
+  catch(...){std::fprintf(stderr,"ACTIVE EXCEPTION: non-standard\n");}
+ }else std::fprintf(stderr,"ACTIVE EXCEPTION: none\n");
+ std::fflush(stderr);std::abort();
+}
+#ifdef _WIN32
+void invalid_parameter(const wchar_t* expression,const wchar_t* function,const wchar_t* file,unsigned int line,uintptr_t) noexcept {
+ fail_after=-1;
+ std::fprintf(stderr,"ALLOCATION CRT INVALID PARAMETER phase=%s index=%ld injected=%d line=%u\n",sweep,sweep_index,int(injected),line);
+ if(expression)std::fprintf(stderr,"expression=%ls\n",expression);
+ if(function)std::fprintf(stderr,"function=%ls\n",function);
+ if(file)std::fprintf(stderr,"file=%ls\n",file);
+ std::fflush(stderr);std::abort();
+}
+#endif
 void fail_point(){
- if(fail_after==0){fail_after=-1;injected=true;throw std::bad_alloc();}
+ if(fail_after==0){
+  fail_after=-1;injected=true;
+#ifdef _WIN32
+  std::fprintf(stderr,"ALLOCATION INJECT phase=%s index=%ld\n",sweep,sweep_index);
+#endif
+  throw std::bad_alloc();
+ }
  if(fail_after>0)--fail_after;
 }
 }
@@ -30,6 +67,12 @@ CreationResult wait(CreateCoordinator& writer){for(;;){if(auto result=writer.pol
 void clean_previous(const std::filesystem::path& directory,const std::string& old_id,const std::string& new_id){if(old_id!=new_id)std::filesystem::remove(directory/(old_id+".world"));}
 }
 int main(int argc,char** argv){
+ std::setvbuf(stderr,nullptr,_IONBF,0);
+ std::cout<<std::unitbuf;
+ std::set_terminate(terminated);
+#ifdef _WIN32
+ ::_set_invalid_parameter_handler(invalid_parameter);
+#endif
  const auto directory=std::filesystem::temp_directory_path()/("sonnheide-real-allocation-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
  try{
   check(argc==2,"provide admitted full geographic source directory");
@@ -43,7 +86,7 @@ int main(int argc,char** argv){
   std::size_t geometry_failures{};
   for(long allocation=0;allocation<20000;++allocation){
    const auto active=writer.active();const auto pointer=bytes(directory/"continue.pointer");const auto count=world_count(directory);
-   injected=false;fail_after=allocation;bool failed=false;
+   arm("geometry",allocation);bool failed=false;
    std::shared_ptr<const earth::EarthWorldDefinition> candidate;
    try{candidate=earth::EarthWorldDefinition::create(atlas,config);}
    catch(const std::exception&){fail_after=-1;if(!injected)throw;failed=true;}
@@ -58,7 +101,7 @@ int main(int argc,char** argv){
   std::size_t start_failures{};
   for(long allocation=0;allocation<4096;++allocation){
    const auto active=writer.active();const auto pointer=bytes(directory/"continue.pointer");const auto count=world_count(directory);const auto ticket=writer.begin(2);
-   injected=false;fail_after=allocation;CreationResult started;bool escaped=false;
+   arm("owner-start",allocation);CreationResult started;bool escaped=false;
    try{started=writer.start(ticket,definition,ready);}catch(const std::exception&){fail_after=-1;if(!injected)throw;escaped=true;}
    fail_after=-1;
    if(injected){
@@ -78,7 +121,7 @@ int main(int argc,char** argv){
   for(long allocation=0;allocation<4096;++allocation){
    const auto active=writer.active();const auto pointer=bytes(directory/"continue.pointer");const auto count=world_count(directory);
    const auto started=writer.start(writer.begin(3),definition,ready);check(started.status==CreateStatus::Preparing,"poll setup failed");
-   injected=false;fail_after=allocation;std::optional<CreationResult> result;bool escaped=false;
+   arm("owner-poll",allocation);std::optional<CreationResult> result;bool escaped=false;
    try{
     while(!(result=writer.poll()))std::this_thread::sleep_for(std::chrono::milliseconds(1));
    }catch(const std::exception&){fail_after=-1;if(!injected)throw;escaped=true;}
