@@ -148,7 +148,7 @@ void durable_write(const std::filesystem::path& destination, const std::string& 
  try {
   invoke(steps.open);
 #ifdef _WIN32
-  file = ::_wfopen(temporary.c_str(), L"wbx");
+  require(::_wfopen_s(&file, temporary.c_str(), L"wbx") == 0, "cannot create exclusive checkpoint temporary");
 #else
   file = std::fopen(temporary.c_str(), "wbx");
 #endif
