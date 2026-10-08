@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tarfile
 import vendor_native
+import prepare_phase1
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -50,6 +51,9 @@ def main():
     if args.allow_upstream:
         vendor_args.append('--allow-upstream')
     subprocess.run(vendor_args, check=True, cwd=ROOT)
+    # Every native build consumes real, complete and independently verified
+    # terrain/sky resources. Warm-cache admission never repeats HDR cooking.
+    prepare_phase1.prepare(args.offline, args.allow_upstream)
     cmake = cmake_command(args.offline)
     build = ROOT / '.build/native'
     configure = [cmake, '-S', str(ROOT), '-B', str(build), '-DSONNHEIDE_BUILD_NATIVE=ON',
@@ -60,10 +64,11 @@ def main():
         raise RuntimeError('The native client currently targets Windows and macOS')
     subprocess.run(configure, check=True)
     subprocess.run([cmake, '--build', str(build), '--config', args.config, '--target',
-                    'sonnheide_game', 'sonnheide_native_menu_tests', 'sonnheide_native_ui_layout_tests', 'sonnheide_native_image_decode_tests',
+                    'sonnheide_game', 'sonnheide_native_menu_tests', 'sonnheide_native_ui_layout_tests', 'sonnheide_native_image_decode_tests', 'sonnheide_earth_world_tests',
+                    'sonnheide_world_creation_tests', 'sonnheide_earth_navigation_tests', 'sonnheide_earth_allocation_tests',
                     '--parallel', str(max(1, args.jobs))], check=True)
     ctest = shutil.which('ctest') or str(Path(cmake).with_name('ctest.exe' if platform.system() == 'Windows' else 'ctest'))
-    subprocess.run([ctest, '--test-dir', str(build), '-C', args.config, '-R', '^native_(menu_model|ui_layout|image_decoding)$', '--output-on-failure'], check=True)
+    subprocess.run([ctest, '--test-dir', str(build), '-C', args.config, '-R', '^(native_(menu_model|ui_layout|image_decoding)|earth_world_invariants|world_creation_lifecycle|earth_navigation_contracts|earth_allocation_failures)$', '--output-on-failure'], check=True)
     if args.run or args.smoke_test:
         executable = build / 'Sonnheide.app/Contents/MacOS/Sonnheide'
         if platform.system() == 'Windows':

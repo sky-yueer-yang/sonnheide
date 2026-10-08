@@ -46,3 +46,6 @@ third_party/native/** -text
 # Preserve the exact MIT upstream Hex-Tiling headers and license bytes.
 third_party/hextile/** -text
 third_party/hextile/UPSTREAM.json text eol=lf
+
+# Preserve byte-locked original GSHHG license and documentation (including CRLF).
+data/geo/sources/gshhg/** -text

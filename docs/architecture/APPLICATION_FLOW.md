@@ -1,8 +1,8 @@
 # 应用启动、主页面、创建世界与可靠返回
 
-最新创建合同按 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md)：Poly Haven＋Hex-Tiling、固定纯天空、选区外全海与不规则边缘；最高预览共用游戏地表路径。按钮全部无框。来源准入和配方已准备，原生全球地图/同路径高清预览/生产创建尚未实现。
+最新创建合同按 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md)：Poly Haven＋Hex-Tiling、固定纯天空、选区外全海与不规则边缘；最高预览共用游戏地表路径。按钮全部无框。完整来源/配方、原生全球导航/同路径精细地表和空世界首存档发布已实现，见[阶段1验收](../planning/PHASE1_ACCEPTANCE.md)。
 
-2026-10-07。本文是创建世界和可靠交接的生产合同。当前原生主菜单、三语设置、窗口/输入/字体与GPU主页面已经接入；创建World、原生地图、完整IME与生产存载/断电恢复仍未实现。本轮只修订合同，不启动地理数据工程。最新顺序见 [ADR 0007](../decisions/0007-foundation-experience-first.md)和 [施工计划](../planning/IMPLEMENTATION_PLAN.md)：阶段 0 主菜单与应用，阶段 1 创建与真实岸线平面初始地表，阶段 2 基础游戏界面及存载返回；通过后阶段 3 才开始新的建筑、统一成人角色和服装作者源及建设工程。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)，取消真实高程输入，保留全球真实海陆/岸线、统一陆台和狭窄沿海过渡。视觉与两种环境遵循[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)，不引入太阳昼夜循环；唯一发行渠道是Steam。
+2026-10-07。本文是创建世界和可靠交接的生产合同。当前原生主菜单、三语设置、窗口/输入/字体与GPU主页面已经接入；空World创建、原生地图与最小可靠checkpoint/继续已接入。完整IME设备验收、阶段2主动存载/恢复/环境规则仍待实现；fsync/atomic-replace代码和故障注入不能当作真实断电硬件实验。最新顺序见 [ADR 0007](../decisions/0007-foundation-experience-first.md)和 [施工计划](../planning/IMPLEMENTATION_PLAN.md)：阶段 0 主菜单与应用，阶段 1 创建与真实岸线平面初始地表，阶段 2 基础游戏界面及存载返回；通过后阶段 3 才开始新的建筑、统一成人角色和服装作者源及建设工程。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)，取消真实高程输入，保留全球真实海陆/岸线、统一陆台和狭窄沿海过渡。视觉与两种环境遵循[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)，不引入太阳昼夜循环；唯一发行渠道是Steam。
 
 ## 1. 最先闭合的四个因果边界
 
@@ -76,7 +76,7 @@
 1. **预检。** 保留活动世界及其会话；解决未提交表单和未保存世界的选择，记录来源页面/暂停状态。生成独立 jobId 和 candidate token，后台只读固定来源。
 2. **准备。** New 从已准入地理创建冻结自然层与空 World；Load 从选定不可变 checkpoint 读取。源/格式/大小/依赖/ID/领域不变量完整校验，不把列表摘要当通过。
 3. **最低内容就绪。** 准备初始可见真实地表和 UI 必需资源。不能在新世界已发布后才发现没有可画地面；不预载全部未来建筑角色。准入预算包含旧会话、私有候选和最低 GPU 资源的交接峰值，不能只报新世界稳态内存。超预算有明确失败，不先释放旧 World 强求成功；内容来源包保持固定版本和有效引用到使用者退出。
-4. **持久化门槛。** New 写同目录临时文件/受限区块、校验、flush+平台 durability、原子发布首 checkpoint。Load 不覆盖来源档；需要格式迁移时先产生新的派生版本，保留原件，明确提示迁移结果。具体平台 fsync/replace 尚未实现，不把现有 stream flush 当断电保证。
+4. **持久化门槛。** New 写同目录临时文件/受限区块、校验、flush+平台 durability、原子发布首 checkpoint。Load 不覆盖来源档；需要格式迁移时先产生新的派生版本，保留原件，明确提示迁移结果。阶段1已实现POSIX文件/目录fsync、Windows_commit与MoveFileEx WRITE_THROUGH，以及同目录临时文件/回读/原子continue更新；真实断电硬件实验独立于故障注入。
 5. **单次发布。** 确认 token 未取消且候选仍符合输入版本，撤旧订阅，分配新 SessionGeneration，一次替换活动根/只读快照/视图会话。随后才开放世界工具和仿真；Continue 指针最后指向完整 checkpoint。旧资源按 worker/GPU fence 安全释放。
 6. **反馈。** InWorld 显示真正已进入的世界名/地区和零文明状态；设置初始合理相机，不把低 LOD 预览纹理充作唯一地面。保存/继续索引发布失败单列报告，旧指针保留；不得称失败保存已成功。
 

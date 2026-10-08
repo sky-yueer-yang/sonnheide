@@ -1,4 +1,5 @@
 #include "native_menu.hpp"
+#include "native_earth_page.hpp"
 #include <RmlUi/Core.h>
 #include <cmath>
 #include <filesystem>
@@ -35,6 +36,25 @@ void click(Rml::Context& context,const Rectangle& box,float density) {
     context.ProcessMouseButtonDown(0,0); context.ProcessMouseButtonUp(0,0);
 }
 void update(sonnheide::client::NativeMenu& menu,Rml::Context& context) { menu.update(0,true); context.Update(); context.Render(); }
+void exercise_earth(const std::filesystem::path& root,int width,int height,float density) {
+ auto* context=Rml::CreateContext("earth-layout",{int(width*density),int(height*density)});require(context,"Cannot create Earth UI context");context->SetDensityIndependentPixelRatio(density);
+ {
+  sonnheide::client::NativeEarthPage page(*context,root,std::filesystem::temp_directory_path()/"sonnheide-ui-layout-unused");std::string error;
+  require(page.initialize(error),"Cannot parse native creation document");
+  for(auto locale:{sonnheide::client::Locale::Chinese,sonnheide::client::Locale::English,sonnheide::client::Locale::German}){
+   page.open(locale);context->Update();context->Render();auto* doc=context->GetDocument(0);
+   const auto bar=bounds(doc,"earth-toolbar",density);require(bar.y>=0&&bar.y+bar.h<=height+.5,"Earth toolbar clipped vertically");
+   for(const auto* id:{"earth-action-back","earth-action-select","earth-action-scale","earth-action-preview"}){const auto r=bounds(doc,id,density);require(r.w>0&&r.x>=0&&r.x+r.w<=width+.5&&r.y>=bar.y&&r.y+r.h<=height+.5,"Earth action escaped its bottom toolbar");}
+   click(*context,bounds(doc,"earth-action-sources",density),density);context->Update();
+   const auto source=bounds(doc,"earth-sources-panel",density);if(source.x<0||source.y<0||source.x+source.w>width+.5||source.y+source.h>bar.y+.5)std::cerr<<"source rect="<<source.x<<","<<source.y<<","<<source.w<<","<<source.h<<" toolbar_y="<<bar.y<<" window="<<width<<","<<height<<'\n';require(source.x>=0&&source.y>=0&&source.x+source.w<=width+.5&&source.y+source.h<=bar.y+.5,"Source panel covered the global toolbar or viewport");
+   context->ProcessKeyDown(Rml::Input::KI_ESCAPE,0);context->Update();require(page.visible(),"Escape from Sources discarded the world draft");
+   auto* back=doc->GetElementById("earth-action-back");back->Focus();context->ProcessKeyDown(Rml::Input::KI_RETURN,0);context->Update();require(!page.visible()&&page.consume_return(),"Earth keyboard Back did not return to main menu");
+   page.open(locale);context->Update();click(*context,bounds(doc,"earth-action-back",density),density);context->Update();require(!page.visible()&&page.consume_return(),"Earth pointer Back did not return to menu");
+  }
+  std::cout<<"Native creation layout "<<width<<'x'<<height<<" density="<<density<<": three locales, bottom controls, keyboard and pointer return passed\n";
+ }
+ Rml::RemoveContext("earth-layout");
+}
 void exercise(const std::filesystem::path& root,int width,int height,float density) {
     auto* context=Rml::CreateContext("layout-test",{static_cast<int>(width*density),static_cast<int>(height*density)});
     require(context != nullptr,"Cannot create native layout-test context");
@@ -86,7 +106,7 @@ int main(int argc,char** argv) {
         const auto root=argc>1 ? std::filesystem::path(argv[1]) : std::filesystem::current_path();
         require(Rml::LoadFontFace((root/"assets/source/ui/fonts/Cinzel.ttf").string(),true),"Packaged Roman font failed");
         require(Rml::LoadFontFace((root/"assets/source/ui/fonts/noto-serif-cjk-sc/NotoSerifCJKsc-Regular.otf").string(),true),"Packaged Chinese font failed");
-        for (float density:{1.f,2.f}) { exercise(root,1280,800,density); exercise(root,400,600,density); }
+        for (float density:{1.f,2.f}) { exercise(root,1280,800,density); exercise(root,400,600,density);exercise_earth(root,1280,800,density);exercise_earth(root,400,600,density); }
     } catch (const std::exception& exception) { std::cerr << exception.what() << '\n'; result=1; }
     Rml::Shutdown(); return result;
 }

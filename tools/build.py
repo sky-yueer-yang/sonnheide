@@ -12,19 +12,39 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--sanitizers", action="store_true")
+    parser.add_argument("--geography-source", type=Path, default=ROOT / ".build/geography-sources")
     args = parser.parse_args()
     compiler = os.environ.get("CXX") or shutil.which("clang++") or shutil.which("g++")
     if not compiler:
         parser.error("C++20 compiler required. On Windows use CMake + MSVC.")
+    geography = args.geography_source.resolve()
+    if any(not (geography / ("gshhs_" + detail + ".b")).is_file() for detail in "fhilc"):
+        parser.error("Complete locked geography cache required; run python3 tools/prepare_geography.py --fetch, "
+                     "or pass --geography-source for an already admitted directory")
     out = ROOT / ".build" / ("portable-sanitizers" if args.sanitizers else "portable")
     out.mkdir(parents=True, exist_ok=True)
     flags = ["-std=c++20", "-O1", "-g", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-I" + str(ROOT / "engine/include")]
     if args.sanitizers:
         flags += ["-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
-    core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp")) if p.name not in ("interaction.cpp", "site.cpp")]
+    core = [str(p) for p in sorted((ROOT / "engine/src").glob("*.cpp")) if p.name not in ("interaction.cpp", "site.cpp", "earth_world.cpp", "world_creation.cpp")]
     for name, source in [("sonnheide_headless", ROOT / "apps/headless/main.cpp"), ("sonnheide_kernel_tests", ROOT / "tests/kernel_tests.cpp"), ("sonnheide_allocation_tests", ROOT / "tests/transaction_allocation_tests.cpp"), ("sonnheide_clothing_tests", ROOT / "tests/clothing_tests.cpp")]:
         subprocess.run([compiler, *flags, *core, str(source), "-o", str(out / name)], check=True, cwd=ROOT)
         subprocess.run([str(out / name)], check=True, cwd=ROOT)
+    # These production tests require the actual frozen global source; missing
+    # bytes are a failure, never silently replaced by a coarse or synthetic mask.
+    for name, source in (("sonnheide_earth_world_tests", "earth_world_tests.cpp"),
+                         ("sonnheide_world_creation_tests", "world_creation_tests.cpp"),
+                         ("sonnheide_earth_allocation_tests", "earth_allocation_tests.cpp")):
+        executable = out / name
+        subprocess.run([compiler, *flags, "-pthread", str(ROOT / "engine/src/earth_world.cpp"),
+                        str(ROOT / "engine/src/world_creation.cpp"), str(ROOT / "tests" / source),
+                        "-o", str(executable)], check=True, cwd=ROOT)
+        subprocess.run([str(executable), str(geography)], check=True, cwd=ROOT)
+    navigation = out / "sonnheide_earth_navigation_tests"
+    subprocess.run([compiler, *flags, "-I" + str(ROOT / "client/native"),
+                    str(ROOT / "client/native/earth_navigation.cpp"),
+                    str(ROOT / "tests/earth_navigation_tests.cpp"), "-o", str(navigation)], check=True, cwd=ROOT)
+    subprocess.run([str(navigation)], check=True, cwd=ROOT)
     legacy_site = out / "sonnheide_site_tests"
     subprocess.run([compiler, *flags, str(ROOT / "engine/src/site.cpp"),
                     str(ROOT / "tests/site_tests.cpp"), "-o", str(legacy_site)], check=True, cwd=ROOT)

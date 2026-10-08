@@ -20,6 +20,10 @@ public:
     PaintingPose presentation() const { return model_.presentation(); }
     void set_painting_available(int index, bool available) { model_.set_painting_available(index,available); }
     void set_preferences_error(bool failed);
+    void enable_world_navigation() { world_navigation_ = true; }
+    void set_continue_available(bool available);
+    std::string consume_navigation_request();
+    void show(bool visible);
     // Useful for an automated native event scenario; performs the same handler as a real click.
     void activate(const std::string& action);
     Panel panel() const { return model_.panel(); }
@@ -31,6 +35,9 @@ private:
     std::filesystem::path asset_root_;
     Rml::ElementDocument* document_ = nullptr;
     MenuModel model_;
+    bool world_navigation_ = false;
+    bool continue_available_ = false;
+    std::string navigation_request_;
     bool quit_ = false;
     bool changed_ = false;
     bool preference_failure_ = false;

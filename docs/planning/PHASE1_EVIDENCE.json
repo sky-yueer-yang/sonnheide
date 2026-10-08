@@ -1,0 +1,158 @@
+{
+  "renderer": "actual Metal",
+  "recipe_hash": "da73eeca6a0c8649f5cdec4dbb4a8814ecb3f9bf54dffc53e30dca58afbb0d4e",
+  "frames": [
+    {
+      "material": 0,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "70c4517da6039ef4b48d24c4560547e32a593a9aa8435fec40bdfaa6faaf91c4"
+    },
+    {
+      "material": 1,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "b0f2b39cdea39fb5677447e2e95a7bd9278359347c4c4d51f91494802a6a1e00"
+    },
+    {
+      "material": 2,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "8a9fd4a49660ea90776f5d878b0dacf0a376bb0a0d8dd36ee82ecccca28aad67"
+    },
+    {
+      "material": 3,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "f4882d8bf454caaa1d9d378dd62f99a738a6565632528b72a7be43b121e13cf4"
+    },
+    {
+      "material": 4,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "070c4f670905d20f4527e36ea0055ea59fd0188af6980b08276c004101108069"
+    },
+    {
+      "material": 5,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "3b56e74803094daf4967852f42e122b12dc9be9f03e8c4e52bb7010a6faf735e"
+    },
+    {
+      "material": 6,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "a7449d1ac9b917381e3c87abdaab7010f40cdadf8157191a3faabb44de614ddd"
+    },
+    {
+      "material": 7,
+      "width": 2560,
+      "height": 1600,
+      "framebuffer_sha256": "a1c645ab14f2f6ff41775376d3688e5a640923e68cdd5beff835fe7b3496f210"
+    }
+  ],
+  "orthographic_sea_corners_bgr": [
+    [
+      120,
+      107,
+      37
+    ],
+    [
+      120,
+      107,
+      37
+    ],
+    [
+      120,
+      107,
+      37
+    ],
+    [
+      120,
+      107,
+      37
+    ]
+  ],
+  "orthographic_sea_constant_ray_pass": true,
+  "compiled_shader_tamper_rejected_before_program_creation": true,
+  "tamper_probe_log": "earth-shader-tamper-probe.log",
+  "tamper_probe_log_sha256": "1a9ace2669d785c7f913a9d5d89fe4832985e490d07c44d2608e4addcdaa3046",
+  "date": "2026-10-08",
+  "device": {
+    "os": "macOS-26.6.2-arm64-arm-64bit",
+    "architecture": "arm64",
+    "scope": "macOS development Metal; no Windows GPU or Steam claim"
+  },
+  "geography_scenarios": 16,
+  "creation_scenarios": 18,
+  "real_allocation_failure_counts": {
+    "geometry": 644,
+    "owner_start": 25,
+    "owner_poll": 13
+  },
+  "normal_core": "passed",
+  "asan_ubsan_core": "passed",
+  "native_ctest": {
+    "passed": 16,
+    "failed": 0
+  },
+  "native_rml_layout": {
+    "locales": [
+      "zh",
+      "en",
+      "de"
+    ],
+    "logical_sizes": [
+      [
+        1280,
+        800
+      ],
+      [
+        400,
+        600
+      ]
+    ],
+    "density_ratios": [
+      1,
+      2
+    ],
+    "pointer_keyboard_escape": "passed"
+  },
+  "source_archive_sha256": "28600e8f7a08645aab43079326df6504212ec5ccb2b4bcf3b5f4f12ed60e82bc",
+  "local_logs": {
+    "phase1-core-normal.log": {
+      "sha256": "641c78b45a4d16132e426ca95de489aa418cedc36dc830f5b9e8751ee5f7ac9f",
+      "committed": false
+    },
+    "phase1-core-sanitizers.log": {
+      "sha256": "641c78b45a4d16132e426ca95de489aa418cedc36dc830f5b9e8751ee5f7ac9f",
+      "committed": false
+    },
+    "phase1-native-final-tests.log": {
+      "sha256": "39da645129cbf9eebcca3ffaf88cecc1ea899524f99ca99acae59f8086406877",
+      "committed": false
+    },
+    "phase1-final-smoke.log": {
+      "sha256": "f7376b6450493802bcb4de0690c892113b550f26900343efaa79a4fef65e6c19",
+      "committed": false
+    },
+    "phase1-stable-smoke.log": {
+      "sha256": "d69804090ab29fe09b9b668790c1e9f21f29d612d7cbc21c4836f26392541122",
+      "committed": false
+    }
+  },
+  "native_scenario": {
+    "world_id": "7823c5a3454939c3053bb37d47f5ad1c",
+    "frames": 1457,
+    "passed": true,
+    "utf8_name": "\u4e16\u754c \u00b7 Sonnheide",
+    "stable_capture_hashes": {
+      "step-1": "f0aec8a8b1807a356b8c112d3848164df6dafb23bf021b5e98ceace9238e6eb6",
+      "step-12": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261",
+      "step-2": "9d23eee4526b860765447c988588b1de80f3be13c3b154df2e849dadff5e5934",
+      "step-3": "f028ae0e1b46a84453140b662a4d55471411223b3cbae7ce1164308be8c012b0",
+      "step-5": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261",
+      "step-7": "419a3f3a64acee7b828ef2547110fb520e04b9d7cbdb928cf3b327d3e5067261"
+    }
+  }
+}

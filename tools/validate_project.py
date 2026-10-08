@@ -14,6 +14,7 @@ import validate_ui_locales
 import import_menu_paintings
 import build_menu_compass
 import prepare_ground_sources
+import prepare_geography
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -153,6 +154,16 @@ def main():
         require(path.stat().st_size == item["bytes"] and sha(path) == item["sha256"],
                 "Hex exact source bytes changed: " + item["path"])
     prepare_ground_sources.validate_lock()
+    prepare_geography.validate_lock()
+    runtime = read(ROOT / "assets/manifests/ground_sky_runtime.json")
+    require(runtime["runtime_network"] is False and runtime["simulation_rng"] is False,
+            "Earth rendering must remain offline and presentation-only")
+    for path in ("engine/include/sonnheide/earth_world.hpp", "engine/src/earth_world.cpp",
+                 "engine/include/sonnheide/world_creation.hpp", "engine/src/world_creation.cpp",
+                 "presentation/native/earth_renderer.cpp", "client/native/native_earth_page.cpp",
+                 "tools/prepare_phase1.py", "tools/cook_ground_sky.py",
+                 "ui/application/create-world.rml", "ui/application/create-world.rcss"):
+        local_path(path)
     bundle = import_etopo_sample.BUNDLE_PATH.read_bytes()
     metadata = import_etopo_sample.METADATA_PATH.read_bytes()
     rebuilt = import_etopo_sample.json_bytes(import_etopo_sample.make_sample(bundle, metadata))

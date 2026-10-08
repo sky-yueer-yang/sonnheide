@@ -16,13 +16,17 @@ jobs:
       matrix:
         os: [windows-2022, macos-14]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 35
+    timeout-minutes: 65
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
-      - name: Build the native application from project-hosted locked sources
-        run: python tools/build_native.py --jobs 3
+      - name: Prepare the pinned native compiler and independent libraries
+        run: python tools/vendor_native.py --allow-upstream
+      - name: Verify full global geography and cook real PBR skies and native shaders
+        run: python tools/prepare_phase1.py --allow-upstream
+      - name: Build the actual application entirely from verified offline resources
+        run: python tools/build_native.py --offline --jobs 3
       - name: Build all finite correctness targets
         run: cmake --build .build/native --config RelWithDebInfo --parallel 3
       - name: Test actual native UI layout, presentation and core invariants

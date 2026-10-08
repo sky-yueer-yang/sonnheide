@@ -6,12 +6,12 @@
 
 - 来源：[mmikk/hextile-demo](https://github.com/mmikk/hextile-demo)，固定 commit `43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3`，Copyright (c) 2022 mmikk。
 - 四个原始 MIT 文件完整保留：[LICENSE](third_party/hextile/LICENSE)、两种 Hex-Tiling header、surface-gradient framework；准确路径、大小及 SHA-256 见 [源锁](third_party/hextile/UPSTREAM.json)。原始换行不修改；分发原始/派生代码保留完整 MIT 文本与作者通知。
-- 未导入 DXUT 工程、第三方示例贴图或示例场景。仅归档移植参考，bgfx GPU 及整套 PBR 通道移植尚未完成，不增加游戏引擎依赖。
+- 未导入 DXUT 工程、第三方示例贴图或示例场景。已将算法移植到bgfx shader并一致处理PBR三通道，原始示例工程不进入运行时，不增加游戏引擎依赖。
 
 ## Poly Haven 地表与 Pure Sky
 
 - 八套2K PNG三通道材质与两张8K HDR原始字节已经取得并核验，各项作者、源URL、物理尺度、MD5/SHA-256和不可变ZIP SHA见[资源锁](assets/manifests/ground_sky_sources.json)。完整CC0-1.0文本与[来源通知](assets/source/third_party/poly_haven/NOTICES.md)保留；大文件通过项目 `ground-sky-sources-v1` Release托管，精确原件与配方不依赖本机缓存。
-- 只引入明确CC0资产，不导入网站预览、Logo、网页文案或现成建筑。不将原始源称为GPU ready；PBR转换/Hex、天空卷积和明暗校准仍待实施。资产CC0不授予原创游戏内容开放许可。
+- 只引入明确CC0资产，不导入网站预览、Logo、网页文案或现成建筑。不将原始源称为GPU ready；PBR/Hex、SH9漫反射、GGX粗糙度预滤波和固定明暗校准已接入实际原生GPU，派生产物按哈希/配方重建。资产CC0不授予原创游戏内容开放许可。
 
 ## Abyssal Ocean
 
@@ -50,3 +50,7 @@
 SDL 3.2.28 / RmlUi 5.1 / bgfx、bx、bimg / bgfx.cmake / FreeType 2.13.3 的准确提交、源归档与每项notice哈希见[原生锁](data/native_dependencies.lock.json)。完整发行通知见[Native NOTICES](third_party/native/NOTICES.md)，其中包含FreeType Team credit、FTL及独立模块许可、SDL附属模块、Apple metal-cpp Apache-2.0；源归档原文不修改。
 
 Noto Serif CJK SC Regular Version2.003来自固定notofonts/noto-cjk提交，原始24,543,080字节；[OFL原文](assets/source/ui/fonts/noto-serif-cjk-sc/OFL.txt)、[作者通知](assets/source/ui/fonts/noto-serif-cjk-sc/NOTICE.md)、[源件清单](assets/manifests/native_fonts.json)独立保存。其原始二进制与七份库源码归档使用项目`native-sources-v1` Release托管并逐项验hash；不把第三方许可授给原创游戏内容。
+
+## GSHHG 2.3.7 全球海陆/岸线
+
+官方来源 Paul Wessel / Walter H. F. Smith 的 [GSHHG](https://www.soest.hawaii.edu/pwessel/gshhg/)。完整官方binary ZIP与五LOD成员准确大小/SHA及原始许可证、README见[来源锁](data/geo/gshhg_sources.lock.json)。数据适用LGPL-3.0-or-later，保留原版[LICENSE](data/geo/sources/gshhg/LICENSE.TXT)、[LGPL全文](data/geo/sources/gshhg/COPYING.LESSERv3)、原ZIP缺少的[GNU GPL主许可证补本](data/geo/sources/gshhg/COPYINGv3)及[README](data/geo/sources/gshhg/README.TXT)。原字节不改；本项目 `geography-sources-v1` Release提供完整原ZIP与这些notices，发行包携带notice。源较旧，full指未简化岸线，不宣称现实米级精度；不导入真实高程。地表是明确版本化的游戏派生，与原始数据分开。

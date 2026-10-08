@@ -7,7 +7,7 @@
       "resolved_commit": "7f3ae3d57459e59943a4ecfefc8f6277ec6bf540",
       "source_archive_sha256": "7a8347c770b90b33daac2352858ca03f9c9a2ccc8ce711054870361d1a6b32e5",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
       "linked_to_kernel": false
     },
     {
@@ -15,7 +15,7 @@
       "resolved_commit": "40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9",
       "source_archive_sha256": "59cc05404011645873048fbf7aac5131ac4c8c304853fa448d1aa43b4e2ba340",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
       "linked_to_kernel": false
     },
     {
@@ -23,7 +23,7 @@
       "resolved_commit": "42608f77f20749dd6ddc9e0536788eaad70ea4b5",
       "source_archive_sha256": "68ce87bb59ea209eb7350f41a94a27519ce16b37011b475a1e62d4abee154b66",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
       "linked_to_kernel": false
     },
     {
@@ -31,7 +31,7 @@
       "resolved_commit": "cca91681c953d2de9531197b0f580c866ffaa775",
       "source_archive_sha256": "fdf2642d58327bee772eb06e4fdb32aef4c53c0d17325820a848d1628e01a24e",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
       "linked_to_kernel": false
     },
     {
@@ -39,7 +39,7 @@
       "resolved_commit": "d86e4ea9d9da6e832a3ff41398587d82b772c69b",
       "source_archive_sha256": "ebceffb7cba8d29dc0931de6b2fd2a700f26fbd5a3b978ee92398b91f2260956",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
       "linked_to_kernel": false
     },
     {
@@ -47,7 +47,7 @@
       "resolved_commit": "101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1",
       "source_archive_sha256": "efb47d1ee18a653658c04e3aabbafd4e302b17a191c18cfe2ca64b6892761f94",
       "source_manifest": "data/native_dependencies.lock.json",
-      "status": "optional_native_main_menu_Metal_runtime_Direct3D11_compiled",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
       "linked_to_kernel": false
     }
   ],
@@ -97,8 +97,8 @@
       "resolved_commit": "43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3",
       "license": "MIT",
       "source_manifest": "third_party/hextile/UPSTREAM.json",
-      "status": "exact_algorithm_sources_only",
-      "native_GPU_port_integrated": false,
+      "status": "native_bgfx_PBR_Hex_port",
+      "native_GPU_port_integrated": true,
       "runtime_framework_imported": false
     }
   ],
@@ -116,6 +116,19 @@
       "status": "historical_research_only_retired_by_ADR_0010",
       "required_for_new_world": false,
       "additional_acquisition_planned": false
+    },
+    {
+      "name": "GSHHG 2.3.7 full binary and five navigation LODs",
+      "license": "LGPL-3.0-or-later",
+      "source_manifest": "data/geo/gshhg_sources.lock.json",
+      "partial_source": false,
+      "full_global_package_downloaded": true,
+      "license_file": "data/geo/sources/gshhg/COPYING.LESSERv3",
+      "license_sha256": "ea7d049c7705dc13afc202dd18e1827f3484f8212fd3fa7b82fc4a0c363432c9",
+      "status": "phase1_native_full_source_sampler_and_navigation",
+      "required_for_new_world": true,
+      "dem": false,
+      "hosting": "GitHub geography-sources-v1 Release; immutable original ZIP and notices"
     }
   ],
   "retained_character_sources": [
@@ -180,10 +193,10 @@
       "name": "Poly Haven eight PBR surfaces and two Pure Sky environments",
       "license": "CC0-1.0",
       "source_manifest": "assets/manifests/ground_sky_sources.json",
-      "status": "original_sources_SHA256_locked",
+      "status": "phase1_native_PBR_Hex_and_fixed_Age_SH9_GGX",
       "hosting": "GitHub ground-sky-sources-v1 Release via locked workflow",
-      "runtime_integrated": false,
-      "game_ready": false
+      "runtime_integrated": true,
+      "game_ready": true
     }
   ]
 }

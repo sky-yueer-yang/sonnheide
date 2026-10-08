@@ -1,6 +1,6 @@
 # 原生三维客户端与表现层架构
 
-地表/天空路线已按 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 固定：Poly Haven 2K PBR源＋mmikk Hex-Tiling，两张8K Pure Sky对应Light/Darkness，有限世界外接无终点表现海。源件已锁定，bgfx地表/天空/远海及最高精度预览尚未实现；不能以归档源码或HDR头校验代替GPU画面证据。
+地表/天空路线已按 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 固定：Poly Haven 2K PBR源＋mmikk Hex-Tiling，两张8K Pure Sky对应Light/Darkness，有限世界外接无终点表现海。源件已锁定，bgfx地表/天空/SH9/GGX/静态远海及最高精度预览已实际接入；[阶段1验收](../planning/PHASE1_ACCEPTANCE.md)记录真实Metal图像和资源预算。采用8K equirectangular环境与512×256 GGX预滤波，和cubemap同为同源方向辐亮度采样，避免额外投影接缝；动态Abyssal和完整游戏渲染尚未完成。
 
 设计基线：`Sonnheide_Complete_Design.md` v0.6；本方案更新：2026-10-07。本文是生产客户端的设计与验收契约，不表示图形依赖、PBR、水体、人物或 UI 已经集成。当前可执行能力以仓库构建目标及测试结果为准。油画和Light/Darkness按[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)，纯文字主菜单/静态公司Logo/无不必要小字按[ADR 0009](../decisions/0009-monumental-minimal-interface.md)；原生启动/真实空地图通过后才制作建筑，顺序按[ADR 0007](../decisions/0007-foundation-experience-first.md)。
 

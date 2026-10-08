@@ -9,12 +9,20 @@ target_include_directories(sonnheide_ocean_math PUBLIC presentation/include)
 add_library(sonnheide_interaction engine/src/interaction.cpp)
 target_include_directories(sonnheide_interaction PUBLIC engine/include)
 find_package(Threads REQUIRED)
+set(SONNHEIDE_GEOGRAPHY_SOURCES "${CMAKE_SOURCE_DIR}/.build/geography-sources" CACHE PATH "SHA-locked five-LOD GSHHG directory")
+add_library(sonnheide_earth engine/src/earth_world.cpp engine/src/world_creation.cpp)
+target_include_directories(sonnheide_earth PUBLIC engine/include)
+target_link_libraries(sonnheide_earth PUBLIC Threads::Threads)
+add_library(sonnheide_earth_navigation client/native/earth_navigation.cpp)
+target_include_directories(sonnheide_earth_navigation PUBLIC client/native)
+target_link_libraries(sonnheide_earth_navigation PUBLIC sonnheide_earth)
 target_link_libraries(sonnheide_interaction PUBLIC Threads::Threads)
-foreach(target sonnheide_kernel sonnheide_ocean_math sonnheide_interaction)
+foreach(target sonnheide_kernel sonnheide_ocean_math sonnheide_interaction sonnheide_earth sonnheide_earth_navigation)
   target_compile_features(${target} PUBLIC cxx_std_20)
   set_target_properties(${target} PROPERTIES CXX_EXTENSIONS OFF)
   if(MSVC)
     target_compile_options(${target} PRIVATE /W4 /WX /permissive-)
+    target_compile_options(${target} PUBLIC /utf-8)
   else()
     target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic -Werror)
     if(SONNHEIDE_SANITIZERS)
@@ -59,16 +67,16 @@ if(SONNHEIDE_BUILD_NATIVE)
   include(cmake/native/Dependencies.cmake)
   include(cmake/native/Platform.cmake)
   if(APPLE)
-    add_executable(sonnheide_game MACOSX_BUNDLE apps/game/main.cpp client/native/native_menu.cpp)
+    add_executable(sonnheide_game MACOSX_BUNDLE apps/game/main.cpp client/native/native_menu.cpp client/native/native_earth_page.cpp)
     set(SONNHEIDE_RESOURCE_DEST "$<TARGET_BUNDLE_CONTENT_DIR:sonnheide_game>/Resources")
   else()
-    add_executable(sonnheide_game WIN32 apps/game/main.cpp client/native/native_menu.cpp)
+    add_executable(sonnheide_game WIN32 apps/game/main.cpp client/native/native_menu.cpp client/native/native_earth_page.cpp)
     set(SONNHEIDE_RESOURCE_DEST "$<TARGET_FILE_DIR:sonnheide_game>/Resources")
   endif()
-  target_link_libraries(sonnheide_game PRIVATE sonnheide_native_platform sonnheide_menu_model)
+  target_link_libraries(sonnheide_game PRIVATE sonnheide_native_platform sonnheide_menu_model sonnheide_earth_navigation)
   if(BUILD_TESTING)
-    add_executable(sonnheide_native_ui_layout_tests tests/native_ui_layout_tests.cpp client/native/native_menu.cpp)
-    target_link_libraries(sonnheide_native_ui_layout_tests PRIVATE sonnheide_native_platform sonnheide_menu_model)
+    add_executable(sonnheide_native_ui_layout_tests tests/native_ui_layout_tests.cpp client/native/native_menu.cpp client/native/native_earth_page.cpp)
+    target_link_libraries(sonnheide_native_ui_layout_tests PRIVATE sonnheide_native_platform sonnheide_menu_model sonnheide_earth_navigation)
     add_test(NAME native_ui_layout COMMAND sonnheide_native_ui_layout_tests ${CMAKE_SOURCE_DIR})
     set_tests_properties(native_ui_layout PROPERTIES TIMEOUT 60)
   endif()
@@ -84,9 +92,44 @@ if(SONNHEIDE_BUILD_NATIVE)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${SONNHEIDE_RESOURCE_DEST}/assets/source"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/ui/application" "${SONNHEIDE_RESOURCE_DEST}/ui/application"
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets/source/ui" "${SONNHEIDE_RESOURCE_DEST}/assets/source/ui"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/third_party/native" "${SONNHEIDE_RESOURCE_DEST}/third_party/native")
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/third_party/native" "${SONNHEIDE_RESOURCE_DEST}/third_party/native"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/THIRD_PARTY_NOTICES.md" "${SONNHEIDE_RESOURCE_DEST}/THIRD_PARTY_NOTICES.md"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/third_party/hextile" "${SONNHEIDE_RESOURCE_DEST}/third_party/hextile"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/assets/source/third_party/poly_haven" "${SONNHEIDE_RESOURCE_DEST}/third_party/poly_haven")
+  # Explicit preparation performs all locked source validation and cooking once.
+  # This build step only packages admitted bytes; it never accesses the network.
+  if(NOT EXISTS "${CMAKE_SOURCE_DIR}/.build/phase1/ADMITTED.json")
+    message(FATAL_ERROR "Phase-one resources are not admitted. Run python3 tools/prepare_phase1.py (or --offline with complete locked source caches).")
+  endif()
+  add_custom_target(sonnheide_earth_resources
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/geography"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_f.b" "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_h.b"
+      "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_i.b" "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_l.b"
+      "${SONNHEIDE_GEOGRAPHY_SOURCES}/gshhs_c.b" "${SONNHEIDE_GEOGRAPHY_SOURCES}/ADMITTED.json"
+      "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/geography"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${SONNHEIDE_GEOGRAPHY_SOURCES}/notices" "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/geography/notices"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/.build/ground-sky-runtime" "${SONNHEIDE_RESOURCE_DEST}/assets/runtime/ground-sky"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/.build/ground-sky-shaders" "${SONNHEIDE_RESOURCE_DEST}/shaders"
+    COMMENT "Packaging admitted Earth geometry, PBR materials, fixed Age skies and shaders")
+  add_dependencies(sonnheide_game sonnheide_earth_resources)
 endif()
 if(BUILD_TESTING)
+  add_executable(sonnheide_earth_world_tests tests/earth_world_tests.cpp)
+  target_link_libraries(sonnheide_earth_world_tests PRIVATE sonnheide_earth)
+  add_test(NAME earth_world_invariants COMMAND sonnheide_earth_world_tests "${SONNHEIDE_GEOGRAPHY_SOURCES}")
+  add_executable(sonnheide_world_creation_tests tests/world_creation_tests.cpp)
+  target_link_libraries(sonnheide_world_creation_tests PRIVATE sonnheide_earth)
+  add_test(NAME world_creation_lifecycle COMMAND sonnheide_world_creation_tests "${SONNHEIDE_GEOGRAPHY_SOURCES}")
+  add_executable(sonnheide_earth_allocation_tests tests/earth_allocation_tests.cpp)
+  target_link_libraries(sonnheide_earth_allocation_tests PRIVATE sonnheide_earth)
+  add_test(NAME earth_allocation_failures COMMAND sonnheide_earth_allocation_tests "${SONNHEIDE_GEOGRAPHY_SOURCES}")
+  set_tests_properties(earth_allocation_failures PROPERTIES TIMEOUT 240)
+  add_executable(sonnheide_earth_navigation_tests tests/earth_navigation_tests.cpp)
+  target_link_libraries(sonnheide_earth_navigation_tests PRIVATE sonnheide_earth_navigation)
+  add_test(NAME earth_navigation_contracts COMMAND sonnheide_earth_navigation_tests)
+  set_tests_properties(earth_world_invariants world_creation_lifecycle PROPERTIES TIMEOUT 180)
+  set_tests_properties(earth_navigation_contracts PROPERTIES TIMEOUT 30)
   add_executable(sonnheide_kernel_tests tests/kernel_tests.cpp)
   target_link_libraries(sonnheide_kernel_tests PRIVATE sonnheide_kernel)
   add_test(NAME kernel_invariants COMMAND sonnheide_kernel_tests)

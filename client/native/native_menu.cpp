@@ -83,6 +83,10 @@ void NativeMenu::refresh() {
 void NativeMenu::focus_first() { if (!document_) return; const char* id=model_.panel() == Panel::Settings ? "action-zh" : model_.panel() == Panel::None ? "action-new" : "action-back"; if (auto* element=document_->GetElementById(id)) element->Focus(); }
 void NativeMenu::close_panel() { model_.close(); refresh(); focus_first(); }
 void NativeMenu::activate(const std::string& action) {
+    if (world_navigation_ && (action == "new" || action == "load" || action == "continue")) {
+        if (action == "continue" && !continue_available_) return;
+        navigation_request_=action;model_.close();refresh();return;
+    }
     const Panel previous_panel=model_.panel();
     if (action == "new") model_.open(Panel::NewWorld);
     else if (action == "load") model_.open(Panel::LoadWorld);
@@ -118,5 +122,11 @@ void NativeMenu::ProcessEvent(Rml::Event& event) {
 }
 bool NativeMenu::consume_quit_request() { const bool result=quit_; quit_=false; return result; }
 bool NativeMenu::consume_preferences_changed() { const bool result=changed_; changed_=false; return result; }
+void NativeMenu::show(bool visible) { if(document_) { if(visible){document_->Show();focus_first();}else document_->Hide(); } }
+std::string NativeMenu::consume_navigation_request() { auto result=std::move(navigation_request_);navigation_request_.clear();return result; }
+void NativeMenu::set_continue_available(bool available) {
+    continue_available_=available;
+    if(document_)if(auto* e=document_->GetElementById("action-continue")){e->SetPseudoClass("disabled",!available);e->SetProperty("focus",available?"auto":"none");e->SetProperty("tab-index",available?"auto":"none");}
+}
 void NativeMenu::set_preferences_error(bool failed) { preference_failure_=failed; refresh(); }
 }

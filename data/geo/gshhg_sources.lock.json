@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "dataset": "GSHHG",
+  "version": "2.3.7",
+  "license": "LGPL-3.0-or-later",
+  "official_page": "https://www.soest.hawaii.edu/pwessel/gshhg/",
+  "release_tag": "geography-sources-v1",
+  "archive": {
+    "filename": "gshhg-bin-2.3.7.zip",
+    "bytes": 118617033,
+    "sha256": "28600e8f7a08645aab43079326df6504212ec5ccb2b4bcf3b5f4f12ed60e82bc",
+    "url": "https://www.soest.hawaii.edu/pwessel/gshhg/gshhg-bin-2.3.7.zip",
+    "release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/geography-sources-v1/gshhg-bin-2.3.7.zip"
+  },
+  "members": [
+    {
+      "filename": "gshhs_f.b",
+      "bytes": 95809336,
+      "sha256": "af9215d58ebc525b2d09654a89959829f09e6edc457f3666759cded37be4ecf6"
+    },
+    {
+      "filename": "gshhs_h.b",
+      "bytes": 22540096,
+      "sha256": "380f585415006f2b648a1a99383f50bf06518728d62991d98d48e7c2de48ec8f"
+    },
+    {
+      "filename": "gshhs_i.b",
+      "bytes": 5516184,
+      "sha256": "7d44bf4e16efe6056ff9d147ac0af189bbf0c16a31608426ef63ff8a91c418db"
+    },
+    {
+      "filename": "gshhs_l.b",
+      "bytes": 1212340,
+      "sha256": "7aaa356af4e8d06438319a5c756545325b40fd9080871216d52d377d8a7f6b15"
+    },
+    {
+      "filename": "gshhs_c.b",
+      "bytes": 182724,
+      "sha256": "dd0e9e2f8f121b6ae6a421afd1259ab369c2bac7f741a430db5438820c35aee9"
+    }
+  ],
+  "notices": [
+    {
+      "path": "data/geo/sources/gshhg/LICENSE.TXT",
+      "bytes": 1375,
+      "sha256": "dc53a4833bf9121360a5286917683f041439327353ffe0231206c6b746005b81"
+    },
+    {
+      "path": "data/geo/sources/gshhg/COPYING.LESSERv3",
+      "bytes": 7816,
+      "sha256": "ea7d049c7705dc13afc202dd18e1827f3484f8212fd3fa7b82fc4a0c363432c9"
+    },
+    {
+      "path": "data/geo/sources/gshhg/README.TXT",
+      "bytes": 15350,
+      "sha256": "8c83b0d9e861c3cf9390ccfcc28d57dd484b192e1767524e094c988ee9f84ac7"
+    },
+    {
+      "path": "data/geo/sources/gshhg/COPYINGv3",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    }
+  ],
+  "additional_gpl_text_url": "https://www.gnu.org/licenses/gpl-3.0.txt",
+  "antarctica": "ice_front_level_5_as_land_skip_grounding_level_6",
+  "precision_note": "Full source geometry; old source geography does not guarantee modern metre-level positional accuracy. Navigation LOD never changes authoritative geography."
+}

@@ -1,8 +1,8 @@
 # 初步程序结构：自研客户端、统一对象页与生产接入
 
-补充 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 的责任分配：地理工具生成多级矢量/full包；无GPU候选冻结边缘/海域/精度描述；创建UI负责全球导航和草案；presentation共用PBR/Hex路径绘制最高预览与游戏。`tools/prepare_ground_sources.py`、资源锁及MIT源已实际加入，原生地图模块尚未加入；不创建空目录表示完成。
+补充 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 的责任分配：地理工具生成多级矢量/full包；无GPU候选冻结边缘/海域/精度描述；创建UI负责全球导航和草案；presentation共用PBR/Hex路径绘制最高预览与游戏。`tools/prepare_ground_sources.py`、资源锁及MIT源已实际加入，原生地图模块已加入 `engine/{earth_world,world_creation}`、`client/native/{earth_navigation,native_earth_page}`及`presentation/native/earth_renderer`；`prepare_phase1.py`复建实际shader/纹理/天空并生成编译期资源锁，不创建空目录表示完成。
 
-2026-10-07。本文是生产工程的目标结构与接入顺序；第1节列出当前真实实现和验证范围。最新顺序是主页面与应用启动→创建世界与真实岸线平面初始地表→基础游戏界面、镜头、保存载入和返回→再开始原创建筑与人物服装资产、建设和生活。前三阶段先形成一个可可靠进入、离开和恢复的真实海陆区域空世界。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：不再导入真实高程，普通陆地统一略高于固定海平面，仅狭窄海岸过渡下降入水。计划目录在首次实现对应功能时才创建，不通过空目录或接口数量表示完成；本轮仅修订设计，不启动世界数据或地图工程。应用状态与世界交接见[APPLICATION_FLOW](APPLICATION_FLOW.md)，阶段和退出条件见[完整施工计划](../planning/IMPLEMENTATION_PLAN.md)。
+2026-10-07。本文是生产工程的目标结构与接入顺序；第1节列出当前真实实现和验证范围。最新顺序是主页面与应用启动→创建世界与真实岸线平面初始地表→基础游戏界面、镜头、保存载入和返回→再开始原创建筑与人物服装资产、建设和生活。前三阶段先形成一个可可靠进入、离开和恢复的真实海陆区域空世界。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：不再导入真实高程，普通陆地统一略高于固定海平面，仅狭窄海岸过渡下降入水。计划目录在首次实现对应功能时才创建，不通过空目录或接口数量表示完成；阶段1真实地理、原生预览及可靠空世界创建已实现，证据见[阶段1验收](../planning/PHASE1_ACCEPTANCE.md)。应用状态与世界交接见[APPLICATION_FLOW](APPLICATION_FLOW.md)，阶段和退出条件见[完整施工计划](../planning/IMPLEMENTATION_PLAN.md)。
 
 视觉最新按[ADR 0009](../decisions/0009-monumental-minimal-interface.md)，环境按[ADR 0008](../decisions/0008-sacred-interface-and-light-ages.md)：[油画/极简无框交互](VISUAL_STYLE.md)贯穿菜单、底栏、对象和动态表单；核心只发布[Light/Darkness环境状态](LIGHT_AGES.md)，呈现层消费其快照，不计算自转公转/太阳昼夜。主菜单轮播属于应用可见时间，自动光暗属于仿真tick，不能共用计时器。
 
@@ -18,7 +18,7 @@
 |`apps/headless/main.cpp`|有限造陆→港口→存档贯穿|生产世界的全域 headless 场景运行器|
 |`data/ui_locales.json`|英汉德统一消息目录与离线镜像校验|完整生产字段/定义文本、字体、IME和原生消息cooker|
 |`tools/previews/world-inspector.html`|浏览器示例状态的可点击交互原型|SDL3/bgfx/RmlUi 原生客户端；原型不嵌入发行游戏，不作为生产事实源|
-|`apps/game/main.cpp`、`platform`、`presentation/native`、`client/native`、`ui/application`|原生主页面/三语设置、窗口/输入/字体/Metal、真实Rml布局与GPU运行|Steam/Windows实机验证、完整IME、生产World创建/存载及地图界面|
+|`apps/game/main.cpp`、`platform`、`presentation/native`、`client/native`、`ui/application`|原生主页面/三语设置、窗口/输入/字体/Metal、真实Rml布局与GPU运行|Steam/Windows实机验证、完整IME、全域玩法存档及阶段2完整地图界面|
 |`tools/previews/main-menu.html`、五幅用户油画|浏览器主菜单/三语设置与环境小场景；固定原字节来源|原生应用状态、真实新建/存载、World环境计时与GPU灯光；按钮不能假成功|
 |`assets/source`、`generated`、`manifests`|3 份原创灰盒、选定 MakeHuman 源件、来源与部分验证|正式建模/材质、统一成人 rig、衣物适配、动作、LOD、完整 pack|
 
@@ -55,7 +55,7 @@ Sonnheide/
 │     ├─ queries/                     planned：对象页/图谱/统计只读投影
 │     └─ persistence/                 planned：checkpoint/迁移/历史/重放
 ├─ platform/                          现有：SDL3 窗口/事件桥；完整IME planned
-├─ presentation/                      现有 CPU FFT 与 native主菜单GPU桥；世界渲染 planned
+├─ presentation/                      现有 CPU FFT、native主菜单及EarthRenderer；完整玩法场景 planned
 │  ├─ renderer/                       bgfx 资源/通道/PBR/水体/阴影
 │  ├─ scene/                          视觉代理/LOD/HLOD/动画/空间拾取
 │  └─ overlays/                       国家/文化/矿物/施工/军令只读图层
@@ -70,7 +70,7 @@ Sonnheide/
 │  └─ bridges/                        RmlUi ↔ SDL3/bgfx；快照 binding
 ├─ apps/
 │  ├─ headless/                       现有；以后增加真实贯穿场景参数
-│  └─ game/                           现有原生入口/有序关闭；候选World发布 planned
+│  └─ game/                           现有原生入口/有序关闭；候选World/首checkpoint发布已实现
 ├─ assets/
 │  ├─ source/                         作者源与可分发原始源；大文件 LFS
 │  │  ├─ buildings/                   全原创楼体/构件/必要沿海基/道路/港口
@@ -130,7 +130,7 @@ UI 数据类型可位于核心公开查询协议，但 RML 元素、翻译字符
 |`WorldSessionCoordinator`|候选全验、首次 checkpoint、SessionGeneration 与安全发布/释放|应用装配责任；旧世界到发布前可恢复，Continue 指针最后更新|
 |`ViewProfileStore`|按 worldId 的镜头/收藏/窗口偏好；全局 UI locale/输入偏好分离|切换同世界也撤旧订阅；profile 损坏可重置视图，不重写 World|
 
-首次程序只需少量有实际调用的文件完成这条链；上表不要求立即创建六个库或独立class。原生主菜单GPU桥已实现；生产地表/地图、完整IME、创建与持久化和这些世界状态仍待接入，不能以菜单成功替代地图证据。
+首次程序只需少量有实际调用的文件完成这条链；上表不要求立即创建六个库或独立class。原生主菜单GPU桥已实现；阶段1地表/地图、创建与首checkpoint已接入；完整IME和阶段2环境/主动存载/界面状态仍须施工。实际范围见[阶段1验收](../planning/PHASE1_ACCEPTANCE.md)，不能以菜单成功替代地图证据。
 
 ## 5. 从点选到提交的真实路径
 

@@ -1,0 +1,28 @@
+name: Locked original global coastline source hosting
+on:
+  push:
+    branches: [codex/unified-inspectors-and-world-tools]
+    paths:
+      - 'data/geo/gshhg_sources.lock.json'
+      - 'data/geo/sources/gshhg/**'
+      - 'tools/prepare_geography.py'
+      - 'tools/publish_geography_sources.py'
+      - '.github/workflows/geography-sources.yml'
+  workflow_dispatch:
+concurrency:
+  group: geography-sources-v1
+  cancel-in-progress: false
+jobs:
+  sources:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Verify and host the exact original GSHHG full binary archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/publish_geography_sources.py

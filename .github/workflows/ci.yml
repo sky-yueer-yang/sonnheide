@@ -37,6 +37,8 @@ jobs:
           python tools/build_grayboxes.py
           python tools/validate_project.py
           git diff --exit-code
+      - name: Admit complete locked coastline source
+        run: python tools/prepare_geography.py --fetch --allow-upstream
       - name: Configure
         run: cmake -S . -B .build/ci -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DBUILD_TESTING=ON
       - name: Validate offline inspector interactions
@@ -56,6 +58,8 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
+      - name: Admit complete locked coastline source
+        run: python tools/prepare_geography.py --fetch --allow-upstream
       - name: Configure
         run: cmake -S . -B .build/sanitizers -DCMAKE_BUILD_TYPE=Debug -DSONNHEIDE_SANITIZERS=ON
       - name: Validate offline inspector interactions
