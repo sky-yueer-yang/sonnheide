@@ -2,7 +2,7 @@
 
 SONNHEIDE 是**自研框架的三维像素风人类文明模拟游戏**。世界能从360°观察，玩家可以塑造海陆与山地；人物使用原创块状几何和精细像素贴图，所有建筑与人物服装自行制作。不采用游戏引擎，核心C++20，唯一发行渠道为Steam。
 
-当前有效设计是 [v0.7 像素世界](docs/design/Sonnheide_Design_v0.7_Pixel_World.md) 和 [ADR0012](docs/decisions/0012-editable-3d-pixel-world.md)。原始v0.6逐字保留；旧平坦不可编辑地形、MakeHuman人物、写实PBR默认世界、RECLAIMED-only港口及七分区界面由明确新版覆盖。
+当前有效设计是 [v0.7 像素世界](docs/design/Sonnheide_Design_v0.7_Pixel_World.md) 和 [ADR0012](docs/decisions/0012-editable-3d-pixel-world.md)，地表/果树由 [ADR0013](docs/decisions/0013-layered-surfaces-and-fruiting-trees.md)进一步定义。原始v0.6逐字保留；旧平坦不可编辑地形、MakeHuman人物、写实PBR默认世界、RECLAIMED-only港口及七分区界面由明确新版覆盖。
 
 **本轮完成设计与工程合同重构；当前可执行程序仍是旧写实空世界，新的像素世界与地形编辑尚未实现。** 不把文档、机器合同或旧阶段1测试算作新游戏功能。仓库公开托管于 [GitHub](https://github.com/sky-yueer-yang/sonnheide)，不自动授予原创代码、美术和设计开放许可，见 [权利策略](OWNERSHIP.md)。
 
@@ -18,6 +18,7 @@ SONNHEIDE 是**自研框架的三维像素风人类文明模拟游戏**。世界
 |坡地基础、真实台阶坡道、人行/车库/接货及后建保护|[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
 |Blank/Earth同路径创建、取消失败隔离、首存档发布|[应用流程](docs/architecture/APPLICATION_FLOW.md)|
 |八底栏分区、三语、互通信息页与编辑|[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[交互](docs/architecture/INTERACTION.md)、[编辑矩阵](docs/architecture/EDITING.md)|
+|三层地表、八soil主题＋沙地、树木/渐长果实与存载|[地表树木合同](docs/architecture/SURFACE_ECOLOGY_AND_TREES.md)、[机器登记](data/contracts/surface_ecology.json)|
 |66工具/23命令设计、三语预设与27章覆盖|[像素机器合同](data/contracts/pixel_world.json)|
 |WorldBox官方依据、采纳/改造/不加入的功能|[研究与采纳矩阵](docs/research/WORLDBOX_PIXEL_REFACTOR.md)|
 |社会经济、服装实物、国家法规/宗教及知识战争|[仿真](docs/architecture/SIMULATION.md)、[领域映射](docs/architecture/DOMAIN_MAP.md)、[服装经济](docs/architecture/CLOTHING_ECONOMY.md)|
@@ -29,7 +30,7 @@ SONNHEIDE 是**自研框架的三维像素风人类文明模拟游戏**。世界
 
 ## 新版的关键规则
 
-- 地形预设：Shallow Water、Close Ocean、Deep Ocean、Sand、Soil、Hill、Mountain、High Peak。水深/高度、表层材质、生态是不同字段；沙土默认保高度，明确造陆模式才改变高度。十种自然生态单独涂抹，矿率/真实库存不随地形免费产生。
+- 地形预设：Shallow Water、Close Ocean、Deep Ocean、Sand、Soil、Hill、Mountain、High Peak。水深/高度、表层材质、生态是不同字段；沙土默认保高度，明确造陆模式才改变高度。八soil主题＋干沙椰树生境采用地皮/装饰花草/机制树三层，独立涂抹；果实逐渐长大变色，真实采收；樱野零星落瓣、圣树有界柔光，矿率/真实库存不随地形免费产生。
 - 分块单表面高度列是真正三维顶面与立面。首样本2m格、0.5m高度量子、64²chunk为待校准目标，人物贴图texel不等于碰撞体素；不是整世界密集XYZ体素。首版固定水位0，不做洞穴、悬空自然块、高位湖或体积流体。
 - 神力可免费塑造有效地形，有保护/明确破坏模式；普通文明填海和基础仍需真实材料劳动。淹水/断路/改山同事务处理楼基、住户、货物托管、船客、施工和远港通路，保留身份、所有权、债务与城市账本。抢救/迁址需要真实路线、空间、容量和时间，不免费重建或瞬移。
 - 空白全海/平陆和真实Earth选区转像素共用候选、最高预览、量化、水域及首档发布。Earth默认只导入海陆，派生高度不称真实海拔；风格化起伏需显式选择。人口建筑均0。来源证明不可改，发布后有效地形可改。
@@ -82,6 +83,6 @@ ctest --preset debug -C Debug
 python3 tools/validate_project.py
 ```
 
-该检查包含来源hash、目录/许可锁、已有灰盒、旧交互合同、新像素合同、三语标签及文档链接；不证明地形编辑、GPU画面或完整文明已运行。每次实施批次先完成全部修改和跨模块审查，再统一构建全部目标与完整CTest；仅设计修改不重复编译未变的游戏代码。
+该检查包含来源hash、目录/许可锁、已有灰盒、旧交互合同、新像素与三层地表合同、三语标签及文档链接；不证明地形编辑、GPU画面或完整文明已运行。每次实施批次先完成全部修改和跨模块审查，再统一构建全部目标与完整CTest；仅设计修改不重复编译未变的游戏代码。
 
 下一工程门槛是新版阶段0—1：锁定列地形/人物尺度与生命周期接口，完成Blank/Earth同路径三维像素初态和最小首档。阶段2接地形工具、八分区及完整存载；通过基础体验后阶段3立即制作正式原创楼体、块状人物和衣服。详见[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)。

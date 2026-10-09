@@ -8450,6 +8450,12 @@
       "reclaimed_only_port",
       "seven_toolbar_sections"
     ],
-    "legacy_oracle_and_browser_fixture_unchanged": true
+    "legacy_oracle_and_browser_fixture_unchanged": true,
+    "surface_ecology": {
+      "contract": "data/contracts/surface_ecology.json",
+      "decision": "docs/decisions/0013-layered-surfaces-and-fruiting-trees.md",
+      "status": "planned_only",
+      "tree_alias_existing_plant_kind": true
+    }
   }
 }

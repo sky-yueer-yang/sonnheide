@@ -18,6 +18,9 @@
 |实际衣物/condition/修补预算/穿用余数/订单/服役色绑定/正式fit版本|免费遮盖fallback/材质实例|
 |技术/文献副本/姓名/作者/章程/神授/条约与金融义务|本地化文本/可用动作缓存|
 |工程真实投料/工期/收货、运输/军队成员/装填/粮弹、矿率stock积分|网罩进度/火炮粒子、矿物显示曲面|
+|八主题/干沙生境版本，装饰配方/密度/seed/clear mask|花草实例/LOD/落瓣粒子|
+|TreeRef/树种/权利/位置/年龄/condition/木量，附着果批绝对量/formed-mature-expiry tick/预约|树mesh/代表果实例/发光代理|
+|树生长与果实生成余数、野生萌发预算/候选调度、采收/伐木回执/真实损失|纯可见树索引/光源聚合缓存|
 |命令ID+payload/授权/回执与提交事件序列|尚未提交terrain stroke/政治表单/预览|
 
 source证明不可改，当前地表必须保存实际编辑结果；载入不能从GSHHG或新seed再生覆盖。Body/PixelContent版本变化不恢复衣物耐久/建筑condition。terrain mesh/node profile更新要明确迁移，不能让已半米台阶变成平坡或旧2m格读成4m。
@@ -57,3 +60,7 @@ source证明不可改，当前地表必须保存实际编辑结果；载入不�
 locale是全应用偏好。收藏typed refs/marker/导航栈/镜头/脏草稿按WorldId另存PlayerViewProfile，不改变World/RNG；过期指向归档页/明确缺失，不按同名重绑。死亡ID永不回收给新人。
 
 验收包括未保存/保存中/失败/取消/前代恢复、实际terrain修改与灾损恢复、water split/merge、楼内住户/Army船客/货损与索赔、Age余量、衣物损耗/修补、重复命令与坏关系、旧空档显式复制/有对象拒绝边界、不同镜头线程重放。机器合同校验不代替上述真正存档运行证据。
+
+## ADR0013：果期不是加载计时器
+
+树果合同见[SURFACE_ECOLOGY_AND_TREES](SURFACE_ECOLOGY_AND_TREES.md)。保存绝对quantity、成熟与损耗tick、生成/增长定点余数、预约与已转移批次；不能只保存成熟百分比再乘新yield定义，不能用wall time补满树。定义变更显式迁移已存cap/quantity/期限，不重解释历史或免费扩大现货；暂停期间和退出游戏期间不增长。重载同tick的部分采收/关闭野生恢复/已死圣树，应分别保持余果年龄、旧树继续增长且不补新株、光关闭。装饰重建遵守clear mask及实际占用；不会在已清花草处或道路/农田/入口上补装饰。

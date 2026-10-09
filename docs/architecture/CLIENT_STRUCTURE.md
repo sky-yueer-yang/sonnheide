@@ -26,6 +26,8 @@
 
 运行时库选择沿用 [开源栈决定](../research/OPEN_SOURCE_STACK.md)：C++20 + SDL3 + bgfx/bx/bimg + RmlUi + FreeType；cgltf/meshoptimizer 优先离线使用；ozz-animation 用于角色动画。SDL3、bgfx/bx/bimg、RmlUi、FreeType已经接入原生主页面；准确版本、原始源归档和许可哈希见`data/native_dependencies.lock.json`。cgltf/meshoptimizer/ozz仍未接入。`data/dependencies.json`保留状态分类，不替代lock。
 
+当前生态继续由[ADR0013](../decisions/0013-layered-surfaces-and-fruiting-trees.md)和[三层树果合同](SURFACE_ECOLOGY_AND_TREES.md)覆盖：八soil主题＋干沙椰树生境；地皮/纯装饰/真实树分别归属terrain、presentation recipe和Plant领域。TreeRef复用PlantRef树子类，HarvestPlant的fruit/fell模式读同一棵树的绝对库存与互斥许可。拟新增vegetation/fruit_cohorts/harvest_tasks职责，不创建空目录；P2证明占用/保存，P3正式树果花/光/瓣资产，P4真实供給，管理农业独立。
+
 ## 2. 要先解决的四个工程断点
 
 **先证明世界能被安全创建、进入和恢复，再接生活领域。** 主菜单不是已经存在 World 的另一张页面。启动、创建草稿、地理预览、生成候选、读取存档、提交新世界和返回菜单必须有明确状态；世界未创建时没有 EntityRef、人口统计或可提交领域命令。旧世界保留到新候选完整校验和持久化成功，取消、缺包、损坏和失败不会先把旧世界清掉。加载同一 worldId 也换 SessionGeneration，拒绝旧查询和 GPU 拾取回调。详细合同见 [APPLICATION_FLOW](APPLICATION_FLOW.md)。

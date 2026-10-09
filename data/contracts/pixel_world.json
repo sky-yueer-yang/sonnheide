@@ -195,61 +195,41 @@
   ],
   "biomes": [
     {
-      "id": "grassland",
+      "id": "snowfield",
       "labels": {
-        "zh-CN": "草地",
-        "en": "Grassland",
-        "de": "Grasland"
+        "zh-CN": "雪原",
+        "en": "Snowfield",
+        "de": "Schneefeld"
       },
       "status": "planned",
       "paint_grants_goods": false
     },
     {
-      "id": "deciduous_forest",
+      "id": "flower_meadow",
       "labels": {
-        "zh-CN": "阔叶林",
-        "en": "Deciduous Forest",
-        "de": "Laubwald"
+        "zh-CN": "花甸",
+        "en": "Flower Meadow",
+        "de": "Blumenwiese"
       },
       "status": "planned",
       "paint_grants_goods": false
     },
     {
-      "id": "conifer_forest",
+      "id": "maple_field",
       "labels": {
-        "zh-CN": "针叶林",
-        "en": "Conifer Forest",
-        "de": "Nadelwald"
+        "zh-CN": "枫原",
+        "en": "Maple Plain",
+        "de": "Ahornland"
       },
       "status": "planned",
       "paint_grants_goods": false
     },
     {
-      "id": "tropical_forest",
+      "id": "cherry_field",
       "labels": {
-        "zh-CN": "热带林",
-        "en": "Tropical Forest",
-        "de": "Tropischer Wald"
-      },
-      "status": "planned",
-      "paint_grants_goods": false
-    },
-    {
-      "id": "savanna",
-      "labels": {
-        "zh-CN": "稀树草原",
-        "en": "Savanna",
-        "de": "Savanne"
-      },
-      "status": "planned",
-      "paint_grants_goods": false
-    },
-    {
-      "id": "desert",
-      "labels": {
-        "zh-CN": "沙漠",
-        "en": "Desert",
-        "de": "Wüste"
+        "zh-CN": "樱野",
+        "en": "Cherry Blossom Field",
+        "de": "Kirschblütenfeld"
       },
       "status": "planned",
       "paint_grants_goods": false
@@ -265,31 +245,31 @@
       "paint_grants_goods": false
     },
     {
-      "id": "tundra",
+      "id": "savanna",
       "labels": {
-        "zh-CN": "苔原",
-        "en": "Tundra",
-        "de": "Tundra"
+        "zh-CN": "荒原",
+        "en": "Savanna",
+        "de": "Savanne"
       },
       "status": "planned",
       "paint_grants_goods": false
     },
     {
-      "id": "snowfield",
+      "id": "sonnheide_sacred",
       "labels": {
-        "zh-CN": "雪原",
-        "en": "Snowfield",
-        "de": "Schneefeld"
+        "zh-CN": "Sonnheide圣原",
+        "en": "Sonnheide Sacred Plain",
+        "de": "Sonnheide-Heilige Ebene"
       },
       "status": "planned",
       "paint_grants_goods": false
     },
     {
-      "id": "bare_rock",
+      "id": "volcanic",
       "labels": {
-        "zh-CN": "裸岩",
-        "en": "Bare Rock",
-        "de": "Fels"
+        "zh-CN": "炎地",
+        "en": "Emberland",
+        "de": "Glutland"
       },
       "status": "planned",
       "paint_grants_goods": false
@@ -899,9 +879,9 @@
       "section": "terrain_ecology",
       "mode": "world_preview",
       "labels": {
-        "zh-CN": "树木",
-        "en": "Trees",
-        "de": "Bäume"
+        "zh-CN": "种树",
+        "en": "Plant Trees",
+        "de": "Bäume pflanzen"
       },
       "command": "PlantVegetation",
       "status": "planned_pixel_route"
@@ -911,11 +891,11 @@
       "section": "terrain_ecology",
       "mode": "world_preview",
       "labels": {
-        "zh-CN": "植物",
-        "en": "Plants",
-        "de": "Pflanzen"
+        "zh-CN": "花草装饰",
+        "en": "Flower & Grass Decoration",
+        "de": "Blumen- und Grasdekoration"
       },
-      "command": "PlantVegetation",
+      "command": "CommitBiomeStroke",
       "status": "planned_pixel_route"
     },
     {
@@ -935,11 +915,11 @@
       "section": "terrain_ecology",
       "mode": "world_preview",
       "labels": {
-        "zh-CN": "清植物",
-        "en": "Clear Plants",
-        "de": "Pflanzen entfernen"
+        "zh-CN": "清理花草装饰",
+        "en": "Clear Flower & Grass Decoration",
+        "de": "Blumen und Gras entfernen"
       },
-      "command": "ClearTargets",
+      "command": "CommitBiomeStroke",
       "status": "planned_pixel_route"
     },
     {
@@ -1633,5 +1613,16 @@
     "real_windows_gpu_steam_device_validation"
   ],
   "evidence_boundary": "contract_validation_is_not_game_or_gpu_validation",
-  "world_rule_command": "SetWorldRule"
+  "world_rule_command": "SetWorldRule",
+  "surface_ecology_extension": {
+    "contract": "data/contracts/surface_ecology.json",
+    "decision": "docs/decisions/0013-layered-surfaces-and-fruiting-trees.md",
+    "status": "planned_only",
+    "layers": [
+      "ground",
+      "decorative_small_plants",
+      "functional_trees"
+    ],
+    "sand_habitat_is_not_ninth_soil_theme": true
+  }
 }

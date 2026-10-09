@@ -9,6 +9,7 @@
 |地形三维与规模|高分辨率贴图不意味着世界满体素；terrain/nav/入口尺度混用会制造假可达|分块单顶面高度列+立面；独立资产texel密度/导航净空，统一权威surface revision|
 |海峡全局拓扑|删一格影响远港，只重算刷子附近会留下假航路|chunk门户+受影响粗图split/merge；dirty即证书失效，Pending不得复用旧路径|
 |Godterrain全因果|只改格会让楼/住户/货物/旧路悬空，永保通又使工具不可用|占用依赖索引、后果预览、单写者强异常发布；保护/破坏两模式，普通施工仍保通|
+|三层地表与实际果量|装饰长成经济库存、重刷满果、采果与伐木重复结算会破坏文明供给|地皮/纯装饰/稳定树分层；绝对果批与SimTick成熟、同树使用许可、真实采收搬运，见[树木合同](SURFACE_ECOLOGY_AND_TREES.md)|
 |不同来源同世界|Blank与Earth两渲染器/两存档会反复分叉|统一TerrainWorldDraft/PreviewDescriptor/候选发布；source只作初始证明|
 |高精像素人/衣物|免费换色消灭服装行业，贴图像素=方块造成几何爆炸|原创cuboid+精细图集+fit/动作LOD，WornItemSnapshot读取真实实物|
 |城市灾损恢复|删楼不等于删法人/货权/国家，免费应急仓库会复制资源|逻辑实体/物理空间分离、有限应急容纳、货损分录/继承/真实迁移|
@@ -32,12 +33,13 @@
 |engine/world/terrain_commands、terrain_effect_plan|typed stroke/preview、依赖读写集、占用/损失Adapter|P2|
 |engine/world/spatial_dependencies、navigation|地面/水/道路门户、支承、旧证书、split/merge|P1–P4|
 |engine/world_creation、geography importer|Blank/Earth统一草稿、量化、边缘/同路径候选与首档|P1|
+|engine/world/vegetation、fruit_cohorts、harvest_tasks|Plant领域tree子类的身份/根支承/成熟占用、木果绝对储量/预约/真实采收；农业与装饰分离|P0合同/P2占用fixture/P4真实供给|
 |engine/people、ledger、city、mobility|真实居民容纳/灾损/衣物与库存、应急/修复|P4|
 |engine/politics、religion、science、military|原稿领域通过共享基础，不另造地形账本|P5–P8|
 |presentation/native/pixel_terrain、pixel_water、pixel_scene|块阶面/侧面、原创像素材质/水/天空、阴影/LOD/拾取|P1–P3|
 |client/native/terrain_tool、inspector、input_router|底部八组、当前tool capture、正常字后果预览/typed关系|P2起|
 |persistence/pixel_sections、migration_registry|提交态页/坏档拒绝、legacy复制、恢复/重放|P1起|
-|assets/source/pixel、tools/pixel_content_cook|原创人物/衣物/房屋作者源、hash/fit/LOD/recipe验证|P0合同/P3正式资产|
+|assets/source/pixel、tools/pixel_content_cook|原创人物/衣物/房屋/三层主题树果花作者源、hash/fit/LOD/recipe验证|P0合同/P3正式资产|
 |tests/terrain_transactions、scenarios、native/GPU验收|拓扑/强异常/人货守恒/真实画面，非实现镜像单测|每个贯穿门槛|
 
 模块路径是规划候选，不保证此刻实际存在；细分只在有功能/热点时创建。地形后果Adapter先有小fixture证明，再生产接真实人货/城市，避免先上线工具后补删除善后。

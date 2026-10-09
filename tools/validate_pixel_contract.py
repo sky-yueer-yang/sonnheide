@@ -76,7 +76,8 @@ def validate_contract(root, c):
             require(p['kind'] == 'water_depth_preset', 'water depth treated as material/biome')
         else:
             require(p['kind'] == 'landform_preset', 'mountain is not real landform')
-    require(len(unique(c['biomes'], 'biome')) == 10 and all(b['status'] == 'planned' and b['paint_grants_goods'] is False for b in c['biomes']), 'biome paint grants inventory')
+    require(unique(c['biomes'], 'biome') == {'snowfield', 'flower_meadow', 'maple_field', 'cherry_field', 'wetland', 'savanna', 'sonnheide_sacred', 'volcanic'} and all(b['status'] == 'planned' and b['paint_grants_goods'] is False for b in c['biomes']), 'eight user themes missing or paint grants inventory')
+    require(c['surface_ecology_extension']['contract'] == 'data/contracts/surface_ecology.json' and c['surface_ecology_extension']['status'] == 'planned_only' and c['surface_ecology_extension']['sand_habitat_is_not_ninth_soil_theme'], 'layered surface extension missing')
     editing = c['editing']
     require(editing['modes'] == ['protect', 'destructive'] and editing['writer'] == 'single', 'editing authority drift')
     require(all(editing[k] for k in ('god_events_distinct_from_civic_work', 'destructive_effects_require_contentful_preview', 'immutable_snapshot_preview', 'commit_revalidates_dependencies', 'idempotent_receipt_with_publish', 'terrain_and_immediate_occupant_effects_atomic')), 'unsafe edit commit')
@@ -127,7 +128,7 @@ def validate_contract(root, c):
 def validate(root):
     c = read(root, CONTRACT)
     validate_contract(root, c)
-    return 'v0.7 planned design: 8 presets, 10 biomes, 8 sections, 66 trilingual tools, 23 typed intents, 6 World Laws, 27 chapter reviews; not game/GPU validation'
+    return 'v0.7 planned design: 8 presets, 8 soil themes, 8 sections, 66 trilingual tools, 23 typed intents, 6 World Laws, 27 chapter reviews; not game/GPU validation'
 
 
 if __name__ == '__main__':

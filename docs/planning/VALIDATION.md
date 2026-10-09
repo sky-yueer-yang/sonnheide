@@ -169,3 +169,13 @@ Three independent reviews covered source chapters/official references, occupied 
 The unified `python3 tools/validate_project.py` and `git diff --check` passed. The new registry validator covers 8 presets, 10 biomes, 8 sections, 66 trilingual tools, 23 typed intents, 6 World Laws, 27 chapter reviews, source identity and the legacy-registry extension. Eighteen deliberately invalid design mutations were rejected, including false implementation, source drift, free population/goods, unsafe copy/undo, old port restrictions, lost Pending work, MakeHuman, missing translations and untrusted command routing. The new standard-library Python source parses with Python 3.9 grammar.
 
 These checks certify design consistency and traceability, not implemented terrain edits, pixel GPU output, full civilization or save migration. This design batch changed no runtime implementation and did not recompile unchanged C++/shaders. The preceding formal-ground visibility fix retains its own legacy Phase 1 build/GPU evidence; it does not count as new pixel acceptance.
+
+## 2026-10-09 · ADR0013三层地表与树果设计验收
+
+本批完成[ADR0013](../decisions/0013-layered-surfaces-and-fruiting-trees.md)、[三层树果合同](../architecture/SURFACE_ECOLOGY_AND_TREES.md)与[data/contracts/surface_ecology.json](../../data/contracts/surface_ecology.json)，同步v0.7、像素登记、地形/资源/装饰/信息页/光暗/存载与P0—P5施工依赖。正式树模型、生长/采收经济、落瓣和树光GPU仍未实现，本记录不是游戏行为证据。
+
+三项独立审查分别覆盖树果守恒/土地占用、像素资产/树光和前端/施工依赖。实际封口包括满果或满lot不累积未来补果信用、不同成熟/过期期限的果批不偷合并、采果/砍伐互斥、divine/civic/wild种植来源、成熟包络保旧通道、装饰clear mask持久、死树光资格先于LOD/迟滞/聚合以及同tick形成事件只执行一次。
+
+全部修改及审查后统一运行 `python3 tools/validate_project.py`、设计合同21项非法变异拒绝检查、修改工具Python3.9语法检查与 `git diff --check`，全部通过。登记结果是3层、8soil主题＋沙地生境、13原创树样本和7水果样本；像素工具仍66项/8分区/23规划意图，旧40类页/251关系/137规划意图保持；英汉德标签互相一致。非法变异包含装饰库存/碰撞/通行、沙上花草、错误树种/果种、免费成熟树、关闭恢复冻旧树、补果信用、合批果期、同时采砍、死树保光、shader熔岩判伤及读档补货。仅证明登记校验会拒绝这些错误定义，不证明未来实现已满足反例。
+
+原始v0.6字节/hash、424技术/35法族/13业务、历史源许可/资产hash与批准主菜单都经统一校验保持。本批只改设计/登记及标准库校验工具，C++、shader、作者源未变，因此没有重复原生构建/烘焙或sanitizer；已有旧游戏与旧GPU证据不继承为新树果完成度。当前提交的GitHub Checks另以远端实际状态为准。

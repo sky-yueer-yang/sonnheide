@@ -136,7 +136,7 @@ WorldRules 改动形成统计分段，图上显示变更位置；跨开关区间
 |hunger_consequences|冻结营养欠账增长及饥饿制裁/死亡；食物需求与真实购买/消费仍运行|按冻结的营养状态恢复，显示残留欠账，不能悄悄抹零或重算关停时间|不赠食品、不虚构消费/成交、食物基本预算仍受保护|
 |ai_new_wars|拒绝新的 AI 战争发起；已有战争/占领/军令继续|未来符合合法条件的 AI 请求重新调度|玩家合法战争动作不自动禁止；不清仇怨、历史或真实军队|
 |god_terrain_enabled|拒绝新的Godterrain提交；草案提交二验|后续新合法编辑可提交|不回滚已改地/损失；不关普通真实工程|
-|natural_vegetation_regrowth|暂停自然再生调度；不删已有树/现货|从保存的生长余量继续，不补算关停期间|不凭开关赠成熟资源或仓储商品|
+|natural_vegetation_regrowth|停新野生幼株候选/扩散；已有树生长、果实周期、管理农田继续|从保存萌发调度余量继续，不补算关闭期间的新株|不删旧树、不补果、不赠成熟资源；装饰花草无调度|
 
 `PlacePeople` 必须由可信 dispatcher 的 player source 发起；每人 `creation_source=player_placement, initial_age_years=18`，数量/位置预览，合法有效陆地、站位净空、有界数量、稳定 deterministic ID 与希腊识别码。不得自动附赠经济衣物/资金/国籍/文化/语言/雇主；基础遮蔽只是 ADR 0004 fallback。允许选择已存在人的搬运而不是复制；Placement 本身明确登记神意人口来源，不冒充繁衍。
 
@@ -190,3 +190,9 @@ WorldRules 改动形成统计分段，图上显示变更位置；跨开关区间
 |清理|死人只有一次结算；建/路清理保人货/合同/入口；矿清理不改有效地表/来源/profile或仓货；不自动删法人或文化|
 
 交付按 `specified / prototype / oracle-covered / world-integrated / measured` 标明。原型只证明信息组织和交互可用；有限 oracle 只证明覆盖的状态与事务；核心范围、资产渲染、全球数据、生产 UI 接入与大人口性能分别验收。不得用 40 页面截图证明 40 仿真领域完整运行。
+
+## ADR0013：树木信息与装饰分界
+
+[三层地表](SURFACE_ECOLOGY_AND_TREES.md)扩展既有Plant页：TreeRef是PlantRef的tree子类语义别名，不新增对象kind或另一目录。近/中/远景与搜索都指同一稳定Ref，点击装饰花草不产生Plant页。树概览以实际树种/年龄/condition/木量、成熟和生长中果量、下一批进度、位置/权利/任务为主；数量、成熟日期和已产批次只读。HarvestPlant(mode=fruit/fell)提交前核树修订、使用许可、成熟绝对数量、真实路程/劳动和输出容量；重复回原回执，部分采收不重置其余果期。清树是有明确资源损失的God清除，和真实伐木产出不同。
+
+分类plants中纯装饰花草由生态stroke改clear mask；经济作物仍是Plant清除并列真实损失。trees只选tree子类，去重。冠上果子不是地图上独立库存单位；摘下后以StockBatch进入现有物品/运输/食物消费页，owner/custodian/location分离。
