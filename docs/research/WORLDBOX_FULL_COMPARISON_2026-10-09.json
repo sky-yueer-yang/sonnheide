@@ -1,0 +1,3102 @@
+{
+  "audit_date": "2026-10-09",
+  "kind": "research_comparison_only",
+  "current_game_implementation": false,
+  "new_design_decisions": false,
+  "worldbox_steam_version": "0.51.2",
+  "worldbox_mobile_version": "0.51.4",
+  "sonnheide_baseline_commit": "b13f01890053bd58609af3366883c93ebef18e22",
+  "item_count": 248,
+  "group_count": 17,
+  "sources": {
+    "S01": {
+      "title": "官方平台版本表与Changelog",
+      "url": "https://www.superworldbox.com/changelog",
+      "authority": "official"
+    },
+    "S02": {
+      "title": "2026-06-07 Meta Control/ChessBox开发预告",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/669491979075191190",
+      "authority": "official"
+    },
+    "S03": {
+      "title": "2025-06-12 Monolith 0.50.5正式发布",
+      "url": "https://store.steampowered.com/news/app/1206560/view/523093274068519300",
+      "authority": "official"
+    },
+    "S04": {
+      "title": "2025-09-11 ArmyBox 0.51.0正式发布",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/523101526048114584",
+      "authority": "official"
+    },
+    "S05": {
+      "title": "2025-04-14 Metalith 0.50.4补丁，当时开放beta",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1796631172372502",
+      "authority": "official"
+    },
+    "S06": {
+      "title": "2024-08-12 Culture/Subspecies/Genes预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/4372517795037234444",
+      "authority": "official"
+    },
+    "S07": {
+      "title": "2023-12-26 Families/Genealogy/Graphs预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/3890611710917417278",
+      "authority": "official"
+    },
+    "S08": {
+      "title": "2024-10-15 Royal Clans预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/4545912358019453882",
+      "authority": "official"
+    },
+    "S09": {
+      "title": "2025-03-12 Monolith/Brain/新UI预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/509574242369537672",
+      "authority": "official"
+    },
+    "S10": {
+      "title": "2023-12-04 Species/Subspecies/Biomes预告，含撤回段落",
+      "url": "https://store.steampowered.com/news/app/1206560/view/3905246507035128778",
+      "authority": "official"
+    },
+    "S11": {
+      "title": "2023-03-12 MegaBox 0.21正式发布",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/3682294225186994229",
+      "authority": "official"
+    },
+    "S12": {
+      "title": "2022-05-25 EverythingBox 0.14正式发布",
+      "url": "https://store.steampowered.com/news/app/1206560/view/3332113352303687598",
+      "authority": "official"
+    },
+    "S13": {
+      "title": "2024-12-01 Languages/Books/Learning预告",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1784506359118256",
+      "authority": "official"
+    },
+    "S14": {
+      "title": "0.50.6 Stone Polishing，Steam News UTC 2025-07-01",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/523095184762733160",
+      "authority": "official"
+    },
+    "S15": {
+      "title": "官方首页与产品说明",
+      "url": "https://www.superworldbox.com/",
+      "authority": "official"
+    },
+    "S16": {
+      "title": "官方FAQ：存载/云存档/分享/单人",
+      "url": "https://www.superworldbox.com/faq",
+      "authority": "official"
+    },
+    "S17": {
+      "title": "Steam商店功能标识",
+      "url": "https://store.steampowered.com/app/1206560/WorldBox__God_Simulator/",
+      "authority": "official"
+    },
+    "S18": {
+      "title": "官方Steam News API：完整正文/UTC日期",
+      "url": "https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=1206560&count=100&maxlength=0&format=json",
+      "authority": "official"
+    },
+    "S19": {
+      "title": "2021-12-18 Santa’s Workshop正式公告",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/4452369268781701217",
+      "authority": "official"
+    },
+    "S20": {
+      "title": "社区维护Powers目录，仅作待核验线索",
+      "url": "https://the-official-worldbox-wiki.fandom.com/wiki/Powers",
+      "authority": "community_clue_only"
+    },
+    "S21": {
+      "title": "社区维护Biomes目录，仅作待核验线索",
+      "url": "https://the-official-worldbox-wiki.fandom.com/wiki/Category%3ABiomes",
+      "authority": "community_clue_only"
+    },
+    "S22": {
+      "title": "2022-06-17 Trait Rain 0.14.1正式发布",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/6023016145981848154",
+      "authority": "official"
+    }
+  },
+  "sonnheide_evidence": {
+    "D01": {
+      "title": "保留v0.7像素设计",
+      "relative_path_from_report": "../design/Sonnheide_Design_v0.7_Pixel_World.md"
+    },
+    "D02": {
+      "title": "保留v0.6原始27章",
+      "relative_path_from_report": "../design/Sonnheide_Complete_Design_v0.6.md"
+    },
+    "D03": {
+      "title": "统一信息与世界工具",
+      "relative_path_from_report": "../architecture/INTERACTION.md"
+    },
+    "D04": {
+      "title": "typed编辑矩阵",
+      "relative_path_from_report": "../architecture/EDITING.md"
+    },
+    "D05": {
+      "title": "八分区UI合同",
+      "relative_path_from_report": "../architecture/UI_ARCHITECTURE.md"
+    },
+    "D06": {
+      "title": "像素工具/命令登记",
+      "relative_path_from_report": "../../data/contracts/pixel_world.json"
+    },
+    "D07": {
+      "title": "三层地表与树木",
+      "relative_path_from_report": "../architecture/SURFACE_ECOLOGY_AND_TREES.md"
+    },
+    "D08": {
+      "title": "历史仿真与社会经济",
+      "relative_path_from_report": "../architecture/SIMULATION.md"
+    },
+    "D09": {
+      "title": "原创像素资产合同",
+      "relative_path_from_report": "../architecture/PIXEL_RENDERING_AND_ASSETS.md"
+    },
+    "D10": {
+      "title": "两Age环境规则",
+      "relative_path_from_report": "../architecture/LIGHT_AGES.md"
+    },
+    "D11": {
+      "title": "历史创建世界流程",
+      "relative_path_from_report": "../architecture/APPLICATION_FLOW.md"
+    },
+    "D12": {
+      "title": "40类信息页注册表",
+      "relative_path_from_report": "../../data/interaction_schema.json"
+    },
+    "D13": {
+      "title": "服装实物经济",
+      "relative_path_from_report": "../architecture/CLOTHING_ECONOMY.md"
+    },
+    "D14": {
+      "title": "历史Steam与工程运维",
+      "relative_path_from_report": "../architecture/ENGINEERING.md"
+    },
+    "D15": {
+      "title": "此前WorldBox采纳/排除研究",
+      "relative_path_from_report": "WORLDBOX_PIXEL_REFACTOR.md"
+    },
+    "D16": {
+      "title": "历史持久化合同",
+      "relative_path_from_report": "../architecture/PERSISTENCE.md"
+    }
+  },
+  "comparison": [
+    {
+      "id": "F001",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "元对象锁定控制",
+      "worldbox_evidence": "预告：锁定国家/城市/文化/宗教/语言/宗族/亚种/军队/联盟/家族等",
+      "sonnheide_retained_design": "有对象/任务，无通用元控制玩法",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F002",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "可控成员范围",
+      "worldbox_evidence": "预告：只能给所属单位下命令",
+      "sonnheide_retained_design": "普通命令没有此玩法限制",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F003",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "群体移动/建造/砍树",
+      "worldbox_evidence": "预告：命令所属成员行动",
+      "sonnheide_retained_design": "有真实生产任务，无元控制入口",
+      "assessment": "部分领域基础，玩法缺失",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F004",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "所属视野战雾",
+      "worldbox_evidence": "预告：所属成员/城市附近解雾",
+      "sonnheide_retained_design": "无元对象视野/战雾合同",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F005",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "只查看元对象视野",
+      "worldbox_evidence": "预告：可只看所属视野不控制",
+      "sonnheide_retained_design": "图层不等于受限视野",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F006",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "ChessBox限制神力",
+      "worldbox_evidence": "预告：控制期间由World Law限神力",
+      "sonnheide_retained_design": "六规则无控制模式限制",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F007",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "发现国家后外交",
+      "worldbox_evidence": "预告：国家先相遇才能开战",
+      "sonnheide_retained_design": "有外交条件，无视野发现前置",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F008",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "单位附身",
+      "worldbox_evidence": "已发Unit possession",
+      "sonnheide_retained_design": "神手搬运不等于接管动作",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F009",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "Brain观察",
+      "worldbox_evidence": "正式系统有Brain，预告详述神经元思考UI",
+      "sonnheide_retained_design": "任务原因不是脑网络界面",
+      "assessment": "缺失；现行全控件未点验",
+      "references": [
+        "S09",
+        "S01"
+      ]
+    },
+    {
+      "id": "F010",
+      "section": "01 元控制、附身与观察视角",
+      "feature": "禁用行为/设为无心智",
+      "worldbox_evidence": "已发mindless；神经元禁用有官方描述",
+      "sonnheide_retained_design": "优先级/全球规则不能逐个禁用行为节点",
+      "assessment": "缺失",
+      "references": [
+        "S09",
+        "S03"
+      ]
+    },
+    {
+      "id": "F011",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "城市/国家边界画笔",
+      "worldbox_evidence": "已发Border brush",
+      "sonnheide_retained_design": "动态行政边界不等于玩家画边界",
+      "assessment": "缺失",
+      "references": [
+        "S05",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F012",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "边界桶填充",
+      "worldbox_evidence": "已发Border bucket，不跨其他城国",
+      "sonnheide_retained_design": "没有对应工具/语义",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F013",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "跨现有边界重画",
+      "worldbox_evidence": "已发：跨城国需brush",
+      "sonnheide_retained_design": "TransferTerritory合法移交不等于神力刷辖区",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F014",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "边界选择/悬停",
+      "worldbox_evidence": "已发疆域hover/选中反馈",
+      "sonnheide_retained_design": "远景国家/城市/图层命中有合同",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F015",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "国家/城市/单位三视图",
+      "worldbox_evidence": "已发meta multi-toggle",
+      "sonnheide_retained_design": "有图层，未逐对象确定同等三模式",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F016",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "改名和前名",
+      "worldbox_evidence": "已发名称历史/修订",
+      "sonnheide_retained_design": "NameRecord、别名与历史名称区分",
+      "assessment": "有设计，旧oracle有限验证",
+      "references": [
+        "S01",
+        "S04"
+      ]
+    },
+    {
+      "id": "F017",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "旗帜/主题色展示",
+      "worldbox_evidence": "已发banner与颜色展示",
+      "sonnheide_retained_design": "国家主题色/国旗和合法资格已有",
+      "assessment": "有自身设计，编辑范围不同",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F018",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "城市创始人",
+      "worldbox_evidence": "已发founder记录/展示",
+      "sonnheide_retained_design": "创生事件与创始人历史已有",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F019",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "历任国王/领袖",
+      "worldbox_evidence": "已发past kings/leaders等入口",
+      "sonnheide_retained_design": "有继任档案，专门历任展示不完整",
+      "assessment": "部分覆盖",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F020",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "城市忠诚与叛乱",
+      "worldbox_evidence": "已发忠诚/反叛/计划",
+      "sonnheide_retained_design": "有地方政治，非同等忠诚属性机制",
+      "assessment": "部分覆盖、规则不同",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F021",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "废城/遗迹衰退",
+      "worldbox_evidence": "已发废弃城市与遗迹衰退修订",
+      "sonnheide_retained_design": "楼体损坏/清理/档案有，未同等废城衰退",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F022",
+      "section": "02 城市、国家与疆域编辑",
+      "feature": "自主扩张/定居/建城",
+      "worldbox_evidence": "已发文明自主建设/殖民",
+      "sonnheide_retained_design": "需真实已有居民/供给，禁止自动刷人口",
+      "assessment": "有自身设计，人口规则不同",
+      "references": [
+        "S15",
+        "S12"
+      ]
+    },
+    {
+      "id": "F023",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "多个智慧物种",
+      "worldbox_evidence": "已发人类及其他智慧物种",
+      "sonnheide_retained_design": "原稿/v0.7排除非人种族",
+      "assessment": "过去明确排除",
+      "references": [
+        "S15",
+        "S03"
+      ]
+    },
+    {
+      "id": "F024",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "Species/Subspecies分层",
+      "worldbox_evidence": "已发物种与亚种对象",
+      "sonnheide_retained_design": "无这两类实体/页面",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S06"
+      ]
+    },
+    {
+      "id": "F025",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "同物种多个亚种",
+      "worldbox_evidence": "已发亚种归属/区分",
+      "sonnheide_retained_design": "无亚种状态/谱系",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S06"
+      ]
+    },
+    {
+      "id": "F026",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "亚种名称/详情/编辑",
+      "worldbox_evidence": "已发亚种窗口与编辑体系",
+      "sonnheide_retained_design": "40类页未含亚种",
+      "assessment": "缺失",
+      "references": [
+        "S06",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F027",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "taxonomy分类学显示",
+      "worldbox_evidence": "已发独立分类学元素",
+      "sonnheide_retained_design": "没有分类学",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F028",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "智慧/非智慧分栏",
+      "worldbox_evidence": "已发sapient/non-sapient分栏",
+      "sonnheide_retained_design": "没有族群分类",
+      "assessment": "缺失",
+      "references": [
+        "S03"
+      ]
+    },
+    {
+      "id": "F029",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "基因编辑器",
+      "worldbox_evidence": "已发genes及编辑体系",
+      "sonnheide_retained_design": "v0.7明确没有基因",
+      "assessment": "缺失",
+      "references": [
+        "S06",
+        "S03"
+      ]
+    },
+    {
+      "id": "F030",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "基因池/染色体展示",
+      "worldbox_evidence": "已发基因池修订/协同染色体表现",
+      "sonnheide_retained_design": "没有相应状态与UI",
+      "assessment": "缺失；不推断内部公式",
+      "references": [
+        "S01",
+        "S03"
+      ]
+    },
+    {
+      "id": "F031",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "基因影响数值属性",
+      "worldbox_evidence": "已发速度等基因影响能力",
+      "sonnheide_retained_design": "六人格轴仅偏好，不是数值基因",
+      "assessment": "缺失",
+      "references": [
+        "S04",
+        "S01"
+      ]
+    },
+    {
+      "id": "F032",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "遗传寿命",
+      "worldbox_evidence": "已发寿命基因相关记录",
+      "sonnheide_retained_design": "有年龄资格，无遗传寿命",
+      "assessment": "缺失对应机制",
+      "references": [
+        "S01"
+      ]
+    },
+    {
+      "id": "F033",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "亲代性状继承",
+      "worldbox_evidence": "已发继承公式修订",
+      "sonnheide_retained_design": "Parent链接不继承属性；人格无遗传公式",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S05"
+      ]
+    },
+    {
+      "id": "F034",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "表型/外观遗传",
+      "worldbox_evidence": "已发多phenotype和跨亚种继承",
+      "sonnheide_retained_design": "原创外观未定义遗传表型",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F035",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "亚种分化/演化",
+      "worldbox_evidence": "已发演化及Monolith变化",
+      "sonnheide_retained_design": "没有生物演化/亚种分化",
+      "assessment": "缺失",
+      "references": [
+        "S09",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F036",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "同物种跨亚种繁衍",
+      "worldbox_evidence": "已发后代/表型相关事实",
+      "sonnheide_retained_design": "人类双亲出生没有亚种层",
+      "assessment": "缺失",
+      "references": [
+        "S04",
+        "S01"
+      ]
+    },
+    {
+      "id": "F037",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "亚种人口上限",
+      "worldbox_evidence": "已发spawner遵守亚种限制",
+      "sonnheide_retained_design": "场地容量不是亚种population limit",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F038",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "Monolith启智",
+      "worldbox_evidence": "已发动物文明/升格/继续演化",
+      "sonnheide_retained_design": "没有非人文明/启智",
+      "assessment": "过去范围外",
+      "references": [
+        "S09",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F039",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "生境影响适应性状",
+      "worldbox_evidence": "已发biome相关适应与性状",
+      "sonnheide_retained_design": "固定树种habitat不是人体遗传",
+      "assessment": "缺失",
+      "references": [
+        "S04",
+        "S01"
+      ]
+    },
+    {
+      "id": "F040",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "沙漠/沼泽/冻原适应",
+      "worldbox_evidence": "已发相应适应免地形减速",
+      "sonnheide_retained_design": "无人物适应trait",
+      "assessment": "缺失，不能等于耐寒体温",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F041",
+      "section": "03 物种、亚种、基因与表型",
+      "feature": "耐热/防火特性",
+      "worldbox_evidence": "已发Heat Resistance/Fire Proof及修订",
+      "sonnheide_retained_design": "没有人体耐寒耐热/体温/服装保温",
+      "assessment": "缺失；不推导真实热力学",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F042",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "完整Unit trait体系",
+      "worldbox_evidence": "已发性状分类/描述",
+      "sonnheide_retained_design": "只有六人格轴，非特性库",
+      "assessment": "主要缺失",
+      "references": [
+        "S12",
+        "S11",
+        "S03"
+      ]
+    },
+    {
+      "id": "F043",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "增删个体性状",
+      "worldbox_evidence": "已发trait editor",
+      "sonnheide_retained_design": "人格编辑不能增删遗传/能力/免疫",
+      "assessment": "部分编辑基础，机制缺失",
+      "references": [
+        "S12"
+      ]
+    },
+    {
+      "id": "F044",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "批量特性雨",
+      "worldbox_evidence": "已发Trait Rain",
+      "sonnheide_retained_design": "有typed批量预检，无同等赋予神力",
+      "assessment": "缺失",
+      "references": [
+        "S22",
+        "S04"
+      ]
+    },
+    {
+      "id": "F045",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "性状发现/解锁",
+      "worldbox_evidence": "已发观察单位/成就解锁trait",
+      "sonnheide_retained_design": "无发现解锁循环",
+      "assessment": "缺失",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F046",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "经验/等级/能力",
+      "worldbox_evidence": "已发单位属性/经验",
+      "sonnheide_retained_design": "有真实职业技能，非同等等级制",
+      "assessment": "部分覆盖、规则不同",
+      "references": [
+        "S12",
+        "S01"
+      ]
+    },
+    {
+      "id": "F047",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "饥饿/健康/战伤",
+      "worldbox_evidence": "已发需求与受伤状态",
+      "sonnheide_retained_design": "有真实需求战伤设计，不能随意改健康",
+      "assessment": "有自身设计",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F048",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "冻结/燃烧/溺水状态",
+      "worldbox_evidence": "已发状态与溺水效果",
+      "sonnheide_retained_design": "淹水受困/溺水有，没人体寒热冻结",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F049",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "幼体到成年身体",
+      "worldbox_evidence": "已发幼体成长/体重不同",
+      "sonnheide_retained_design": "0岁出生/18岁放置，全龄成人规格",
+      "assessment": "明确不同",
+      "references": [
+        "S04",
+        "S01"
+      ]
+    },
+    {
+      "id": "F050",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "物种成熟年龄差异",
+      "worldbox_evidence": "已发不同生物成长规则",
+      "sonnheide_retained_design": "仅人类成年资格，无物种差异",
+      "assessment": "明确不同",
+      "references": [
+        "S01"
+      ]
+    },
+    {
+      "id": "F051",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "衰老/自然死亡",
+      "worldbox_evidence": "已发生命周期",
+      "sonnheide_retained_design": "有设计；旧Advance仅增龄不证明老死",
+      "assessment": "有设计，旧实现不足",
+      "references": [
+        "S11",
+        "S01"
+      ]
+    },
+    {
+      "id": "F052",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "妊娠/孕期",
+      "worldbox_evidence": "已发兔孕期等修订",
+      "sonnheide_retained_design": "无完整孕期状态/自主繁育调度",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F053",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "双亲有性繁衍",
+      "worldbox_evidence": "已发繁育及双亲关系",
+      "sonnheide_retained_design": "合法双亲出生，旧oracle入口有限",
+      "assessment": "有设计、规则不同",
+      "references": [
+        "S03",
+        "S01"
+      ]
+    },
+    {
+      "id": "F054",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "卵生/孤雌/分裂等",
+      "worldbox_evidence": "已发多种繁育方式",
+      "sonnheide_retained_design": "仅人类双亲出生",
+      "assessment": "缺失或非人范围外",
+      "references": [
+        "S09",
+        "S04"
+      ]
+    },
+    {
+      "id": "F055",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "生育能力/限制",
+      "worldbox_evidence": "已发不育/间隔等",
+      "sonnheide_retained_design": "成年/伴侣/开关有，无遗传生育能力",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F056",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "伴侣/父母/子女",
+      "worldbox_evidence": "已发相关关系记录",
+      "sonnheide_retained_design": "Partner/Parent和家庭规则已有",
+      "assessment": "有设计、旧有限记录",
+      "references": [
+        "S03",
+        "S01"
+      ]
+    },
+    {
+      "id": "F057",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "朋友等细分关系",
+      "worldbox_evidence": "已发社会关系相关记录",
+      "sonnheide_retained_design": "亲缘/伴侣/接触池有，无同等好友系统",
+      "assessment": "部分覆盖",
+      "references": [
+        "S01",
+        "S09"
+      ]
+    },
+    {
+      "id": "F058",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "幸福/事件哀伤",
+      "worldbox_evidence": "已发失城等情绪事件",
+      "sonnheide_retained_design": "生活效用有，事件情绪记忆缺失",
+      "assessment": "部分基础，机制缺失",
+      "references": [
+        "S04",
+        "S09"
+      ]
+    },
+    {
+      "id": "F059",
+      "section": "04 单位性状、状态与生命周期",
+      "feature": "睡眠/休息",
+      "worldbox_evidence": "已发睡眠任务/决策",
+      "sonnheide_retained_design": "有抽象休息预算，非同等睡眠AI",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04",
+        "S09"
+      ]
+    },
+    {
+      "id": "F060",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "动物物种与放置",
+      "worldbox_evidence": "已发动物及放置工具",
+      "sonnheide_retained_design": "原稿排除野生动物，无Animal域",
+      "assessment": "过去明确排除",
+      "references": [
+        "S15",
+        "S03"
+      ]
+    },
+    {
+      "id": "F061",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "自主繁育/幼体",
+      "worldbox_evidence": "已发动物出生/孕期",
+      "sonnheide_retained_design": "私家马无生态繁育",
+      "assessment": "缺失、过去排除",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F062",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "草食/肉食/杂食",
+      "worldbox_evidence": "已发食性与实际食物修订",
+      "sonnheide_retained_design": "无动物食性系统",
+      "assessment": "缺失",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F063",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "捕食关系",
+      "worldbox_evidence": "已发饮食/捕食行为",
+      "sonnheide_retained_design": "原稿明确没有捕食",
+      "assessment": "过去明确排除",
+      "references": [
+        "S01",
+        "S15"
+      ]
+    },
+    {
+      "id": "F064",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "特殊生物食性",
+      "worldbox_evidence": "已发特殊食物/生物性状",
+      "sonnheide_retained_design": "无对应生物食性",
+      "assessment": "缺失、范围外",
+      "references": [
+        "S01",
+        "S03"
+      ]
+    },
+    {
+      "id": "F065",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "肉/骨/皮等产出",
+      "worldbox_evidence": "已发尸体资源修订",
+      "sonnheide_retained_design": "无动物养殖/屠宰实物链",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F066",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "蜂群/蜂巢/蜂蜜",
+      "worldbox_evidence": "已发hive产物/载入修订",
+      "sonnheide_retained_design": "没有蜂群蜂蜜生产",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F067",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "动物Family与谱系",
+      "worldbox_evidence": "已发非智慧Family分栏",
+      "sonnheide_retained_design": "没有动物Family",
+      "assessment": "缺失",
+      "references": [
+        "S07",
+        "S04"
+      ]
+    },
+    {
+      "id": "F068",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "动物文明",
+      "worldbox_evidence": "已发动物文明/楼体集合",
+      "sonnheide_retained_design": "无非人文明",
+      "assessment": "过去范围外",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F069",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "生物疾病/传染",
+      "worldbox_evidence": "已发疾病相关状态",
+      "sonnheide_retained_design": "旧原稿排除疾病/瘟疫传染",
+      "assessment": "过去排除，仅比较机制",
+      "references": [
+        "S01"
+      ]
+    },
+    {
+      "id": "F070",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "亚种/Family消亡标记",
+      "worldbox_evidence": "已发亚种/Family及meta消亡标识；不推断Species归档",
+      "sonnheide_retained_design": "有死亡档案，无相应生物元对象",
+      "assessment": "部分基础，对象缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F071",
+      "section": "05 动物生态、食性与生物产物",
+      "feature": "观察/干预动物行为",
+      "worldbox_evidence": "已发查看/附身/脑/任务",
+      "sonnheide_retained_design": "无动物对象行为",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S04",
+        "S09"
+      ]
+    },
+    {
+      "id": "F072",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "独立跨代Family",
+      "worldbox_evidence": "已发Family对象/页面",
+      "sonnheide_retained_design": "无对应跨代元对象",
+      "assessment": "缺失",
+      "references": [
+        "S07",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F073",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "可视族谱",
+      "worldbox_evidence": "Family已发，预告详述Genealogy",
+      "sonnheide_retained_design": "有Parent数据，无完整族谱UI承诺",
+      "assessment": "部分数据，展示缺失",
+      "references": [
+        "S07",
+        "S03"
+      ]
+    },
+    {
+      "id": "F074",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "代际/祖先/家族史",
+      "worldbox_evidence": "Family已发，预告展示历史",
+      "sonnheide_retained_design": "有继承/命名亲缘，无同等完整界面",
+      "assessment": "部分覆盖，细节未逐点验",
+      "references": [
+        "S07",
+        "S03"
+      ]
+    },
+    {
+      "id": "F075",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "Family名称/颜色/标识",
+      "worldbox_evidence": "已有家族资料标识",
+      "sonnheide_retained_design": "Household可改名，无谱系视觉身份",
+      "assessment": "部分相似，主要缺失",
+      "references": [
+        "S07",
+        "S04"
+      ]
+    },
+    {
+      "id": "F076",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "Family分布/灭绝",
+      "worldbox_evidence": "已发图层/死亡标记",
+      "sonnheide_retained_design": "无Family指标和图层",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F077",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "Royal Clan实体",
+      "worldbox_evidence": "已发宗族血统/统治",
+      "sonnheide_retained_design": "法定君主/继承有，无Clan",
+      "assessment": "过去未纳入",
+      "references": [
+        "S11",
+        "S08",
+        "S03"
+      ]
+    },
+    {
+      "id": "F078",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "宗族祖先/成员血统",
+      "worldbox_evidence": "已发Clan，预告说明血统",
+      "sonnheide_retained_design": "Parent不建立Royal Clan",
+      "assessment": "缺失",
+      "references": [
+        "S08",
+        "S11"
+      ]
+    },
+    {
+      "id": "F079",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "Clan traits编辑",
+      "worldbox_evidence": "已发宗族共有性状",
+      "sonnheide_retained_design": "无共有性状/编辑器",
+      "assessment": "缺失",
+      "references": [
+        "S08",
+        "S03"
+      ]
+    },
+    {
+      "id": "F080",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "宗族统治图层/族长史",
+      "worldbox_evidence": "已发Clan图层/chief记录",
+      "sonnheide_retained_design": "无对应领域",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F081",
+      "section": "06 Family、Clan与统治血统",
+      "feature": "宗族与忠诚/继任",
+      "worldbox_evidence": "已发宗族关联统治/继任",
+      "sonnheide_retained_design": "有继承制度，没有Clan成员机制",
+      "assessment": "部分制度基础，Clan缺失",
+      "references": [
+        "S11",
+        "S08"
+      ]
+    },
+    {
+      "id": "F082",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "独立Culture对象",
+      "worldbox_evidence": "已发文化资料/分布",
+      "sonnheide_retained_design": "有文化创生传播",
+      "assessment": "有自身设计",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F083",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "文化traits/编辑",
+      "worldbox_evidence": "已有Culture trait，预告详述编辑器",
+      "sonnheide_retained_design": "风格/亲和不是同等trait库",
+      "assessment": "部分覆盖，性状编辑器缺失",
+      "references": [
+        "S06",
+        "S03",
+        "S01"
+      ]
+    },
+    {
+      "id": "F084",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "独立Language对象",
+      "worldbox_evidence": "已发语言及分布",
+      "sonnheide_retained_design": "Culture/Language分离",
+      "assessment": "有自身设计",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F085",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "语言性状编辑",
+      "worldbox_evidence": "Language已发，官方描述trait editor",
+      "sonnheide_retained_design": "谱系/熟练度有，无特性编辑器",
+      "assessment": "部分覆盖，编辑器缺失",
+      "references": [
+        "S13",
+        "S03"
+      ]
+    },
+    {
+      "id": "F086",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "小谈/传播/语言学习",
+      "worldbox_evidence": "已发语言学习相关修订",
+      "sonnheide_retained_design": "真实接触/学习/翻译设计",
+      "assessment": "有自身设计，规则不同",
+      "references": [
+        "S13",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F087",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "读书/保存文献知识",
+      "worldbox_evidence": "已有books/读书机制",
+      "sonnheide_retained_design": "文献实物副本/语言门槛有",
+      "assessment": "有自身设计",
+      "references": [
+        "S13",
+        "S01"
+      ]
+    },
+    {
+      "id": "F088",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "书传播性状/能力",
+      "worldbox_evidence": "官方描述文献传播属性等",
+      "sonnheide_retained_design": "知识学习不传WorldBox trait",
+      "assessment": "部分目的相近，trait缺失",
+      "references": [
+        "S13",
+        "S03"
+      ]
+    },
+    {
+      "id": "F089",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "独立Religion对象",
+      "worldbox_evidence": "已发宗教/窗口/分布",
+      "sonnheide_retained_design": "根/教派/教会分领域",
+      "assessment": "有自身设计",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F090",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "宗教性状/仪式效果",
+      "worldbox_evidence": "已发religion/rites相关修订",
+      "sonnheide_retained_design": "教义/章程不是魔法trait/仪式",
+      "assessment": "部分领域相近，特殊机制范围外",
+      "references": [
+        "S01",
+        "S04"
+      ]
+    },
+    {
+      "id": "F091",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "文化/语言/宗教分裂",
+      "worldbox_evidence": "已发split及继承条件",
+      "sonnheide_retained_design": "创生/分化/教派分裂已有",
+      "assessment": "有自身设计，因果不同",
+      "references": [
+        "S03",
+        "S05"
+      ]
+    },
+    {
+      "id": "F092",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "元对象共有traits",
+      "worldbox_evidence": "已发culture/language/clan/religion traits",
+      "sonnheide_retained_design": "制度/知识字段无同等共有trait层",
+      "assessment": "对应层缺失",
+      "references": [
+        "S05",
+        "S03"
+      ]
+    },
+    {
+      "id": "F093",
+      "section": "07 文化、语言、宗教与文献",
+      "feature": "命名/Onomastics",
+      "worldbox_evidence": "已发命名修订",
+      "sonnheide_retained_design": "生成语言/命名包/姓名史有",
+      "assessment": "有自身设计，编辑范围不同",
+      "references": [
+        "S09",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F094",
+      "section": "08 外交、战争与军队",
+      "feature": "Plans/Plots对象",
+      "worldbox_evidence": "已发战争/结盟/叛乱计划",
+      "sonnheide_retained_design": "制度批准/任务有，无同等Plot对象",
+      "assessment": "缺失对应对象",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F095",
+      "section": "08 外交、战争与军队",
+      "feature": "计划列表/进度",
+      "worldbox_evidence": "已发plots进度及提示",
+      "sonnheide_retained_design": "工程任务进度不是外交Plot栏",
+      "assessment": "部分通用基础，专门工具缺失",
+      "references": [
+        "S03"
+      ]
+    },
+    {
+      "id": "F096",
+      "section": "08 外交、战争与军队",
+      "feature": "强制开战/友好神力",
+      "worldbox_evidence": "已发Whisper of War/Friendship",
+      "sonnheide_retained_design": "合法宣战/和约不等于绕制度神力",
+      "assessment": "工具语义不同",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F097",
+      "section": "08 外交、战争与军队",
+      "feature": "独立Alliance对象",
+      "worldbox_evidence": "已发联盟/成员/窗口",
+      "sonnheide_retained_design": "真实联盟条约/保留权有",
+      "assessment": "有自身设计",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F098",
+      "section": "08 外交、战争与军队",
+      "feature": "联盟等级/加成",
+      "worldbox_evidence": "已发联盟成长增益",
+      "sonnheide_retained_design": "无同等等级数值加成",
+      "assessment": "对应机制缺失",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F099",
+      "section": "08 外交、战争与军队",
+      "feature": "War信息对象",
+      "worldbox_evidence": "已发交战方/战史",
+      "sonnheide_retained_design": "有伤亡/和约/历史设计",
+      "assessment": "有设计",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F100",
+      "section": "08 外交、战争与军队",
+      "feature": "战争连线/战斗标记",
+      "worldbox_evidence": "已发战争地图表现",
+      "sonnheide_retained_design": "有战争/军队图层，未定同等全集",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F101",
+      "section": "08 外交、战争与军队",
+      "feature": "胜败与参战史",
+      "worldbox_evidence": "已发结果/统计/banner",
+      "sonnheide_retained_design": "战争结果/条约后果有",
+      "assessment": "有自身设计",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F102",
+      "section": "08 外交、战争与军队",
+      "feature": "独立Army对象",
+      "worldbox_evidence": "已发选择/收藏/概览",
+      "sonnheide_retained_design": "单层Army真实成员/装备/补给",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F103",
+      "section": "08 外交、战争与军队",
+      "feature": "指挥/成员/任务栏",
+      "worldbox_evidence": "已发captain集结和任务",
+      "sonnheide_retained_design": "有真实指挥链/军令设计",
+      "assessment": "有自身设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F104",
+      "section": "08 外交、战争与军队",
+      "feature": "多层Army组织",
+      "worldbox_evidence": "本轮不足证明完整多层组织",
+      "sonnheide_retained_design": "明确单层Army",
+      "assessment": "WorldBox未核实，不判缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F105",
+      "section": "08 外交、战争与军队",
+      "feature": "城墙/城防",
+      "worldbox_evidence": "已发walls与碰撞耐久",
+      "sonnheide_retained_design": "旧范围不自动加入城墙",
+      "assessment": "过去明确排除",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F106",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "地图点选meta",
+      "worldbox_evidence": "已发国家/城/文化等地图选择",
+      "sonnheide_retained_design": "近人远国/激活图层typed命中",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F107",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "关系页互通",
+      "worldbox_evidence": "已发元对象互联",
+      "sonnheide_retained_design": "40类页/251关系登记",
+      "assessment": "有设计，非完整实现",
+      "references": [
+        "S04",
+        "S07"
+      ]
+    },
+    {
+      "id": "F108",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "浏览返回历史",
+      "worldbox_evidence": "已发back/Escape返回",
+      "sonnheide_retained_design": "导航栈/页签/筛选/草稿保留",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F109",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "底部快速资料栏",
+      "worldbox_evidence": "已发quick info/favorite/open",
+      "sonnheide_retained_design": "有底栏局部窗，快看细节不完整",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F110",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "多选单位/成员切换",
+      "worldbox_evidence": "已发底部multi-selection",
+      "sonnheide_retained_design": "批量预检有，实际通用成员栏不完整",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F111",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "实时任务条",
+      "worldbox_evidence": "已发当前unit task",
+      "sonnheide_retained_design": "人物/军队/合同任务信息有",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F112",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "meta成员地图pins",
+      "worldbox_evidence": "已发选定meta标所属成员",
+      "sonnheide_retained_design": "固定标记/跟随不是全部meta成员pins",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F113",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "Ctrl数字控制组",
+      "worldbox_evidence": "已发绑定单位/组/meta并切换",
+      "sonnheide_retained_design": "无同等明确合同",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F114",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "快捷收藏",
+      "worldbox_evidence": "已发unit/meta favorites",
+      "sonnheide_retained_design": "人/物品/地图标记收藏已有",
+      "assessment": "有设计",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F115",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "死亡/灭绝标识",
+      "worldbox_evidence": "已发元对象死亡/灭绝",
+      "sonnheide_retained_design": "通用墓碑档案有，生物元对象缺失",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F116",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "搜索/列表/筛选",
+      "worldbox_evidence": "已有元对象列表查找",
+      "sonnheide_retained_design": "跨对象索引/稳定分页有",
+      "assessment": "有设计，细节不同",
+      "references": [
+        "S03",
+        "S07"
+      ]
+    },
+    {
+      "id": "F117",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "Interesting Units页",
+      "worldbox_evidence": "官方预告人物发现页",
+      "sonnheide_retained_design": "普通筛选无同等策展发现",
+      "assessment": "缺明确合同，现行细节未点验",
+      "references": [
+        "S07"
+      ]
+    },
+    {
+      "id": "F118",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "属性编辑",
+      "worldbox_evidence": "已发多个editor",
+      "sonnheide_retained_design": "typed草案/预览/批准/拒绝",
+      "assessment": "有自身设计，不随意改事实",
+      "references": [
+        "S12",
+        "S06",
+        "S04"
+      ]
+    },
+    {
+      "id": "F119",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "常驻时间/世界入口",
+      "worldbox_evidence": "已发power bar跨tab时间/世界信息",
+      "sonnheide_retained_design": "八底栏/全局入口有合同",
+      "assessment": "有设计",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F120",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "分区/图层开关",
+      "worldbox_evidence": "已发power tabs/zone toggles",
+      "sonnheide_retained_design": "八section/目录按需打开",
+      "assessment": "有自身设计",
+      "references": [
+        "S04",
+        "S11"
+      ]
+    },
+    {
+      "id": "F121",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "名字/区域分开开关",
+      "worldbox_evidence": "已发names/borders toggle提示",
+      "sonnheide_retained_design": "有图层，独立开关细节较少",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F122",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "只突出收藏对象",
+      "worldbox_evidence": "已发highlight favorites only选项；精确表现未实机点验",
+      "sonnheide_retained_design": "有收藏/标记，无明确only-favorites过滤层",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F123",
+      "section": "09 信息页、选择与编辑体验",
+      "feature": "极远景物种图标",
+      "worldbox_evidence": "已发物种/单位极远视图相关表现",
+      "sonnheide_retained_design": "无动物/亚种及其图标层",
+      "assessment": "相关层缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F124",
+      "section": "10 统计、历史与比较",
+      "feature": "世界总览统计",
+      "worldbox_evidence": "已发world stats",
+      "sonnheide_retained_design": "人口/经济/资源/制度总览有",
+      "assessment": "有设计",
+      "references": [
+        "S11",
+        "S03"
+      ]
+    },
+    {
+      "id": "F125",
+      "section": "10 统计、历史与比较",
+      "feature": "meta独立统计",
+      "worldbox_evidence": "已发各对象指标",
+      "sonnheide_retained_design": "统一typed口径有",
+      "assessment": "有设计，缺生物对象",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F126",
+      "section": "10 统计、历史与比较",
+      "feature": "人口组成breakdown",
+      "worldbox_evidence": "已发亚种/文化/语言等",
+      "sonnheide_retained_design": "法定国籍/居住/文化/语言有，亚种无",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F127",
+      "section": "10 统计、历史与比较",
+      "feature": "跨对象比较图表",
+      "worldbox_evidence": "已发Chart Comparison",
+      "sonnheide_retained_design": "同口径/时段/分母设计有",
+      "assessment": "有设计",
+      "references": [
+        "S05",
+        "S03"
+      ]
+    },
+    {
+      "id": "F128",
+      "section": "10 统计、历史与比较",
+      "feature": "长期历史曲线",
+      "worldbox_evidence": "已发graphs长时间尺度",
+      "sonnheide_retained_design": "时间桶设计有，无完整生产历史",
+      "assessment": "有设计，非实现",
+      "references": [
+        "S03"
+      ]
+    },
+    {
+      "id": "F129",
+      "section": "10 统计、历史与比较",
+      "feature": "图表变化量/数值提示",
+      "worldbox_evidence": "已发delta/零线/长数值修订",
+      "sonnheide_retained_design": "口径有，具体tooltip不完整",
+      "assessment": "部分覆盖",
+      "references": [
+        "S03"
+      ]
+    },
+    {
+      "id": "F130",
+      "section": "10 统计、历史与比较",
+      "feature": "出生/死亡/迁入迁出",
+      "worldbox_evidence": "已发人口流动时间统计",
+      "sonnheide_retained_design": "来源18/0/真实迁移有",
+      "assessment": "有自身设计",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F131",
+      "section": "10 统计、历史与比较",
+      "feature": "战争/联盟资金声望",
+      "worldbox_evidence": "已发renown/金钱/参战方统计",
+      "sonnheide_retained_design": "财政战争有，非同等renown",
+      "assessment": "部分覆盖",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F132",
+      "section": "10 统计、历史与比较",
+      "feature": "灭绝meta历史",
+      "worldbox_evidence": "已发消亡对象/历任标识",
+      "sonnheide_retained_design": "通用档案有，亚种/家族/Clan缺失",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F133",
+      "section": "10 统计、历史与比较",
+      "feature": "历史事件回查",
+      "worldbox_evidence": "已发历史窗/对象史",
+      "sonnheide_retained_design": "因果事件/稳定引用/死亡档案",
+      "assessment": "有设计",
+      "references": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F134",
+      "section": "10 统计、历史与比较",
+      "feature": "跨地图累计玩家统计",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "当前主要每World统计",
+      "assessment": "缺明确合同；原版现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F135",
+      "section": "11 World Laws全球规则",
+      "feature": "文明生育开关",
+      "worldbox_evidence": "已发civ babies/growth",
+      "sonnheide_retained_design": "人类reproduction已有",
+      "assessment": "有设计",
+      "references": [
+        "S12",
+        "S03"
+      ]
+    },
+    {
+      "id": "F136",
+      "section": "11 World Laws全球规则",
+      "feature": "动物生育开关",
+      "worldbox_evidence": "已发animal babies独立规则",
+      "sonnheide_retained_design": "无Animal规则",
+      "assessment": "缺失、动物过去排除",
+      "references": [
+        "S12",
+        "S03"
+      ]
+    },
+    {
+      "id": "F137",
+      "section": "11 World Laws全球规则",
+      "feature": "人口/亚种限制",
+      "worldbox_evidence": "已发人口限制与亚种上限",
+      "sonnheide_retained_design": "空间容量不等于此规则",
+      "assessment": "对应规则缺失",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F138",
+      "section": "11 World Laws全球规则",
+      "feature": "植物种子传播",
+      "worldbox_evidence": "已发seed/spread",
+      "sonnheide_retained_design": "自然恢复仅新野幼树，果周期继续",
+      "assessment": "部分对应，语义不同",
+      "references": [
+        "S12",
+        "S11"
+      ]
+    },
+    {
+      "id": "F139",
+      "section": "11 World Laws全球规则",
+      "feature": "矿物随机出现开关",
+      "worldbox_evidence": "已发minerals popping；出现矿源仍需实际开采",
+      "sonnheide_retained_design": "有矿量/再生率，无对应全球开关",
+      "assessment": "部分资源基础，开关缺失",
+      "references": [
+        "S12"
+      ]
+    },
+    {
+      "id": "F140",
+      "section": "11 World Laws全球规则",
+      "feature": "文明组建士兵开关",
+      "worldbox_evidence": "已发make warriors for civs，不证明新增人口",
+      "sonnheide_retained_design": "征募真实居民，无同等独立开关",
+      "assessment": "部分领域能力，开关缺失",
+      "references": [
+        "S12"
+      ]
+    },
+    {
+      "id": "F141",
+      "section": "11 World Laws全球规则",
+      "feature": "外交/新战争规则",
+      "worldbox_evidence": "已发外交战争规则",
+      "sonnheide_retained_design": "ai_new_wars仅AI新开战",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F142",
+      "section": "11 World Laws全球规则",
+      "feature": "叛乱独立开关",
+      "worldbox_evidence": "已发反叛规则",
+      "sonnheide_retained_design": "新战争开关不涵盖所有反叛",
+      "assessment": "缺独立开关",
+      "references": [
+        "S11",
+        "S01"
+      ]
+    },
+    {
+      "id": "F143",
+      "section": "11 World Laws全球规则",
+      "feature": "边界吞并规则",
+      "worldbox_evidence": "已发border stealing受规则限制",
+      "sonnheide_retained_design": "无同等全球开关",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F144",
+      "section": "11 World Laws全球规则",
+      "feature": "特殊生物/魔法规则",
+      "worldbox_evidence": "已发Mutant Box/rites等",
+      "sonnheide_retained_design": "无同等特殊生物魔法收益",
+      "assessment": "过去范围外",
+      "references": [
+        "S05",
+        "S01"
+      ]
+    },
+    {
+      "id": "F145",
+      "section": "11 World Laws全球规则",
+      "feature": "地表保护/熔岩规则",
+      "worldbox_evidence": "已发Gaia’s Covenant/Eternal Lava等",
+      "sonnheide_retained_design": "Godterrain保护/授权非同等规则",
+      "assessment": "部分目的相近，规则不同",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F146",
+      "section": "11 World Laws全球规则",
+      "feature": "规则顺序重排",
+      "worldbox_evidence": "已发World Laws顺序重排，未推断拖放操作",
+      "sonnheide_retained_design": "无用户重排规则顺序合同",
+      "assessment": "缺失界面能力",
+      "references": [
+        "S03"
+      ]
+    },
+    {
+      "id": "F147",
+      "section": "11 World Laws全球规则",
+      "feature": "年龄/饥饿后果",
+      "worldbox_evidence": "已发相关生命周期规则族",
+      "sonnheide_retained_design": "aging/hunger_consequences有",
+      "assessment": "部分对应，当前全开关未核实",
+      "references": [
+        "S01",
+        "D03"
+      ]
+    },
+    {
+      "id": "F148",
+      "section": "11 World Laws全球规则",
+      "feature": "元控制规则",
+      "worldbox_evidence": "仅预告ChessBox",
+      "sonnheide_retained_design": "没有",
+      "assessment": "缺失，WorldBox仍预告",
+      "references": [
+        "S02"
+      ]
+    },
+    {
+      "id": "F149",
+      "section": "12 地表生态、植物与资源",
+      "feature": "地形/生态分离",
+      "worldbox_evidence": "已发terrain与biome工具分开",
+      "sonnheide_retained_design": "height/material/water/biome/占用分层",
+      "assessment": "有自身设计",
+      "references": [
+        "S12",
+        "S11"
+      ]
+    },
+    {
+      "id": "F150",
+      "section": "12 地表生态、植物与资源",
+      "feature": "biome种子画笔",
+      "worldbox_evidence": "已发生态种子/传播",
+      "sonnheide_retained_design": "有主题画笔，换皮不赠真树/库存",
+      "assessment": "有自身设计，语义不同",
+      "references": [
+        "S12",
+        "S11"
+      ]
+    },
+    {
+      "id": "F151",
+      "section": "12 地表生态、植物与资源",
+      "feature": "生态扩散/竞争",
+      "worldbox_evidence": "已发biome传播/Age影响",
+      "sonnheide_retained_design": "主题不自发扩张；幼树恢复非换主题",
+      "assessment": "同等扩散机制缺失",
+      "references": [
+        "S12",
+        "S11"
+      ]
+    },
+    {
+      "id": "F152",
+      "section": "12 地表生态、植物与资源",
+      "feature": "生态生物/性状提示",
+      "worldbox_evidence": "已发tooltip列物种/trait",
+      "sonnheide_retained_design": "树种池有，无动物/人体适应",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F153",
+      "section": "12 地表生态、植物与资源",
+      "feature": "树木采伐",
+      "worldbox_evidence": "已发木材/树机制",
+      "sonnheide_retained_design": "TreeRef/预约/路程/余木设计",
+      "assessment": "有设计，生产未实现",
+      "references": [
+        "S01",
+        "D07"
+      ]
+    },
+    {
+      "id": "F154",
+      "section": "12 地表生态、植物与资源",
+      "feature": "可采小植物/草药",
+      "worldbox_evidence": "已发植物食品/草药",
+      "sonnheide_retained_design": "小植物纯装饰；农田另真实生产",
+      "assessment": "明确不同",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F155",
+      "section": "12 地表生态、植物与资源",
+      "feature": "持续果物/berries",
+      "worldbox_evidence": "已发莓果及载入修订",
+      "sonnheide_retained_design": "分批果树/成熟损耗/预约设计更细",
+      "assessment": "有自身设计，未实现",
+      "references": [
+        "S04",
+        "D07"
+      ]
+    },
+    {
+      "id": "F156",
+      "section": "12 地表生态、植物与资源",
+      "feature": "生态相关矿物/食物",
+      "worldbox_evidence": "已发biome资源差异",
+      "sonnheide_retained_design": "矿率/现货独立，刷主题不送矿",
+      "assessment": "明确不同",
+      "references": [
+        "S12",
+        "D01"
+      ]
+    },
+    {
+      "id": "F157",
+      "section": "12 地表生态、植物与资源",
+      "feature": "农业/施肥神力",
+      "worldbox_evidence": "已发农田/肥料",
+      "sonnheide_retained_design": "真实农业有，无免费催熟神力",
+      "assessment": "部分基础，工具不同",
+      "references": [
+        "S12"
+      ]
+    },
+    {
+      "id": "F158",
+      "section": "12 地表生态、植物与资源",
+      "feature": "自然/幻想biome集合",
+      "worldbox_evidence": "已发多个主题及新增",
+      "sonnheide_retained_design": "八soil＋干沙，不逐项照搬",
+      "assessment": "有自身集合，功能不同",
+      "references": [
+        "S12",
+        "S03"
+      ]
+    },
+    {
+      "id": "F159",
+      "section": "12 地表生态、植物与资源",
+      "feature": "Age影响作物/植被",
+      "worldbox_evidence": "已发生态加成/寒暗农业影响",
+      "sonnheide_retained_design": "两个Age无自动温度/作物加成",
+      "assessment": "明确不同",
+      "references": [
+        "S11",
+        "D10"
+      ]
+    },
+    {
+      "id": "F160",
+      "section": "12 地表生态、植物与资源",
+      "feature": "地形修改后人楼变化",
+      "worldbox_evidence": "已发地形/建筑/导航相关行为",
+      "sonnheide_retained_design": "Godterrain同事务楼基/人货/通路后果",
+      "assessment": "有自身设计，未实现",
+      "references": [
+        "S12",
+        "D01"
+      ]
+    },
+    {
+      "id": "F161",
+      "section": "12 地表生态、植物与资源",
+      "feature": "水雨推动生态/作物",
+      "worldbox_evidence": "已发降雨影响生态相关机制",
+      "sonnheide_retained_design": "有农业，缺完整天气/水分模型",
+      "assessment": "部分基础，对应机制缺失",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F162",
+      "section": "12 地表生态、植物与资源",
+      "feature": "蜂授粉/花繁殖",
+      "worldbox_evidence": "0.5.161历史已发：授粉后花可在附近繁殖",
+      "sonnheide_retained_design": "装饰花非生物库存，无蜂生态",
+      "assessment": "缺失，现行细节未点验",
+      "references": [
+        "S01"
+      ]
+    },
+    {
+      "id": "F163",
+      "section": "12 地表生态、植物与资源",
+      "feature": "特定生物死后生树花",
+      "worldbox_evidence": "历史证实特定生物死亡生成植物；不证明死亡改变biome",
+      "sonnheide_retained_design": "有尸体/灾损原则，无同等植被产生",
+      "assessment": "缺对应机制，现行细则未核验",
+      "references": [
+        "S01"
+      ]
+    },
+    {
+      "id": "F164",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "空白世界",
+      "worldbox_evidence": "已发创建/塑造空图",
+      "sonnheide_retained_design": "Blank全海/平陆有",
+      "assessment": "有设计",
+      "references": [
+        "S15",
+        "D01"
+      ]
+    },
+    {
+      "id": "F165",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "程序地形模板库",
+      "worldbox_evidence": "已发多种模板",
+      "sonnheide_retained_design": "Blank/Earth，无完整程序模板库",
+      "assessment": "缺模板库",
+      "references": [
+        "S12",
+        "S11"
+      ]
+    },
+    {
+      "id": "F166",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "世界尺寸/生成seed",
+      "worldbox_evidence": "已发尺寸/随机生成",
+      "sonnheide_retained_design": "有profile/选区/预算/确定种子",
+      "assessment": "有自身设计",
+      "references": [
+        "S11",
+        "S17",
+        "D11"
+      ]
+    },
+    {
+      "id": "F167",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "噪声/多次细化参数",
+      "worldbox_evidence": "已发noise/details/bonus",
+      "sonnheide_retained_design": "Earth量化与闭合岸非同等面板",
+      "assessment": "缺对应选项",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F168",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "随机附加陆块",
+      "worldbox_evidence": "已发random shapes参数",
+      "sonnheide_retained_design": "没有同等程序模板参数",
+      "assessment": "缺失",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F169",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "中心湖/陆/边缘形状",
+      "worldbox_evidence": "已发中心湖陆/圆方/环等",
+      "sonnheide_retained_design": "不规则岸线有，非同等参数库",
+      "assessment": "部分用途相近",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F170",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "群岛/大陆/圆环/棋盘等",
+      "worldbox_evidence": "已发多个世界模板",
+      "sonnheide_retained_design": "无逐项模板合同",
+      "assessment": "缺失",
+      "references": [
+        "S12",
+        "S11"
+      ]
+    },
+    {
+      "id": "F171",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "初始植被/矿物开关",
+      "worldbox_evidence": "已发vegetation/resources参数",
+      "sonnheide_retained_design": "有来源与初始库存规则，非同选项",
+      "assessment": "部分覆盖，语义不同",
+      "references": [
+        "S11",
+        "D07"
+      ]
+    },
+    {
+      "id": "F172",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "随机biome生成",
+      "worldbox_evidence": "已发random biomes",
+      "sonnheide_retained_design": "有主题，未定完整随机模板",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F173",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "Earth可缩放全球选区",
+      "worldbox_evidence": "未证实原版同等全球选区系统",
+      "sonnheide_retained_design": "本项目Blank/Earth已有设计",
+      "assessment": "本项目差异，不判WorldBox缺点",
+      "references": [
+        "D01",
+        "D11"
+      ]
+    },
+    {
+      "id": "F174",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "水域/陆地/山地画笔",
+      "worldbox_evidence": "已发常用工具族",
+      "sonnheide_retained_design": "八预设和有效height/material编辑",
+      "assessment": "有自身设计，全按钮名待核验",
+      "references": [
+        "S15",
+        "S01",
+        "D06"
+      ]
+    },
+    {
+      "id": "F175",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "复制附近地形",
+      "worldbox_evidence": "已发地形复制相关工具",
+      "sonnheide_retained_design": "只复制字段不复制人口/货物/楼树",
+      "assessment": "部分对应，范围不同",
+      "references": [
+        "S01",
+        "D06"
+      ]
+    },
+    {
+      "id": "F176",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "笔形/半径/强度",
+      "worldbox_evidence": "已发多brush/圆笔扩展",
+      "sonnheide_retained_design": "有圆方/有界半径强度",
+      "assessment": "有设计，异形全集缺失",
+      "references": [
+        "S03",
+        "D06"
+      ]
+    },
+    {
+      "id": "F177",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "缩放/平移/定位/跟随",
+      "worldbox_evidence": "已发镜头与follow行为",
+      "sonnheide_retained_design": "360°相机与定位跟随有",
+      "assessment": "有设计",
+      "references": [
+        "S04",
+        "D05"
+      ]
+    },
+    {
+      "id": "F178",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "镜头惯性",
+      "worldbox_evidence": "已发移动镜头惯性行为，未证明独立设置",
+      "sonnheide_retained_design": "相机有，惯性未完整定义",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F179",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "真360°三维",
+      "worldbox_evidence": "WorldBox平面呈现为其自身定位",
+      "sonnheide_retained_design": "本项目真实高度列/3D人物",
+      "assessment": "定位不同，不列缺口",
+      "references": [
+        "S17",
+        "D01"
+      ]
+    },
+    {
+      "id": "F180",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "暂停/时间倍率",
+      "worldbox_evidence": "已发暂停/速度操作",
+      "sonnheide_retained_design": "有仿真tick/暂停倍率合同",
+      "assessment": "有设计",
+      "references": [
+        "S11",
+        "D05"
+      ]
+    },
+    {
+      "id": "F181",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "十种Ages",
+      "worldbox_evidence": "已发Hope/Dark/Sun/Tears/Moon/Chaos/Wonders/Ice/Ash/Despair",
+      "sonnheide_retained_design": "仅Light/Darkness独立于科技年龄",
+      "assessment": "明确不同",
+      "references": [
+        "S11",
+        "D10"
+      ]
+    },
+    {
+      "id": "F182",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "Age手动/自动",
+      "worldbox_evidence": "已发切换及自动周期",
+      "sonnheide_retained_design": "有两Age自动期限/手动关闭自动",
+      "assessment": "有自身设计",
+      "references": [
+        "S11",
+        "D10"
+      ]
+    },
+    {
+      "id": "F183",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "Age序列拖放/排程",
+      "worldbox_evidence": "已发Ages升级/拖动",
+      "sonnheide_retained_design": "无多Age序列编辑",
+      "assessment": "部分覆盖，范围较窄",
+      "references": [
+        "S03",
+        "D10"
+      ]
+    },
+    {
+      "id": "F184",
+      "section": "13 地图创建、画笔、环境与镜头",
+      "feature": "天气/冷暗/热影响",
+      "worldbox_evidence": "已发Age相关天气与农业/状态影响",
+      "sonnheide_retained_design": "不做太阳昼夜天文/随机气候灾害",
+      "assessment": "过去排除或机制不同",
+      "references": [
+        "S11",
+        "D01"
+      ]
+    },
+    {
+      "id": "F185",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "装备耐久/修理",
+      "worldbox_evidence": "已发坏损/修理/装备",
+      "sonnheide_retained_design": "真实服装装备与有限修补",
+      "assessment": "有自身设计",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F186",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "装备品质/修饰属性",
+      "worldbox_evidence": "已发多等级item modifiers",
+      "sonnheide_retained_design": "工艺材料知识有，非同等词缀库",
+      "assessment": "部分覆盖",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F187",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "物品资料/归属/收藏",
+      "worldbox_evidence": "已有装备资料等",
+      "sonnheide_retained_design": "物品/批次/货主/保管/位置分别查看",
+      "assessment": "有自身设计",
+      "references": [
+        "S12",
+        "D03"
+      ]
+    },
+    {
+      "id": "F188",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "Loot Rain增删装备",
+      "worldbox_evidence": "已发多物品类型增删选择",
+      "sonnheide_retained_design": "无免费物品雨，禁止伪造库存",
+      "assessment": "明确不同",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F189",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "克隆单位/Clone Rain",
+      "worldbox_evidence": "已发克隆与复制装备修订",
+      "sonnheide_retained_design": "人口只放置/出生，物品不复制",
+      "assessment": "过去明确不允许",
+      "references": [
+        "S14",
+        "S04"
+      ]
+    },
+    {
+      "id": "F190",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "磁铁/神手搬人",
+      "worldbox_evidence": "已发magnet工具",
+      "sonnheide_retained_design": "DivineRelocate/DIVINE_HELD有详规",
+      "assessment": "有设计，不能判完全缺失",
+      "references": [
+        "S17",
+        "S04",
+        "D06"
+      ]
+    },
+    {
+      "id": "F191",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "分类清理",
+      "worldbox_evidence": "已发spade/sickle/eraser等",
+      "sonnheide_retained_design": "树矿装饰楼路生命清理已有",
+      "assessment": "有设计，后果语义不同",
+      "references": [
+        "S12",
+        "D03"
+      ]
+    },
+    {
+      "id": "F192",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "文明自主建设/生产",
+      "worldbox_evidence": "已发文明采集/农矿/房屋等",
+      "sonnheide_retained_design": "真实材料接货/工期/原创围网/经济",
+      "assessment": "有自身设计",
+      "references": [
+        "S15",
+        "S12",
+        "D08"
+      ]
+    },
+    {
+      "id": "F193",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "船/港/运输",
+      "worldbox_evidence": "已发交通船港相关行为",
+      "sonnheide_retained_design": "车辆/港口/真实货运有",
+      "assessment": "有自身设计",
+      "references": [
+        "S12",
+        "S04"
+      ]
+    },
+    {
+      "id": "F194",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "存档/加载列表",
+      "worldbox_evidence": "已发save/load与更多槽位",
+      "sonnheide_retained_design": "候选发布/首档读回/加载有",
+      "assessment": "有设计，旧实现已删除",
+      "references": [
+        "S16",
+        "S03",
+        "D11"
+      ]
+    },
+    {
+      "id": "F195",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "自动档/自动保存列表",
+      "worldbox_evidence": "已发autosave及相关设置",
+      "sonnheide_retained_design": "已有共用持久流程，触发/保留数量/独立列表未完整",
+      "assessment": "部分覆盖，产品合同不足",
+      "references": [
+        "S19",
+        "S14",
+        "D11"
+      ]
+    },
+    {
+      "id": "F196",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "退出菜单保存入口",
+      "worldbox_evidence": "已发退出save/autosave",
+      "sonnheide_retained_design": "有保存流程，退出布局不完整",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F197",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "保存镜头/缩放",
+      "worldbox_evidence": "已发存档记忆视角",
+      "sonnheide_retained_design": "ViewProfile按WorldId保存",
+      "assessment": "有设计",
+      "references": [
+        "S04",
+        "D16"
+      ]
+    },
+    {
+      "id": "F198",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "地图预览/描述/多槽",
+      "worldbox_evidence": "已有更多存档及界面修订",
+      "sonnheide_retained_design": "命名/首档有，描述/浏览产品细节不足",
+      "assessment": "部分覆盖",
+      "references": [
+        "S03",
+        "S19"
+      ]
+    },
+    {
+      "id": "F199",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "地图导入导出分享",
+      "worldbox_evidence": "已发地图分享",
+      "sonnheide_retained_design": "保存完整性有，无完整玩家分享流程",
+      "assessment": "部分基础，产品缺失",
+      "references": [
+        "S16",
+        "S19"
+      ]
+    },
+    {
+      "id": "F200",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "Workshop上传/订阅",
+      "worldbox_evidence": "已发Steam Workshop地图",
+      "sonnheide_retained_design": "仅Steam发行不等于Workshop接入",
+      "assessment": "缺失",
+      "references": [
+        "S19",
+        "S17"
+      ]
+    },
+    {
+      "id": "F201",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "Steam Cloud",
+      "worldbox_evidence": "官方FAQ/商店确认",
+      "sonnheide_retained_design": "无完整同步/冲突/云接入合同",
+      "assessment": "缺失明确交付",
+      "references": [
+        "S16",
+        "S17"
+      ]
+    },
+    {
+      "id": "F202",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "社区地图独立入口",
+      "worldbox_evidence": "已发Workshop地图入口",
+      "sonnheide_retained_design": "GitHub工程托管/Earth包不等于社区地图",
+      "assessment": "缺失",
+      "references": [
+        "S19",
+        "D14"
+      ]
+    },
+    {
+      "id": "F203",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "成就/解锁奖励",
+      "worldbox_evidence": "已发achievements/traits解锁",
+      "sonnheide_retained_design": "没有同等完整循环",
+      "assessment": "缺失",
+      "references": [
+        "S12",
+        "S03"
+      ]
+    },
+    {
+      "id": "F204",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "知识/发现资料入口",
+      "worldbox_evidence": "已发knowledge/发现提示",
+      "sonnheide_retained_design": "424技术与能力页非同等图鉴",
+      "assessment": "部分覆盖，规则不同",
+      "references": [
+        "S04",
+        "D08"
+      ]
+    },
+    {
+      "id": "F205",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "模组/扩展支持",
+      "worldbox_evidence": "有PC mod接口记录，不能称全部mod官方认证",
+      "sonnheide_retained_design": "数据目录不等于完整mod契约/玩家支持",
+      "assessment": "缺完整契约，官方范围未穷尽",
+      "references": [
+        "S12",
+        "S11",
+        "S03"
+      ]
+    },
+    {
+      "id": "F206",
+      "section": "14 物品、建设、存载与Steam",
+      "feature": "单人模式",
+      "worldbox_evidence": "官方FAQ单人，无多人扩展计划",
+      "sonnheide_retained_design": "旧设计没有多人玩法",
+      "assessment": "定位相近，不列缺口",
+      "references": [
+        "S16"
+      ]
+    },
+    {
+      "id": "F207",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "工具栏/窗口尺度",
+      "worldbox_evidence": "已发工具栏大小/尺度设置",
+      "sonnheide_retained_design": "界面尺度与三语重排已有",
+      "assessment": "有设计",
+      "references": [
+        "S19",
+        "S11"
+      ]
+    },
+    {
+      "id": "F208",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "tooltip/地图名字独立尺度",
+      "worldbox_evidence": "已发相关独立设置",
+      "sonnheide_retained_design": "整体尺度有，各项未全列",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11",
+        "S04"
+      ]
+    },
+    {
+      "id": "F209",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "隐藏UI/工具栏",
+      "worldbox_evidence": "已发相关隐藏显示操作",
+      "sonnheide_retained_design": "未找到明确生产动作合同",
+      "assessment": "部分设置基础，动作缺失",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F210",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "快捷键/键盘导航",
+      "worldbox_evidence": "已发工具/对象/图层热键",
+      "sonnheide_retained_design": "焦点/输入/按键有，数字对象槽缺失",
+      "assessment": "部分覆盖",
+      "references": [
+        "S04",
+        "D05"
+      ]
+    },
+    {
+      "id": "F211",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "音效与音乐音量",
+      "worldbox_evidence": "已发独立音量",
+      "sonnheide_retained_design": "有设置设计",
+      "assessment": "有设计",
+      "references": [
+        "S11",
+        "D05"
+      ]
+    },
+    {
+      "id": "F212",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "背景/场景音乐驱动",
+      "worldbox_evidence": "官方公告有音乐/场景相关更新",
+      "sonnheide_retained_design": "无完整程序音乐合同",
+      "assessment": "缺明确合同",
+      "references": [
+        "S11"
+      ]
+    },
+    {
+      "id": "F213",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "云/灯/风/Age粒子开关",
+      "worldbox_evidence": "已发分项表现设置",
+      "sonnheide_retained_design": "降低动态/画质有，未全列独立项",
+      "assessment": "部分覆盖",
+      "references": [
+        "S11",
+        "D09"
+      ]
+    },
+    {
+      "id": "F214",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "素材预加载开关",
+      "worldbox_evidence": "已发preload settings",
+      "sonnheide_retained_design": "缓存预算不等于用户开关",
+      "assessment": "缺失界面合同",
+      "references": [
+        "S14"
+      ]
+    },
+    {
+      "id": "F215",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "图表记录开关",
+      "worldbox_evidence": "已发graphs setting",
+      "sonnheide_retained_design": "统计有，未完整定义用户开关",
+      "assessment": "缺失界面合同",
+      "references": [
+        "S14"
+      ]
+    },
+    {
+      "id": "F216",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "自动保存开关",
+      "worldbox_evidence": "已发autosaves setting",
+      "sonnheide_retained_design": "已有自动保存共用持久基础，独立开关未定",
+      "assessment": "缺失界面合同",
+      "references": [
+        "S14",
+        "D11"
+      ]
+    },
+    {
+      "id": "F217",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "帧率上限",
+      "worldbox_evidence": "官方历史Memorybox有FPS cap记录",
+      "sonnheide_retained_design": "性能目标不等于用户FPS设置",
+      "assessment": "部分基础，设置未完整",
+      "references": [
+        "S01"
+      ]
+    },
+    {
+      "id": "F218",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "帮助/教程",
+      "worldbox_evidence": "有帮助入口；社区目录描述教程",
+      "sonnheide_retained_design": "有帮助，无完整教程流程",
+      "assessment": "部分覆盖，细节待核验",
+      "references": [
+        "S20",
+        "D05"
+      ]
+    },
+    {
+      "id": "F219",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "游戏内更新日志",
+      "worldbox_evidence": "已发patchlog布局",
+      "sonnheide_retained_design": "未定义同等更新历史页",
+      "assessment": "缺失",
+      "references": [
+        "S04"
+      ]
+    },
+    {
+      "id": "F220",
+      "section": "15 设置、辅助交互与表现",
+      "feature": "多语言",
+      "worldbox_evidence": "已发多语言，Steam三语译文有更新",
+      "sonnheide_retained_design": "首批简中/英文/德文，与模拟Language分离",
+      "assessment": "有自身范围，不自动扩语种",
+      "references": [
+        "S04",
+        "D05"
+      ]
+    },
+    {
+      "id": "F221",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Forest Soil独立地形",
+      "worldbox_evidence": "社区现行目录线索",
+      "sonnheide_retained_design": "soil统一，树密度与主题分开",
+      "assessment": "部分相近，按钮现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F222",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Vortex打乱地形",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "未定义，旧范围排除随机地面交换",
+      "assessment": "过去排除，原版现行待核验",
+      "references": [
+        "S20",
+        "D15"
+      ]
+    },
+    {
+      "id": "F223",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Sponge清焦痕/废墟",
+      "worldbox_evidence": "社区描述；正式日志确认可扑灭火",
+      "sonnheide_retained_design": "分类清理有，焦痕/废墟恢复工具不足",
+      "assessment": "部分覆盖",
+      "references": [
+        "S20",
+        "S03"
+      ]
+    },
+    {
+      "id": "F224",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Sickle仅清花草",
+      "worldbox_evidence": "官方0.14区分于Spade",
+      "sonnheide_retained_design": "装饰clear mask不产资源",
+      "assessment": "有设计、语义不同",
+      "references": [
+        "S12"
+      ]
+    },
+    {
+      "id": "F225",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Spade仅清biome",
+      "worldbox_evidence": "官方0.14确认",
+      "sonnheide_retained_design": "可改主题/neutral，独立重置入口未细定",
+      "assessment": "部分覆盖",
+      "references": [
+        "S12"
+      ]
+    },
+    {
+      "id": "F226",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Bucket删水/熔岩",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "水深由height派生，熔岩仅静态",
+      "assessment": "规则不同，原版现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F227",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Pickaxe/Axe等细分清理",
+      "worldbox_evidence": "社区名称线索/历史工具族",
+      "sonnheide_retained_design": "按类别清矿树楼路生命",
+      "assessment": "有设计，具体按钮待核验",
+      "references": [
+        "S20",
+        "D03"
+      ]
+    },
+    {
+      "id": "F228",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Scissors/Paint辖区编辑",
+      "worldbox_evidence": "社区名称线索",
+      "sonnheide_retained_design": "无同等区域剪/涂工具",
+      "assessment": "缺失，具体按钮待核验；Border brush已有官方证明",
+      "references": [
+        "S20",
+        "S04"
+      ]
+    },
+    {
+      "id": "F229",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "形状打印器",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "无对应工具",
+      "assessment": "缺失明确合同，原版现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F230",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Healing/Shield/Blessing等",
+      "worldbox_evidence": "社区目录线索，部分官方历史有对应状态",
+      "sonnheide_retained_design": "无通用非毁灭状态神力体系",
+      "assessment": "缺失明确合同，现行全表未核实",
+      "references": [
+        "S20",
+        "S01"
+      ]
+    },
+    {
+      "id": "F231",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Sleep/Dispel直接神力",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "休息/任务不是同等神力",
+      "assessment": "缺失明确合同，现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F232",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Dust抹除语言/家族等",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "typed关系编辑不等于忘却/抹记忆",
+      "assessment": "缺失明确合同，现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F233",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Smooth Jazz繁育干预",
+      "worldbox_evidence": "社区目录线索",
+      "sonnheide_retained_design": "繁衍开关非同等状态干预",
+      "assessment": "缺失明确合同，现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F234",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "Eye of Insight发现特性",
+      "worldbox_evidence": "正式公告修复相关工具，社区补名",
+      "sonnheide_retained_design": "没有trait发现/解锁体系",
+      "assessment": "缺失",
+      "references": [
+        "S03",
+        "S20"
+      ]
+    },
+    {
+      "id": "F235",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "地图关系箭头",
+      "worldbox_evidence": "社区列房屋/亲属/目标箭头等",
+      "sonnheide_retained_design": "关系跳页/定位有，通用箭头层缺失",
+      "assessment": "部分覆盖，现行待核验",
+      "references": [
+        "S20"
+      ]
+    },
+    {
+      "id": "F236",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "思想泡泡/金钱流动画",
+      "worldbox_evidence": "社区线索，任务栏有官方证据",
+      "sonnheide_retained_design": "任务信息有，其他表现未详定",
+      "assessment": "部分覆盖，现行待核验",
+      "references": [
+        "S20",
+        "S04"
+      ]
+    },
+    {
+      "id": "F237",
+      "section": "16 社区目录补充线索，待原版逐项核验",
+      "feature": "肥料催生树/植物",
+      "worldbox_evidence": "肥料支持树植物生成/生长；即时成熟树果未证实",
+      "sonnheide_retained_design": "种幼株/装饰刷不补成树果实库存",
+      "assessment": "部分相近，具体效果待核验",
+      "references": [
+        "S20",
+        "S12"
+      ]
+    },
+    {
+      "id": "F238",
+      "section": "17 未核实项与撤回规则",
+      "feature": "全部当前底栏按钮数量/排序",
+      "worldbox_evidence": "没有平台版本完整官方注册表；未商业版逐按钮点验",
+      "sonnheide_retained_design": "66工具是我们拟定表",
+      "assessment": "未穷尽核实，不冒充全集",
+      "references": [
+        "S01",
+        "S04",
+        "D06"
+      ]
+    },
+    {
+      "id": "F239",
+      "section": "17 未核实项与撤回规则",
+      "feature": "全部现行biome数量/名称",
+      "worldbox_evidence": "跨年日志/社区表不等于现行快照",
+      "sonnheide_retained_design": "八soil＋干沙",
+      "assessment": "完整官方全集未核实",
+      "references": [
+        "S01",
+        "S21"
+      ]
+    },
+    {
+      "id": "F240",
+      "section": "17 未核实项与撤回规则",
+      "feature": "全部动物/智慧物种目录",
+      "worldbox_evidence": "官方例子不足证明当前全目录",
+      "sonnheide_retained_design": "无Animal/Species/Subspecies",
+      "assessment": "未穷尽核实",
+      "references": [
+        "S15",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "F241",
+      "section": "17 未核实项与撤回规则",
+      "feature": "完整Cold Resistance/Immunity公式",
+      "worldbox_evidence": "冻原适应/冻结有证据，全低温trait效果未核实",
+      "sonnheide_retained_design": "无人类基因/体温/保温",
+      "assessment": "不能发明温度模型",
+      "references": [
+        "S04",
+        "S01",
+        "D01"
+      ]
+    },
+    {
+      "id": "F242",
+      "section": "17 未核实项与撤回规则",
+      "feature": "普通树/花基因编辑",
+      "worldbox_evidence": "无证据证明普通植物共用单位Genes",
+      "sonnheide_retained_design": "树种模板/果周期无遗传",
+      "assessment": "不判WorldBox必有",
+      "references": [
+        "S06",
+        "S10",
+        "D07"
+      ]
+    },
+    {
+      "id": "F243",
+      "section": "17 未核实项与撤回规则",
+      "feature": "任意不同物种杂交",
+      "worldbox_evidence": "同物种跨亚种不证明任意跨物种",
+      "sonnheide_retained_design": "无亚种/跨种生育",
+      "assessment": "未核实，不扩展结论",
+      "references": [
+        "S04",
+        "S01"
+      ]
+    },
+    {
+      "id": "F244",
+      "section": "17 未核实项与撤回规则",
+      "feature": "全部meta复制/强制改属",
+      "worldbox_evidence": "克隆雨/刷边界不证明全部meta可复制改属",
+      "sonnheide_retained_design": "人口/库存/法定事实不无约束复制",
+      "assessment": "完整按钮集未核实",
+      "references": [
+        "S04",
+        "S14"
+      ]
+    },
+    {
+      "id": "F245",
+      "section": "17 未核实项与撤回规则",
+      "feature": "当前全部Plot/World Laws数量",
+      "worldbox_evidence": "历史发布日志不是现行全目录",
+      "sonnheide_retained_design": "六规则/35法族分开",
+      "assessment": "未穷尽核实",
+      "references": [
+        "S11",
+        "S01",
+        "D03"
+      ]
+    },
+    {
+      "id": "F246",
+      "section": "17 未核实项与撤回规则",
+      "feature": "亚种按出生数升级得trait",
+      "worldbox_evidence": "2023预告对应段落已被官方删除线撤回",
+      "sonnheide_retained_design": "没有亚种等级设计",
+      "assessment": "不得沿用旧摘要",
+      "references": [
+        "S10"
+      ]
+    },
+    {
+      "id": "F247",
+      "section": "17 未核实项与撤回规则",
+      "feature": "Meta Control已发/0.60玩家帖",
+      "worldbox_evidence": "官方最新相关公告仍upcoming",
+      "sonnheide_retained_design": "缺玩法但不算已发差异",
+      "assessment": "无官方正式发布证据",
+      "references": [
+        "S02",
+        "S01",
+        "S18"
+      ]
+    },
+    {
+      "id": "F248",
+      "section": "17 未核实项与撤回规则",
+      "feature": "最新预告农场重做/尸体腐败/复活",
+      "worldbox_evidence": "同Meta Control预告，未正式发布证明",
+      "sonnheide_retained_design": "农田有，腐败/复活无；复活与旧规则冲突",
+      "assessment": "仅预告，不自动采纳",
+      "references": [
+        "S02"
+      ]
+    }
+  ]
+}
