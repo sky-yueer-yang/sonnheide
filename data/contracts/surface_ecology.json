@@ -623,7 +623,7 @@
       "future_new_tree_pool"
     ],
     "theme_paint_grants_mature_tree_or_fruit": false,
-    "new_tree_creation": "bounded_explicit_PlantVegetation_or_trusted_wild_regrowth",
+    "new_tree_creation": "bounded_GodVegetationSource_or_real_CivicPlanting_or_trusted_WildRecruitment",
     "default_new_tree_stage": "young",
     "planting_revalidates": [
       "terrain_revision",
@@ -662,18 +662,21 @@
     ],
     "clear_small_plants": "decoration_mask_only_no_goods_no_tree_delete",
     "new_tree_initial_harvestable_quantity": {
-      "timber": 0,
+      "timber": "finite_frozen_structural_biomass_for_GOD_VEGETATION_only;actual_species_growth_reserve_for_other_sources",
       "fruit": 0
     },
     "planting_authority_modes": {
-      "divine": "trusted_player_capability_and_current_god_rule_young_living_or_deadwood_no_goods",
+      "divine": "explicit_player_ecology_capability_bounded_Plant_biomass_source_not_warehouse_inventory",
       "civic": "real_actor_seed_or_propagule_labor_rights_and_path",
       "wild": "trusted_bounded_regrowth_scheduler_and_rule_revision"
     },
     "default_new_tree_stage_applies_to": "living_species_only",
     "new_tree_stage_overrides": {
       "dead_tree": "dead"
-    }
+    },
+    "geography_kind_change": "wipe_hit_Plants_entire_root_support_and_fruit_reserves_no_Actor_direct_erase",
+    "theme_change_is_geography_kind_change": false,
+    "density_and_dose": "vegetation_generator_v1_incremental_new_input_no_blocked_credit"
   },
   "regrowth": {
     "rule_key": "wild_vegetation_recovery",
@@ -769,7 +772,10 @@
       "growth_last_tick_and_fractional_remainders",
       "fruit_cohorts_age_quantity_ripeness_and_reservations",
       "due_jobs_and_regrowth_candidate_budget",
-      "harvest_felling_receipts_stock_transfer_and_loss_history"
+      "harvest_felling_receipts_stock_transfer_and_loss_history",
+      "GodVegetation_creation_event_definition_hash_biomass",
+      "generation_dose_realized_rejected_cursor_subunit_credit",
+      "sampling_epoch_density_clear_revision"
     ],
     "reconstruct_only": [
       "decorative_instances",
@@ -823,7 +829,7 @@
     "death_can_be_undone_by_theme_or_load": false,
     "natural_recruitment": false,
     "civic_seed_planting": false,
-    "divine_initial_wood": 0,
+    "divine_initial_wood": "finite_frozen_GodVegetationSource_deadwood_biomass_not_ItemBatch",
     "divine_initial_fruit": 0,
     "initial_world_stock": "explicit_bounded_initial_ecology_in_highest_preview_and_first_save_only",
     "existing_dead_tree_species_identity_and_remaining_wood_preserved": true,
@@ -854,5 +860,9 @@
     "forage_source": "GroundResourceRef_ForagePatch_actual_absolute_reserve",
     "nectar_and_pollen_source": "original_Tree_actual_bloom_reserve_or_Farm_batch_not_mirrored_into_GroundResource",
     "forage_regeneration": "existing_ForagePatch_has_bounded_real_reserves_and_its_own_ecological_time_budget_wild_vegetation_recovery_only_controls_new_wild_seedlings"
-  }
+  },
+  "algorithm_decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
+  "generator_contract": "data/contracts/vegetation_generator_v1.json",
+  "geography_mutation_contract": "data/contracts/god_control_v1.json",
+  "algorithm_revision": "ADR0015-2026-10-09"
 }

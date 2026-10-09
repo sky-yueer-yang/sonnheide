@@ -1,0 +1,920 @@
+{
+  "schema_version": 1,
+  "contract_id": "settlement_lifecycle_v1",
+  "design_version": "0.8",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "../../docs/architecture/SETTLEMENT_LIFECYCLE_AND_EXPANSION.md",
+  "sources": [
+    {
+      "url": "https://www.superworldbox.com/changelog",
+      "kind": "official_historical_behavior_not_internal_code",
+      "facts": "建筑邻域与治理影响扩张，断开域弃置、水山参与选址、殖民距离及弃城存载有修复；具体内部式未知"
+    },
+    {
+      "url": "https://www.boost.org/doc/libs/latest/libs/graph/doc/html/graph/algorithms/shortest_paths/dijkstra_shortest_paths.html",
+      "kind": "primary_algorithm_documentation_no_new_dependency"
+    },
+    {
+      "url": "https://webdocs.cs.ualberta.ca/~mmueller/ps/2004/hpastar.pdf",
+      "kind": "primary_hierarchical_pathfinding_paper_no_inherited_performance_claim"
+    }
+  ],
+  "identity": {
+    "settlement_city_same_stable_id": true,
+    "city_is_charter_qualification_view_not_second_population": true,
+    "archive_ids_reused": false,
+    "city_square_logic_accounts_per_city": 1,
+    "city_square_active_physical_facilities_max": 1,
+    "square_deleted_account_state": "FACILITY_LOST",
+    "lost_square_capacity": 0,
+    "logic_account_duplicates_physical_goods": false,
+    "home_city_state_citizenship_legal_domicile_current_physical_jurisdiction_employer_separate": true,
+    "physical_jurisdiction_input": "actual_world_pose_or_actual_carrier_pose_and_explicit_water_policy_at_same_snapshot_revision",
+    "invalid_peak_pose_is_legal_foundation_site": false,
+    "unborn_gestation_counts_current_population_or_office_qualification": false,
+    "post_archive_birth_membership": "preserve_actual_parent_gestation_source_and_historical_origin_resolve_current_living_legal_destination_else_stateless_unregistered_with_actual_care_never_revive_archived_city_state"
+  },
+  "area_domains": {
+    "unit": "mm2_horizontal_projection",
+    "partial_dry_ramp_cells": "exact_triangle_clip_not_whole_cell_bool",
+    "current_dry_sovereign_area": "continuing_state_territorial_titles_intersect_final_current_dry_domain",
+    "current_assigned_city_land": "current_valid_city_assignments_intersect_dry_domain",
+    "currently_served_land": "dry_domain_with_actual_applicable_service_certificate",
+    "built_and_committed_footprint": "union_actual_buildings_facilities_approved_projects_not_logic_account",
+    "peaks_can_have_political_title": true,
+    "peaks_can_supply_anchor_buildable_area_housing_population_capacity": false,
+    "administrative_connectivity": "positive_length_shared_dry_edges_four_neighborhood",
+    "service_connectivity": "actual_mobility_use_case_navigation_road_rights_capacity_graph_not_color"
+  },
+  "sovereignty_and_restoration": {
+    "geographic_change_assigns_title_to_neighbor": false,
+    "geographic_change_alters_citizenship_private_owner_or_debt": false,
+    "state_title_continuity_over_submergence": true,
+    "restored_dry_index_requires": "same_continuing_state_unliquidated_valid_territorial_title",
+    "archive_title_can_restore_state": false,
+    "lost_city_assignment_auto_restores_on_repaint": false,
+    "requires_city_reestablish_or_expand": true,
+    "withdrawn_city_assignments": "history_and_UNASSIGNED_ADMIN_preserve_state_title_and_private_title"
+  },
+  "state_axes": {
+    "physical_status": [
+      "OPERABLE",
+      "DAMAGED",
+      "STRANDED",
+      "LANDLESS"
+    ],
+    "community_status": [
+      "CONTINUING",
+      "DEPOPULATED",
+      "WINDING_DOWN",
+      "ARCHIVED"
+    ],
+    "physical_predicates": {
+      "OPERABLE": "valid_anchor_and_minimum_real_public_services_and_actual_service_access_and_real_living_community",
+      "DAMAGED": "valid_supportable_anchor_and_maintainable_dry_domain_but_square_housing_or_facility_capacity_insufficient",
+      "STRANDED": "some_legal_dry_domain_exists_but_primary_anchor_or_service_chain_unavailable_or_critical_members_facilities_split",
+      "LANDLESS": "no_qualified_actual_maintainable_dry_anchor_all_water_peak_or_legal_access_loss"
+    },
+    "continuation_predicate": "at_least_one_alive_actual_home_city_member_OR_valid_committed_live_inbound_or_reestablishment_party",
+    "depopulated_predicate": "no_alive_home_city_member_and_no_valid_committed_live_continuation_party",
+    "archive_predicate": "wind_down_and_no_alive_home_city_members_or_valid_live_inbound_party_and_assignments_zero_and_authority_revoked_and_real_obligations_transferred_to_explicit_archive_or_estate_refs",
+    "landless_identity_may_continue_with_actual_members": true,
+    "landless_authority_is_unlimited_grace": false,
+    "landless_relocation_due_days_sample": 30,
+    "landless_after_due": "RELOCATION_REQUIRED_basic_identity_actual_assets_existing_debts_and_rescue_only_no_old_land_taxes_new_expansion_or_new_strategic_war",
+    "deadline_kills_people_or_clears_citizenship": false,
+    "reestablish_same_community_preserves_id_unless_archived": true,
+    "new_independent_community_requires_new_id": true,
+    "damaged_facility_capacity": "actual_structural_support_entrance_service_condition_not_raw_building_count_or_remaining_hitpoints_percentage"
+  },
+  "anchor": {
+    "kind": "actual_legal_supportable_nonpeak_dry_site_with_at_least_one_actual_mature_civic_participant_present",
+    "formal_language_required_for_precultural_anchor": false,
+    "automatic_largest_component_anchor": false,
+    "candidate_order": [
+      "actual_usable_housing_persons_desc",
+      "functional_existing_public_square_desc",
+      "sum_actual_member_path_cost_asc",
+      "new_anchor_actual_effort_cost_asc",
+      "stable_coordinate_asc"
+    ],
+    "existing_valid_anchor_component_priority": true,
+    "remote_anchor_selection_teleports_people_goods": false,
+    "temporary_anchor_without_square_is_operable_formal_city": false,
+    "default_disconnected_enclave_allowed": false,
+    "explicit_district_exception_requires": [
+      "separate_registered_district",
+      "actual_local_services_and_members",
+      "lawful_title",
+      "actual_communication_certificate",
+      "explicit_preview"
+    ],
+    "disconnected_domain_creates_or_deletes_physical_buildings_automatically": false
+  },
+  "geography_wipe_interface": {
+    "trigger": "actual_changed_canonical_geography_cells_not_noop_or_theme_visual",
+    "whole_footprint_support_container_closure": true,
+    "half_building_cuts": false,
+    "live_actors_protected_from_direct_erase": true,
+    "live_gestation_including_external_eggs_protected": true,
+    "plants_trees_are_protected_live_actors": false,
+    "nonlife_carried_worn_goods_in_hit_actor_wiped": true,
+    "actual_water_fall_burial_thermal_and_peak_hazards_still_apply": true,
+    "peak_overwrite": "retain_pose_mark_InvalidOccupancyHazard_not_legal_nav_peak_entry_no_lift_to_peak_top_no_path_through_peak",
+    "ordinary_building_clear": "must_first_preserve_actual_people_goods_old_access_or_reject",
+    "forced_wipe_recovery_goods_or_refunds": false,
+    "lost_legal_documents_debts_archive_refs_deleted": false,
+    "no_kind_change_support_failure": "actual_structural_spatial_consequences_still_required"
+  },
+  "normalize_pipeline": [
+    "freeze_read_revisions_and_typed_target_refs",
+    "calculate_final_geometry_and_whole_object_dependency_closure",
+    "calculate_unique_losses_hazards_and_actual_access_membership_changes",
+    "collect_local_and_remote_affected_settlement_state_refs",
+    "final_alive_members_and_real_valid_parties",
+    "clip_assignment_and_invalidate_access_and_classify_components",
+    "zero_lost_physical_facility_capacity_preserve_history",
+    "select_or_reject_actual_anchor_and_compute_physical_status",
+    "compute_community_status_and_absolute_due_ticks",
+    "stage_tasks_housing_tax_claims_offices_counts_and_actual_asset_winddown",
+    "compute_final_real_state_constituency_titles_qualifying_direct_cities_and_single_succession_resolution",
+    "preview_exact_candidate",
+    "revalidate_complete_read_dependency_versions",
+    "single_atomic_writer_commit_events_query_snapshot"
+  ],
+  "growth": {
+    "evaluation_clock": "authoritative_game_day_or_actual_demand_event_not_ui_render_frames",
+    "world_rule_refs": [
+      "ai_border_claims",
+      "ai_public_construction",
+      "ai_settlement_founding"
+    ],
+    "demand_sources": [
+      "real_household_housing_food_clothes_service_need",
+      "legally_committed_population_growth",
+      "real_facility_or_transport_bottleneck"
+    ],
+    "empty_population_invents_growth_demand": false,
+    "first_candidates": [
+      "reuse_real_vacant_usable_facilities",
+      "repair_inside",
+      "build_inside"
+    ],
+    "frontier": "existing_actual_serviced_occupied_boundary_not_empty_painted_claim_chains",
+    "full_growth_project_guards": [
+      "whole_project_footprint",
+      "legal_dry_nonpeak_buildable_destination",
+      "actual_entrance_delivery_access",
+      "lawful_title_or_collective_land",
+      "real_material_labor_budget_and_origin_reserve",
+      "existing_access_preserved",
+      "current_service_catchment"
+    ],
+    "claims_granted_for": "actually_approved_reserved_project_necessary_domain_not_speculative_continent",
+    "sample_max_projects_per_evaluation": 16,
+    "sample_max_added_equivalent_cells_per_city_day": 64,
+    "per_city_competing_growth_plans_max": 1,
+    "leader_stat_free_area_multiplier": false,
+    "cancel_unused_new_claim": "explicit_source_revision_current_use_private_title_check_and_due_process_no_rollback_of_completed_ownership"
+  },
+  "service_catchment": {
+    "algorithm": "deterministic_multi_source_nonnegative_integer_cost_Dijkstra",
+    "sources": "actual_public_supply_and_road_service_endpoints_not_flag_center",
+    "edge_guard_fields": [
+      "actual_surface_slope_clearance_step_width",
+      "movement_use_case_profile",
+      "road_gate_lawful_right",
+      "load_turning_and_transshipment",
+      "real_capacity_congestion_prediction",
+      "peak_and_water_domain"
+    ],
+    "sample_one_way_max_motion_seconds": 180,
+    "sample_one_way_max_ticks": 3600,
+    "flying_or_swimming_actor_proves_city_general_foot_access": false,
+    "purpose_specific_deadlines_and_real_food_expiry_may_tighten": true,
+    "motion_calendar_seconds_interchangeable": false,
+    "transient_actor_queue": "nonnegative_soft_ETA_cost_not_permanent_edge_deletion_or_every_tick_administrative_loss",
+    "hard_invalidations": "actual_geometry_support_peak_water_barrier_road_destruction_or_lawful_route_right_loss"
+  },
+  "founding_party": {
+    "record_fields": [
+      "plan_id",
+      "source_settlement_ref",
+      "real_actor_refs",
+      "actual_assent_or_authorized_household_representative",
+      "origin_remaining_essential_budget",
+      "destination_ref",
+      "actual_food_clothes_tools_material_reservations",
+      "transport_access_certificate_refs",
+      "due_tick",
+      "actual_progress_revision"
+    ],
+    "concurrent_foundation_commitments_per_actor_max": 1,
+    "empty_plan_can_keep_city_or_state_alive": false,
+    "valid_continuation_requires": [
+      "live_real_committed_participants",
+      "current_accepted_real_plan",
+      "source_destination_legal_permissions",
+      "real_available_reserve_or_confirmed_production_lower_bound",
+      "current_access_or_explicit_bounded_hazard_pause",
+      "not_expired",
+      "recent_real_progress_or_lawful_bounded_rest"
+    ],
+    "deadline_or_progress_refreshed_by_load_query_locale": false,
+    "sample_autonomous_party_min_households": 2,
+    "sample_autonomous_party_min_civic_adults": 3,
+    "autonomous_party_policy_is_hard_single_player_foundation_requirement": false,
+    "source_abandoned_by_removing_sole_food_clothes_worker_without_replacement": false,
+    "creates_new_actor_food_clothing_or_culture": false,
+    "precultural_party_can_register_settlement": true,
+    "sapient_animals_with_human_origin_culture_have_formal_city_civic_qualification": true,
+    "member_physical_body_and_tools_still_constrain_work": true,
+    "progress_metric": "monotonic_net_progress_along_fixed_committed_route_and_actual_needed_bounded_rest_not_per_tick_displacement_or_circling",
+    "absolute_deadline_rolls_with_progress": false,
+    "gestation_continuation": "only_existing_actual_alive_lawful_steward_real_care_and_saved_valid_registered_dependency_candidate_not_any_egg_or_unborn_as_government_community"
+  },
+  "new_site_search": {
+    "source": "actual_explored_reachable_region_catalogue_and_known_legal_resource_supply",
+    "sample_candidates_max": 64,
+    "candidate_order": "stable_region_coordinate_then_saved_dedicated_planning_rng_tie_stream",
+    "screen": "coarse_surface_access_legal_title_then_exact_site_supply_origin_budget_verification",
+    "straight_line_radius_defines_distinct_city": false,
+    "same_service_catchment_should_prefer_existing_city_when_feasible": true,
+    "mountain_water_separation_can_qualify_nearby_distinct_city": true,
+    "forecast_horizon_days_sample": 90,
+    "forecast_consumes_uncreated_decor_food_unconfirmed_growth": false
+  },
+  "foundation_states": [
+    "PROPOSED",
+    "QUALIFIED",
+    "RESERVED",
+    "DEPARTING",
+    "TRAVELLING",
+    "ARRIVED_REAL",
+    "PROVISIONAL_CAMP",
+    "SETTLEMENT_REGISTERED",
+    "SQUARE_AND_BASIC_HOUSING_BUILT",
+    "CITY_CHARTERED",
+    "PAUSED",
+    "CANCELLED",
+    "LOST"
+  ],
+  "foundation_guards": {
+    "settlement_registered": [
+      "at_least_one_actual_present_mature_civic_agent",
+      "lawful_supportable_dry_nonpeak_anchor",
+      "lawful_actual_collective_land_basis",
+      "real_current_consented_members"
+    ],
+    "registration_creates_formal_city_buildings_state_stocks": false,
+    "formal_city": [
+      "at_least_one_alive_actual_member",
+      "valid_official_human_origin_culture_relation",
+      "lawful_city_charter_and_admin_relation",
+      "actual_functional_city_square_bound_to_unique_account",
+      "real_usable_housing_for_actual_promised_resident_set",
+      "executable_actual_basic_food_clothes_service_and_transport_budget",
+      "no_unresolved_peak_support_access_conflict"
+    ],
+    "registration_hard_adult_min": 1,
+    "formal_city_hard_adult_min": 1,
+    "inbound_population_or_stock_counted_before_actual_arrival": false,
+    "source_target_membership_migration": "explicit_atomic_unique_home_city_transfer_after_actual_arrival_not_teleport"
+  },
+  "plan_comparator": {
+    "plan_kinds": [
+      "RepairInside",
+      "BuildInside",
+      "ExpandExisting",
+      "FoundNew",
+      "ReestablishSameCommunity",
+      "AdmitToExisting",
+      "WaitOrRequestAid"
+    ],
+    "hard_guard_failure_can_be_outscored": false,
+    "lexicographic_min_fields": [
+      "unmet_basic_need_person_days",
+      "unacceptable_risk_count",
+      "disrupted_origin_essential_services",
+      "relocation_household_count",
+      "estimated_nonrefundable_real_effort_ticks",
+      "actual_delivery_cost_accounting_units",
+      "irreversible_ecological_biomass_loss_grams",
+      "nonrefundable_asset_loss_accounting_units",
+      "plan_kind_preference",
+      "stable_candidate_coordinate",
+      "plan_id"
+    ],
+    "kind_preference": [
+      "RepairInside",
+      "BuildInside",
+      "ExpandExisting",
+      "ReestablishSameCommunity",
+      "AdmitToExisting",
+      "FoundNew",
+      "WaitOrRequestAid"
+    ],
+    "unknown_cost_is_zero": false,
+    "unit_mixing_effort_and_money_into_one_sum": false,
+    "sample_new_city_winning_daily_evaluations": 3,
+    "sample_basic_need_improvement_percent_min": 20,
+    "player_or_actual_disaster_skips_decision_hysteresis_only": true,
+    "active_real_plan_replaced_every_tick": false,
+    "identity_choice": "same_continuing_displaced_community_reestablishes_old_id_independent_split_requires_new_id",
+    "ecological_and_private_asset_loss_units_separate": true
+  },
+  "state_lifecycle": {
+    "states": [
+      "OPERATING",
+      "DISPLACED",
+      "WINDING_DOWN",
+      "ARCHIVED"
+    ],
+    "living_constituency": "alive_lawful_subjects_or_legally_recognized_actual_civic_constituents_or_valid_member_states_with_real_living_constituency",
+    "ordinary_visitors_buildings_boats_flags_archived_city_ids_are_constituents": false,
+    "ruler_death_or_capital_destroyed_alone_ends_state": false,
+    "no_dry_territory_with_living_constituency": "DISPLACED_actual_id_assets_debts_members_no_old_land_taxes_or_building_approval",
+    "sample_landless_authority_grace_days": 30,
+    "after_landless_grace": "only_identity_existing_real_assets_debts_basic_rescue_defense_no_new_strategic_war_expansion_or_empire_grant",
+    "empty_constituency_and_no_valid_continuation": "immediate_WINDING_DOWN_revoke_new_authority_stage_real_winddown",
+    "debts_or_public_estate_keep_state_alive": false,
+    "archive_obligations": "transfer_real_claims_debts_custody_to_separate_PublicEstateAccountRef_executor_no_free_money",
+    "unclaimed_area_given_neighbor_on_archive": false,
+    "private_estate_title_preserved_separately": true,
+    "direct_qualifying_city_count": "living_formal_direct_city_with_real_public_services_not_historical_charter_or_destroyed_empty_square",
+    "DUCHY_GRAND_DUCHY_administrative_qualification": "DUCHY_promotes_only_with_second_actual_qualifying_direct_city_existing_GRAND_DUCHY_legal_rank_is_sticky_until_explicit_valid_charter_demotion_no_frame_count_jitter_or_title_resource_buff",
+    "KINGDOM_EMPIRE_legal_crown_charter_validity": "separate_civic_contract_no_automatic_title_or_grant_revocation_from_one_building_loss",
+    "OPERATING_requires": "real_living_constituency_and_actual_lawful_supportable_nonpeak_dry_governing_anchor_or_valid_actual_member_state_governance_not_dry_title_area_alone",
+    "dry_titles_without_actual_governing_anchor": "DISPLACED_reduced_real_authority_same_absolute_landless_or_anchorless_grace_no_archive_from_area_alone"
+  },
+  "abandoned_decay": {
+    "sample_deadline_days": 30,
+    "start_due_tick_absolute_saved": true,
+    "daily_assignment_release_budget": "max(1,ceil(original_assigned_equivalent_cells/30))",
+    "erosion_order": "outer_and_inner_boundary_distance_layer_then_stable_coordinate_including_authoritative_world_edge",
+    "fully_claimed_world_has_boundary_for_decay": true,
+    "physical_buildings_or_private_goods_deleted_by_assignment_decay": false,
+    "actual_member_arrival_before_archive": "explicit_valid_enrollment_cancels_unfinished_winddown_but_does_not_restore_released_domain_or_lost_goods",
+    "arrival_after_archive": "requires_new_settlement_id_no_revival",
+    "closed_AI_growth_rules_suspend_existing_decay_hazards_debts": false
+  },
+  "god_interfaces": {
+    "GodFoundStateFromActor": {
+      "requires": [
+        "mature_alive_civic_actor",
+        "existing_culture",
+        "actual_legal_dry_nonpeak_pose",
+        "unclaimed_sovereignty_or_explicit_separate_title_event",
+        "private_land_permission"
+      ],
+      "may_create": [
+        "PROVISIONAL_CAMP_registration",
+        "DUCHY_State",
+        "founder_self_membership_office"
+      ],
+      "may_not_create": [
+        "formal_CITY",
+        "CitySquare_facility",
+        "housing",
+        "goods",
+        "other_resident_assent",
+        "culture",
+        "language",
+        "ruler_actor"
+      ],
+      "event": "GodFoundationEvent",
+      "initial_claim": "minimal_actual_actor_support_and_body_clearance_intersected_legal_dry_surface_primitives_no_radius_disk",
+      "sample_initial_claim_cells_max": 16,
+      "initial_claim_includes_foreign_title_unconsented_private_title_water_peak": false
+    },
+    "CommitLocalMembershipStroke": {
+      "scope": [
+        "CITY_ONLY",
+        "CITIZENSHIP_ONLY",
+        "BOTH"
+      ],
+      "targets": "current_actual_brush_hit_alive_civic_actor_pose_with_current_committed_or_same_candidate_physical_jurisdiction",
+      "no_valid_target_default": "skip_explicit_reason_not_implicit_statelessness",
+      "event": "GodMembershipEvent",
+      "alters_location_culture_language_goods_owner": false
+    },
+    "GodTransferCityToState": {
+      "closure": [
+        "whole_city_admin",
+        "declared_city_core_territorial_sovereignty",
+        "real_public_account_authority",
+        "capital_offices",
+        "rank_direct_city_count",
+        "election_seats",
+        "treaties",
+        "tax_jurisdiction",
+        "real_contracts_shipments",
+        "army_access"
+      ],
+      "personal_citizenship_private_owner_culture_language_default_change": false,
+      "resident_membership_optional_requires": "explicit_actor_list_toggle_same_preview_or_separate_brush",
+      "changes_only_city_owner_state_field": false
+    }
+  },
+  "authority": {
+    "single_writer_atomic": true,
+    "prepare_preview_mutates_world": false,
+    "normalize_uses_final_batch_state": true,
+    "stage_delete_building_loop_can_archive_before_final_membership": false,
+    "loss_idempotency_key": [
+      "command_id",
+      "object_stable_id",
+      "resource_subbatch_id"
+    ],
+    "read_set": [
+      "surface_kind_topology_peak_support_nav_versions",
+      "whole_object_dependency_refs",
+      "final_life_membership_gestation_pose",
+      "titles_and_permissions",
+      "actual_stock_reservations_and_tasks",
+      "real_growth_party_progress_routes",
+      "city_square_accounts_debts",
+      "charters_offices_rank_election_treaties",
+      "clock_rules_rng_cursor"
+    ],
+    "write_set": [
+      "necessary_geometry_objects_unique_loss_events",
+      "actual_hazards_access_revocations_tasks",
+      "city_domain_anchor_status_capacity",
+      "explicit_membership_changes",
+      "state_title_index_status_counters_offices",
+      "winddown_estate_executor_and_tax_responsibility",
+      "absolute_due_decay_progress",
+      "idempotency_receipts_history"
+    ],
+    "stale_read_set_or_new_claim_conflict": "reject_whole_prepared_candidate_then_new_preview_no_partial_patch",
+    "nonoverlapping_same_final_intent_batch_iteration_order_changes_outcome": false
+  },
+  "performance": {
+    "dependency_pipeline": [
+      "dirty_surface",
+      "reverse_spatial_support_container",
+      "nav_water_changed_edges_and_regions",
+      "reverse_certificates_and_shipments_parties",
+      "affected_city_state_index"
+    ],
+    "delete_connectivity_supported_by_union_find_only": false,
+    "remote_harbor_food_route_dependency_included": true,
+    "big_closure_policy": "complete_candidate_then_atomic_swap_or_explicit_limit_reject_not_background_partial_world",
+    "cache_key": "surface_nav_title_service_membership_charter_body_rules_revision_and_frozen_profile",
+    "capacity_or_frame_performance_measured_this_round": false
+  },
+  "persistence": {
+    "save_fields": [
+      "stable_refs_generations",
+      "CITY_charter_history",
+      "dual_status_actual_anchor",
+      "active_withdrawn_assignment_and_title_provenance",
+      "public_accounts_actual_facility_refs",
+      "current_member_charter_events",
+      "absolute_due_decay_cursor",
+      "party_real_progress_reserve_routes",
+      "candidate_inputs_dedicated_rng_cursor",
+      "invalid_service_cert_refs",
+      "state_winddown_executor_refs",
+      "loss_receipts_events"
+    ],
+    "load_refreshes_deadlines_or_replays_goods_loss_or_creation": false,
+    "camera_lod_query_uses_world_rng_or_advances_planning": false,
+    "time_profile": {
+      "ticks_per_motion_second": 20,
+      "ticks_per_game_day": 1200,
+      "days_per_month": 30,
+      "months_per_year": 12,
+      "days_per_year": 360,
+      "sample_not_final_scientific_calibration": true
+    }
+  },
+  "ui": {
+    "global_tools_only_bottom_sections": true,
+    "typed_labels": {
+      "OPERABLE": {
+        "zh-CN": "正常运转",
+        "en": "Operable",
+        "de": "Betriebsfähig"
+      },
+      "DAMAGED": {
+        "zh-CN": "受损",
+        "en": "Damaged",
+        "de": "Beschädigt"
+      },
+      "STRANDED": {
+        "zh-CN": "受困",
+        "en": "Stranded",
+        "de": "Abgeschnitten"
+      },
+      "LANDLESS": {
+        "zh-CN": "失地",
+        "en": "Landless",
+        "de": "Landlos"
+      },
+      "CONTINUING": {
+        "zh-CN": "共同体存续",
+        "en": "Community continues",
+        "de": "Gemeinschaft besteht"
+      },
+      "DEPOPULATED": {
+        "zh-CN": "无人居住",
+        "en": "Depopulated",
+        "de": "Unbewohnt"
+      },
+      "WINDING_DOWN": {
+        "zh-CN": "清算退役",
+        "en": "Winding down",
+        "de": "In Abwicklung"
+      },
+      "ARCHIVED": {
+        "zh-CN": "已归档",
+        "en": "Archived",
+        "de": "Archiviert"
+      },
+      "RELOCATION_REQUIRED": {
+        "zh-CN": "需要迁居",
+        "en": "Relocation required",
+        "de": "Umsiedlung erforderlich"
+      },
+      "current_dry_sovereign_area_mm2": {
+        "zh-CN": "现有主权陆地面积",
+        "en": "Current sovereign land area",
+        "de": "Aktuelle souveräne Landfläche"
+      },
+      "current_assigned_city_land_mm2": {
+        "zh-CN": "现有城市行政面积",
+        "en": "Current city jurisdiction area",
+        "de": "Aktuelle städtische Zuständigkeitsfläche"
+      },
+      "currently_served_land_mm2": {
+        "zh-CN": "当前服务覆盖面积",
+        "en": "Currently served land area",
+        "de": "Aktuell versorgte Landfläche"
+      },
+      "built_and_committed_footprint_mm2": {
+        "zh-CN": "建筑与已批准项目占地",
+        "en": "Built and committed footprint",
+        "de": "Bebaute und genehmigte Grundfläche"
+      },
+      "home_city_members": {
+        "zh-CN": "居城成员",
+        "en": "Home city members",
+        "de": "Heimatstadtmitglieder"
+      },
+      "physically_present": {
+        "zh-CN": "实际在场",
+        "en": "Physically present",
+        "de": "Tatsächlich anwesend"
+      },
+      "city_square_facility_lost": {
+        "zh-CN": "广场设施已失去",
+        "en": "City square facility lost",
+        "de": "Stadtplatzanlage verloren"
+      },
+      "actual_storage_capacity": {
+        "zh-CN": "实际库容",
+        "en": "Actual storage capacity",
+        "de": "Tatsächliche Lagerkapazität"
+      },
+      "founding_party": {
+        "zh-CN": "新城队伍",
+        "en": "Founding party",
+        "de": "Gründungsgruppe"
+      },
+      "plan_rejection_reason": {
+        "zh-CN": "方案拒绝原因",
+        "en": "Plan rejection reason",
+        "de": "Ablehnungsgrund des Plans"
+      }
+    },
+    "no_unnecessary_debug_small_text": true,
+    "no_button_border_outline_ring": true,
+    "archive_and_successor_relations_use_stable_ref": true
+  },
+  "acceptance_cases": [
+    {
+      "case_id": "SC01",
+      "trigger": "全楼普通清理但居民/干地在",
+      "expected": "先真实人货疏散，DAMAGED保ID，重建无免费楼",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC02",
+      "trigger": "全楼强制毁损，原广场有第三方货",
+      "expected": "容量0，一次物损/托管结算，不把货变城市owner",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC03",
+      "trigger": "全陆涂海，居民仍活",
+      "expected": "LANDLESS，真实落水/救援，国籍/成员不随色消失",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC04",
+      "trigger": "全陆涂海且无存活成员",
+      "expected": "无中间假继位，进入城市/国家wind-down档案",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC05",
+      "trigger": "所有楼毁但有另一真实直辖城",
+      "expected": "现国保留，实际迁都候选而不刷人宫殿",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC06",
+      "trigger": "所有人死但楼全在",
+      "expected": "DEPOPULATED停止扩张，30日边缘衰减，楼产权仍真实",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC07",
+      "trigger": "城域占满整个权威世界无人",
+      "expected": "域边可剥，30日内撤完，不无边界永存",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC08",
+      "trigger": "只少一座楼",
+      "expected": "不能人口/行政域随机骤缩",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC09",
+      "trigger": "桥拆导致半城断接",
+      "expected": "证书撤，孤域UNASSIGNED_ADMIN，Statetitle不转邻国",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC10",
+      "trigger": "水切城，一侧没被wipe的楼",
+      "expected": "不自动删该侧楼，不自动另刷新城",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC11",
+      "trigger": "原anchor淹，最大干片无人且远",
+      "expected": "不以面积最大空岛当新中心",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC12",
+      "trigger": "原anchor淹，但负责人已实际在合法次中心",
+      "expected": "可显式临时anchor，没广场仍DAMAGED",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC13",
+      "trigger": "干片仅角相接",
+      "expected": "不是行政/服务连通",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC14",
+      "trigger": "水中坡格两湿域切出小干岛",
+      "expected": "按精确正长度陆边/actualnav，不按color格bool",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC15",
+      "trigger": "峰覆盖居民",
+      "expected": "保pose hazard，不抬峰、不强制导航逃离、没有合法创城点",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC16",
+      "trigger": "soil改hill楼跨三个格，只扫一个",
+      "expected": "整栋一次删；相关楼内goods/道路预约闭包",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC17",
+      "trigger": "同geography kind重复涂",
+      "expected": "无第二次wipe，无重复损失",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC18",
+      "trigger": "主题换皮",
+      "expected": "非kind改变，不删楼/补果/自动改城籍",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC19",
+      "trigger": "改height但kind未变导致支承失效",
+      "expected": "仍真实结构/通行灾损，不以no wipe漏伤",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC20",
+      "trigger": "同批死亡和转籍顺序反转",
+      "expected": "final合法集合唯一，城市/国家状态一致",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC21",
+      "trigger": "弃城第29日存载",
+      "expected": "deadline不刷新，既有财债/旧成员不复生",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC22",
+      "trigger": "归档后重涂soil再造同名楼",
+      "expected": "新城需新ID，收藏仍旧档案",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC23",
+      "trigger": "失地成员真实迁居30天未建成",
+      "expected": "仅共同体/财债保留，不能从旧海域税/发新战",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC24",
+      "trigger": "失地所有成员永久入别城并退出",
+      "expected": "旧城可归档，无强保幽灵城",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC25",
+      "trigger": "无地国仅剩有owner国籍字段的空船",
+      "expected": "不能作为活政治共同体续国",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC26",
+      "trigger": "国王死，合法儿童臣籍仍活",
+      "expected": "国家存续，合法摄政/空位，不刷继承人",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC27",
+      "trigger": "state存续，旧title海变土",
+      "expected": "有效dry主权可恢复，City行政/楼货不恢复",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC28",
+      "trigger": "state已archive，旧title海变土",
+      "expected": "仍无主或当前合法权利，不复活国家",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC29",
+      "trigger": "原城有闲置可用住宅",
+      "expected": "先真实复用，不为了人口图表刷新区",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC30",
+      "trigger": "荒地离近城20m但隔不可越山",
+      "expected": "按path/catchment，可合理独立候选",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC31",
+      "trigger": "荒地500m但合法快路仍可服务",
+      "expected": "比较cost，不能只按distance建新城",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC32",
+      "trigger": "新城party带走唯一粮衣工",
+      "expected": "origin余量不够拒计划，不给替代工人",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC33",
+      "trigger": "party途中有人死/货毁",
+      "expected": "目标人口/库存不提前计，取消/改计划一次",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC34",
+      "trigger": "候选地已有邻国私产/主权",
+      "expected": "自主found拒，神意模式需显式title/私产后果",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC35",
+      "trigger": "无人paint边界成两个城市",
+      "expected": "拒空city/stock/升rank",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC36",
+      "trigger": "party无Culture",
+      "expected": "可Settlement，不假CITY或创Culture",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC37",
+      "trigger": "有culture启智牛到场",
+      "expected": "可担创城政治资格，搬运/工具仍真实身体门控",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC38",
+      "trigger": "玩家有文化成熟一人神意立国",
+      "expected": "真实camp+DUCHY本人，不免费formalCity/广场/人口",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC39",
+      "trigger": "篡改其trait增加治理",
+      "expected": "不能给地/物资/另生边界；服务负载实际校准",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC40",
+      "trigger": "AI扩张关着毁城",
+      "expected": "灾损/债/撤证照常，不能冻结历史",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC41",
+      "trigger": "两城并行candidate抢同域",
+      "expected": "单写先者commit后者revalidate，无双辖",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC42",
+      "trigger": "换locale/镜头/LOD查城市千次",
+      "expected": "不推进growth/streak/abandon/RNG",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC43",
+      "trigger": "海峡变deep，远城食物航线受阻",
+      "expected": "closure含远依赖City/Shipment，不只本格dirty",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC44",
+      "trigger": "转城到另一国后居民仍原国籍",
+      "expected": "行政/主权变，个人身份不暗改；另明确toggle",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC45",
+      "trigger": "物理成员brush扫旅行者",
+      "expected": "真实当前法域入籍事件，位置和文化/货权不改",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC46",
+      "trigger": "同人参与两个新城party",
+      "expected": "独占/真实预约冲突，不能双计延续/人口",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC47",
+      "trigger": "有财债但无任何活国家主体",
+      "expected": "statearchive可交PublicEstate，欠债仍在，不造钱",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC48",
+      "trigger": "有入城party却30天不行进反复读档",
+      "expected": "due/progress不刷新，失效后不阻止归档",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC49",
+      "trigger": "最后高级意识成员死/退出，外部启智孕体/蛋仍活且后出生",
+      "expected": "孕体不当现有人口/政府资格；无合法活steward则旧城国归档，出生保真实来源、解析当前可延续成员目标或无国籍，不复活旧ID",
+      "production_test_implemented": false
+    },
+    {
+      "case_id": "SC50",
+      "trigger": "所有建筑仍存在但结构/入口/屋顶/设备损坏使公共服务停摆",
+      "expected": "实际不可用capacity为0进入DAMAGED/STRANDED，残存可抢救货不是自动退款；有真实修复路线资源先重建，不按楼数保持OPERABLE或刷新城",
+      "production_test_implemented": false
+    }
+  ],
+  "reference_model_scope": "finite_abstract_identity_connectivity_title_assignment_wipe_membership_snapshot_model_not_production_physics_or_game_acceptance",
+  "invariants": [
+    "one_live_home_city_membership_per_actor_and_one_population_entity_per_ActorId",
+    "one_active_city_assignment_per_dry_domain_element_no_illegal_peak_service",
+    "no_archived_city_state_id_reactivation_or_reuse",
+    "no_geography_visual_theme_or_noop_type_paint_loss",
+    "whole_impacted_building_and_container_loss_once_never_half_building",
+    "alive_actor_source_identity_and_actual_body_gestation_preserved_until_actual_death_event",
+    "political_titles_ownership_debts_distinct_from_current_geometry_city_service",
+    "final_batch_alive_member_sets_drive_status_succession_not_iteration_order",
+    "real_party_route_goods_labor_and_origin_essential_capacity_not_spawned",
+    "square_logic_accounts_cannot_duplicate_or_restore_destroyed_goods",
+    "dead_empty_boat_flag_only_state_cannot_continue_as_living_polity",
+    "read_only_query_lod_locale_pause_load_cannot_advance_world_rules_rng_due",
+    "ordinary_construction_clear_preserves_existing_access_or_rejects",
+    "explicit_wipe_loss_not_refunded_on_geometric_restore",
+    "inactive_landless_community_identity_is_not_unlimited_operating_authority",
+    "all_growth_founding_needs_typed_real_sites_assets_actor_source_and_current_legal_permissions"
+  ],
+  "algorithm_revision": "ADR0015-2026-10-09",
+  "reference_model": "../../docs/research/models/settlement_reference_model.py"
+}

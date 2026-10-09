@@ -1,6 +1,6 @@
 # SONNHEIDE
 
-2026-10-09：旧实现已清空，完成重置后的 **v0.8完整设计**。自研框架、真正360°三维像素世界、可编辑坡道与高程、全面遗传/动物/文明之光、完整社会制度与集中信息空间；唯一Steam发行。
+2026-10-09：旧实现已清空，完成重置后的 **v0.8完整设计＋ADR0015算法补充**。自研框架、真正360°三维像素世界、可编辑坡道与高程、全面遗传/动物/文明之光、完整社会制度与集中信息空间；唯一Steam发行。
 
 **当前只有设计、机器合同和资源来源，没有可运行游戏、构建入口或试玩；生产阶段全部未开始。** 本轮核验不计作游戏功能完成，旧验收也不继承。
 
@@ -12,8 +12,12 @@
 |[政治/元控制/信息空间](docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md)|王冠首次/继任/摄政、疆界、70类typed页、28条World Laws|
 |[程序结构](docs/architecture/PIXEL_GAME_ARCHITECTURE.md)|模块所有者、单写者、同Actor身份、双能源/资源账、GPU独立核心|
 |[WorldBox逐项采纳](docs/research/WORLDBOX_ADOPTION_v0.8.md)|248项：102新增、59改造、63保留、15排除、9证据边界|
+|[本次算法调查](docs/research/WORLDBOX_ALGORITHMS_AND_SONNHEIDE_2026-10-09.md)|公开证据与自主算法分开，城市/动作/地改/元控制/自然植被完整因果链|
+|[城市生命周期与扩张](docs/architecture/SETTLEMENT_LIFECYCLE_AND_EXPANSION.md)、[自然动作](docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md)|毁楼/淹地/散居/归档、新城party、真实走跑/避让/起停/脚IK|
+|[元控制与地理改写](docs/architecture/GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md)、[植被生成](docs/architecture/VEGETATION_GENERATOR_AND_DENSITY.md)|选人立国/加入当地/转城，换类清非生命，停留剂量/自然聚簇/有界密度|
 |[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)、[验收](docs/planning/VALIDATION.md)|11阶段，基础后立即正式美术，统一批量编译验收|
-|[机器合同总入口](data/contracts/game_v0_8.json)|当前权威合同与92个底栏工具登记|
+|[本批核验记录](docs/planning/DESIGN_AUDIT_ADR0015.json)、[可复核脚本](docs/research/models/audit_adr0015_design.py)|合同/关系/来源一致性与有限模型，189个生产场景仍待执行|
+|[机器合同总入口](data/contracts/game_v0_8.json)|当前权威合同与101个底栏工具登记|
 |[版本接续记录](docs/planning/DESIGN_RETIREMENT.md)|旧作者稿/架构退役范围及27章迁移映射|
 
 不做程序世界模板库、Steam Workshop/Steam Cloud、私家马；本版不迁移马驱力/骑乘/马车。保留Blank/Earth、本地存档、原八soil主题/两Age、真实服装经济与正装缺失仍可工作、实际前側送料与长方体铁丝网自动施工、批准油画/公司标志主菜单。

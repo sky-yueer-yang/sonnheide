@@ -1,0 +1,1490 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_god_control_v1",
+  "design_version": "0.8",
+  "algorithm_revision": "ADR0015-2026-10-09",
+  "audit_date": "2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md",
+  "cross_contract_interfaces": {
+    "civic": "data/contracts/civic_control_v1.json",
+    "terrain": "data/contracts/terrain_access_v1.json",
+    "life": "data/contracts/life_genetics_v1.json",
+    "surface": "data/contracts/surface_ecology.json",
+    "tools": "data/contracts/tool_registry_v1.json",
+    "city_lifecycle": "data/contracts/settlement_lifecycle_v1.json",
+    "vegetation_generator": "data/contracts/vegetation_generator_v1.json",
+    "natural_action": "data/contracts/natural_action_v1.json"
+  },
+  "evidence_boundary": {
+    "official_changelog": "https://www.superworldbox.com/changelog",
+    "official_meta_control_preview": "https://steamcommunity.com/games/1206560/announcements/detail/669491979075191190",
+    "worldbox_meta_control_publication_state": "official_upcoming_preview_not_verified_release",
+    "proven_features": [
+      "city_border_brush_bucket",
+      "meta_selection_and_inspection",
+      "transition_period_decision_bug_fixes"
+    ],
+    "unproven_internals": [
+      "complete_membership_and_civic_transfers_formula",
+      "property_conservation_transaction_model",
+      "city_destroy_and_archive_formula"
+    ],
+    "all_algorithms_below": "Sonnheide_original_engineering_design_not_recovered_closed_source"
+  },
+  "authority": {
+    "world_mutations_single_writer": true,
+    "phases": [
+      "prepare",
+      "validate",
+      "specific_consequence_preview",
+      "commit"
+    ],
+    "permission_source": "trusted_dispatcher_PlayerGodCapability_not_payload_isGod",
+    "separate_authority_classes": [
+      "autonomous_lawful_AI",
+      "limited_meta_control_with_unique_lease",
+      "player_god_political_intervention",
+      "godterrain_geography_mutation"
+    ],
+    "god_event_forges_votes_consent_treaty_abdication_or_empire_approval": false,
+    "control_lease_grants_god_political_authority": false,
+    "god_changes_create_actors_or_free_goods": false,
+    "GodVegetationSource": "independent_explicit_vegetation_generator_source_not_geometry_refund"
+  },
+  "canonical_geography": {
+    "classes": [
+      "shallow_water",
+      "close_ocean",
+      "deep_ocean",
+      "sand",
+      "soil",
+      "hill",
+      "mountain",
+      "high_peak"
+    ],
+    "classifier_inputs": [
+      "frozen_TerrainProfile",
+      "actual_fixed_triangle_height",
+      "static_zero_water_clip",
+      "actual_top_material"
+    ],
+    "classifier_unit": "typed_XY_positive_area_regions_per_actual_surface_triangle_not_one_cell_label",
+    "water_body_SEA_LAKE": "separate_topology_not_new_geography_type",
+    "changedCanonicalGeographyCells": "broad_phase_index_cells_containing_positive_area_changed_type",
+    "ChangedGeographyFootprint": "exact_positive_area_XY_regions_where_before_and_after_canonical_type_differ",
+    "geography_label_color_LOD_controls_wipe": false,
+    "zero_area_boundary_touch_triggers_type_wipe": false,
+    "theme_only_change_triggers_type_wipe": false,
+    "same_type_height_or_slope_change_triggers_type_wipe": false,
+    "same_type_height_or_slope_still_requires": [
+      "actual_support",
+      "collision",
+      "navigation",
+      "water_connectivity",
+      "thermal",
+      "resource_support",
+      "existing_access_consequences"
+    ],
+    "ramp_crosses_type_threshold": "wipe_only_exact_changed_type_regions",
+    "repeated_identical_geography": "no_op_no_new_loss_or_reward"
+  },
+  "geography_type_wipe": {
+    "mandatory_after_actual_type_change": true,
+    "direct_hit_definition": "actual_full_support_or_occupancy_projection_intersects_ChangedGeographyFootprint_with_positive_area",
+    "stable_identity_dedup": "object_Ref",
+    "indivisible_object_hit": "delete_whole_object_even_anchor_or_other_rooms_outside_region_preview_expanded_extent",
+    "road_policy": "delete_frozen_RoadSection_units_not_entire_unrelated_route_or_render_LOD_fragments",
+    "tree_policy": "root_support_intersection_not_leaf_shadow_overlap",
+    "spatial_classes": [
+      "building",
+      "foundation",
+      "construction_project_and_mesh",
+      "road_section",
+      "bridge",
+      "wall_gate",
+      "mechanical_plant_tree",
+      "farm_facility",
+      "GroundResource_ForagePatch",
+      "surface_mineral_deposit",
+      "ruin",
+      "nest_hive",
+      "furniture_equipment",
+      "vehicle_boat",
+      "external_physical_container",
+      "loose_carried_worn_and_in_transit_nonlife_goods",
+      "corpse_physical_object",
+      "decor_override"
+    ],
+    "container_attachment_closure": "resolve_all_world_poses_before_removal_then_destroy_nonlife_descendants_and_components_no_traversal_skip_at_protected_Actor",
+    "live_actor_exception": [
+      "ActorId_and_biological_body",
+      "absolute_age_genome_injury_energy_debts_disease",
+      "acquired_knowledge_memories_skills",
+      "internal_pregnancy",
+      "absolute_biological_product_reserve_not_external_commodity"
+    ],
+    "hit_actor_worn_and_carried_goods_deleted": true,
+    "destroyed_parent_container_live_actor_worn_and_carried_nonlife_descendants_deleted": true,
+    "external_living_gestation": "protected_GestationRef_not_Actor_population_no_direct_erase_actual_support_thermal_water_hazard_applies",
+    "unfertilized_product_egg": "nonlife_commodity_deleted",
+    "far_goods_owned_by_hit_city_or_actor": "not_hit_without_actual_space_or_destroyed_container_dependency",
+    "history_and_law_records": "not_physical_objects_not_spatially_erased",
+    "retained_source_provenance": "immutable_not_rewritten",
+    "type_wipe_hit_ground_resource": "integrate_old_valid_production_once_to_commit_tick_then_remove_entire_hit_resource_and_reserve_not_partial_clip_escape",
+    "non_type_ground_damage": "existing_partial_actual_support_and_quantity_loss_rules_continue",
+    "new_item_refund_or_resource_drop_on_god_wipe": false,
+    "restoring_geometry_restores_stock_tree_building_or_active_city": false,
+    "loss_record_fields": [
+      "source_ref",
+      "quantity",
+      "cause_event_id",
+      "owner_at_loss",
+      "prior_revision",
+      "terminal_revision"
+    ],
+    "lost_owner_claim": "retained_archive_and_contract_damage_not_automatic_transfer_or_compensation",
+    "generator_dose_and_epoch_transition": {
+      "same_atomic_write_set": true,
+      "affected_tree_and_decor_doses": "invalidate_exact_removed_or_changed_habitat_dose_state",
+      "sampling_epoch": "bump_or_explicitly_reset_owned_changed_regions_under_new_event",
+      "renderer_sparse_tree_auto_regeneration": false,
+      "load_or_LOD_missing_tree_replenishment": false,
+      "old_generator_candidate_before_wipe": "stale_revision_and_epoch_reject_no_automatic_reseed"
+    }
+  },
+  "life_displacement": {
+    "never_direct_erase_live_actor": true,
+    "never_teleport_to_new_surface_shore_old_entrance_or_free_rescue": true,
+    "before_container_deletion": [
+      "resolved_world_pose",
+      "velocity",
+      "facing",
+      "animation_task_phase",
+      "support_binding",
+      "container_transform_revision"
+    ],
+    "hazard_states": [
+      "FALLING",
+      "WATER_ENTERING",
+      "SWIMMING",
+      "DROWNING",
+      "TERRAIN_ENTRAPPED",
+      "PEAK_ENCROACHED",
+      "STRANDED"
+    ],
+    "invalid_occupancy_hazard": [
+      "TERRAIN_ENTRAPPED",
+      "PEAK_ENCROACHED"
+    ],
+    "invalid_occupancy_is_legal_standing_navigation_or_placement": false,
+    "peak_old_assertion_override": "peak_forbids_new_legal_occupancy_and_active_crossing_involuntary_geography_encroachment_is_saved_hazard_not_passage_exemption",
+    "hazard_actor_can": [
+      "retain_true_pose_and_identity",
+      "receive_actual_biological_physical_consequences",
+      "attempt_actual_swept_valid_bounded_escape_if_exists",
+      "be_rescued_by_real_access_labor_and_geometry_change"
+    ],
+    "hazard_actor_cannot": [
+      "snap_IK_to_new_surface",
+      "receive_normal_ground_support_certificate",
+      "perform_ordinary_work_attack_or_transport_without_capacity",
+      "accept_new_legal_peak_entry_flight_birth_or_placement"
+    ],
+    "life_preservation_means_invulnerability": false,
+    "death": "normal_unique_cause_event_then_final_set_estate_office_settlement_not_direct_brush_erase",
+    "external_gestation_support_loss": [
+      "actual_fall",
+      "wetness",
+      "thermal",
+      "incubation_conditions",
+      "real_burden_loss_no_auto_birth_or_replacement"
+    ],
+    "surviving_absolute_state_restored_on_edit": false
+  },
+  "geography_transaction": {
+    "read_sets": [
+      "terrain_profile_hash",
+      "actual_geometry_material_revisions",
+      "changed_cells_spatial_interval_versions",
+      "full_support_and_occupancy_refs",
+      "container_and_attachment_DAG_versions",
+      "Actor_and_Gestation_world_pose_and_state",
+      "absolute_stock_and_resource_reservations",
+      "task_contract_project_versions",
+      "local_and_remote_route_water_dependencies",
+      "city_community_legal_district_and_state_retained_titles",
+      "civic_office_election_estate_army_guardianship_and_lease_dependencies",
+      "vegetation_generator_dose_state_and_sampling_epoch"
+    ],
+    "prepare_order": [
+      "canonical_geometry_candidate",
+      "positive_area_changed_type_regions",
+      "precise_object_and_container_closure",
+      "integrate_old_actual_state_once_to_commit_tick",
+      "type_wipe_and_ordinary_damage_plans",
+      "life_support_hazards_and_loss_contracts",
+      "local_and_remote_access_certificate_transitions",
+      "final_set_city_state_and_crown_lifecycle",
+      "complete_consequence_hash"
+    ],
+    "atomic_publish": [
+      "canonical_terrain_and_ramps",
+      "physical_removal_and_archives",
+      "Actor_Gestation_hazard_pose_and_absolute_states",
+      "physical_loss_ledger",
+      "stock_reservation_and_tasks_contracts",
+      "support_and_navigation_certificate_revocation",
+      "effective_service_and_dry_sovereignty_indices",
+      "city_state_lifecycle_and_civic_relationships",
+      "office_army_control_lease_changes",
+      "event_history",
+      "idempotent_receipt",
+      "affected_tree_decor_dose_and_sampling_epoch_invalidation"
+    ],
+    "new_object_entering_after_preview": "spatial_interval_version_phantom_guard_reject_REQUIRES_REPREVIEW",
+    "unfinished_remote_nav": "per_existing_destructive_NAV_UNVERIFIED_immediately_revoke_relevant_certificates_never_delay_civic_inventory_closure",
+    "preallocate_entire_write_set": true,
+    "failure": "original_world_and_continue_and_receipt_index_unchanged",
+    "dependency_groups_split_into_unpreviewed_partial_commits": false,
+    "NAV_UNVERIFIED_actor_policy": {
+      "current_segment_collision_water_peak_checked_synchronously": true,
+      "valid_support_and_clearance": "bounded_real_braking_then_wait_no_unverified_new_route",
+      "lost_support_or_actual_water_peak_encroachment": "immediate_real_hazard_not_safe_pending_freeze"
+    }
+  },
+  "civic_identity_fields": {
+    "physical_pose": "world_pose_and_container_path",
+    "physical_jurisdiction": "derived_effective_dry_sovereignty_and_settlement_service_query",
+    "citizenship": "one_current_citizenship_state_ref_plus_history_not_position_or_genome",
+    "registration": "one_current_registered_settlement_ref_including_Camp_or_CITY_charter",
+    "housing": "actual_home_support_ref_and_real_capacity_reservation",
+    "service": "one_current_army_ref_and_service_state_ref_or_none_plus_history",
+    "asset_roles": "owner_controller_custodian_separate",
+    "preserve_on_membership_change": [
+      "Actor_body_age_genome_and_absolute_physiology",
+      "Family_biological_and_legal_relations",
+      "Household_budget_membership",
+      "Culture_Language_Religion_actual_relations",
+      "private_property_owner",
+      "real_current_position",
+      "real_home_goods_and_skills"
+    ]
+  },
+  "physical_polity_query": {
+    "candidate_actors": "all_alive_sapient_ActorIds_all_ages_Human_or_uplifted_animal",
+    "non_sapient_animals": "skip_not_auto_uplift_or_citizenship",
+    "position_source": "same_snapshot_resolved_current_world_pose_from_actual_container_transform_chain_not_home_citizenship_or_owner",
+    "indices": [
+      "EffectiveDrySovereigntyIndex",
+      "EffectiveSettlementServiceIndex"
+    ],
+    "boundary_point_rule": "frozen_half_open_regions_and_stable_surface_primitive_order_one_unique_result",
+    "default_exclusions": [
+      "airborne_flight",
+      "falling",
+      "water_surface_or_submerged_without_land_jurisdiction",
+      "TERRAIN_ENTRAPPED",
+      "PEAK_ENCROACHED",
+      "no_effective_local_polity"
+    ],
+    "State_and_settlement_inconsistent": "JURISDICTION_CONFLICT_reject_not_join_conflicting_pair",
+    "state_and_settlement_found": "change_explicit_citizenship_and_registration",
+    "state_only": "change_citizenship_preserve_old_registration_with_cross_country_qualification_preview",
+    "unassigned_settlement_only": "change_registration_no_state_spawn",
+    "fully_unclaimed": "skip_no_state_creation"
+  },
+  "local_membership_brush": {
+    "tool": "join_local_polity",
+    "shapes": [
+      "circle",
+      "square"
+    ],
+    "continuous_stroke": "canonical_swept_area_not_mouse_event_count",
+    "selection": "freeze_exact_committed_selectionTick_actor_ids_and_actual_target_pairs_on_stroke_release",
+    "dedup": "ActorId_one_pair_per_stroke",
+    "multi_world_snapshot_merge": false,
+    "mode_default": [
+      "citizenship_to_actual_state_if_present",
+      "registration_to_actual_settlement_if_present"
+    ],
+    "IsCivilAdult_gate": false,
+    "all_ages_included": true,
+    "preview_fields": [
+      "exact_actor_ids_and_target_pairs",
+      "skipped_actor_reasons",
+      "away_home_and_family_guardian_risks",
+      "old_crown_city_offices",
+      "old_army_service_and_equipment_wages",
+      "contracts_tax_and_lease_changes"
+    ],
+    "position_membership_boundary_or_candidate_set_change_after_preview": "stale_repreview_no_silent_add_skip_or_substitution",
+    "event": "GodMembershipReassigned_not_fake_completed_migration_or_assent",
+    "creates_culture_language_religion_goods_housing_jobs": false
+  },
+  "shared_member_transition_plan": {
+    "default_old_domestic_service_policy": "END_OLD_DOMESTIC_SERVICE",
+    "default_service_effect": "close_old_army_membership_service_state_and_future_pay_interval_no_join_destination_army",
+    "retained_foreign_service_requires": [
+      "existing_explicit_actual_legal_contract",
+      "preview_explicit_retain_foreign_service_option",
+      "one_unique_valid_ArmyRef",
+      "current_service_state_rights_and_access"
+    ],
+    "service_preserves": [
+      "earned_old_wage_debt",
+      "old_equipment_owner",
+      "real_return_custody_task",
+      "actual_skill_injury_and_previous_work"
+    ],
+    "service_transition_is_faked_voluntary_desertion": false,
+    "army_and_citizenship_statistics": "separate_dimensions_not_two_Army_memberships_or_old_citizenship_copy",
+    "office_loss": "explicit_GodOfficeQualificationRevoked_then_final_batch_crown_regent_elector_transition_not_false_abdication",
+    "guardianship": "existing_family_preserved_actual_authority_rechecked_no_fake_guardian_spawn",
+    "household": "retain_real_budget_and_members_distinct_citizenship_not_public_money_merge",
+    "lease": "old_scope_revision_invalidates_commands_explicit_shrink_or_revoke_no_target_expansion_or_expiry_refill",
+    "tax": "committed_tick_effective_future_assessment_old_real_obligations_and_paid_amounts_preserved_no_double_charge",
+    "unwiped_undelivered_goods": "retain_actual_Actor_custody_no_teleport_to_old_or_new_warehouse_reassign_real_delivery_or_return_task",
+    "executed_work": "preserve_actual_work_and_effect_ids_earned_wages_no_cancel_refund"
+  },
+  "god_state_foundation": {
+    "tool": "found_state_here",
+    "mode": "GOD_DIRECT_not_AI_majority_foundation",
+    "founder_guards": [
+      "alive_existing_CivicActor",
+      "IsCivilAdult_fixed_species",
+      "existing_valid_Culture_membership",
+      "actual_dry_legal_support",
+      "unassigned_sovereignty_and_legal_local_claims",
+      "not_peak_flight_water_or_InvalidOccupancyHazard"
+    ],
+    "one_real_founder_sufficient": true,
+    "animal_with_learned_human_culture_equal_eligibility": true,
+    "stages": [
+      "reuse_actual_member_unassigned_Settlement_or_register_PROVISIONAL_CAMP_at_real_minimum_supported_anchor",
+      "create_new_ordinary_duchy_State_CrownOffice_and_actual_founder_incumbent_with_Dynasty_root_if_required"
+    ],
+    "same_transaction": true,
+    "camp": "administrative_registration_of_actual_founder_not_physical_tent_or_formal_CITY",
+    "initial_claim": {
+      "region": "current_legal_supported_dry_surface_primitive_and_actual_body_clearance_support_intersected_cells",
+      "sample_maximum_cells": 16,
+      "exclude": [
+        "foreign_sovereignty",
+        "unauthorized_private_title",
+        "wet_surface",
+        "high_peak"
+      ],
+      "remaining_region_must_support_complete_body": true,
+      "fixed_radius_or_large_empty_domain": false,
+      "later_expansion": "real_service_project_lifecycle_algorithm"
+    },
+    "new_subjects": "founder_only_other_existing_people_require_explicit_membership_operation",
+    "ordinary_foundation_votes": "retained_only_for_regular_lawful_AI_foundation_no_fake_votes_in_God_mode",
+    "events": [
+      "GodStateFoundation",
+      "PlayerAppointedInitialCrown",
+      "GodMembershipReassigned_if_old_citizenship_changed"
+    ],
+    "new_state_rank": "duchy",
+    "religion_empire_approval_granted": false,
+    "new_official_culture": "reference_founder_actual_existing_Culture_not_new_CultureId",
+    "naming": "actual_existing_language_capacity_or_stable_identifier_no_new_Language",
+    "public_account_initial_balance": 0,
+    "public_inventory_initial_quantity": 0,
+    "new_physical_city_square_house_clothes_food_army_tech_or_machine": false,
+    "old_office_transition": "explicit_final_set_God_qualification_revocation_and_true_succession",
+    "retries": "same_CommandId_returns_same_StateRef_CampRef_DynastyRef_and_receipt_no_duplicate_entities"
+  },
+  "city_state_assignment": {
+    "tool": "assign_city_to_state",
+    "selection": "City_or_Settlement_then_existing_State_by_stable_typed_Refs_two_local_draft_clicks",
+    "default_components": [
+      "administrative_parent_state",
+      "explicit_existing_city_legal_domain_sovereignty"
+    ],
+    "default_registered_resident_citizenship_change": false,
+    "optional_include_registered_resident_citizenship": "explicit_preview_toggle_current_registered_community_not_visitors_or_just_physical_people_can_include_away_members",
+    "source_domain": "actual_full_existing_legal_city_district_and_retained_territory_titles_not_bounding_rectangle_road_extension_or_owner_property_roster",
+    "archived_city_or_state_target": false,
+    "foreign_title_or_other_city_full_core_overlap": "reject_or_requires_separate_explicit_territorial_transition_not_silent_capture",
+    "city_public_corporate_owner": "same_CityRef_owner_not_destination_ruler_private_property",
+    "source_state_and_third_party_owner_preserved": true,
+    "city_public_account_balance": "preserve_absolute_balance_no_destination_state_duplicate_deposit",
+    "changes": [
+      "city_administrative_parent",
+      "explicit_city_domain_sovereignty",
+      "public_controller_and_tax_authority",
+      "actual_office_qualification_capital_seats",
+      "direct_formal_city_rank_count",
+      "empire_charter_grant_compatibility",
+      "Army_responsibility_access_supply",
+      "control_scope_lease_revision",
+      "source_state_continuation_or_wind_down"
+    ],
+    "changes_do_not_grant": [
+      "new_person",
+      "culture_language_or_religion",
+      "housing_goods_equipment_uniform",
+      "imperial_approval",
+      "new_Army_or_automatic_private_transfer"
+    ],
+    "capital_loss": "existing_real_qualified_community_or_explicit_capitalless_temporary_state_no_palace_creation",
+    "water_title_transfer": "existing_retained_legal_domain_only_no_effective_service_or_dry_land_grant",
+    "same_target_and_no_optional_change": "explicit_noop_receipt_no_tax_or_history_duplicate",
+    "event": "GodCityStateAssignment_not_false_treaty",
+    "source_last_city": "evaluate_real_state_continuation_not_city_count_alone",
+    "rank_policy": {
+      "current_direct_qualifying_city": [
+        "real_living_members",
+        "functional_CitySquare",
+        "real_housing_and_basic_services",
+        "effective_dry_domain",
+        "CITY_charter_and_direct_state_relation"
+      ],
+      "damaged_all_buildings_lost": "charter_preserved_not_current_qualifying_for_promotion",
+      "default_vested_rank": "retain_already_lawfully_granted_rank_when_capacity_falls_no_instant_demote",
+      "explicit_rank_demotion": "only_valid_existing_charter_procedure_and_transition_preview",
+      "rank_grants_new_stock_or_admin_capacity": false
+    }
+  },
+  "polity_lifecycle_interface": {
+    "Settlement_physical_status": [
+      "OPERABLE",
+      "DAMAGED",
+      "STRANDED",
+      "LANDLESS"
+    ],
+    "Community_status": [
+      "CONTINUING",
+      "DEPOPULATED",
+      "WINDING_DOWN",
+      "ARCHIVED"
+    ],
+    "City_is": "same_SettlementId_with_CITY_charter_not_second_community_count",
+    "all_buildings_lost": "DAMAGED_if_real_community_continues_no_instant_archive",
+    "all_effective_dry_land_lost": "LANDLESS_effective_service_revoked_no_auto_membership_erasure",
+    "sovereignty": "valid_retained_State_title_separate_from_EffectiveDrySovereigntyIndex",
+    "restore_land_while_State_continues": "valid_title_may_reenter_dry_index_no_automatic_city_service_building_route_restore",
+    "restore_land_after_archival": "never_reactivate_old_polity_Refs",
+    "State_wind_down": "actual_no_effective_living_constituency_or_real_valid_member_State_continuation_not_crown_vacancy_or_color_area",
+    "debts_estates_contracts": "survive_asset_wind_down_explicit_settlement_no_erasure",
+    "State_operation_requires": "actual_lawful_nonpeak_dry_governing_anchor_or_real_effective_member_State_governance_not_positive_dry_title_area_alone",
+    "State_anchor_lost": "displaced_and_reduced_actual_authority_under_settlement_lifecycle_policy_no_free_administrator_or_capital",
+    "external_gestation_continuation": "only_valid_saved_living_steward_and_actual_care_supports_continuation_never_population_or_phantom_government_by_unstewarded_egg",
+    "birth_after_archival": "does_not_reactivate_archived_State_or_City_assign_only_current_valid_steward_community_or_unassigned_with_history"
+  },
+  "control_lease_interface": {
+    "authority": "civic_control_v1.control_lease_contract",
+    "active_leases_per_actor_max": 1,
+    "selection_is_control_ownership": false,
+    "God_political_operation_requires_actor_lease": false,
+    "God_operation_checks_restricted_mode_tool_permission": true,
+    "membership_revision_change": "explicit_shrink_or_revoke_invalid_targets_and_bump_lease_revision_preserve_expiry_no_new_members",
+    "late_input": "reject_old_scope_lease_revision_world_session",
+    "release": "restore_same_actor_planner_preserve_actual_physics_biology_goods_work_and_injury",
+    "meta_intent_not_position_animation": "bounded_high_level_task_order_real_action_algorithm_authority",
+    "same_player_different_scope_preemption": false
+  },
+  "command_envelope_fields": [
+    "CommandId",
+    "WorldId",
+    "SessionGeneration",
+    "DraftGeneration",
+    "SelectionTick",
+    "ExpectedRootRevision",
+    "ProfileHashes",
+    "PermissionRef",
+    "SortedTargetRefs",
+    "ExpectedEntityAndSpatialRevisions",
+    "PreparedReadSetHash",
+    "ConsequenceHash",
+    "PreviewToken"
+  ],
+  "idempotency": {
+    "receipt_and_effects_same_publish": true,
+    "same_id_same_hash": "existing_original_receipt_no_replay",
+    "same_id_different_hash": "IDEMPOTENCY_CONFLICT",
+    "failed_prepare_has_committed_receipt": false,
+    "cancel_draft_undoes_committed_effects": false
+  },
+  "error_precedence": [
+    "world_session_draft_identity",
+    "trusted_permission",
+    "profile_schema",
+    "target_alive_archived",
+    "selection_range_revision",
+    "qualification_space_claims",
+    "consequence_changed",
+    "allocation_or_persistent_publish_failure"
+  ],
+  "errors": [
+    "WORLD_MISMATCH",
+    "SESSION_REPLACED",
+    "DRAFT_SUPERSEDED",
+    "PERMISSION_DENIED",
+    "PROFILE_MISMATCH",
+    "TARGET_ARCHIVED",
+    "TARGET_DEAD",
+    "STALE_SELECTION",
+    "JURISDICTION_CONFLICT",
+    "FOUNDATION_REQUIRES_REAL_CULTURE",
+    "FOUNDATION_REQUIRES_CIVIL_ADULT",
+    "FOUNDATION_NOT_UNCLAIMED_DRY_SUPPORT",
+    "THIRD_PARTY_CLAIM_CONFLICT",
+    "CITY_DOMAIN_CONFLICT",
+    "OFFICE_TRANSITION_UNRESOLVED",
+    "SERVICE_TRANSITION_UNRESOLVED",
+    "CONTROL_OCCUPIED",
+    "REQUIRES_REPREVIEW",
+    "IDEMPOTENCY_CONFLICT",
+    "PREPARE_BUDGET_EXCEEDED",
+    "PERSISTENT_PUBLISH_FAILED"
+  ],
+  "performance": {
+    "indices": [
+      "SpatialOccupancyIndex",
+      "SupportDependencyIndex",
+      "ContainerAndAttachmentIndex",
+      "JurisdictionMembershipIndex",
+      "ReverseRouteWaterAndPoliticalDependencyIndices"
+    ],
+    "moving_and_container_positions": "indexed_authoritative_current_pose_with_interval_revision",
+    "complexity": "changed_cells_plus_actual_hit_objects_container_closure_dependency_edges_and_affected_graph_work",
+    "global_sea_cut_may_require_large_graph_work": true,
+    "isolated_worker_candidate_can_write_authority": false,
+    "all_chunk_candidates_required_before_atomic_publish": true,
+    "cache_index_is_truth": false,
+    "thread_camera_LOD_affects_target_or_result": false
+  },
+  "persistence": {
+    "save_only_committed_root": true,
+    "fields": [
+      "actual_geometry_materials_and_canonical_profile",
+      "active_and_removed_object_refs",
+      "physical_loss_events_absolute_quantities",
+      "Actor_and_Gestation_hazard_poses_state_debts_and_deadlines",
+      "retained_State_title_and_effective_service_rebuild_source",
+      "civic_membership_history_and_Army_service",
+      "City_State_lifecycle_and_asset_wind_down",
+      "office_election_estate_and_guardian_state",
+      "control_lease_history_and_task_progress",
+      "CommandReceiptIndex",
+      "vegetation_generator_dose_and_sampling_epoch"
+    ],
+    "load": "validate_isolated_candidate_publish_new_session_no_command_replay_free_stock_or_archived_polity_resurrection",
+    "old_session_lease": "invalid_restore_AI_history_preserved",
+    "UI_drafts": "separate_local_session_state_not_authoritative_world"
+  },
+  "commands": [
+    {
+      "id": "PreviewGeographyMutation",
+      "target_page": "world",
+      "guards": [
+        "snapshot_only",
+        "valid_current_profile",
+        "trusted_tool_visibility",
+        "canonical_geometry_candidate"
+      ],
+      "effect": "exact_changed_type_footprint_and_full_objects_life_hazard_polity_loss_closure",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "CommitGeographyMutation",
+      "target_page": "world",
+      "guards": [
+        "trusted_godterrain_permission",
+        "matching_world_session_draft",
+        "exact_preview_dependencies_and_spatial_interval_revisions",
+        "complete_read_write_set",
+        "known_actual_losses_and_hazards",
+        "preallocated_atomic_root"
+      ],
+      "effect": "geometry_type_wipe_life_hazards_goods_loss_city_state_lifecycle_and_receipt_one_publish",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewGodStateFoundation",
+      "target_page": "person",
+      "guards": [
+        "existing_alive_civil_adult_actor",
+        "active_existing_culture_relationship",
+        "actual_supported_unassigned_dry_anchor",
+        "current_claims_and_offices"
+      ],
+      "effect": "same_actor_camp_and_state_foundation_candidate_no_world_write",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodFoundStateFromActor",
+      "target_page": "person",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_foundation_preview",
+        "existing_alive_IsCivilAdult_civic_actor",
+        "existing_valid_culture_not_new_genesis",
+        "unclaimed_supported_dry_anchor_not_peak_or_hazard",
+        "claims_and_whole_dependency_closure",
+        "old_office_membership_service_and_lease_transition"
+      ],
+      "effect": "real_actor_optional_provisional_camp_new_duchy_and_crown_no_formal_city_or_stock",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewLocalMembershipStroke",
+      "target_page": "world",
+      "guards": [
+        "one_committed_snapshot",
+        "canonical_stroke_area",
+        "actual_resolved_container_world_pose",
+        "effective_jurisdiction_indices"
+      ],
+      "effect": "all_age_sapient_actor_target_pairs_exclusions_and_civic_transition_preview",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "CommitLocalMembershipStroke",
+      "target_page": "world",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_actor_pair_snapshot_and_spatial_versions",
+        "no_new_unpreviewed_actor_or_position_change",
+        "no_jurisdiction_conflict",
+        "final_batch_office_army_family_guardian_lease_and_contract_closure"
+      ],
+      "effect": "actual_local_polity_memberships_with_explicit_god_event_no_teleport_or_goods",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewCityStateAssignment",
+      "target_page": "city",
+      "guards": [
+        "existing_nonarchived_city_or_settlement",
+        "existing_nonarchived_continuing_target_state",
+        "same_snapshot_legal_domain_and_registered_community"
+      ],
+      "effect": "city_parent_sovereignty_optional_citizenship_and_full_asset_service_capital_rank_preview",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodTransferCityToState",
+      "target_page": "city",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_city_state_legal_domain_preview",
+        "no_foreign_title_or_other_core_silent_capture",
+        "whole_existing_city_and_legal_territory_domain",
+        "tax_public_account_office_army_empire_lease_lifecycle_transitions"
+      ],
+      "effect": "administrative_parent_and_explicit_city_domain_sovereignty_optional_registered_citizenship_one_publish",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewCivicMembershipBatch",
+      "target_page": "person",
+      "guards": [
+        "typed_existing_target_state_or_settlement_or_explicit_none",
+        "all_age_existing_civic_actor_ids",
+        "current_entity_roles_service_guardianship_and_private_stock"
+      ],
+      "effect": "explicit_target_member_transitions_same_shared_policy_as_local_brush",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodSetCivicMembershipBatch",
+      "target_page": "person",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_selected_actor_list_and_target_preview",
+        "no_archived_target",
+        "final_scope_office_army_guardian_lease_and_contract_consistency"
+      ],
+      "effect": "citizenship_or_registered_settlement_or_both_no_location_property_genome_change",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodSeparateCityAsState",
+      "target_page": "city",
+      "guards": [
+        "trusted_player_god_capability",
+        "real_nonarchived_city_community",
+        "actual_valid_legal_domain",
+        "real_qualified_initial_incumbent_or_explicit_caretaker",
+        "existing_city_stock_and_public_owner_preserved",
+        "whole_source_state_succession_rank_empire_and_lease_preview"
+      ],
+      "effect": "same_city_new_duchy_state_explicit_separation_no_city_or_actor_spawn",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodAppointCityRepresentative",
+      "target_page": "city",
+      "guards": [
+        "trusted_player_god_capability",
+        "existing_alive_IsCivilAdult_registered_member",
+        "actual_city_qualification_and_authority",
+        "previous_office_closure_and_exact_preview"
+      ],
+      "effect": "explicit_real_representative_replacement_no_votes_or_personal_estate_transfer",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodAppointCrownIncumbent",
+      "target_page": "crown_office",
+      "guards": [
+        "trusted_player_god_capability",
+        "existing_alive_lawfully_qualified_subject",
+        "basic_immutable_maturity_regency_policy",
+        "one_incumbent_and_valid_proxy",
+        "existing_imperial_rank_grant_not_new_approval",
+        "exact_previous_office_private_estate_and_roles_preview"
+      ],
+      "effect": "player_appointed_incumbent_end_previous_authority_no_false_abdication_or_empire_grant",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodSetStateCapital",
+      "target_page": "state",
+      "guards": [
+        "trusted_player_god_capability",
+        "existing_actual_qualified_state_settlement",
+        "no_archived_or_landless_illegal_target",
+        "actual_administrative_access_and_services",
+        "capital_representative_obligations_preview"
+      ],
+      "effect": "capital_administrative_reference_change_no_palace_city_square_or_stock_creation",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json"
+    }
+  ],
+  "command_count": 14,
+  "proposed_global_tools": [
+    {
+      "id": "join_local_polity",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "加入当地",
+        "en": "Join Local Polity",
+        "de": "Örtlicher Gemeinschaft beitreten"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "world",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "PreviewLocalMembershipStroke",
+          "CommitLocalMembershipStroke"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "found_state_here",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "在此立国",
+        "en": "Found a State Here",
+        "de": "Hier einen Staat gründen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "person",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "PreviewGodStateFoundation",
+          "GodFoundStateFromActor"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "assign_city_to_state",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "城市归属",
+        "en": "Assign City to State",
+        "de": "Stadt einem Staat zuordnen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "city",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "PreviewCityStateAssignment",
+          "GodTransferCityToState"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "set_civic_membership",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定归属",
+        "en": "Assign Civic Membership",
+        "de": "Bürgerzugehörigkeit zuweisen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "person",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "PreviewCivicMembershipBatch",
+          "GodSetCivicMembershipBatch"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "separate_city_as_state",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "城市独立",
+        "en": "Separate City as State",
+        "de": "Stadt als Staat abspalten"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "city",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "GodSeparateCityAsState"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "appoint_city_representative",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定城市代表",
+        "en": "Appoint City Representative",
+        "de": "Stadtvertretung ernennen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "city",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "GodAppointCityRepresentative"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "appoint_crown_incumbent",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定统治者",
+        "en": "Appoint Ruler",
+        "de": "Herrscher ernennen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "crown_office",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "GodAppointCrownIncumbent"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    },
+    {
+      "id": "set_state_capital",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定首都",
+        "en": "Set Capital",
+        "de": "Hauptstadt bestimmen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "state",
+      "route": {
+        "kind": "command_registry",
+        "commands": [
+          "GodSetStateCapital"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
+    }
+  ],
+  "proposed_tool_count": 8,
+  "invariants": [
+    "canonical_type_changed_positive_area_not_button_name_controls_wipe",
+    "geography_type_wipe_destroys_all_hit_nonlife_objects_and_container_dependents_once",
+    "live_Actor_and_Gestation_identity_protected_not_physical_invulnerability",
+    "no_teleport_free_rescue_goods_refund_or_historical_fact_erasure",
+    "actual_position_citizenship_registration_service_and_property_are_distinct",
+    "all_age_CivicActors_eligible_for_membership_nonsapient_animals_not_auto_uplifted",
+    "one_membership_target_pair_per_Actor_per_frozen_stroke",
+    "one_real_cultured_adult_can_God_found_zero_stock_Camp_and_duchy_no_formal_city",
+    "ordinary_lawful_assent_and_God_intervention_provenance_never_forged_or_mixed",
+    "city_assignment_domain_not_property_roster_optional_citizenship_is_explicit",
+    "final_batch_state_controls_succession_not_intermediate_callback_order",
+    "one_active_Army_membership_and_one_ControlLease_per_Actor",
+    "archived_polities_are_not_resurrected_by_geography_or_same_name",
+    "loss_debt_custody_obligation_and_absolute_food_energy_survive_control_edits",
+    "one_snapshot_read_set_full_preallocated_write_set_one_committed_root_and_receipt"
+  ],
+  "acceptance_cases": [
+    {
+      "id": "G001",
+      "scenario": "soil_to_hill_on_house_corner",
+      "expected": "full_house_foundation_contained_nonlife_deleted_exact_loss_all_alive_occupants_preserved_at_world_pose",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G002",
+      "scenario": "sand_to_deep_ocean_with_live_people",
+      "expected": "sand_objects_and_worn_carried_goods_deleted_actors_enter_actual_fall_water_hazard_no_teleport",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G003",
+      "scenario": "repeat_same_canonical_geography_stroke",
+      "expected": "no_type_wipe_no_repeat_loss_or_product_grant",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G004",
+      "scenario": "maple_soil_theme_to_cherry_theme",
+      "expected": "no_geography_wipe_preserve_real_tree_fruit_reservations_future_habitat_changes_only",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G005",
+      "scenario": "same_type_height_raise_or_ramp_slope_change",
+      "expected": "no_type_wipe_but_actual_support_collision_thermal_and_route_consequences",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G006",
+      "scenario": "ramp_corner_crosses_hill_or_peak_threshold",
+      "expected": "changed_positive_area_polygon_not_whole_cell_boolean_no_false_whole_cell_deletion",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G007",
+      "scenario": "sea_lake_topology_only_changed_far_port",
+      "expected": "no_type_wipe_but_remote_ship_route_certificate_revalidated_or_revoked",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G008",
+      "scenario": "large_building_anchor_outside_stroke_corner_inside",
+      "expected": "whole_stable_building_deleted_not_missed_by_anchor_index",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G009",
+      "scenario": "road_route_crosses_changed_region",
+      "expected": "stable_hit_road_sections_deleted_all_dependent_route_certificates_revoked_not_lod_cut",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G010",
+      "scenario": "moving_car_enters_stroke_after_preview",
+      "expected": "spatial_interval_version_rejects_preview_no_unpreviewed_vehicle_loss",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G011",
+      "scenario": "ship_cargo_people_and_embryo_eggs_inside_deleted_boat",
+      "expected": "boat_all_nonlife_cargo_deleted_live_actor_and_live_gestation_pose_resolved_before_parent_removal",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G012",
+      "scenario": "person_in_far_room_of_house_whose_corner_changed",
+      "expected": "container_closure_preserves_body_but_deletes_attached_nonlife_goods_if_inside_destroyed_ancestor",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G013",
+      "scenario": "city_owned_goods_are_physically_far_away",
+      "expected": "not_deleted_by_owner_roster_or_city_membership",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G014",
+      "scenario": "person_tool_and_winter_clothes_hit_by_geography_change",
+      "expected": "absolute_inventory_loss_and_capacity_cold_consequences_visible_no_secret_keep_or_reequip",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G015",
+      "scenario": "live_pregnant_actor_hit_with_nonlife_food_carried",
+      "expected": "internal_gestation_and_absolute_biology_preserved_food_goods_lost_no_embryo_duplication",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G016",
+      "scenario": "fertilized_live_egg_and_unfertilized_product_egg_in_same_nest",
+      "expected": "GestationRef_not_erased_but_actual_support_hazard_product_egg_deleted_one_unique_reserve",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G017",
+      "scenario": "tree_has_wood_fruit_bloom_and_harvest_reservation",
+      "expected": "one_tree_loss_no_wood_or_fruit_refund_reservations_cancel_once_no_lod_reload_regrowth",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G018",
+      "scenario": "forage_ground_resource_reserve_under_changed_type",
+      "expected": "old_production_integrated_once_then_hit_object_removed_and_reserve_lost_no_partial_old_rule_escape",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G019",
+      "scenario": "mineral_outcrop_destroyed_then_restore_geometry",
+      "expected": "no_mineral_refill_source_provenance_unchanged_active_loss_remains",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G020",
+      "scenario": "actor_covered_by_raised_solid_terrain",
+      "expected": "TERRAIN_ENTRAPPED_same_pose_no_snap_to_new_top_legal_route_and_IK_invalid",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G021",
+      "scenario": "peak_added_over_ground_actor_or_flying_bird",
+      "expected": "PEAK_ENCROACHED_involuntary_invalid_occupancy_not_legal_navigation_flight_or_new_placement",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G022",
+      "scenario": "stranded_actor_has_no_route_but_valid_platform",
+      "expected": "keeps_real_support_rescue_requires_real_path_no_forced_shore_relocation",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G023",
+      "scenario": "hazard_actor_dies_later_with_deleted_clothes",
+      "expected": "one_real_cause_death_estate_excludes_destroyed_goods_crown_resolves_against_final_alive_set",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G024",
+      "scenario": "all_city_buildings_deleted_with_real_members_surviving",
+      "expected": "CITY_id_and_charter_continuation_physical_DAMAGED_no_instant_archive_or_free_rebuild",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G025",
+      "scenario": "all_city_dry_land_replaced_by_water",
+      "expected": "LANDLESS_effective_service_empty_old_membership_and_valid_retained_state_title_separate",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G026",
+      "scenario": "land_restored_after_city_or_state_archival",
+      "expected": "new_live_objects_required_archived_ids_not_resurrected_city_service_never_auto_restored",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G027",
+      "scenario": "single_cultured_adult_actor_on_unclaimed_dry_ground",
+      "expected": "same_actor_Camp_new_duchy_crown_Dynasty_no_formal_CitySquare_buildings_food_army_or_votes",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G028",
+      "scenario": "uplifted_cultured_mature_animal_founds_state",
+      "expected": "same_eligibility_as_human_with_real_species_body_and_civic_maturity_no_new_language",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G029",
+      "scenario": "uncultured_or_minor_actor_founding",
+      "expected": "reject_no_fake_culture_maturity_or_replacement_founder",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G030",
+      "scenario": "founder_inside_foreign_sovereignty_or_private_claim_without_permission",
+      "expected": "reject_requires_separate_explicit_separation_or_claim_no_silent_land_theft",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G031",
+      "scenario": "old_ruler_founds_new_state_on_unclaimed_land",
+      "expected": "explicit_God_old_office_qualification_change_final_set_succession_no_fake_abdication_or_two_effective_crowns",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G032",
+      "scenario": "repeat_foundation_same_CommandId",
+      "expected": "return_same_StateRef_CampRef_receipt_no_second_state_account_Dynasty",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G033",
+      "scenario": "local_membership_brush_hits_child_and_sapient_animal",
+      "expected": "both_can_join_no_IsCivilAdult_gate_no_body_family_household_or_skill_reset",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G034",
+      "scenario": "local_membership_brush_hits_nonsapient_animal",
+      "expected": "skip_explain_not_automatic_uplift_or_citizenship",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G035",
+      "scenario": "local_brush_actor_home_city_differs_actual_city",
+      "expected": "target_actual_resolved_pose_jurisdiction_not_home_or_current_citizenship",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G036",
+      "scenario": "local_brush_people_inside_house_car_container",
+      "expected": "actual_world_pose_resolved_same_snapshot_no_outdated_container_anchor_roster",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G037",
+      "scenario": "local_brush_crosses_boundary_and_hits_same_actor_twice",
+      "expected": "one_actor_one_selection_tick_one_target_pair_no_multiple_country_join",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G038",
+      "scenario": "local_brush_water_flight_peak_hazard_or_unclaimed",
+      "expected": "skip_explicit_reason_not_create_state_or_land_city_membership_from_projected_color",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G039",
+      "scenario": "city_service_target_and_dry_sovereignty_conflict",
+      "expected": "JURISDICTION_CONFLICT_no_inconsistent_partial_membership",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G040",
+      "scenario": "actor_moves_or_new_actor_enters_after_membership_preview",
+      "expected": "STALE_SELECTION_or_REQUIRES_REPREVIEW_no_silent_substitution",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G041",
+      "scenario": "membership_change_hits_ruler_successors_and_guardian_in_one_batch",
+      "expected": "final_qualification_set_resolves_crown_and_real_guardianship_no_intermediate_candidate_or_fake_guardian",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G042",
+      "scenario": "soldier_joins_new_state",
+      "expected": "default_end_old_domestic_service_one_army_membership_no_new_equipment_old_wages_and_borrowed_owner_return_task_preserved",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G043",
+      "scenario": "foreign_service_requested_without_valid_actual_contract",
+      "expected": "reject_or_explicit_default_release_not_implicit_foreign_army_double_count",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G044",
+      "scenario": "city_transfer_default_has_foreign_visitors_and_away_registered_members",
+      "expected": "administrative_domain_transfer_only_citizenship_preserved_optional_registered_list_distinct_from_local_physical_brush",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G045",
+      "scenario": "city_transfer_legal_domain_contains_submerged_retained_title",
+      "expected": "transfer_existing_legal_domain_no_generated_effective_city_land_or_service",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G046",
+      "scenario": "city_transfer_touches_third_party_property_state_owned_treasury_and_shipments",
+      "expected": "private_and_source_state_owner_preserved_city_corporate_owner_same_tax_obligations_once_no_physical_move",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G047",
+      "scenario": "transfer_last_city_of_source_state",
+      "expected": "real_continuation_keeps_state_empty_effective_constituency_triggers_WINDING_DOWN_no_debt_erasure",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G048",
+      "scenario": "transfer_city_was_source_capital_and_empire_member",
+      "expected": "capital_rank_elector_charter_and_grant_compatibility_rechecked_no_auto_palace_or_imperial_approval",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G049",
+      "scenario": "scope_membership_changes_with_active_actor_control_lease",
+      "expected": "shrink_or_revoke_explicitly_lease_revision_bumped_expiry_not_refilled_old_input_rejected_no_new_target_capture",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G050",
+      "scenario": "cancel_two_click_city_assignment_or_failed_first_meta_order",
+      "expected": "draft_only_cancel_world_unchanged_failed_order_leaves_no_empty_control_lease",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G051",
+      "scenario": "old_world_session_draft_or_command_payload_conflict",
+      "expected": "reject_before_effect_or_private_info_cross_world_leak_same_id_different_hash_IDEMPOTENCY_CONFLICT",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G052",
+      "scenario": "out_of_memory_or_partial_worker_result_or_save_failure",
+      "expected": "no_partial_world_publish_or_continue_change_no_uncommitted_receipt",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G053",
+      "scenario": "save_load_with_hazard_live_gestation_and_polity_winding_down",
+      "expected": "exact_absolute_state_deadlines_and_events_restore_no_command_replay_refill_or_old_session_control",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G054",
+      "scenario": "city_same_state_assignment_without_optional_membership_change",
+      "expected": "explicit_noop_receipt_no_duplicate_tax_or_foundation_history",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G055",
+      "scenario": "archived_city_named_same_as_new_city",
+      "expected": "stable_refs_prevent_assignment_to_new_name_match_archived_target_rejected",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G056",
+      "scenario": "occupied_control_from_State_then_Family_or_Army_order",
+      "expected": "exclusive_Actor_lease_no_preemption_even_same_player_explicit_release_required",
+      "status": "future_runtime_acceptance_not_executed"
+    }
+  ],
+  "acceptance_case_count": 56,
+  "integration_overrides": [
+    {
+      "contract": "data/contracts/terrain_access_v1.json",
+      "fields": [
+        "removal.retains_current",
+        "ground_resources.partial_damage",
+        "high_peak"
+      ],
+      "override": "when_actual_canonical_type_changes_apply_mandatory_full_hit_object_wipe_and_InvalidOccupancyHazard_else_old_geometry_damage_rules"
+    },
+    {
+      "contract": "data/contracts/civic_control_v1.json",
+      "fields": [
+        "first_state_and_ruler",
+        "boundary_edit",
+        "meta_control",
+        "clear"
+      ],
+      "override": "retain_ordinary_lawful_routes_add_distinct_GOD_DIRECT_foundation_membership_and_city_assignment_mandatory_geo_wipe_not_ordinary_clear"
+    },
+    {
+      "contract": "data/contracts/life_genetics_v1.json",
+      "fields": [
+        "authority",
+        "animal_ecology",
+        "breeding",
+        "persistence"
+      ],
+      "override": "external_live_Gestation_protected_direct_erase_actual_support_hazard_internal_biology_not_external_goods_peak_encroachment_saved_not_legal_route"
+    },
+    {
+      "contract": "data/contracts/surface_ecology.json",
+      "fields": [
+        "theme_change",
+        "plant_mutation",
+        "generator_source"
+      ],
+      "override": "theme_only_preserves_tree_stock_geography_type_wipe_deletes_hit_tree_plant_stock_GodVegetationSource_independent"
+    }
+  ]
+}

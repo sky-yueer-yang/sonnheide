@@ -73,7 +73,7 @@
       }
     }
   ],
-  "tool_count": 92,
+  "tool_count": 101,
   "tools": [
     {
       "id": "inspect",
@@ -380,14 +380,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "shallow_water",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "shallow_water",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "close_ocean",
@@ -404,14 +411,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "close_ocean",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "close_ocean",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "deep_ocean",
@@ -428,14 +442,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "deep_ocean",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "deep_ocean",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "sand",
@@ -452,14 +473,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "sand",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "sand",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "soil",
@@ -476,14 +504,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "soil",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "soil",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "hill",
@@ -500,14 +535,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "hill",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "hill",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "mountain",
@@ -524,14 +566,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "mountain",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "mountain",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "high_peak",
@@ -548,14 +597,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "high_peak",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "high_peak",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "raise_lower",
@@ -572,14 +628,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "raise_lower",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "raise_lower",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "level",
@@ -596,14 +659,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "level",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "level",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "ramp",
@@ -620,14 +690,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "ramp",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "ramp",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "ramp",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "remove_ramp",
@@ -644,14 +721,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "ramp",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "remove_ramp",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "remove_ramp",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "smooth",
@@ -668,14 +752,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "smooth",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "smooth",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "copy_surface",
@@ -692,14 +783,21 @@
       "world_mutation_policy": "typed_draft_preview_atomic_commit",
       "primary_page": "world",
       "route": {
-        "kind": "planned_domain_route",
-        "commands": [],
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGeographyMutation",
+          "CommitGeographyMutation"
+        ],
         "domain": "terrain_ecology",
         "action_id": "copy_surface",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
-      }
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "registry": "data/contracts/civic_control_v1.json",
+        "operator_id": "copy_surface",
+        "god_control_validator": "data/contracts/god_control_v1.json"
+      },
+      "geography_type_change_wipe": true
     },
     {
       "id": "biome",
@@ -2342,6 +2440,254 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true
       }
+    },
+    {
+      "id": "join_local_polity",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "加入当地",
+        "en": "Join Local Polity",
+        "de": "Örtlicher Gemeinschaft beitreten"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "world",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewLocalMembershipStroke",
+          "CommitLocalMembershipStroke"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "join_local_polity"
+      }
+    },
+    {
+      "id": "found_state_here",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "在此立国",
+        "en": "Found a State Here",
+        "de": "Hier einen Staat gründen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "person",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewGodStateFoundation",
+          "GodFoundStateFromActor"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "found_state_here"
+      }
+    },
+    {
+      "id": "assign_city_to_state",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "城市归属",
+        "en": "Assign City to State",
+        "de": "Stadt einem Staat zuordnen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "city",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewCityStateAssignment",
+          "GodTransferCityToState"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "assign_city_to_state"
+      }
+    },
+    {
+      "id": "set_civic_membership",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定归属",
+        "en": "Assign Civic Membership",
+        "de": "Bürgerzugehörigkeit zuweisen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "person",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "PreviewCivicMembershipBatch",
+          "GodSetCivicMembershipBatch"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "set_civic_membership"
+      }
+    },
+    {
+      "id": "separate_city_as_state",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "城市独立",
+        "en": "Separate City as State",
+        "de": "Stadt als Staat abspalten"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "city",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "GodSeparateCityAsState"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "separate_city_as_state"
+      }
+    },
+    {
+      "id": "appoint_city_representative",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定城市代表",
+        "en": "Appoint City Representative",
+        "de": "Stadtvertretung ernennen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "city",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "GodAppointCityRepresentative"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "appoint_city_representative"
+      }
+    },
+    {
+      "id": "appoint_crown_incumbent",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定统治者",
+        "en": "Appoint Ruler",
+        "de": "Herrscher ernennen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "crown_office",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "GodAppointCrownIncumbent"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "appoint_crown_incumbent"
+      }
+    },
+    {
+      "id": "set_state_capital",
+      "section": "civilisation",
+      "label": {
+        "zh-CN": "指定首都",
+        "en": "Set Capital",
+        "de": "Hauptstadt bestimmen"
+      },
+      "authority": "trusted_player_god_intervention",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "shared_single_writer_prepared_preview_commit",
+      "primary_page": "state",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "GodSetStateCapital"
+        ],
+        "registry": "data/contracts/god_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "domain": "civilisation",
+        "action_id": "set_state_capital"
+      }
+    },
+    {
+      "id": "vegetation_generator",
+      "section": "terrain_ecology",
+      "label": {
+        "zh-CN": "植被生成",
+        "en": "Vegetation generator",
+        "de": "Vegetationsgenerator"
+      },
+      "authority": "explicit_player_ecology_edit_capability",
+      "global_entry": "bottom_toolbar",
+      "required_icon": false,
+      "planned_only": true,
+      "world_mutation_policy": "bounded_shared_single_writer_generation_batches",
+      "primary_page": "plant",
+      "route": {
+        "kind": "current_civic_commands",
+        "commands": [
+          "CommitVegetationDoseBatch",
+          "EndVegetationStroke"
+        ],
+        "domain": "ecology",
+        "action_id": "vegetation_generator",
+        "registry": "data/contracts/civic_control_v1.json",
+        "requires_real_handler_before_acceptance": true,
+        "implemented": false,
+        "all_mutations_use_shared_transaction_dispatcher": true
+      }
     }
   ],
   "main_menu_pure_text": true,
@@ -2365,5 +2711,9 @@
   ],
   "page_registry": "data/contracts/civic_control_v1.json#/ui/pages",
   "civic_command_registry": "data/contracts/civic_control_v1.json#/commands",
-  "handler_state": "planned_domain_routes_only_no_production_handlers_exist"
+  "handler_state": "planned_domain_routes_only_no_production_handlers_exist",
+  "algorithm_command_registry": "data/contracts/god_control_v1.json",
+  "generator_contract": "data/contracts/vegetation_generator_v1.json",
+  "geography_clear_semantics": "explicit_nonliving_wipe_with_living_hazards_and_legal_records_preserved",
+  "algorithm_revision": "ADR0015-2026-10-09"
 }

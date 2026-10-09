@@ -1,0 +1,562 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_vegetation_generator_v1",
+  "design_version": "0.8",
+  "planned_only": true,
+  "production_implemented": false,
+  "source": "docs/architecture/VEGETATION_GENERATOR_AND_DENSITY.md",
+  "decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
+  "interfaces": {
+    "surface_ecology": "data/contracts/surface_ecology.json",
+    "terrain_access": "data/contracts/terrain_access_v1.json",
+    "geography_mutation": "data/contracts/god_control_v1.json",
+    "settlement": "data/contracts/settlement_lifecycle_v1.json"
+  },
+  "tool": {
+    "id": "vegetation_generator",
+    "section": "terrain_ecology",
+    "labels": {
+      "zh-CN": "植被生成",
+      "en": "Vegetation generator",
+      "de": "Vegetationsgenerator"
+    },
+    "modes": [
+      "TREES_AND_DECOR",
+      "TREES_ONLY",
+      "DECOR_ONLY"
+    ],
+    "default": "TREES_AND_DECOR",
+    "global_entry": "bottom_toolbar",
+    "borders_outlines_rings": false,
+    "requires_probability_or_seed_entry": false,
+    "hold_increases_density": true
+  },
+  "commands": [
+    {
+      "id": "CommitVegetationDoseBatch",
+      "command_class": "world_transaction",
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "creates_Actors": false,
+      "target_page": "plant"
+    },
+    {
+      "id": "EndVegetationStroke",
+      "command_class": "ui_only",
+      "single_writer": false,
+      "mutates_world": false,
+      "arbitrary_json_overwrite": false
+    }
+  ],
+  "authority": {
+    "player_requires": "explicit_player_ecology_edit_capability",
+    "GodVegetationSource_creates_bounded_Plant_structural_biomass": true,
+    "godterrain_creates_inventory": false,
+    "direct_ItemBatch_money_animal_generation": false,
+    "initial_fruit_nectar_pollen_forage": 0,
+    "generated_timber_harvest": "actual_remaining_biomass_real_rights_access_labor_reservation_and_transport",
+    "existing_tree_or_fruit_refill": false,
+    "generated_source_event_preserved": true,
+    "wild_rule_key": "wild_vegetation_recovery",
+    "wild_rule_blocks_explicit_player_generator": false
+  },
+  "source_modes": {
+    "GOD_VEGETATION": {
+      "default_living_stage": "young",
+      "initial_woody_biomass": "frozen_species_bounded_source_definition",
+      "dead_tree": "bounded_finite_deadwood_source_no_growth",
+      "grants_warehouse_goods": false
+    },
+    "CIVIC_PLANTING": {
+      "real_inputs": [
+        "propagule",
+        "labor",
+        "path",
+        "rights"
+      ],
+      "duplicates_transferred_biomass": false
+    },
+    "WILD_RECRUITMENT": {
+      "rule": "wild_vegetation_recovery",
+      "budget": "saved_finite_ecological_candidate_budget",
+      "default_stage": "young",
+      "no_wall_time_refill": true
+    }
+  },
+  "input_clock": {
+    "domain": "EditorInputClock_not_SimTick_not_RenderFrame",
+    "slot_ms": 25,
+    "commit_batch_ms": 100,
+    "max_unverified_gap_ms": 125,
+    "kernel": "(1-u*u)^2_for_0<=u<1_else_0",
+    "dose": "sum_fixedpoint_dt*K*strength",
+    "space_interpolation": "canonical_world_arc_segments_with_conserved_time_weights",
+    "pause_world": "explicit_editing_allowed_natural_growth_stops",
+    "terminate_on": [
+      "button_up",
+      "focus_loss",
+      "hidden_window",
+      "menu_open",
+      "world_or_session_change",
+      "load"
+    ],
+    "late_wall_time_catch_up": false,
+    "receipt_key": [
+      "WorldId",
+      "SessionGeneration",
+      "StrokeId",
+      "slotIndex",
+      "batchIndex"
+    ]
+  },
+  "density": {
+    "law": "increment_delta_fraction=(1-actual_realized_fraction)*(1-exp(-new_dose/tau));no_historical_target_deficit_replay",
+    "trees_tau_editor_seconds": 6,
+    "decor_tau_editor_seconds": 3,
+    "local_bucket_m": 8,
+    "rolling_window_m": 32,
+    "max_mature_crown_projection_fraction": 0.48,
+    "max_decor_visual_ground_cover_fraction": 0.38,
+    "min_structure_margin_mm": 400,
+    "counts_existing_all_sources": true,
+    "mixed_profile_quota": "sum(count_i/cap_i)<=1_per_actual_habitat_area",
+    "uses_exact_dry_suitable_area": true,
+    "crown_window_intersection": "exact_rational_clip_of_conservative_integer_halfplane_octagon_including_outside_centers",
+    "older_overdense_trees": "not_deleted_only_block_new_generation",
+    "max_new_trees_per_batch": 8,
+    "backlog_when_blocked": 0,
+    "failed_dose": "consumed_rejected_no_future_quantity_credit",
+    "reset_tree_dose_on": [
+      "geography_wipe",
+      "explicit_tree_clear",
+      "real_completed_felling"
+    ],
+    "reset_scope": "actual_removed_root_envelope_local_epoch_no_existing_tree_or_stock_reset",
+    "law_implementation": "frozen_fixedpoint_exp_lookup",
+    "continuous_envelope_only": "1-exp(-cumulative_unblocked_dose/tau)_not_exact_discrete_population",
+    "fractional_credit": "strictly_less_than_one_tree_only_current_feasible_space_reset_on_reject_cap_clear_wipe",
+    "window_grid": {
+      "origin": "frozen_World_grid_origin",
+      "stride_mm": 8000,
+      "side_mm": 32000,
+      "tests_all_continuous_sliding_windows": false,
+      "query": "all_fixed_windows_intersecting_candidate_mature_crown_envelope"
+    },
+    "crown_octagon": {
+      "axis_bounds": "abs(dx),abs(dy)<=radius_mm",
+      "diagonal_bounds": "abs(dx+dy),abs(dx-dy)<=ceil(radius_mm*141422/100000)",
+      "rational_area_rounding": "upward",
+      "platform_float_trig_used_for_cap": false
+    }
+  },
+  "profiles": [
+    {
+      "surface_profile": "snowfield",
+      "sample_max_stems_per_1024_suitable_m2": 40,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "flower_meadow",
+      "sample_max_stems_per_1024_suitable_m2": 24,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "maple_field",
+      "sample_max_stems_per_1024_suitable_m2": 32,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "cherry_field",
+      "sample_max_stems_per_1024_suitable_m2": 24,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "wetland",
+      "sample_max_stems_per_1024_suitable_m2": 28,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "savanna",
+      "sample_max_stems_per_1024_suitable_m2": 18,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "sonnheide_sacred",
+      "sample_max_stems_per_1024_suitable_m2": 22,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "volcanic",
+      "sample_max_stems_per_1024_suitable_m2": 14,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    },
+    {
+      "surface_profile": "sand",
+      "sample_max_stems_per_1024_suitable_m2": 16,
+      "mature_crown_cap_fraction": 0.48,
+      "parameter_status": "art_calibration_sample_not_real_ecological_fact"
+    }
+  ],
+  "distribution": {
+    "habitat": [
+      "actual_material",
+      "exact_wet_support",
+      "temperature",
+      "slope",
+      "current_theme",
+      "mature_fit"
+    ],
+    "tree_pool": "surface_ecology_current_theme_or_dry_sand_priority",
+    "cluster_scales_m": [
+      12,
+      24,
+      40,
+      80
+    ],
+    "cluster_field": "stable_world_coordinates_definition_seed_not_stroke_circle",
+    "position": "continuous_integer_millimeters_not_cell_centers",
+    "candidate_source": "world_bucket_sampler_epoch_candidateOrdinal",
+    "max_candidate_attempts_per_acceptance_goal": 24,
+    "min_distance_rule": "distance_squared >= (mature_structure_radius_i+mature_structure_radius_j+margin)^2",
+    "neighbor_halo": "frozen_max_radius_or_hierarchical_index",
+    "dead_tree_excluded_from_wild_recovery": true,
+    "on_failed_sampling": "stop_do_not_relax_spacing",
+    "frame_independence": "same_canonical_input_same_initial_World_only",
+    "order_independence_claim": false
+  },
+  "decor": {
+    "authority_fields": [
+      "density_field",
+      "recipe_seed",
+      "clear_mask",
+      "revision"
+    ],
+    "entities_or_inventory_or_nav": false,
+    "edible_or_nectar": false,
+    "ground_resource_creation_or_refill": false,
+    "sand_or_volcanic_small_plants": false,
+    "instancing": "reconstruct_presentation_from_saved_density_and_recipe",
+    "tree_understory": "profile_bounded_reduce_density"
+  },
+  "protected_dependencies": [
+    "building_footprint",
+    "road",
+    "entrance",
+    "garage_and_turning_approach",
+    "delivery_apron",
+    "farm",
+    "construction_reservation",
+    "port_berth",
+    "AccessCertificate_corridor",
+    "live_Actor_body",
+    "live_external_Gestation_body",
+    "EscapeConnection_for_every_affected_mobile_live_Actor_including_idle_without_task_route"
+  ],
+  "transaction": {
+    "read_set": [
+      "terrain_surface_habitat_revisions",
+      "tree_neighbors_including_cross_bucket_halo",
+      "density_and_sampler_versions",
+      "land_use_and_occupancy",
+      "protected_access_certificates",
+      "tool_capability",
+      "definition_hashes",
+      "stroke_receipts",
+      "affected_live_Actor_set_and_movement_profiles",
+      "original_nav_components_escape_targets_and_portals"
+    ],
+    "write_set": [
+      "new_Plant_and_source_ledger",
+      "mature_occupancy_reservations",
+      "dose_and_decor_fields",
+      "sampler_epoch",
+      "idempotent_receipt",
+      "events"
+    ],
+    "prepare": "temporary_occupancy_for_whole_batch_then_access_revalidate",
+    "on_conflict": "reprepare_or_reject_no_half_commit",
+    "retry_adds_dose_twice": false,
+    "geography_wipe_precedes_same_site_generation": true,
+    "escape_validation": "preserve_at_least_one_original_qualified_outside_portal_or_home_public_interface_connection_not_current_point;original_no_exit_component_keeps_real_open_rest_turn_space"
+  },
+  "saved_fields": [
+    "accepted_PlantIds",
+    "creation_source_and_event",
+    "definition_hash",
+    "initial_and_remaining_biomass",
+    "age_growth_and_due_tick",
+    "absolute_fruit_cohorts_and_reservations",
+    "decor_density_seed_clearMask",
+    "sampler_epoch_candidate_cursor",
+    "committed_stroke_receipts",
+    "realized_and_rejected_dose_cursors",
+    "strict_subunit_fractional_credit"
+  ],
+  "presentation_only": [
+    "petals",
+    "GPU_lights",
+    "decor_instances",
+    "tree_mesh_LOD",
+    "cosmetic_birth_fade"
+  ],
+  "verification_scenarios": [
+    {
+      "id": "VG01",
+      "given": "same_canonical_input_at_30_60_144_render_fps",
+      "expected": "same_Plants_dose_and_source_receipts",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG02",
+      "given": "quick_pass_then_hold_at_same_position",
+      "expected": "small_increment_then_saturation_without_fill_all",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG03",
+      "given": "repeat_same_slot_and_batch_id",
+      "expected": "return_same_receipt_no_dose_or_Plant_duplicate",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG04",
+      "given": "world_paused_with_active_editor_input",
+      "expected": "editor_generation_allowed_natural_growth_frozen",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG05",
+      "given": "focus_lost_while_button_held",
+      "expected": "stroke_ends_no_wall_time_catchup",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG06",
+      "given": "load_during_hold",
+      "expected": "new_session_old_input_not_resumed",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG07",
+      "given": "cross_chunk_boundary",
+      "expected": "one_world_neighbor_index_no_duplicate_or_relaxed_gap",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG08",
+      "given": "change_seed_at_density_cap",
+      "expected": "existing_occupancy_still_blocks_no_reset",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG09",
+      "given": "young_large_species_next_to_small_tree",
+      "expected": "reserve_mature_structure_envelopes",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG10",
+      "given": "partial_wet_coast_area",
+      "expected": "only_exact_dry_habitat_area_in_density_denominator",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG11",
+      "given": "sand_and_volcanic_with_small_plants_mode",
+      "expected": "zero_decorative_small_plants",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG12",
+      "given": "cherry_profile",
+      "expected": "dark_green_grass_original_cherry_not_tropical_flower",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG13",
+      "given": "sole_entrance_or_garage_apron_remaining",
+      "expected": "reject_tree_do_not_block_access",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG14",
+      "given": "live_Actor_or_Gestation_at_candidate",
+      "expected": "reject_no_actor_push_or_spawn",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG15",
+      "given": "building_approval_after_preview",
+      "expected": "read_set_conflict_no_tree_building_overlap",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG16",
+      "given": "geography_type_changed_then_generator",
+      "expected": "new_revisions_new_PlantIds_no_old_stock_restore",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG17",
+      "given": "soil_theme_only_changed",
+      "expected": "old_tree_identity_and_fruit_remain_new_candidates_change",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG18",
+      "given": "God_dead_tree_generation_and_felling",
+      "expected": "finite_registered_source_biomass_then_real_unique_harvest",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG19",
+      "given": "God_fruit_tree_generation",
+      "expected": "zero_initial_fruit_nectar_pollen_forage",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG20",
+      "given": "decorative_grass_flower_generator",
+      "expected": "no_food_stock_collision_or_work_entity",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG21",
+      "given": "sacred_tree_LOD_cycle",
+      "expected": "no_new_Plant_light_energy_or_religion_reward",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG22",
+      "given": "cluster_on_four_bucket_junction",
+      "expected": "shared_world_field_no_four_repeated_clusters",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG23",
+      "given": "remove_tree_then_regenerate",
+      "expected": "new_identity_and_explicit_new_source_not_resurrection",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG24",
+      "given": "mix_nine_habitat_profiles",
+      "expected": "normalized_total_stem_quota_not_sum_of_nine_caps",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG25",
+      "given": "neighbor_crown_center_outside_density_window",
+      "expected": "intersection_area_still_counts",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG26",
+      "given": "all_candidates_blocked_long_hold",
+      "expected": "no_deferred_burst_after_obstacle_removed",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG27",
+      "given": "many_interpolated_pointer_points",
+      "expected": "time_weights_conserved_not_dt_per_point",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG28",
+      "given": "invisible_or_closed_application",
+      "expected": "no_input_generation_or_wild_growth_from_wall_time",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG29",
+      "given": "wild_recovery_disabled",
+      "expected": "player_generator_still_allowed_wild_candidates_rejected",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG30",
+      "given": "civilian_planting",
+      "expected": "real_propagules_labor_and_title_no_duplicate_biomass",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG31",
+      "given": "peak_habitat",
+      "expected": "Plant_habitat_checked_Actor_access_never_granted",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG32",
+      "given": "mutation_commit_fails_after_preparation",
+      "expected": "no_half_Plants_dose_stock_or_receipts",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG33",
+      "given": "same_ground_type_repaint",
+      "expected": "does_not_wipe_or_reset_existing_trees",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG34",
+      "given": "different_stroke_order_same_final_scalar_dose",
+      "expected": "may_differ_by_real_occupancy_history_not_claimed_identical",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG35",
+      "given": "same_full_command_stream_save_reload",
+      "expected": "same_authoritative_results_no_seed_reinitialization",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG36",
+      "given": "direct_growth_with_older_harvest_reservation",
+      "expected": "existing_reserve_and_receipt_preserved_no_refill",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG37",
+      "given": "mature_growth_later",
+      "expected": "uses_preapproved_envelope_no_future_path_block",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG38",
+      "given": "new_tree_batch_cap_reached",
+      "expected": "at_most_eight_Plant_commits_in_one_batch",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG39",
+      "given": "fixedpoint_exp_lookup_changed",
+      "expected": "requires_frozen_definition_hash_or_explicit_migration",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG40",
+      "given": "variable_radius_large_tree_neighbor",
+      "expected": "max_radius_halo_or_hierarchical_index_catches_conflict",
+      "status": "planned_production_acceptance"
+    },
+    {
+      "id": "VG41",
+      "given": "idle_Actor_with_no_existing_task_certificate_encircled_by_candidates",
+      "expected": "reject_last_closing_tree_preserve_real_EscapeConnection",
+      "status": "planned_production_acceptance"
+    }
+  ],
+  "evidence_boundary": "sampling_reference_model_and_contract_audit_are_not_production_ecology_navigation_GPU_or_fruit_acceptance",
+  "algorithm_revision": "ADR0015-2026-10-09"
+}

@@ -1,6 +1,6 @@
 # 重置后自研程序结构与共享机制
 
-状态：设计，未创建这些生产目录/目标，旧程序不恢复。总规则见[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)。
+状态：设计，未创建这些生产目录/目标，旧程序不恢复；ADR0015补充城市/动作/神意/植被算法。总规则见[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)。
 
 ## 1. 真正需要先突破的边界
 
@@ -99,3 +99,13 @@ query按ObjectKind产生支持三语的字段metadata、关系Ref、允许编辑
 新工程实际存在后，统一构建一次全部targets+完整CTest；改变事务/空间/存档再统一sanitizer。文档本轮只核对合同/来源/引用/跨模块语义，不运行不存在的旧构建器。测100/1000/10000人及实际动物/经济/战争/渲染，记录设备/场景/世界规模/平均与P95/P99帧时/仿真积压/内存/保存恢复；没有测量不承诺大世界容量。
 
 Steam唯一发行；Windows GPU/Steam安装、控制器/键鼠/DPI/音频/存档实机证据独立，Metal仅开发验证。全程序/必需可分发资产托管GitHub；许可证原件与版本/hash锁定，不用CI/NullRenderer替代实机三维试玩。
+
+## 12. ADR0015跨域算法边界
+
+政府模块的NormalizeSettlement读取候选最终几何/活成员/实际服务，输出双轴状态、有效域、行政权限与State/职位后果；不另作人口删除器。City是同Settlement的CITY章程资格。TerritorialTitle与effective dry index分离，CitySquareAccount没有物理设施时容量0。growth/newcity/Reestablish使用真实TaskPlan/FoundingParty与经济预约，动作执行器推进实际路程和劳动。
+
+行为与运动由life/animals/government任务源共同调用natural_action：感知/目标/承诺/任务、分层路径、有限加速度、局部建议、最终3D扫掠和窄口token由权威组件负责；renderer只做原创clip/脚IK/微动，不用Notify发经济提交。BodyProfile/SurfaceRef跨层同源，异步旧foot/grip/path目标在publication barrier失效。
+
+application只产生God typed proposals；地理换类从精确ChangedGeographyFootprint求完整support/container实物擦除闭包，活Actor/Gestation保pose后结hazard，继任/成员/State在最终候选一次规范化。特殊God立国/改籍/转城不伪造普通支持票或资产转让。命令有唯一civic registry和独占lease，selection不是World变更。
+
+生态生成使用独立EditorInputClock规范化剂量，不吃模拟RNG；有限GodVegetationSource记录Plant生物量而不写仓库，固定窗口/保守冠多边形/成年包络/idle EscapeConnection防堵。生成器不能按renderer消失树数补种，wipe/清理/采伐的dose epoch失效同写集。细节见[城市](SETTLEMENT_LIFECYCLE_AND_EXPANSION.md)、[动作](NATURAL_BEHAVIOR_AND_LOCOMOTION.md)、[God控制](GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md)、[植被](VEGETATION_GENERATOR_AND_DENSITY.md)。

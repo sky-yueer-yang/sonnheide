@@ -47,6 +47,30 @@
       "contract_pointer": "/thermal",
       "interface": "ActualThermalExposure",
       "policy": "same_authoritative_altitude_temperature_and_life_exposure_for_every_control_mode"
+    },
+    {
+      "contract_path": "data/contracts/settlement_lifecycle_v1.json",
+      "contract_id": "settlement_lifecycle_v1",
+      "interface": "NormalizeSettlement",
+      "policy": "final_geometry_and_membership_set_two_axis_lifecycle_before_single_publish"
+    },
+    {
+      "contract_path": "data/contracts/god_control_v1.json",
+      "contract_id": "sonnheide_god_control_v1",
+      "interface": "GodCivicTransitionsAndGeographyWipe",
+      "policy": "typed_explicit_god_events_not_forged_normal_assent"
+    },
+    {
+      "contract_path": "data/contracts/natural_action_v1.json",
+      "contract_id": "natural_action_v1",
+      "interface": "ActualMotionAndTaskEffects",
+      "policy": "physical_location_and_resource_effects_not_animation"
+    },
+    {
+      "contract_path": "data/contracts/vegetation_generator_v1.json",
+      "contract_id": "sonnheide_vegetation_generator_v1",
+      "interface": "VegetationDoseAndEscapeProtection",
+      "policy": "bounded_biomass_source_preserve_access_and_live_Actor_escape"
     }
   ],
   "identity": {
@@ -275,7 +299,9 @@
       "current_charter_resolves_to": "frozen_founding_charter_version_via_valid_amendment_chain",
       "requires_reapproval": "root_religion_or_fundamental_foundation_conditions_changed_not_ordinary_compatible_amendment",
       "normal_amendment_requires": "lawful_authority_and_real_member_approvals_no_fake_grant"
-    }
+    },
+    "second_city_promotion_requires": "functional_formal_direct_City_square_housing_service_live_community_not_historical_landless_charter",
+    "legal_rank_on_temporary_city_loss": "preserve_until_explicit_lawful_or_god_procedure_no_stat_buff"
   },
   "first_state_and_ruler": {
     "guards": [
@@ -289,7 +315,9 @@
     "pre_cultural_assent_requires_formal_language": false,
     "create_default_ruler_actor": false,
     "new_subject_members": "real_assenting_residents_only",
-    "creates_public_or_private_stock": false
+    "creates_public_or_private_stock": false,
+    "mode": "CIVIC_LAWFUL_only_original_guards",
+    "god_direct_mode": "GodFoundStateFromActor_explicit_god_control_contract_no_forged_votes_or_free_square"
   },
   "crown_succession": {
     "states": [
@@ -579,7 +607,10 @@
     "military_control_is_legal_sovereignty": false,
     "godterrain_alters_sovereignty_automatically": false,
     "peak_jurisdiction_confers_build_or_walk_rights": false,
-    "commit": "single_writer_atomic_affected_dependency_closure"
+    "commit": "single_writer_atomic_affected_dependency_closure",
+    "effective_dry_sovereignty_changes_with_terrain": true,
+    "title_and_service_restoration": "continuing_state_unsettled_title_may_return_dry_index_city_service_requires_explicit_real_reestablish",
+    "area_metric": "exact_horizontal_projected_dry_polygon_area_not_full_cell_or_sloped_surface"
   },
   "political_plots": {
     "types": [
@@ -1543,7 +1574,9 @@
           "personality_axes_via_life_contract",
           "individual_genome_via_life_contract",
           "ai_planner_category_flags",
-          "legal_civic_requests"
+          "legal_civic_requests",
+          "god_found_state_here_request",
+          "god_local_or_target_membership_request"
         ],
         "read_only_fields": [
           "stable_ref",
@@ -1751,8 +1784,46 @@
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
+          },
+          {
+            "field": "god_found_state_here_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "preview_command": "PreviewGodStateFoundation",
+            "command": "GodFoundStateFromActor"
+          },
+          {
+            "field": "god_local_or_target_membership_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "command_alternatives": [
+              "CommitLocalMembershipStroke",
+              "GodSetCivicMembershipBatch"
+            ],
+            "discriminant": "physical_brush_vs_explicit_target",
+            "preview_command_alternatives": [
+              "PreviewLocalMembershipStroke",
+              "PreviewCivicMembershipBatch"
+            ]
           }
-        ]
+        ],
+        "algorithm_record_contract": "data/contracts/natural_action_v1.json",
+        "activity_subrecords": {
+          "read_only": [
+            "current_GoalRef",
+            "TaskPlanRef",
+            "ActionEpisodeRef",
+            "actual_motion_state",
+            "path_or_bottleneck_reason",
+            "real_committed_effect_receipt"
+          ],
+          "direct_edit_of_motion_or_inventory": false,
+          "CivicActor_eligibility_required_for_civic_commands": true
+        }
       },
       {
         "id": "household",
@@ -1887,7 +1958,8 @@
         "editable_fields": [
           "display_name",
           "service_boundary_draft",
-          "found_state_request"
+          "found_state_request",
+          "actual_reestablish_request"
         ],
         "read_only_fields": [
           "stable_ref",
@@ -1897,7 +1969,10 @@
           "actual_stock_and_balances",
           "actual_movement_or_location",
           "authority_or_permission_proof",
-          "snapshot_revision"
+          "snapshot_revision",
+          "physical_status",
+          "community_status",
+          "founding_party_and_growth_plan_facts"
         ],
         "relations": [
           {
@@ -1963,6 +2038,16 @@
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
+          },
+          {
+            "field": "actual_reestablish_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "request_type": "ReestablishSameCommunity_TaskPlan_request",
+            "algorithm_contract": "data/contracts/settlement_lifecycle_v1.json",
+            "creates_physical_assets_or_goods_immediately": false
           }
         ]
       },
@@ -1981,13 +2066,16 @@
           "history",
           "editing"
         ],
-        "identity_domain": "city",
+        "identity_domain": "settlement_with_CITY_charter",
         "default_major_fact_limit": 4,
         "editable_fields": [
           "display_name",
           "service_boundary_draft",
           "public_budget_preferences",
-          "public_project_request"
+          "public_project_request",
+          "god_assign_city_to_state_request",
+          "god_city_independence_request",
+          "actual_anchor_reestablish_request"
         ],
         "read_only_fields": [
           "stable_ref",
@@ -1997,7 +2085,12 @@
           "actual_stock_and_balances",
           "actual_movement_or_location",
           "authority_or_permission_proof",
-          "snapshot_revision"
+          "snapshot_revision",
+          "physical_status",
+          "community_status",
+          "exact_dry_assigned_served_built_areas",
+          "functional_square_capacity",
+          "continuation_and_relocation_events"
         ],
         "relations": [
           {
@@ -2100,6 +2193,33 @@
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
+          },
+          {
+            "field": "god_assign_city_to_state_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "preview_command": "PreviewCityStateAssignment",
+            "command": "GodTransferCityToState"
+          },
+          {
+            "field": "god_city_independence_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "command": "GodSeparateCityAsState"
+          },
+          {
+            "field": "actual_anchor_reestablish_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "request_type": "ReestablishSameCommunity_TaskPlan_request",
+            "algorithm_contract": "data/contracts/settlement_lifecycle_v1.json",
+            "creates_physical_assets_or_goods_immediately": false
           }
         ]
       },
@@ -2127,7 +2247,8 @@
           "religious_status_draft",
           "official_religion_request",
           "law_draft",
-          "territorial_transition_request"
+          "territorial_transition_request",
+          "god_capital_or_crown_assignment_request"
         ],
         "read_only_fields": [
           "stable_ref",
@@ -2137,7 +2258,10 @@
           "actual_stock_and_balances",
           "actual_movement_or_location",
           "authority_or_permission_proof",
-          "snapshot_revision"
+          "snapshot_revision",
+          "effective_dry_title_area",
+          "governance_status",
+          "qualifying_functional_direct_city_count"
         ],
         "relations": [
           {
@@ -2291,6 +2415,18 @@
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
+          },
+          {
+            "field": "god_capital_or_crown_assignment_request",
+            "value_type": "typed_owning_domain_draft_or_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "command_alternatives": [
+              "GodSetStateCapital",
+              "GodAppointCrownIncumbent"
+            ],
+            "discriminant": "capital_anchor_vs_crown_office"
           }
         ]
       },
@@ -4120,7 +4256,9 @@
           "actual_stock_and_balances",
           "actual_movement_or_location",
           "authority_or_permission_proof",
-          "snapshot_revision"
+          "snapshot_revision",
+          "GodVegetationSource_event",
+          "initial_and_remaining_structural_biomass"
         ],
         "relations": [
           {
@@ -5671,7 +5809,20 @@
             "access": "show_legal_denial_reason_if_unavailable",
             "contract_path": "data/contracts/life_genetics_v1.json"
           }
-        ]
+        ],
+        "algorithm_record_contract": "data/contracts/natural_action_v1.json",
+        "activity_subrecords": {
+          "read_only": [
+            "current_GoalRef",
+            "TaskPlanRef",
+            "ActionEpisodeRef",
+            "actual_motion_state",
+            "path_or_bottleneck_reason",
+            "real_committed_effect_receipt"
+          ],
+          "direct_edit_of_motion_or_inventory": false,
+          "CivicActor_eligibility_required_for_civic_commands": true
+        }
       },
       {
         "id": "species",
@@ -8257,7 +8408,8 @@
     ],
     "names_and_boundaries_independent": true,
     "favorite_only_highlight": true,
-    "far_density_proxy_changes_actor_count": false
+    "far_density_proxy_changes_actor_count": false,
+    "algorithm_subrecords": "stable_TaskPlan_and_ActionEpisode_refs_show_in_existing_person_or_animal_activity_panels_and_project_details_no_new_task_or_Brain_page_no_duplicate_population"
   },
   "statistics": {
     "measure_fields": [
@@ -8335,7 +8487,9 @@
       "works",
       "dead_archives"
     ],
-    "resurrection_or_free_repair_or_copy": false
+    "resurrection_or_free_repair_or_copy": false,
+    "geography_wipe_override": "ADR0015_explicit_kind_change_all_hit_nonliving_including_worn_carried_no_refunds",
+    "same_theme_or_same_kind_wipe": false
   },
   "local_persistence": {
     "slots": "multiple_local_manual_and_autosave_slots",
@@ -9327,6 +9481,358 @@
       "command_class": "world_transaction",
       "mutates_world": true,
       "idempotent_dispatch": true
+    },
+    {
+      "id": "PreviewGeographyMutation",
+      "target_page": "world",
+      "guards": [
+        "snapshot_only",
+        "valid_current_profile",
+        "trusted_tool_visibility",
+        "canonical_geometry_candidate"
+      ],
+      "effect": "exact_changed_type_footprint_and_full_objects_life_hazard_polity_loss_closure",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "CommitGeographyMutation",
+      "target_page": "world",
+      "guards": [
+        "trusted_godterrain_permission",
+        "matching_world_session_draft",
+        "exact_preview_dependencies_and_spatial_interval_revisions",
+        "complete_read_write_set",
+        "known_actual_losses_and_hazards",
+        "preallocated_atomic_root"
+      ],
+      "effect": "geometry_type_wipe_life_hazards_goods_loss_city_state_lifecycle_and_receipt_one_publish",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewGodStateFoundation",
+      "target_page": "person",
+      "guards": [
+        "existing_alive_civil_adult_actor",
+        "active_existing_culture_relationship",
+        "actual_supported_unassigned_dry_anchor",
+        "current_claims_and_offices"
+      ],
+      "effect": "same_actor_camp_and_state_foundation_candidate_no_world_write",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodFoundStateFromActor",
+      "target_page": "person",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_foundation_preview",
+        "existing_alive_IsCivilAdult_civic_actor",
+        "existing_valid_culture_not_new_genesis",
+        "unclaimed_supported_dry_anchor_not_peak_or_hazard",
+        "claims_and_whole_dependency_closure",
+        "old_office_membership_service_and_lease_transition"
+      ],
+      "effect": "real_actor_optional_provisional_camp_new_duchy_and_crown_no_formal_city_or_stock",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewLocalMembershipStroke",
+      "target_page": "world",
+      "guards": [
+        "one_committed_snapshot",
+        "canonical_stroke_area",
+        "actual_resolved_container_world_pose",
+        "effective_jurisdiction_indices"
+      ],
+      "effect": "all_age_sapient_actor_target_pairs_exclusions_and_civic_transition_preview",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "CommitLocalMembershipStroke",
+      "target_page": "world",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_actor_pair_snapshot_and_spatial_versions",
+        "no_new_unpreviewed_actor_or_position_change",
+        "no_jurisdiction_conflict",
+        "final_batch_office_army_family_guardian_lease_and_contract_closure"
+      ],
+      "effect": "actual_local_polity_memberships_with_explicit_god_event_no_teleport_or_goods",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewCityStateAssignment",
+      "target_page": "city",
+      "guards": [
+        "existing_nonarchived_city_or_settlement",
+        "existing_nonarchived_continuing_target_state",
+        "same_snapshot_legal_domain_and_registered_community"
+      ],
+      "effect": "city_parent_sovereignty_optional_citizenship_and_full_asset_service_capital_rank_preview",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodTransferCityToState",
+      "target_page": "city",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_city_state_legal_domain_preview",
+        "no_foreign_title_or_other_core_silent_capture",
+        "whole_existing_city_and_legal_territory_domain",
+        "tax_public_account_office_army_empire_lease_lifecycle_transitions"
+      ],
+      "effect": "administrative_parent_and_explicit_city_domain_sovereignty_optional_registered_citizenship_one_publish",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "PreviewCivicMembershipBatch",
+      "target_page": "person",
+      "guards": [
+        "typed_existing_target_state_or_settlement_or_explicit_none",
+        "all_age_existing_civic_actor_ids",
+        "current_entity_roles_service_guardianship_and_private_stock"
+      ],
+      "effect": "explicit_target_member_transitions_same_shared_policy_as_local_brush",
+      "single_writer": false,
+      "idempotent_world_mutation": false,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "readonly_preview",
+      "mutates_world": false,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodSetCivicMembershipBatch",
+      "target_page": "person",
+      "guards": [
+        "trusted_player_god_capability",
+        "exact_selected_actor_list_and_target_preview",
+        "no_archived_target",
+        "final_scope_office_army_guardian_lease_and_contract_consistency"
+      ],
+      "effect": "citizenship_or_registered_settlement_or_both_no_location_property_genome_change",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodSeparateCityAsState",
+      "target_page": "city",
+      "guards": [
+        "trusted_player_god_capability",
+        "real_nonarchived_city_community",
+        "actual_valid_legal_domain",
+        "real_qualified_initial_incumbent_or_explicit_caretaker",
+        "existing_city_stock_and_public_owner_preserved",
+        "whole_source_state_succession_rank_empire_and_lease_preview"
+      ],
+      "effect": "same_city_new_duchy_state_explicit_separation_no_city_or_actor_spawn",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodAppointCityRepresentative",
+      "target_page": "city",
+      "guards": [
+        "trusted_player_god_capability",
+        "existing_alive_IsCivilAdult_registered_member",
+        "actual_city_qualification_and_authority",
+        "previous_office_closure_and_exact_preview"
+      ],
+      "effect": "explicit_real_representative_replacement_no_votes_or_personal_estate_transfer",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodAppointCrownIncumbent",
+      "target_page": "crown_office",
+      "guards": [
+        "trusted_player_god_capability",
+        "existing_alive_lawfully_qualified_subject",
+        "basic_immutable_maturity_regency_policy",
+        "one_incumbent_and_valid_proxy",
+        "existing_imperial_rank_grant_not_new_approval",
+        "exact_previous_office_private_estate_and_roles_preview"
+      ],
+      "effect": "player_appointed_incumbent_end_previous_authority_no_false_abdication_or_empire_grant",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "GodSetStateCapital",
+      "target_page": "state",
+      "guards": [
+        "trusted_player_god_capability",
+        "existing_actual_qualified_state_settlement",
+        "no_archived_or_landless_illegal_target",
+        "actual_administrative_access_and_services",
+        "capital_representative_obligations_preview"
+      ],
+      "effect": "capital_administrative_reference_change_no_palace_city_square_or_stock_creation",
+      "single_writer": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "idempotent_dispatch": true,
+      "planned_only": true,
+      "production_implemented": false,
+      "registry_origin": "data/contracts/god_control_v1.json",
+      "source_contract": "data/contracts/god_control_v1.json"
+    },
+    {
+      "id": "CommitVegetationDoseBatch",
+      "command_class": "world_transaction",
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "creates_Actors": false,
+      "target_page": "plant",
+      "source_contract": "data/contracts/vegetation_generator_v1.json",
+      "mutates_world": true,
+      "idempotent_world_mutation": true,
+      "guards": [
+        "current_World_and_session",
+        "current_definition_and_tool_capability"
+      ],
+      "effect": "bounded_real_vegetation_source_commit"
+    },
+    {
+      "id": "EndVegetationStroke",
+      "command_class": "ui_only",
+      "single_writer": false,
+      "mutates_world": false,
+      "arbitrary_json_overwrite": false,
+      "source_contract": "data/contracts/vegetation_generator_v1.json",
+      "idempotent_world_mutation": false,
+      "idempotent_dispatch": true,
+      "preview_revalidation": false,
+      "guards": [
+        "current_World_and_session",
+        "current_definition_and_tool_capability"
+      ],
+      "effect": "terminate_local_input_without_World_mutation"
     }
   ],
   "verification_scenarios": [
@@ -9532,5 +10038,9 @@
       "ReleasePossession": "ACTOR_POSSESSION"
     },
     "reuse_between_modes": "explicit_release_then_acquire_or_separate_authorized_mode_transition_with_new_lease_revision_no_implicit_reuse"
-  }
+  },
+  "settlement_lifecycle_contract": "data/contracts/settlement_lifecycle_v1.json",
+  "god_control_contract": "data/contracts/god_control_v1.json",
+  "command_count": 68,
+  "algorithm_revision": "ADR0015-2026-10-09"
 }

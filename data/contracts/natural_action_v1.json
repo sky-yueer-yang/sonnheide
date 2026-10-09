@@ -1,0 +1,1398 @@
+{
+  "schema_version": 1,
+  "contract_id": "natural_action_v1",
+  "design_version": "0.8",
+  "audit_date": "2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+  "interfaces": {
+    "life": "data/contracts/life_genetics_v1.json",
+    "terrain": "data/contracts/terrain_access_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "surface": "data/contracts/surface_ecology.json",
+    "aggregate": "data/contracts/game_v0_8.json",
+    "settlement_expected": [
+      "Hazard",
+      "LostHome",
+      "LostWork",
+      "RelocationPlan",
+      "CityStatusChanged",
+      "AccessCertificateRevoked"
+    ],
+    "control_expected": [
+      "ControlLease",
+      "IssueMetaOrder",
+      "PossessActor",
+      "ReleasePossession"
+    ],
+    "geography_expected": [
+      "GeographyWipe",
+      "TerrainGeometryChanged",
+      "BuildingDestroyed",
+      "TreeDestroyed",
+      "ContainerDestroyed"
+    ]
+  },
+  "authority": {
+    "world_mutations": "single_writer_prepare_validate_preview_when_destructive_commit",
+    "positions_velocity_support_energy_work_contacts_tasks_custody": "authoritative_fixed_tick",
+    "animation_notify_can_mutate_world": false,
+    "render_camera_lod_can_change_outcome": false,
+    "pure_visual_rng_consumes_world_rng": false,
+    "worker_finish_order_changes_behavior_or_path": false,
+    "failed_write_set_partial_commit": false,
+    "duplicate_world_effect_replay": false
+  },
+  "research_sources": [
+    {
+      "id": "WB-A01",
+      "kind": "official_game_observation",
+      "url": "https://www.superworldbox.com/changelog",
+      "supports": "public region pathfinding unreachable-colonization and frozen-walking fixes; not formulas"
+    },
+    {
+      "id": "WB-A02",
+      "kind": "official_preview_not_released_proof",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/669491979075191190",
+      "supports": "Meta Control public preview; not proprietary implementation"
+    },
+    {
+      "id": "NA-S01",
+      "kind": "author_primary",
+      "url": "https://www.red3d.com/cwr/steer/gdc99/",
+      "supports": "goal steering locomotion separation and arrival concepts"
+    },
+    {
+      "id": "NA-S02",
+      "kind": "author_institution_primary_paper",
+      "url": "https://webdocs.cs.ualberta.ca/~mmueller/ps/2004/hpastar.pdf",
+      "supports": "hierarchical cluster portal path planning concept"
+    },
+    {
+      "id": "NA-S03",
+      "kind": "author_institution_primary_paper",
+      "url": "https://gamma.cs.unc.edu/ORCA/publications/ORCA.pdf",
+      "supports": "reciprocal velocity constraints under stated model assumptions"
+    },
+    {
+      "id": "NA-S04",
+      "kind": "author_institution_primary_paper",
+      "url": "https://webdocs.cs.ualberta.ca/~nathanst/papers/sharon2015cbsjournal.pdf",
+      "supports": "conflict constraints in multiagent pathfinding; does not guarantee our bounded window"
+    },
+    {
+      "id": "NA-S05",
+      "kind": "speaker_primary_technical_talk",
+      "url": "https://media.gdcvault.com/gdc2016/Presentations/Dill_Kevin_Nuts_and_Bolts.pdf",
+      "supports": "utility considerations and action-planning structure"
+    },
+    {
+      "id": "NA-S06",
+      "kind": "studio_primary_technical_research",
+      "url": "https://www.ubisoft.com/en-us/studio/laforge/news/6xXL85Q3bF2vEj76xmnmIu/introducing-learned-motion-matching",
+      "supports": "pose trajectory feature search and transition concept; no asset or code license assumed"
+    },
+    {
+      "id": "NA-S07",
+      "kind": "author_institution_primary_paper",
+      "url": "https://graphics.cs.wisc.edu/Papers/2002/KSG02/",
+      "supports": "footplant constraints can reduce foot sliding"
+    }
+  ],
+  "source_boundary": {
+    "worldbox_internal_formula_claim": false,
+    "sample_parameters": "Sonnheide independent engineering examples, not science or WorldBox copied formula",
+    "new_runtime_dependencies": [],
+    "third_party_code_reuse_requires": "official license locked version hash architecture justification notices distributable sources",
+    "foot_skate_library_imported": false,
+    "learned_motion_matching_runtime_required": false,
+    "asset_route": "all actual pixel bodies rigs clips buildings clothes original"
+  },
+  "identity_and_body": {
+    "actor_ref": "WorldId/ActorId/generation",
+    "population_count_key": "ActorId_not_CivicAgent",
+    "species_body": "immutable adult BodyProfileId and dimensions for all ages",
+    "age_scaling": false,
+    "species_navigation_fallback_to_human": false,
+    "sapience_transition": "same animal body ActorId motion absolute physiology; adds civic target vocabulary only",
+    "private_mounts_or_cavalry": false,
+    "surface_ref_fields": [
+      "surface_kind",
+      "object_ref",
+      "local_surface_id",
+      "revision"
+    ],
+    "surface_kinds": [
+      "terrain_triangle",
+      "building_floor",
+      "bridge_deck"
+    ],
+    "terrain_is_still_single_height_column": true,
+    "structure_decks_require_real_supported_objects": true
+  },
+  "state_layers": [
+    {
+      "id": "sensing",
+      "authoritative": true,
+      "inputs": [
+        "actual_spatial_contacts",
+        "visibility_occlusion",
+        "need_debts",
+        "known_routes",
+        "actual_resources",
+        "actual_relationships"
+      ],
+      "outputs": [
+        "bounded_candidate_snapshot"
+      ]
+    },
+    {
+      "id": "goal_selection",
+      "authoritative": true,
+      "inputs": [
+        "legal_gates",
+        "versioned_phenotype",
+        "need_curves",
+        "personality_preferences",
+        "actual_duty",
+        "actual_social_goals"
+      ],
+      "outputs": [
+        "committed_goal",
+        "reconsider_due_tick",
+        "decision_counter"
+      ]
+    },
+    {
+      "id": "task_plan",
+      "authoritative": true,
+      "inputs": [
+        "committed_goal",
+        "finite_action_templates",
+        "actual_reservations"
+      ],
+      "outputs": [
+        "ActionEpisode",
+        "TaskRef",
+        "ActionCommitLedger"
+      ]
+    },
+    {
+      "id": "route_and_motion",
+      "authoritative": true,
+      "inputs": [
+        "AccessCertificate",
+        "SurfaceRef",
+        "actual_body_load",
+        "control_intent",
+        "swept_collision"
+      ],
+      "outputs": [
+        "actual_position_velocity_yaw_support",
+        "movement_energy_work",
+        "bottleneck_waits"
+      ]
+    },
+    {
+      "id": "actual_interaction",
+      "authoritative": true,
+      "inputs": [
+        "reached_contact_interface",
+        "real_stock_tool_permission",
+        "current_task_revision"
+      ],
+      "outputs": [
+        "unique_batch_transfer_or_labor_or_social_effect_receipt"
+      ]
+    },
+    {
+      "id": "presentation",
+      "authoritative": false,
+      "inputs": [
+        "readonly_motion_task_equipment_events"
+      ],
+      "outputs": [
+        "clip_blend",
+        "foot_ik",
+        "cloth_pose",
+        "blink_breath_gaze",
+        "sound"
+      ]
+    }
+  ],
+  "time": {
+    "authority": "SimTick",
+    "sample_motion_second_ticks": 20,
+    "sample_calendar_day_ticks": 1200,
+    "calendar_days_per_month": 30,
+    "calendar_months_per_year": 12,
+    "rates_frozen_in_world_profile": true,
+    "motion_speed_units": "mm_per_motion_SimSecond",
+    "biological_sleep_routines": "calendar_hours_to_ticks_named_conversion",
+    "Age_forces_sleep": false,
+    "speed_multiplier_changes_wall_time_only": true,
+    "pause_creates_recovery_work": false,
+    "calibration_required": [
+      "route_time_vs_game_day",
+      "work_delivery_vs_food_consumption",
+      "sleep_duration_vs_travel",
+      "combat_and_loaded_running"
+    ]
+  },
+  "determinism": {
+    "authoritative_numeric": "frozen_fixed_point_and_checked_integer_rational_geometry",
+    "behavior_random_key": [
+      "WorldSeed",
+      "ActorId",
+      "behaviorDomain",
+      "savedDecisionCounter"
+    ],
+    "visual_random": "readonly_hash_or_independent_presentation_stream",
+    "path_open_queue_key": [
+      "fCost",
+      "hCost",
+      "nodeId"
+    ],
+    "due_queue_key": [
+      "dueTick_ASC",
+      "overdueWaitAge_DESC",
+      "ActorId_ASC"
+    ],
+    "neighbor_order": "ActorId",
+    "physical_proposals": "same_tick_read_snapshot_then_stable_single_writer_joint_commit",
+    "worker_result_requires": [
+      "WorldId",
+      "snapshot_revision",
+      "task_revision",
+      "route_request_id",
+      "logical_work_slice"
+    ],
+    "late_worker_result": "reject_stale_not_choose_new_path",
+    "save_restores_logical_work_frontiers": true,
+    "no_full_world_ai_scan_per_frame": true
+  },
+  "phenotype_consumers": {
+    "canonical": "life_genetics_v1.phenotype_interface",
+    "read_only_exports": [
+      "species_capability_mask",
+      "absolute_species_body_envelope",
+      "maximum_supported_load",
+      "ground_speed",
+      "climb_capacity",
+      "swim_capacity",
+      "swim_speed",
+      "flight_endurance",
+      "flight_speed",
+      "stamina",
+      "agility",
+      "fatigue_recovery",
+      "cold_tolerance",
+      "heat_tolerance",
+      "pain_sensitivity",
+      "sleep_requirement",
+      "rest_recovery_efficiency"
+    ],
+    "cache_versions": [
+      "species_version",
+      "subspecies_revision",
+      "genome_revision",
+      "equipment_revision",
+      "physiology_revision"
+    ],
+    "recompute_alleles_in_motion_or_goal_selection": false,
+    "edit_preserves": [
+      "damage",
+      "energy_sources",
+      "fatigue_debt",
+      "cold_heat_debt",
+      "sleep_debt",
+      "actual_elapsed_age",
+      "actual_work_done",
+      "current_custody"
+    ]
+  },
+  "goal_selection": {
+    "gates_before_score": [
+      "alive",
+      "support_or_explicit_hazard_handler",
+      "species_actual_ability",
+      "hard_peak",
+      "geometry_route_clearance",
+      "civil_permission",
+      "existing_real_food_goods_tools",
+      "task_body_interface",
+      "exclusive_current_ControlLease_when_external"
+    ],
+    "formula": "clamp(needRelief+dutyBenefit+personalPreference+actualSocialBenefit+futureShelterBenefit-routeTimeCost-metabolicCost-exposureRisk-expectedQueueCost-switchLoss, scoreRange)",
+    "curves": "bounded_piecewise_linear_or_frozen_lookup_not_unbounded_exp",
+    "hysteresis": "newScore >= currentScore+margin and minimum_commitment_done unless safety_target_deleted_energy_permission_invalidated",
+    "random_choice": "bounded_saved_draw_among_legal_near_best_variants_not_every_frame",
+    "candidate_rejection_reason_saved_for_Brain": true,
+    "cannot_edit_Brain_to_bypass": [
+      "physiology",
+      "death",
+      "collision",
+      "high_peak",
+      "real_inventory",
+      "civil_permission",
+      "adulthood"
+    ],
+    "need_and_resource_survival_updates_continue_under_control": true
+  },
+  "activity_vocabularies": {
+    "sapient_purposeful_idle": [
+      "safe_standing_observation",
+      "ground_or_actual_chair_rest",
+      "actual_shelter_sleep",
+      "short_safe_walk_with_return_budget",
+      "visit_actual_friend",
+      "actual_language_conversation",
+      "family_care",
+      "look_at_existing_shop_goods",
+      "study_with_actual_source",
+      "practice_with_actual_tool",
+      "wait_for_reserved_service",
+      "adjust_worn_actual_clothes",
+      "eat_drink_actual_batch"
+    ],
+    "ordinary_animals": [
+      "real_foraging",
+      "real_predation_if_rule_and_target_valid",
+      "species_safe_rest",
+      "vigilance",
+      "actual_group_contact",
+      "offspring_care",
+      "lawful_breeding",
+      "real_escape"
+    ],
+    "visual_only_microactions": [
+      "blink",
+      "bounded_breath",
+      "gaze",
+      "small_weight_shift",
+      "actual_cloth_bone_motion",
+      "bounded_hand_gesture"
+    ],
+    "idle_is_perpetual_random_walk": false,
+    "rest_is_legal_natural_action": true,
+    "public_space_or_furniture_spawned_for_idle": false,
+    "social_effect_requires": [
+      "actual_participants",
+      "actual_contact_or_legal_communication",
+      "real_sim_time",
+      "language_channel_when_required",
+      "mutual_eligibility"
+    ],
+    "decorative_plants_are_food": false,
+    "all_actors_synchronized_by_global_idle_timer": false,
+    "walk_generation": "finite local safe loop or known point plus actual return energy exposure rights check; no_route -> purposeful_rest_not_endless_repath"
+  },
+  "task_system": {
+    "planner": "bounded_action_template_graph_HTN_style_not_unlimited_per_frame_GOAP",
+    "sample_delivery_nodes": [
+      "LocateSource",
+      "ReserveQuantity",
+      "Travel",
+      "ApproachInterface",
+      "AcquireActualBatch",
+      "TravelLoaded",
+      "QueueForReceiver",
+      "DeliverActualQuantity"
+    ],
+    "episode_states": [
+      "PROPOSED",
+      "RESERVED",
+      "TRAVELLING",
+      "APPROACHING",
+      "ACTING",
+      "WAITING",
+      "PAUSED",
+      "BLOCKED",
+      "COMPLETED",
+      "CANCELLED",
+      "FAILED"
+    ],
+    "primary_resource_action_episodes_per_actor_max": 1,
+    "compatible_visual_layer_actions_can_overlap": true,
+    "ledger_fields": [
+      "task_ref",
+      "episode_id",
+      "actor_ref",
+      "target_ref",
+      "target_revision",
+      "reservation_refs",
+      "custody_refs",
+      "completed_actual_work",
+      "last_integrated_tick",
+      "integer_work_remainder",
+      "consumed_batch_receipts",
+      "committed_world_effect_event_ids",
+      "pause_reason",
+      "resume_predicate"
+    ],
+    "animation_notify_is_world_receipt": false,
+    "preemption": "integrate old valid work once to current tick then preserve receipts and surviving actual custody; wipe-deleted goods have unique loss then no grip or restitution; pause_cancel_resume future work",
+    "completed_material_or_pay_refund_on_cancel": false,
+    "reservation_release_does_not_return_held_batch": true,
+    "delivery_requires_actual_receiver_interface": true,
+    "building_body": "front material delivery then automatic timer; no onsite masonry person animation",
+    "infection_and_energy_integrate_actual_activity": true
+  },
+  "pathfinding": {
+    "hierarchy": "versioned cluster portals plus actual local surface/door corridors",
+    "search": "stable integer Astar candidate and refined corridor",
+    "cost_components": [
+      "actual_surface_distance",
+      "slope_load_movement_cost",
+      "known_exposure_estimate",
+      "actual_queue_estimate"
+    ],
+    "certificate": "terrain_access_v1.path_and_support",
+    "portal_dependencies": [
+      "SurfaceRef",
+      "terrain_clearance_revisions",
+      "peak_region_revision",
+      "wet_region_connectivity",
+      "structure_door_bridge_revisions",
+      "route_rights",
+      "species_body_load",
+      "movement_profile_hash",
+      "phenotype_versions",
+      "destination_interface_revision"
+    ],
+    "shortcut_requires_actual_swept_corridor": true,
+    "vertical_wall_or_dry_ridge_cornercut": false,
+    "higher_building_deck_false_ground_neighbor": false,
+    "all_flight_checks_peak_prism": true,
+    "aquatic_route_checks_actual_depth_and_WetRegion": true,
+    "thermal_estimate_is_geometry_wall": false,
+    "each_segment_revalidation": true,
+    "failed_target_silently_clamped_to_another_city": false,
+    "route_interruption_if_current_support_safe": "brake at actual safe position then pending_replan",
+    "support_deleted": "actual hazard from current pose not old path teleport"
+  },
+  "motion_controller": {
+    "position_mm": "authoritative_checked_fixed_point",
+    "velocity_mm_per_motion_second": "authoritative_fixed_point",
+    "yaw": "fixed_point_angle",
+    "movement_modes": [
+      "GROUNDED",
+      "MOVING",
+      "BRAKING",
+      "TURNING",
+      "QUEUING",
+      "SITTING",
+      "LYING",
+      "SLEEPING",
+      "SWIMMING",
+      "FLYING",
+      "FALLING",
+      "STRANDED",
+      "TRAPPED",
+      "INVALID_OCCUPANCY_HAZARD"
+    ],
+    "preferred_speed_formula": "min(phenotypeModeCap*injuryFactor*fatigueFactor*loadFactor,sqrt_floor(2*allowedBrake*remainingSafeDistance),curvatureCap,surfaceCap)",
+    "proposal_acceleration_guard": "next_velocity in reachable_set(current_velocity,a_cap,dt)",
+    "normal_root_can_turn_instant_180": false,
+    "run_is_clip_speed_only": false,
+    "rabbit_hop_clip_can_jump_nonav_wall_or_peak": false,
+    "no_free_mode_cap_over_species_ground_speed": true,
+    "sample_human_mode_fraction": {
+      "slow_walk": "0.25",
+      "walk": "0.45",
+      "brisk_walk": "0.62",
+      "run": "0.85",
+      "short_sprint": "1.0"
+    },
+    "sample_acceleration_mm_per_motion_second_squared": 2000,
+    "sample_brake_mm_per_motion_second_squared": 3000,
+    "sample_status": "engineering_tuning_example_constrained_by_species_ability_actual_load_injury_surface",
+    "run_gates": [
+      "actual_motive",
+      "actual_energy",
+      "stamina_fatigue",
+      "load",
+      "surface_clearance",
+      "safe_route_or_explicit_risk_intent"
+    ],
+    "sprint_has_actual_fatigue_and_finite_recovery": true,
+    "movement_cost_from": "actual travelled surface distance effort mode load and dual source physiology ledger",
+    "move_collision_or_load_invalidates_old_profile": true
+  },
+  "local_avoidance": {
+    "proposal": "ORCA_inspired_reciprocal_halfplanes_with_acceleration_reachable_set_and_fixed_candidates",
+    "standard_ORCA_guarantee_claim_for_game": false,
+    "standard_model_limits": [
+      "discs_and_reciprocity_assumptions",
+      "instant_velocity_selection",
+      "no_generic_deadlock_freedom",
+      "not_all_irregular_loaded_bodies",
+      "not_all_slopes_or_3D_decks"
+    ],
+    "candidate_numeric": "frozen_fixedpoint_velocity_catalogue_stable_candidateId",
+    "same_snapshot_for_every_actor": true,
+    "preferred_neighbor_sample_cap": 16,
+    "immediate_safety_sweep_neighbor_cap": null,
+    "safety": "all_actual_3D_swept_body_and_load_pairs_plus_static_support_peak_clearance_validated_before_joint_commit",
+    "conflict_resolution": "stable_pair_event_order shorten_to_real_contact bounded_joint_resolve then pause_or_actual_collision_hazard",
+    "ignore_17th_close_actor": false,
+    "density_budget_overflow": "do_not_commit_subset_crossings; include all potentially swept-contact participants in frozen motion component then joint barrier; legal stationary waiting actors continue same tick physiology and hazards; if complete safety closure cannot be computed do not partially publish tick",
+    "random_push_or_pair_swap_teleport": false
+  },
+  "bottlenecks": {
+    "identity": "BottleneckRef tied to actual geometry revision deck rights usable width",
+    "queue_fields": [
+      "actor_ref",
+      "request_tick",
+      "priority_class",
+      "age_credit",
+      "wait_age",
+      "entry_slot",
+      "exit_clearance_reservation",
+      "requested_direction",
+      "geometry_revision",
+      "token_ref"
+    ],
+    "fair_order": [
+      "request_tick_ASC",
+      "age_credit_DESC",
+      "ActorId_ASC"
+    ],
+    "priority_override": "finite_service_budget; cannot perpetually_starve ordinary requests",
+    "token_is_civil_ownership_or_capacity_bypass": false,
+    "exit_capacity_required_before_grant": true,
+    "wait_slots_require_real_body_clearance": true,
+    "single_lane": "directional batches switch only after admitted batch physically exits and opposing wait age threshold reached",
+    "door_deletion": "invalidate token_and_old_contact_same_commit",
+    "progress_fields": [
+      "last_progress_tick",
+      "distance_remaining",
+      "blocking_actor_refs",
+      "last_replan_tick"
+    ],
+    "deadlock": "local wait_for_cycle real_safe_yield then bounded spacetime reservation search; no_solution -> typed blocked",
+    "full_world_optimal_CBS": false,
+    "bounded_search_completeness_claim": false,
+    "group_slots": "existing membership stable slots physically certified species speed preserved no new Actor"
+  },
+  "animation": {
+    "asset_ownership": "original rigs clips fit and geometry",
+    "pixel_style": "high_resolution cuboid surfaces with continuous bounded bone transforms, not fullscreen pixel filter",
+    "main_method": "small_original_inplace_clip_phase_matching_blend_graph",
+    "optional_future_method": "deterministic search of original pose trajectory foot features only",
+    "learned_model_required": false,
+    "authority_source": "PresentationSnapshot_readonly",
+    "phase": "actual travel odometer plus frozen stride profile; stationary root does not advance locomotion loop",
+    "separate_phase_for_actual_structural_action_episode": true,
+    "clip_selection": [
+      "actual_speed",
+      "acceleration",
+      "facing_delta",
+      "slope",
+      "actual_load",
+      "injury",
+      "species_supported_vocabulary"
+    ],
+    "transitions": "compatible contact phase plus bounded pose difference decay short blend",
+    "root_motion_can_set_World_position": false,
+    "animation_event_can_generate_goods_or_finish_delivery": false,
+    "gait_sets": {
+      "human": [
+        "start",
+        "slow_walk",
+        "walk",
+        "brisk_walk",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "pivot",
+        "carry",
+        "acquire",
+        "deliver",
+        "eat",
+        "sit_down",
+        "stand_up",
+        "lie",
+        "sleep",
+        "actual_tool_work"
+      ],
+      "quadruped": [
+        "walk",
+        "trot",
+        "gallop",
+        "stand",
+        "lie",
+        "forage",
+        "vigilance"
+      ],
+      "rabbit": [
+        "legal_ground_hop",
+        "stand",
+        "lie",
+        "forage"
+      ],
+      "bird": [
+        "walk",
+        "takeoff",
+        "flight",
+        "land"
+      ],
+      "fish": [
+        "swim",
+        "rest_current_water"
+      ],
+      "bee": [
+        "actual_flight",
+        "land"
+      ]
+    },
+    "no_human_rig_fallback_for_animals": true
+  },
+  "foot_and_hand_contacts": {
+    "fields": [
+      "body_profile",
+      "local_limb_id",
+      "SurfaceRef_or_actual_work_interface",
+      "contact_point",
+      "normal",
+      "contact_phase",
+      "geometry_revision",
+      "validity_tick"
+    ],
+    "foot_sample": "actual ground/deck surface beneath valid predicted foot inside supported body corridor",
+    "stance_lock": "bounded_world_visual_foot_target",
+    "swing": "original_clip_curve_to_next_legal_visual_target",
+    "IK": "fixed_limb_length_two_bone_or_species_chain_with_fixed_pole_and_limits",
+    "root_position_modified_by_IK": false,
+    "body_size_changed_by_IK": false,
+    "illegal_ground_made_accessible_by_IK": false,
+    "contact_deleted_revision": "invalidate_same_publish_barrier_rebuild_noninteractive_pose_from_actual_motion",
+    "async_old_mesh_can_grant_contact": false,
+    "carry": "real ItemBatch custody and species actual grip adapter; transfer_receipt updates readonly attachment no duplicated goods"
+  },
+  "disaster_and_city_interfaces": {
+    "GeographyType_wipe_only": "not ordinary soil_theme paint",
+    "integrate_old_valid_work_to_mutation_tick_once": true,
+    "invalidate_same_commit": [
+      "AccessCertificate",
+      "route_segment",
+      "foot_anchor",
+      "hand_grip",
+      "receiver_interface",
+      "target_reservation_if_deleted",
+      "equipment_capacities_if_wiped"
+    ],
+    "live_actor_delete_by_action_layer": false,
+    "actor_survives_vehicle_container_destroyed": "same ActorId old true pose released nonexistent containment plus actual support/hazard check",
+    "worn_carried_nonliving_items": "literal wipe may delete; upstream loss ledger canonical, no action restitution",
+    "protected_living_gestation": [
+      "body_internal_pregnancy",
+      "external_actual_living_embryo_or_egg_GestationRef_not_food_item"
+    ],
+    "gestation_destroyed_nest": "physical_support_temperature_hazard_not_direct_erase_or_copy",
+    "safe_new_support": "GROUNDED_PENDING_REPLAN",
+    "invalid_occupancy": [
+      "TERRAIN_ENTRAPPED",
+      "PEAK_ENCROACHED"
+    ],
+    "invalid_occupancy_is_legal_peak_node": false,
+    "invalid_occupancy_only_origin": "involuntary_new_Godterrain_overlap_of_existing_living_Actor",
+    "invalid_occupancy_preserves": [
+      "ActorId",
+      "actual_old_pose",
+      "injury",
+      "energy",
+      "gestation_identity"
+    ],
+    "escape_or_rescue": "actual bounded trajectory against current terrain no wall_peak_crossing; otherwise waiting_for_real_excavation_or_survival_consequences",
+    "surface_raise_depenetrates_to_new_height": false,
+    "autoteleport_to_safe_shore": false,
+    "ordinary_placement_birth_path_can_start_in_peak": false,
+    "city_refs_separate": [
+      "HomeCityRef",
+      "citizenship",
+      "PhysicalJurisdictionQuery"
+    ],
+    "city_destroyed_or_transferred_changes_actor_location": false,
+    "RelocationPlan": "real current location route tasks resource custody budget intake destination approval; no implicit identity change"
+  },
+  "metacontrol": {
+    "control_authority": "existing current exclusive civic_ControlLease",
+    "input": "typed_goal_or_bounded_direction_speed_action_intent_not_raw_position",
+    "lease_revalidated_at": [
+      "command_commit",
+      "critical_actual_interaction"
+    ],
+    "group_membership_change": "no_expand_lease_invalidate_old_scope_commands",
+    "expiry": "revoke_external_source preserve_motion_actual_work_energy_custody resume_same_actor_planner",
+    "stop": "cancel_future_intent_and_brake_with_real_contact_constraints",
+    "cancel_task": "release_unconsumed_reservation keep_held_goods_and_committed_effects",
+    "lease_grants_private_goods_citizenship_or_votes": false,
+    "StateCity_transfer_auto_grants_motion_control": false,
+    "control_blocks_physiology_or_collision": false,
+    "brain_score_can_override_legal_gates": false
+  },
+  "persistence": {
+    "required": [
+      "authoritative_fixedpoint_position_velocity_yaw_support",
+      "BodyProfileId_and_motion_load_revisions",
+      "motion_mode_kinematic_state",
+      "committed_goal_and_minimum_commitment_work",
+      "ActionEpisode_stage_TaskRef_work_last_tick_remainders_effect_receipts",
+      "actual_reservation_and_custody_refs",
+      "route_request_current_segment_dependency_revisions",
+      "deterministic_search_frontiers_and_work_fair_cursor",
+      "bottleneck_queue_tokens_exit_capacity_lastProgressTick_waitAge",
+      "actual_rest_sleep_episode_location_start_due_work_last_tick",
+      "behavior_dueTick_decision_counters_category_switches",
+      "processed_geography_city_hazard_event_ids",
+      "group_slots_and_real_member_revisions",
+      "control_order_sequence_source_and_lease_history",
+      "life_canonical_absolute_energy_injury_debts_wetness_fields"
+    ],
+    "reconstruct_only": [
+      "nav_mesh_candidate_cache",
+      "visual_foot_hand_IK_anchors",
+      "clipblend",
+      "sound_proxies",
+      "cosmetic_microaction_stream"
+    ],
+    "optional_presentation_checkpoint": [
+      "clip_id",
+      "gait_phase",
+      "display_contact_markers"
+    ],
+    "presentation_checkpoint_changes_World_hash": false,
+    "load_legacy_session_inputs_or_lease": false,
+    "load_restock_or_rechoose_genome_or_partner": false,
+    "load_replay_committed_effect": false
+  },
+  "performance": {
+    "benchmark_population_steps": [
+      512,
+      1000,
+      2000
+    ],
+    "population_steps_are_capacity_commitment": false,
+    "speed1_tick_budget_ms": 50,
+    "unmeasured_candidate_component_budgets_ms": {
+      "movement_collision": 8,
+      "behavior_plan": 4,
+      "path_frontiers": 4
+    },
+    "measure_required": [
+      "declared_hardware",
+      "World_profile",
+      "map_topology",
+      "actual_full_tasks_food_cold_inventory",
+      "speed_multiplier",
+      "p50_p95_p99",
+      "worst_density_and_geography_replan"
+    ],
+    "logical_sample_caps": {
+      "behavior_candidates_per_decision": 24,
+      "action_plan_nodes": 32,
+      "path_expansions_global_per_tick": 8192,
+      "path_expansions_single_slice": 256,
+      "deadlock_component_actors": 12,
+      "deadlock_window_ticks": 200,
+      "deadlock_search_nodes": 2048,
+      "preferred_far_neighbors": 16,
+      "immediate_collision_neighbors": "all_intersecting_swept_envelopes"
+    },
+    "all_caps_status": "engineering_examples_frozen_and_migrated_not_measured_final_capacity",
+    "presentation_sample_full_rig_actor_cap": 256,
+    "all_actual_movement_and_physio_camera_independent": true,
+    "gpu_or_ik_writeback_to_World": false,
+    "far_actors_instant_delivery": false,
+    "required_overload_policy": "one_consistent_tick_barrier_or_explicit_stored_backlog_not_partial_actors_and_omitted_safety"
+  },
+  "implementation_order": {
+    "terrain_fixture": "stages_1_to_2_surface_collision_access_and_geography_hazards",
+    "original_art": "stage_3_rigs_contacts_fit_start_stop_turn_clips",
+    "life_motion": "stage_4_physiology_natural_behavior_all_species_modes",
+    "actual_delivery": "stage_5_front_receiving_and_public_food_clothing",
+    "civic_and_control": "later_stage_actual_relocation_and_ControlLease",
+    "batch_validation": "finish_cross_module_batch_then_single_all_targets_build_full_CTest_and_space_transaction_save_sanitizer"
+  },
+  "acceptance_requires": [
+    "fixed_tick_replay_and_hash_equality",
+    "actual_stock_energy_work_effect_ledgers",
+    "short_reproducible_near_scene_recordings",
+    "real_gpu_hardware_and_declared_frame_budget_for_visual_claim",
+    "no_runtime_tests_claimed_at_design_stage"
+  ],
+  "invariants": [
+    {
+      "id": "N01",
+      "name": "No animation authority",
+      "statement": "动画、镜头、LOD或音效不能结算移动、商品、关系和工作。"
+    },
+    {
+      "id": "N02",
+      "name": "One Actor identity",
+      "statement": "动作/启智/换户籍/灾害不复制或删除活Actor。"
+    },
+    {
+      "id": "N03",
+      "name": "One true body profile",
+      "statement": "全龄固定本species成人身体且碰撞fit动作同源。"
+    },
+    {
+      "id": "N04",
+      "name": "One primary resource action",
+      "statement": "一人同tick不叠两份完整实物劳动。"
+    },
+    {
+      "id": "N05",
+      "name": "Unique actual effect",
+      "statement": "交付/取食/社交/工资实际effectId只结算一次。"
+    },
+    {
+      "id": "N06",
+      "name": "Actual custody continuity",
+      "statement": "取消/休息/控制退出不把已持货免费传库。"
+    },
+    {
+      "id": "N07",
+      "name": "Common surface revision",
+      "statement": "导航支承碰撞拾取IK读同有效Surface版本。"
+    },
+    {
+      "id": "N08",
+      "name": "No illegal smoothing",
+      "statement": "平滑/动画不能越壁峰湿区干脊。"
+    },
+    {
+      "id": "N09",
+      "name": "All immediate collision pairs",
+      "statement": "安全扫掠不能漏cap以外近邻。"
+    },
+    {
+      "id": "N10",
+      "name": "No promised ORCA completeness",
+      "statement": "ORCA和有界死锁协调不冒称任意场景无死锁。"
+    },
+    {
+      "id": "N11",
+      "name": "Actual cold energy continues",
+      "statement": "闲暇、元控制与暂停界面不关闭真实生命账。"
+    },
+    {
+      "id": "N12",
+      "name": "Fair logical work",
+      "statement": "线程快慢和可见性不影响Actor公平规划顺序。"
+    },
+    {
+      "id": "N13",
+      "name": "No forced perpetual movement",
+      "statement": "有目的站坐睡是真实自然状态，不强迫不停走。"
+    },
+    {
+      "id": "N14",
+      "name": "No routine synchronized swarm",
+      "statement": "个人phase/counter错相，非全体统一无意义idle计时器。"
+    },
+    {
+      "id": "N15",
+      "name": "Control is typed intent",
+      "statement": "租约不授rawposition/峰豁免/私产或公职权限。"
+    },
+    {
+      "id": "N16",
+      "name": "No erase of protected life",
+      "statement": "地理wipe中动作只处理真实危险，不erase活Actor或活Gestation。"
+    },
+    {
+      "id": "N17",
+      "name": "No illegal peak starting node",
+      "statement": "峰侵占hazard只旧Actor非自愿变化，不成新放置出生或路径特权。"
+    },
+    {
+      "id": "N18",
+      "name": "No saved state refill",
+      "statement": "载入不回体力、冷债、休息余量、资源或预约。"
+    },
+    {
+      "id": "N19",
+      "name": "Human-like consciousness not human body",
+      "statement": "启智动物动作词汇增加但身体工具接口仍原species。"
+    },
+    {
+      "id": "N20",
+      "name": "No measured claim",
+      "statement": "预算/场景是待验设计，不虚构已实现或实测。"
+    }
+  ],
+  "acceptance_scenarios": [
+    {
+      "id": "NA01",
+      "trigger": "普通人无任务站很久",
+      "setup": "有实际安全点、好友和可达回路",
+      "expected": "按真实需求与承诺选择散步/拜访/休息，既不永远僵立也不强迫永远走。",
+      "evidence_required": [
+        "behavior_counter",
+        "goal_episode",
+        "near_recording"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA02",
+      "trigger": "无路无椅无住房",
+      "setup": "四面有真实障碍但当前地面安全",
+      "expected": "选择真实站坐/露宿，不能刷椅子住房或无限repath。",
+      "evidence_required": [
+        "goal_reason",
+        "stock_unchanged"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA03",
+      "trigger": "低食物人被指令冲刺",
+      "setup": "剩余productive不足且hunger损害off",
+      "expected": "实际疲劳能量限制速度/停止，不因损害off免费冲刺送料。",
+      "evidence_required": [
+        "dual_energy_ledger",
+        "motion_mode"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA04",
+      "trigger": "所有人一秒到同门",
+      "setup": "100人带实际货要求穿单道",
+      "expected": "公平token+真实队列/出口容量，无重叠、无全群同步起步。",
+      "evidence_required": [
+        "queue_tokens",
+        "contact_pairs",
+        "near_recording"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA05",
+      "trigger": "窄桥两向锁死",
+      "setup": "两侧连续来人且无侧退位",
+      "expected": "分批方向翻转/公平waitAge；若已无解给typed blocked，不穿人。",
+      "evidence_required": [
+        "wait_graph",
+        "direction_log"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA06",
+      "trigger": "ORCA瞬速碰撞",
+      "setup": "高速度运动者前面突然合法停人",
+      "expected": "加速度约束和同tick真实sweep/接触裁短，不能声称ORCA保证无撞。",
+      "evidence_required": [
+        "joint_motion",
+        "collision_event"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA07",
+      "trigger": "近邻超过16",
+      "setup": "实际swept envelope内有25人",
+      "expected": "所有即时安全对检查；超预算一致等待，17号不被穿过。",
+      "evidence_required": [
+        "broadphase_pairs",
+        "overload_receipt"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA08",
+      "trigger": "多楼板投影重叠",
+      "setup": "桥上人和桥下人x/z相同",
+      "expected": "按真实Surface/高度不互相堵路，不把楼板当天然悬空地形。",
+      "evidence_required": [
+        "surface_refs",
+        "motion_hash"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA09",
+      "trigger": "牛过窄门",
+      "setup": "门宽适合人但不适合本species牛",
+      "expected": "body/load净空拒绝，不回退human导航profile或压缩牛身体。",
+      "evidence_required": [
+        "route_reason",
+        "body_profile"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA10",
+      "trigger": "兔hop翻壁",
+      "setup": "合法地面hop动画目标另一hill顶",
+      "expected": "导航直壁门控拒绝，clip不能给跨壁能力。",
+      "evidence_required": [
+        "nav_trace",
+        "clip_no_write"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA11",
+      "trigger": "鸟飞越峰",
+      "setup": "飞行鹰及蜂给对峰另一侧目标",
+      "expected": "绕实际峰棱柱或无路拒绝；关闭thermal不豁免。",
+      "evidence_required": [
+        "peak_query",
+        "flight_route"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA12",
+      "trigger": "水中鱼找食",
+      "setup": "一个ramp格两WetRegion被干脊分离",
+      "expected": "真实水连通route，不能颜色蓝就穿干脊。",
+      "evidence_required": [
+        "wet_region_refs",
+        "route_reason"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA13",
+      "trigger": "坡边smooth捷径",
+      "setup": "低pathcost直线越竖壁/私门",
+      "expected": "只在真走廊里平滑且路权/扫掠全验。",
+      "evidence_required": [
+        "shortcut_certificate"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA14",
+      "trigger": "急转180",
+      "setup": "满载人高速反向目标",
+      "expected": "先减速/转身/再走，负重能量真实，无瞬转/脚滑。",
+      "evidence_required": [
+        "motion_yaw",
+        "near_recording"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA15",
+      "trigger": "斜坡脚部落空",
+      "setup": "合法坡旁边高度断面",
+      "expected": "IK目标只合法支承内，固定肢长有界；root不被IK抬高。",
+      "evidence_required": [
+        "surface_contacts",
+        "pose_bounds"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA16",
+      "trigger": "地改时脚还站旧mesh",
+      "setup": "人物在坡工作同时异步mesh未更新",
+      "expected": "同提交撤旧foot/route/contact，显示真实hazard非互动fallback。",
+      "evidence_required": [
+        "event_revision",
+        "pose_snapshot"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA17",
+      "trigger": "取货动画中删箱",
+      "setup": "伸手预备后literalwipe删目标及货",
+      "expected": "无实际transfer，无复制箱/货，持握anchor失效。",
+      "evidence_required": [
+        "world_effect_ids",
+        "loss_ledger"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA18",
+      "trigger": "送货到齐后离开",
+      "setup": "最后1份实物到前侧receiver",
+      "expected": "真实交付一次，楼按timer建，人物去下一目标，无挥锤砌筑。",
+      "evidence_required": [
+        "delivery_receipt",
+        "building_timer",
+        "near_recording"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA19",
+      "trigger": "休息中重复存载",
+      "setup": "actual safe ground rest至中间tick后重复加载",
+      "expected": "真实lastIntegratedTick/余数与债连续，不免费补睡或恢复。",
+      "evidence_required": [
+        "rest_episode",
+        "absolute_debts"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA20",
+      "trigger": "相机拉远全过程",
+      "setup": "任务果木/送料/坡上冷饿1000tick",
+      "expected": "相同输入所有LOD/镜头World hash/账/到货tick相同。",
+      "evidence_required": [
+        "replay_hash",
+        "effect_ticks"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA21",
+      "trigger": "Frame率不同",
+      "setup": "30fps和144fps同SimTick输入",
+      "expected": "位置/任务/生命一致，纯视觉插值可以不同。",
+      "evidence_required": [
+        "world_hash"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA22",
+      "trigger": "worker快慢不同",
+      "setup": "改线程数并延迟某pathworker",
+      "expected": "同逻辑node预算前沿、获路tick/行为一致，不先完成先获益。",
+      "evidence_required": [
+        "path_frontier",
+        "world_hash"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA23",
+      "trigger": "两种动画工作重叠",
+      "setup": "同一人同时护理和搬货请求",
+      "expected": "一个primary episode+明确兼容层，不双份实物劳动。",
+      "evidence_required": [
+        "task_ledger"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA24",
+      "trigger": "任务打断已经拿货",
+      "setup": "携果去receiver前ControlLease到期",
+      "expected": "恢复自主计划保果custody；取消只释放未取预约。",
+      "evidence_required": [
+        "custody",
+        "lease_history"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA25",
+      "trigger": "用Stop退款",
+      "setup": "搬运中Stop/CancelTask/再发相同任务",
+      "expected": "已耗能量/工资/取货事实保留，effectId不会重复领奖。",
+      "evidence_required": [
+        "payment_receipts",
+        "energy_ledger"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA26",
+      "trigger": "城市全部楼毁",
+      "setup": "居民家工作点消失且地安全",
+      "expected": "LostHome/LostWork触发真实安置/休息/搬迁，不删除居民和城市归属事实。",
+      "evidence_required": [
+        "relocation_refs",
+        "identity_history"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA27",
+      "trigger": "城全部失地",
+      "setup": "居民处原位置进入海",
+      "expected": "同身份水中逃逸/受困生理，不能把人瞬移新city首都。",
+      "evidence_required": [
+        "position",
+        "hazard_events"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA28",
+      "trigger": "城市转国时工人在外",
+      "setup": "HomeCity转country但人在第三国送料",
+      "expected": "不瞬移/偷改PhysicalJurisdiction/租约范围，实际task权限重验。",
+      "evidence_required": [
+        "civic_refs",
+        "task_permission"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA29",
+      "trigger": "liveActor车内wipe",
+      "setup": "所处车辆/容器及实物被删",
+      "expected": "活Actor同position保identity解containment，货按loss ledger，真实fall/swim。",
+      "evidence_required": [
+        "containment",
+        "hazard",
+        "loss"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA30",
+      "trigger": "抬土包埋活人",
+      "setup": "God把脚下变hill且新solid覆盖原身体",
+      "expected": "InvalidOccupancyHazard，不把root推到山顶，不正常埋土走路，真实削地救援。",
+      "evidence_required": [
+        "hazard_cause",
+        "pose",
+        "no_teleport"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA31",
+      "trigger": "峰覆盖原活Actor",
+      "setup": "Godterrain抬出实际peakprism",
+      "expected": "PEAK_ENCROACHED非合法stand/navnode，禁止借此新出生/放置/越峰。",
+      "evidence_required": [
+        "hazard",
+        "peak_queries"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA32",
+      "trigger": "衣服工具同时wipe",
+      "setup": "仍活搬运者被literalGeographyWipe命中",
+      "expected": "核销穿戴工具并撤保温/负重/任务grip，新旧energy不回满。",
+      "evidence_required": [
+        "equipment_revision",
+        "loss_ledger"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA33",
+      "trigger": "孕体和活卵破窝",
+      "setup": "动作目标窝/保育器被wipe",
+      "expected": "保护真实GestationRef，失支承冷热真实hazard；食用蛋不冒充活孕体。",
+      "evidence_required": [
+        "gestation_refs",
+        "hazard_ledger"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA34",
+      "trigger": "启智途中动物",
+      "setup": "普通牛移动/觅食途中接受文明之光",
+      "expected": "ActorId/body/motion/能量不变，逐同tick合法切高级目标集无humanrig。",
+      "evidence_required": [
+        "actor_identity",
+        "species_profile"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA35",
+      "trigger": "基因改速度负载",
+      "setup": "任务路中phenotype revision改变",
+      "expected": "旧profile路径待重证，绝对能量/负载/伤势不归零。",
+      "evidence_required": [
+        "certificate_revisions",
+        "physiology"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA36",
+      "trigger": "社交无语言道具",
+      "setup": "两个未具备语言关系者想聊天/读书",
+      "expected": "按真实交流channel/实际知识源门控；不能自动创造Language或书。",
+      "evidence_required": [
+        "social_effect",
+        "knowledge_refs"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA37",
+      "trigger": "装饰草喂动物",
+      "setup": "牛idleforage目标渲染草decor",
+      "expected": "decor无食品量/任务，搜实际GroundResource，库存不增加。",
+      "evidence_required": [
+        "resource_ref",
+        "energy_ledger"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA38",
+      "trigger": "年龄身体固定",
+      "setup": "0岁18岁老人及幼牛成熟牛同场",
+      "expected": "同species固定bodyfit，成熟资格与能力真实不同，不幼体缩放。",
+      "evidence_required": [
+        "BodyProfileId",
+        "maturity"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA39",
+      "trigger": "暂停油画/切LightDark",
+      "setup": "睡眠/工作中暂停、主菜单画动或Age切换",
+      "expected": "SimTick停不多休息劳动，Age不全体强制睡醒。",
+      "evidence_required": [
+        "tick",
+        "rest_work",
+        "action_due"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA40",
+      "trigger": "旧session迟到输入",
+      "setup": "读档新Session收到旧附身移动",
+      "expected": "拒绝旧lease/input，真实pendingtask保留，不抢Actor控制。",
+      "evidence_required": [
+        "lease_rejection",
+        "task_snapshot"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA41",
+      "trigger": "远景货瞬移优化",
+      "setup": "性能优化把搬运人离开相机设arrived",
+      "expected": "验收拒绝；必须同真实路径到达tick/负载/冷耗/库存。",
+      "evidence_required": [
+        "near_far_replay_hash"
+      ],
+      "status": "future_not_executed"
+    },
+    {
+      "id": "NA42",
+      "trigger": "呈现checkpoint删除",
+      "setup": "同存档有无clip_phase显示checkpoint",
+      "expected": "World事实/未来结果完全相同，重建姿态不补步数食物。",
+      "evidence_required": [
+        "world_hash",
+        "motion_odometer"
+      ],
+      "status": "future_not_executed"
+    }
+  ],
+  "acceptance_scenario_count": 42,
+  "invariant_count": 20,
+  "algorithm_revision": "ADR0015-2026-10-09"
+}
