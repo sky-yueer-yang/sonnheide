@@ -14,7 +14,7 @@ add_library(sonnheide_earth engine/src/earth_world.cpp engine/src/world_creation
 target_include_directories(sonnheide_earth PUBLIC engine/include)
 target_link_libraries(sonnheide_earth PUBLIC Threads::Threads)
 add_library(sonnheide_earth_navigation client/native/earth_navigation.cpp)
-target_include_directories(sonnheide_earth_navigation PUBLIC client/native)
+target_include_directories(sonnheide_earth_navigation PUBLIC client/native presentation/native)
 target_link_libraries(sonnheide_earth_navigation PUBLIC sonnheide_earth)
 target_link_libraries(sonnheide_interaction PUBLIC Threads::Threads)
 foreach(target sonnheide_kernel sonnheide_ocean_math sonnheide_interaction sonnheide_earth sonnheide_earth_navigation)

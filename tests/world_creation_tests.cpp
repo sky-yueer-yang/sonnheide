@@ -146,6 +146,78 @@ int main(int argc,char** argv) {
   test("writer thread cannot publish from worker",[&]{
    std::atomic<bool> rejected{false};std::thread worker([&]{try{coordinator.begin(16);}catch(const std::exception&){rejected=true;}});worker.join();check(rejected.load(),"second writer admitted");
   });
+  test("presentation compatibility is explicit bounded and canonical",[&]{
+   const auto rejected_directory=directory/"rejected-policy";
+   const auto reject=[&](const std::vector<std::string>& hashes){
+    bool failed=false;try{CreateCoordinator invalid(rejected_directory,atlas,presentation_hash,hashes);}catch(const std::exception&){failed=true;}
+    check(failed,"invalid presentation compatibility policy admitted");
+    check(!std::filesystem::exists(rejected_directory),"invalid policy created save storage");
+   };
+   reject({""});reject({std::string(64,'z')});reject({std::string(64,'A')});reject({std::string(63,'b')});
+   reject({std::string(64,'b'),std::string(64,'b')});reject({presentation_hash});
+   std::vector<std::string> hashes;for(int n=0;n<9;++n)hashes.push_back(std::string(63,'f')+char('0'+n));
+   reject(hashes);hashes.pop_back();
+   CreateCoordinator bounded(directory/"valid-policy",atlas,presentation_hash,hashes);
+   check(!bounded.can_continue(),"compatibility policy fabricated a saved world");
+  });
+  test("approved old presentation loads with current GPU preserving all provenance bytes",[&]{
+   const auto storage=directory/"compatible-old";
+   const std::string old_hash="2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552";
+   const std::string new_hash(64,'b');
+   ResourceReadiness old_ready{definition->recipe_hash(),old_hash,true,true,true,true};
+   ResourceReadiness new_ready{definition->recipe_hash(),new_hash,true,true,true,true};
+   CreateCoordinator legacy(storage,atlas,old_hash);
+   const auto original=legacy.create(legacy.begin(30,"Existing World"),definition,old_ready);
+   check(static_cast<bool>(original),original.error.c_str());
+   const auto checkpoint=storage/(original.session->world_id+".world");
+   const auto checkpoint_before=bytes(checkpoint),pointer_before=bytes(storage/"continue.pointer");
+   CreateCoordinator strict(storage,atlas,new_hash);
+   check(!strict.can_continue()&&!strict.load_continue(new_ready),"unlisted old renderer was silently accepted");
+   CreateCoordinator upgraded(storage,atlas,new_hash,{old_hash});
+   check(upgraded.can_continue(),"explicit old presentation was not advertised as compatible");
+   auto prepared=upgraded.prepare_continue();
+   check(prepared->presentation_recipe_hash==old_hash,"read-only load rewrote presentation provenance");
+   check(prepared->world_id==original.session->world_id&&prepared->definition->recipe_hash()==definition->recipe_hash()&&
+         prepared->definition->source_hash()==atlas->source_hash(),"presentation migration changed geographic identity");
+   check(!upgraded.publish_continue(prepared,old_ready),"compatible checkpoint permitted stale GPU resources");
+   check(!upgraded.active(),"stale GPU readiness published world");
+   auto loaded=upgraded.publish_continue(prepared,new_ready);check(static_cast<bool>(loaded),loaded.error.c_str());
+   check(loaded.session->presentation_recipe_hash==old_hash&&loaded.session->world_id==original.session->world_id,
+         "published compatible world lost saved provenance");
+   check(bytes(checkpoint)==checkpoint_before&&bytes(storage/"continue.pointer")==pointer_before,
+         "compatibility load rewrote checkpoint or continue pointer");
+   auto forged=std::make_shared<WorldSession>(*prepared);forged->presentation_recipe_hash=std::string(64,'c');
+   check(!upgraded.publish_continue(forged,new_ready),"prepared unknown presentation bypassed policy");
+   check(upgraded.active()==loaded.session,"rejected prepared presentation replaced active world");
+   const auto new_world=upgraded.create(upgraded.begin(31),definition,new_ready);check(static_cast<bool>(new_world),new_world.error.c_str());
+   check(new_world.session->presentation_recipe_hash==new_hash&&new_world.session->world_id!=original.session->world_id,
+         "new creation reused saved old presentation or WorldId");
+   const auto new_bytes=bytes(storage/(new_world.session->world_id+".world"));
+   check(new_bytes.find("\n"+new_hash+"\n")!=std::string::npos,"new checkpoint did not serialize current presentation");
+   check(bytes(checkpoint)==checkpoint_before,"creating a new world changed archived old checkpoint");
+  });
+  test("compatibility never bypasses unknown source geometry or supported state",[&]{
+   const auto storage=directory/"compatible-refusal";
+   const std::string old_hash(64,'d'),new_hash(64,'e');
+   ResourceReadiness old_ready{definition->recipe_hash(),old_hash,true,true,true,true};
+   ResourceReadiness new_ready{definition->recipe_hash(),new_hash,true,true,true,true};
+   CreateCoordinator legacy(storage,atlas,old_hash);const auto saved=legacy.create(legacy.begin(32),definition,old_ready);
+   check(static_cast<bool>(saved),saved.error.c_str());
+   const auto checkpoint=storage/(saved.session->world_id+".world");const auto original=bytes(checkpoint),pointer=bytes(storage/"continue.pointer");
+   CreateCoordinator upgraded(storage,atlas,new_hash,{old_hash});auto loaded=upgraded.load_continue(new_ready);
+   check(static_cast<bool>(loaded),loaded.error.c_str());const auto active=upgraded.active();
+   const auto reject_corruption=[&](std::size_t field,const std::string& replacement){
+    write(checkpoint,edit_body(original,field,replacement));
+    check(!upgraded.load_continue(new_ready),"presentation compatibility admitted unrelated corrupted state");
+    check(upgraded.active()==active&&bytes(storage/"continue.pointer")==pointer,"compatibility refusal changed active or pointer");
+    write(checkpoint,original);
+   };
+   write(checkpoint,edit_body(original,5,std::string(64,'f')));
+   check(!upgraded.can_continue()&&!upgraded.load_continue(new_ready),"unknown saved presentation admitted");write(checkpoint,original);
+   reject_corruption(2,std::string(64,'0'));reject_corruption(3,"unknown-frozen-geography");reject_corruption(4,"1");
+   reject_corruption(11,"1 0 0");reject_corruption(12,"1 0 0 0");
+   check(upgraded.active()==active&&bytes(checkpoint)==original,"failed compatibility load changed saved world");
+  });
   test("successful retries leave no failed worlds or temporary files",[&]{
    std::size_t worlds{};for(const auto& entry:std::filesystem::directory_iterator(directory)){check(entry.path().extension()!=".tmp","temporary leaked");if(entry.path().extension()==".world")++worlds;}
    check(worlds==2,"failed or cancelled checkpoint leaked");

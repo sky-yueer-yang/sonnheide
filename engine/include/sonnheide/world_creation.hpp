@@ -6,6 +6,7 @@
 #include <optional>
 #include <string>
 #include <thread>
+#include <vector>
 
 namespace sonnheide::creation {
 using DraftRevision = std::uint64_t;
@@ -26,6 +27,7 @@ struct WorldSession {
  bool age_automatic{};
  EmptyEntityCounts entities;
  std::shared_ptr<const earth::EarthWorldDefinition> definition;
+ // Checkpoint provenance, preserved when an explicitly compatible renderer loads it.
  std::string presentation_recipe_hash;
 };
 enum class CreateStatus { Preparing, Published, Cancelled, Stale, Failed };
@@ -46,7 +48,8 @@ enum class PersistenceStep {
 class CreateCoordinator {
 public:
  CreateCoordinator(std::filesystem::path saves, std::shared_ptr<const earth::GeoAtlas> atlas,
-                   std::string admitted_presentation_recipe_hash);
+                   std::string admitted_presentation_recipe_hash,
+                   std::vector<std::string> admitted_compatible_presentation_recipes = {});
  ~CreateCoordinator();
  CreationTicket begin(DraftRevision draft_revision, std::string display_name = "Sonnheide");
  void cancel(CreationTicket ticket);
@@ -78,6 +81,7 @@ private:
  std::filesystem::path saves_;
  std::shared_ptr<const earth::GeoAtlas> atlas_;
  std::string presentation_hash_;
+ std::vector<std::string> compatible_presentation_hashes_;
  std::thread::id writer_;
  std::uint64_t next_request_{}, next_generation_{};
  CreationTicket current_{};

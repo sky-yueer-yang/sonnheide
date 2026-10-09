@@ -3,12 +3,16 @@
 #include "bgfx_render_interface.hpp"
 #include "native_menu.hpp"
 #include "native_earth_page.hpp"
+#include "earth_renderer.hpp"
 #include <RmlUi/Core.h>
 #include <RmlUi/Core/Elements/ElementFormControlInput.h>
 #include <bgfx/bgfx.h>
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <filesystem>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -22,6 +26,47 @@ struct RmlLifetime {
     RmlLifetime() { if (!Rml::Initialise()) throw std::runtime_error("RmlUi initialization failed"); }
     ~RmlLifetime() { Rml::Shutdown(); }
 };
+sonnheide::native::EarthCamera check_entry_camera(const sonnheide::client::NativeEarthPage& earth,
+                                                const char* entry) {
+    const auto camera=earth.camera_state();
+    if (camera.orthographic || !std::isfinite(camera.height_m) || camera.height_m<=0 || camera.height_m>40 ||
+        !std::isfinite(camera.pitch_deg) || camera.pitch_deg<=0 || camera.pitch_deg>25 ||
+        !std::isfinite(camera.yaw_deg) || !std::isfinite(camera.target_x_m) || !std::isfinite(camera.target_z_m))
+        throw std::runtime_error(std::string("Phase1 ")+entry+" did not enter a finite perspective close view (height <=40m, pitch <=25 degrees)");
+    std::cout<<"Phase1 camera "<<entry<<": perspective, height="<<camera.height_m<<", pitch="<<camera.pitch_deg
+             <<", yaw="<<camera.yaw_deg<<", target="<<camera.target_x_m<<','<<camera.target_z_m<<'\n';
+    return camera;
+}
+bool same_camera(const sonnheide::native::EarthCamera& a,const sonnheide::native::EarthCamera& b) {
+    return a.target_x_m==b.target_x_m && a.target_z_m==b.target_z_m && a.height_m==b.height_m &&
+           a.pitch_deg==b.pitch_deg && a.yaw_deg==b.yaw_deg && a.orthographic==b.orthographic;
+}
+void write_ground_evidence(const std::filesystem::path& folder,
+                           const sonnheide::client::NativeEarthPage& earth,
+                           const sonnheide::native::EarthCamera& camera,
+                           const char* backend,int width,int height) {
+    std::ofstream file(folder/"ground-camera.json",std::ios::binary);
+    if(!file)throw std::runtime_error("Cannot write native ground camera evidence");
+    // WorldId and recipe are canonical hexadecimal identities, never user text.
+    file<<std::setprecision(17)<<"{\n  \"schema_version\": 1,\n  \"entry\": \"formal-world\",\n"
+        <<"  \"backend\": \""<<backend<<"\",\n  \"world_id\": \""<<earth.world_id()<<"\",\n"
+        <<"  \"resource_recipe_hash\": \""<<earth.resource_recipe_hash()<<"\",\n"
+        <<"  \"width\": "<<width<<", \"height\": "<<height<<",\n"
+        <<"  \"camera\": {\"orthographic\": false, \"height_m\": "<<camera.height_m
+        <<", \"pitch_deg\": "<<camera.pitch_deg<<", \"yaw_deg\": "<<camera.yaw_deg
+        <<", \"target_x_m\": "<<camera.target_x_m<<", \"target_z_m\": "<<camera.target_z_m<<"},\n"
+        <<"  \"comparison\": \"same World, camera, UI and lighting; only one ground texture binding changes\",\n"
+        <<"  \"frames\": [\"ground-full\", \"ground-mean-base\", \"ground-flat-normal\", \"ground-mean-arm\", \"ground-restored\"],\n"
+        <<"  \"frame_file_sha256\": {";
+    bool first=true;
+    for(const char* name:{"ground-full","ground-mean-base","ground-flat-normal","ground-mean-arm","ground-restored"}) {
+        const auto path=folder/(std::string(name)+".tga");
+        if(!std::filesystem::is_regular_file(path))throw std::runtime_error("Formal ground screenshot callback did not produce "+std::string(name));
+        file<<(first?"":",")<<"\n    \""<<name<<"\": \""<<sonnheide::earth::sha256_file(path)<<"\"";first=false;
+    }
+    file<<"\n  }\n}\n";
+    if(!file)throw std::runtime_error("Cannot finish native ground camera evidence");
+}
 void draw_painting(sonnheide::native::BgfxRenderInterface& renderer,
                   const std::filesystem::path& root, int index,
                   const sonnheide::native::ImagePixels& image,
@@ -71,7 +116,13 @@ int main(int argc, char** argv) {
         }
         if(saves.empty())saves=(smoke||phase1_smoke)?root/"../../phase1-smoke-saves":preference_path.parent_path()/"saves";
         saves=std::filesystem::absolute(saves).lexically_normal();
-        if(!captures.empty()){if(!phase1_smoke)throw std::runtime_error("--capture-dir requires --phase1-smoke");captures=std::filesystem::absolute(captures);std::filesystem::create_directories(captures);}
+        if(!captures.empty()) {
+            if(!phase1_smoke)throw std::runtime_error("--capture-dir requires --phase1-smoke");
+            captures=std::filesystem::absolute(captures);std::filesystem::create_directories(captures);
+            // Missing/failed screenshots must never inherit a previous QA run.
+            for(const char* name:{"ground-full.tga","ground-mean-base.tga","ground-flat-normal.tga","ground-mean-arm.tga","ground-restored.tga","ground-camera.json"})
+                std::filesystem::remove(captures/name);
+        }
         const auto initial_preferences = sonnheide::client::load_preferences(preference_path);
         sonnheide::native::PlatformWindow window;
         window.fullscreen(initial_preferences.fullscreen);
@@ -112,6 +163,7 @@ int main(int argc, char** argv) {
             auto previous = std::chrono::steady_clock::now();
             bool running = true, previous_visible = false;
             unsigned frame=0,phase=0,phase_frames=0,ready_frames=0,stable_frames=0;std::string smoke_world;
+            sonnheide::native::EarthCamera ground_camera;int ground_width=0,ground_height=0;
             const auto session_start=std::chrono::steady_clock::now();bool checked_continue=false;
             while (running) {
                 SDL_Event event;
@@ -151,13 +203,26 @@ int main(int argc, char** argv) {
                     auto next=[&]{++phase;phase_frames=0;stable_frames=0;};
                     const bool stable=(phase==2&&earth.preview_ready())||((phase==5||phase==7||phase==12)&&earth.in_world());
                     stable_frames=stable?stable_frames+1:0;
+                    if(stable_frames==6) {
+                        check_entry_camera(earth,phase==2?"Preview":phase==5?"World":phase==7?"Continue":"Load");
+                        if(phase==5){ground_camera=earth.camera_state();ground_width=pixels_w;ground_height=pixels_h;}
+                    }
+                    if(phase==5&&stable_frames>=6&&!captures.empty()) {
+                        if(!same_camera(ground_camera,earth.camera_state())||pixels_w!=ground_width||pixels_h!=ground_height)
+                            throw std::runtime_error("Formal ground comparison camera or viewport changed during capture");
+                        using Diagnostic=sonnheide::native::GroundDiagnostic;
+                        if(stable_frames==12)earth.set_ground_diagnostic(Diagnostic::MeanBase);
+                        else if(stable_frames==24)earth.set_ground_diagnostic(Diagnostic::FlatNormal);
+                        else if(stable_frames==36)earth.set_ground_diagnostic(Diagnostic::MeanArm);
+                        else if(stable_frames==48)earth.set_ground_diagnostic(Diagnostic::Full);
+                    }
                     if(phase==1&&earth.resources_ready())++ready_frames;
                     if(phase==0&&frame>8){menu.activate("new");next();}
                     else if(phase==1&&earth.visible()&&earth.resources_ready()&&ready_frames>15){earth.activate("preview");next();}
                     else if(phase==2&&earth.preview_ready()&&stable_frames>10){if(auto* doc=context->GetDocument(1))if(auto* input=dynamic_cast<Rml::ElementFormControlInput*>(doc->GetElementById("earth-world-name")))input->SetValue("世界 · Sonnheide");earth.activate("dark");next();}
                     else if(phase==3&&phase_frames>8){earth.activate("light");next();}
                     else if(phase==4&&phase_frames>8){earth.activate("create");next();}
-                    else if(phase==5&&earth.in_world()&&stable_frames>10){smoke_world=earth.world_id();if(smoke_world.empty()||!earth.can_continue())throw std::runtime_error("Created World is not durably resumable");earth.activate("back");next();}
+                    else if(phase==5&&earth.in_world()&&stable_frames>(captures.empty()?10U:60U)){smoke_world=earth.world_id();if(smoke_world.empty()||!earth.can_continue())throw std::runtime_error("Created World is not durably resumable");if(!captures.empty())write_ground_evidence(captures,earth,ground_camera,renderer.renderer_name(),ground_width,ground_height);earth.activate("back");next();}
                     else if(phase==6&&!earth.visible()&&phase_frames>8){menu.activate("continue");next();}
                     else if(phase==7&&earth.in_world()&&stable_frames>10){if(earth.world_id()!=smoke_world)throw std::runtime_error("Continue changed stable WorldId");earth.activate("back");next();}
                     else if(phase==8&&!earth.visible()&&phase_frames>8){menu.activate("settings");menu.activate("de");menu.activate("back");menu.activate("new");next();}
@@ -165,7 +230,7 @@ int main(int argc, char** argv) {
                     else if(phase==10&&!earth.busy()&&phase_frames>8){earth.activate("back");next();}
                     else if(phase==11&&!earth.visible()&&phase_frames>8){menu.activate("settings");menu.activate("en");menu.activate("back");menu.activate("load");next();}
                     else if(phase==12&&earth.in_world()&&stable_frames>10){if(earth.world_id()!=smoke_world)throw std::runtime_error("Cancelled candidate altered Continue");earth.activate("back");next();}
-                    else if(phase==13&&!earth.visible()){std::cout<<"Phase1 native Metal/D3D11 scenario passed: full preview, Light/Dark, real PBR, durable create, Continue, cancelled candidate, three locales; WorldId="<<smoke_world<<'\n';break;}
+                    else if(phase==13&&!earth.visible()){std::cout<<"Phase1 native Metal/D3D11 scenario passed: perspective close-view Preview/World/Continue/Load, Light/Dark, durable create, cancelled candidate, three locales; WorldId="<<smoke_world<<'\n';if(!captures.empty())std::cout<<"Formal ground texture captures require tools/validate_ground_frames.py before claiming visible PBR contribution\n";break;}
                 }
                 if (menu.consume_preferences_changed()) {
                     window.fullscreen(menu.preferences().fullscreen);
@@ -190,6 +255,14 @@ int main(int argc, char** argv) {
                 }
                 context->Update(); renderer.begin_ui_frame(); context->Render();
                 if(phase1_smoke&&!captures.empty()&&((phase==1&&ready_frames==10)||(phase==3&&phase_frames==6)||stable_frames==6)){const auto filename=path_utf8(captures/("step-"+std::to_string(phase)));bgfx::requestScreenShot(BGFX_INVALID_HANDLE,filename.c_str());}
+                if(phase1_smoke&&!captures.empty()&&phase==5) {
+                    // bgfx accepts only one screenshot per framebuffer each
+                    // frame; step-5 already captures frame 6, so Full uses 7.
+                    const char* name=stable_frames==7?"ground-full":stable_frames==18?"ground-mean-base":
+                                     stable_frames==30?"ground-flat-normal":stable_frames==42?"ground-mean-arm":
+                                     stable_frames==54?"ground-restored":nullptr;
+                    if(name){const auto filename=path_utf8(captures/name);bgfx::requestScreenShot(BGFX_INVALID_HANDLE,filename.c_str());}
+                }
                 renderer.end_frame();
                 ++frame;
             }

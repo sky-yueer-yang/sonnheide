@@ -48,6 +48,7 @@ constexpr Label labels[]={
  {"preview","预览地表","Preview Terrain","Gelände ansehen"},
  {"create","创建世界","Create World","Welt erschaffen"},
  {"cancel","取消","Cancel","Abbrechen"},{"atlas","调整选区","Adjust Area","Gebiet anpassen"},
+ {"overview","总览","Overview","Übersicht"},{"closeview","近景","Ground View","Bodenansicht"},
  {"light","明亮预览","Light Preview","Helle Vorschau"},
  {"dark","黑暗预览","Dark Preview","Dunkle Vorschau"},
  {"surface","地表材质","Ground Material","Bodenmaterial"},
@@ -97,6 +98,8 @@ struct NativeEarthPage::Impl {
  Locale locale{Locale::Chinese};Mode mode{Mode::Atlas};bool shown{},returned{},selecting{},drag{},dragged{},darkness{},open_saved{},cancelled_load{},resource_attempted{},orbit{},show_sources{};
  double start_x{},start_y{},last_x{},last_y{};int width{1280},height{800};
  AtlasNavigation view;earth::WorldConfig config;native::EarthCamera camera;
+ native::EarthCamera near_camera;bool overview{};
+ native::GroundDiagnostic diagnostic{native::GroundDiagnostic::Full};
  std::uint64_t revision{1},job_revision{};int material{-1};std::string error,status,world_name{"Sonnheide"};
  std::shared_ptr<std::atomic<bool>> stop;
  JoinedFuture<std::shared_ptr<earth::GeoAtlas>> atlas_job;
@@ -117,15 +120,7 @@ struct NativeEarthPage::Impl {
   const bool ready=renderer&&renderer->ready();return {d.recipe_hash(),ready?renderer->resource_recipe_hash():"",ready,ready,ready,ready};
  }
  void render_world(std::shared_ptr<const earth::EarthWorldDefinition> definition){
-  renderer->set_world(definition);camera={};camera.height_m=float(std::min(definition->config().width_m,definition->config().height_m)*.18);camera.pitch_deg=65;camera.orthographic=true;
-  const auto bounds=definition->domain_bounds(),selection=definition->selection_bounds();double nearest=1e100;const auto& cfg=definition->config();
-  for(std::uint32_t z=0;z<definition->rows();++z)for(std::uint32_t x=0;x<definition->columns();++x){
-   earth::Point p{bounds.min_x+(x+.5)*definition->cell_width_m(),bounds.min_y+(z+.5)*definition->cell_height_m()};
-   const double margin=cfg.closure_band_m+cfg.coast_width_m*2;
-   if(p.x<selection.min_x+margin||p.x>selection.max_x-margin||p.y<selection.min_y+margin||p.y>selection.max_y-margin)continue;
-   const auto surface=definition->sample(p);const double distance=std::hypot(p.x,p.y);
-   if(surface.source_land&&surface.land&&surface.coast_distance_m<cfg.coast_width_m*2&&distance<nearest){nearest=distance;camera.target_x_m=p.x;camera.target_z_m=p.y;}
-  }
+  renderer->set_world(definition);camera=initial_ground_camera(*definition);near_camera=camera;overview=false;diagnostic=native::GroundDiagnostic::Full;
  }
  void prepare_preview(){
   if(!atlas||!renderer||busy())return;
@@ -148,6 +143,7 @@ struct NativeEarthPage::Impl {
   const bool atlas_mode=mode==Mode::Atlas,world=mode==Mode::World,waiting=busy();
   for(const auto* action:{"select","preview","scale"})if(auto* e=document->GetElementById(std::string("earth-action-")+action))e->SetProperty("display",atlas_mode?"inline-block":"none");
   for(const auto* action:{"atlas","light","dark","create"})if(auto* e=document->GetElementById(std::string("earth-action-")+action))e->SetProperty("display",mode==Mode::Preview&&!waiting?"inline-block":"none");
+  if(auto* e=document->GetElementById("earth-action-view")){e->SetProperty("display",!atlas_mode&&!waiting&&candidate?"inline-block":"none");e->SetInnerRML(escape(text(locale,overview?"closeview":"overview")));}
   document->GetElementById("earth-action-cancel")->SetProperty("display",waiting?"inline-block":"none");
   document->GetElementById("earth-name-group")->SetProperty("display",mode==Mode::Preview&&!waiting?"block":"none");
   document->GetElementById("earth-heading")->SetInnerRML(escape(world&&coordinator&&coordinator->active()?coordinator->active()->display_name:text(locale,"title")));
@@ -171,7 +167,7 @@ void NativeEarthPage::open(Locale locale,bool saved){auto& p=*impl_;p.locale=loc
 void NativeEarthPage::update(){auto& p=*impl_;const auto size=p.context.GetDimensions();const float density=std::max(.1f,p.context.GetDensityIndependentPixelRatio());p.width=int(size.x/density);p.height=int(size.y/density);
  try{
   if(p.atlas_job.valid()&&done(p.atlas_job.wait_for(std::chrono::seconds(0)))){p.atlas=p.atlas_job.get();p.status="renderloading";p.refresh();}
-  else if(p.atlas&&!p.renderer&&!p.resource_attempted){p.resource_attempted=true;p.renderer=std::make_unique<native::EarthRenderer>(p.root);p.coordinator=std::make_unique<creation::CreateCoordinator>(p.saves,p.atlas,p.renderer->resource_recipe_hash());p.status.clear();if(p.open_saved)p.prepare_load();}
+  else if(p.atlas&&!p.renderer&&!p.resource_attempted){p.resource_attempted=true;p.renderer=std::make_unique<native::EarthRenderer>(p.root);p.coordinator=std::make_unique<creation::CreateCoordinator>(p.saves,p.atlas,p.renderer->resource_recipe_hash(),p.renderer->compatible_presentation_recipes());p.status.clear();if(p.open_saved)p.prepare_load();}
   if(p.preview_job.valid()&&done(p.preview_job.wait_for(std::chrono::seconds(0)))){auto candidate=p.preview_job.get();if(p.job_revision==p.revision&&p.stop&&!p.stop->load()&&p.shown){p.render_world(candidate);p.candidate=std::move(candidate);p.mode=Impl::Mode::Preview;p.darkness=false;p.status="ready";}else p.status.clear();}
   if(p.load_job.valid()&&done(p.load_job.wait_for(std::chrono::seconds(0)))){auto session=p.load_job.get();if(!p.cancelled_load&&p.job_revision==p.revision&&p.shown){p.render_world(session->definition);auto result=p.coordinator->publish_continue(session,p.readiness(*session->definition),p.ticket);if(!result)throw std::runtime_error(result.error);p.candidate=session->definition;p.config=session->definition->config();p.mode=Impl::Mode::World;p.darkness=false;p.status.clear();}}
   if(p.coordinator)if(auto result=p.coordinator->poll()){if(*result){p.mode=Impl::Mode::World;p.darkness=false;p.status.clear();p.candidate=result->session->definition;}else{p.mode=p.candidate?Impl::Mode::Preview:Impl::Mode::Atlas;p.status.clear();if(result->status==creation::CreateStatus::Failed)p.error=result->error;}}
@@ -179,12 +175,12 @@ void NativeEarthPage::update(){auto& p=*impl_;const auto size=p.context.GetDimen
  p.refresh();}
 bool NativeEarthPage::handle_event(const SDL_Event& event,int w,int h){auto& p=*impl_;if(!p.shown)return false;p.width=w;p.height=h;const double map_h=p.map_height();
  auto interactive=[&](float x,float y){auto* e=p.context.GetElementAtPoint({x*p.context.GetDensityIndependentPixelRatio(),y*p.context.GetDensityIndependentPixelRatio()});while(e&&e!=p.document){if(e->GetId()=="earth-sources-panel"||e->GetTagName()=="input"||e->GetTagName()=="button")return true;e=e->GetParentNode();}return false;};
- if(event.type==SDL_EVENT_MOUSE_WHEEL){float x=0,y=0;SDL_GetMouseState(&x,&y);if(y>=map_h||interactive(x,y))return false;if(p.mode==Impl::Mode::Atlas)p.view.zoom(event.wheel.y,x,y,w,map_h);else if(!p.busy())p.camera.height_m=std::clamp(p.camera.height_m*float(std::exp(-event.wheel.y*.15)),8.f,30000.f);return true;}
+ if(event.type==SDL_EVENT_MOUSE_WHEEL){float x=0,y=0;SDL_GetMouseState(&x,&y);if(y>=map_h||interactive(x,y))return false;if(p.mode==Impl::Mode::Atlas)p.view.zoom(event.wheel.y,x,y,w,map_h);else if(!p.busy())zoom_ground_camera(p.camera,event.wheel.y,x,y,w,map_h,p.candidate->domain_bounds());return true;}
  
  if(event.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&interactive(event.button.x,event.button.y))return false;
  if(event.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&event.button.y<map_h&&(event.button.button==SDL_BUTTON_LEFT||event.button.button==SDL_BUTTON_RIGHT)){p.orbit=event.button.button==SDL_BUTTON_RIGHT;p.drag=true;p.dragged=false;p.start_x=p.last_x=event.button.x;p.start_y=p.last_y=event.button.y;return true;}
  if(event.type==SDL_EVENT_MOUSE_MOTION&&p.drag){const double x=event.motion.x,y=event.motion.y;if(std::hypot(x-p.start_x,y-p.start_y)>3)p.dragged=true;
-  if(p.mode==Impl::Mode::Atlas){if(!p.selecting)p.view.pan(x-p.last_x,y-p.last_y,w,map_h);}else if(!p.busy()&&p.orbit){p.camera.orthographic=false;p.camera.yaw_deg+=float(x-p.last_x)*.25f;p.camera.pitch_deg=std::clamp(p.camera.pitch_deg+float(y-p.last_y)*.2f,15.f,85.f);}else if(!p.busy()){const double mpp=p.camera.height_m/map_h;p.camera.target_x_m-=(x-p.last_x)*mpp;p.camera.target_z_m+=(y-p.last_y)*mpp;const auto bounds=p.candidate->domain_bounds();p.camera.target_x_m=std::clamp(p.camera.target_x_m,bounds.min_x,bounds.max_x);p.camera.target_z_m=std::clamp(p.camera.target_z_m,bounds.min_y,bounds.max_y);}p.last_x=x;p.last_y=y;return true;}
+  if(p.mode==Impl::Mode::Atlas){if(!p.selecting)p.view.pan(x-p.last_x,y-p.last_y,w,map_h);}else if(!p.busy()&&p.orbit){orbit_ground_camera(p.camera,x-p.last_x,y-p.last_y);}else if(!p.busy()){pan_ground_camera(p.camera,p.last_x,p.last_y,x,y,w,map_h,p.candidate->domain_bounds());}p.last_x=x;p.last_y=y;return true;}
  if(event.type==SDL_EVENT_MOUSE_BUTTON_UP&&p.drag&&(event.button.button==SDL_BUTTON_LEFT||event.button.button==SDL_BUTTON_RIGHT)){p.drag=false;if(p.mode==Impl::Mode::Atlas&&!p.busy()&&!p.orbit){
    if(p.selecting&&p.dragged){const auto a=p.view.at(p.start_x,p.start_y,w,map_h),b=p.view.at(event.button.x,event.button.y,w,map_h);double dl=b.longitude-a.longitude;dl-=360*std::round(dl/360);p.config.centre={a.longitude+dl*.5,(a.latitude+b.latitude)*.5};const double real_w=std::abs(dl)*pi/180*6371008.8*std::cos(p.config.centre.latitude*pi/180),real_h=std::abs(a.latitude-b.latitude)*pi/180*6371008.8;if(real_w>=100&&real_h>=100){if(real_w>4000000||real_h>4000000){p.error=text(p.locale,"arealimit");}else {p.config.world_scale=p.config.width_m/real_w;p.config.height_m=p.config.width_m*real_h/real_w;p.invalidate();}}}
    else if(!p.dragged){auto c=p.view.at(event.button.x,event.button.y,w,map_h);if(c.latitude>=-90&&c.latitude<=90){p.config.centre=c;p.invalidate();}}
@@ -192,17 +188,18 @@ bool NativeEarthPage::handle_event(const SDL_Event& event,int w,int h){auto& p=*
  if(event.type==SDL_EVENT_KEY_DOWN&&!p.busy()){
   auto* focus=p.context.GetFocusElement();const bool typing=focus&&focus->GetTagName()=="input";
   if(!typing){double step=p.mode==Impl::Mode::Atlas?50:p.camera.height_m*.08;
-   if(event.key.key==SDLK_LEFT||event.key.key==SDLK_RIGHT||event.key.key==SDLK_UP||event.key.key==SDLK_DOWN){double dx=event.key.key==SDLK_LEFT?step:event.key.key==SDLK_RIGHT?-step:0,dy=event.key.key==SDLK_UP?step:event.key.key==SDLK_DOWN?-step:0;if(p.mode==Impl::Mode::Atlas)p.view.pan(dx,dy,w,map_h);else {p.camera.target_x_m-=dx;p.camera.target_z_m+=dy;const auto bounds=p.candidate->domain_bounds();p.camera.target_x_m=std::clamp(p.camera.target_x_m,bounds.min_x,bounds.max_x);p.camera.target_z_m=std::clamp(p.camera.target_z_m,bounds.min_y,bounds.max_y);}return true;}
-   if(event.key.key==SDLK_EQUALS||event.key.key==SDLK_MINUS){int n=event.key.key==SDLK_EQUALS?1:-1;if(p.mode==Impl::Mode::Atlas)p.view.zoom(n,w*.5,map_h*.5,w,map_h);else p.camera.height_m=std::clamp(p.camera.height_m*float(std::exp(-n*.15)),8.f,30000.f);return true;}
+   if(event.key.key==SDLK_LEFT||event.key.key==SDLK_RIGHT||event.key.key==SDLK_UP||event.key.key==SDLK_DOWN){double dx=event.key.key==SDLK_LEFT?step:event.key.key==SDLK_RIGHT?-step:0,dy=event.key.key==SDLK_UP?step:event.key.key==SDLK_DOWN?-step:0;if(p.mode==Impl::Mode::Atlas)p.view.pan(dx,dy,w,map_h);else {pan_ground_camera(p.camera,w*.5,map_h*.5,w*.5+dx,map_h*.5+dy,w,map_h,p.candidate->domain_bounds());}return true;}
+   if(event.key.key==SDLK_EQUALS||event.key.key==SDLK_MINUS){int n=event.key.key==SDLK_EQUALS?1:-1;if(p.mode==Impl::Mode::Atlas)p.view.zoom(n,w*.5,map_h*.5,w,map_h);else zoom_ground_camera(p.camera,n,w*.5,map_h*.5,w,map_h,p.candidate->domain_bounds());return true;}
   }
  }
  if(event.type==SDL_EVENT_KEY_DOWN&&event.key.key==SDLK_ESCAPE){activate(p.show_sources?"sources":p.busy()?"cancel":"back");return true;}
  return false;}
-void NativeEarthPage::draw(int w,int h){auto& p=*impl_;if(!p.shown||!p.renderer||!p.atlas)return;const int viewport_h=std::clamp(int(p.map_height()*p.context.GetDensityIndependentPixelRatio()),1,h);if(p.mode==Impl::Mode::Atlas)p.renderer->draw_atlas(*p.atlas,p.view.longitude,p.view.latitude,p.view.span_longitude,w,viewport_h,p.config.centre,p.config.width_m/p.config.world_scale,p.config.height_m/p.config.world_scale);else if(p.candidate)p.renderer->draw(p.camera,p.mode==Impl::Mode::World?false:p.darkness,w,viewport_h,p.material);}
+void NativeEarthPage::draw(int w,int h){auto& p=*impl_;if(!p.shown||!p.renderer||!p.atlas)return;const int viewport_h=std::clamp(int(p.map_height()*p.context.GetDensityIndependentPixelRatio()),1,h);if(p.mode==Impl::Mode::Atlas)p.renderer->draw_atlas(*p.atlas,p.view.longitude,p.view.latitude,p.view.span_longitude,w,viewport_h,p.config.centre,p.config.width_m/p.config.world_scale,p.config.height_m/p.config.world_scale);else if(p.candidate)p.renderer->draw(p.camera,p.mode==Impl::Mode::World?false:p.darkness,w,viewport_h,p.material,p.diagnostic);}
 void NativeEarthPage::activate(const std::string& action){auto& p=*impl_;
  if(action=="back"){if(p.stop)p.stop->store(true);if(p.coordinator)p.coordinator->cancel(p.ticket);p.cancelled_load=true;++p.revision;p.shown=false;p.returned=true;p.document->Hide();}
  else if(action=="cancel"){if(p.stop)p.stop->store(true);if(p.coordinator)p.coordinator->cancel(p.ticket);p.cancelled_load=true;p.status.clear();}
  else if(action=="sources")p.show_sources=!p.show_sources;
+ else if(action=="view"&&p.candidate&&!p.busy()){if(p.overview){p.camera=p.near_camera;p.overview=false;}else{p.near_camera=p.camera;p.camera=overview_ground_camera(*p.candidate);p.overview=true;}}
  else if(action=="select"&&!p.busy())p.selecting=!p.selecting;
  else if(action=="preview"){try{p.prepare_preview();}catch(const std::exception& e){p.error=e.what();p.status.clear();}}
  else if(action=="atlas"&&!p.busy()){p.mode=Impl::Mode::Atlas;p.invalidate();p.status.clear();p.renderer->clear_world();}
@@ -221,5 +218,8 @@ bool NativeEarthPage::preview_ready()const{return impl_->mode==Impl::Mode::Previ
 bool NativeEarthPage::busy()const{return impl_->busy();}
 bool NativeEarthPage::resources_ready()const{return bool(impl_->renderer)&&impl_->renderer->ready()&&bool(impl_->atlas);}
 std::string NativeEarthPage::last_error()const{return impl_->error;}
+native::EarthCamera NativeEarthPage::camera_state()const{return impl_->camera;}
+std::string NativeEarthPage::resource_recipe_hash()const{return impl_->renderer?impl_->renderer->resource_recipe_hash():"";}
+void NativeEarthPage::set_ground_diagnostic(native::GroundDiagnostic diagnostic){impl_->diagnostic=diagnostic;}
 std::string NativeEarthPage::world_id()const{return impl_->coordinator&&impl_->coordinator->active()?impl_->coordinator->active()->world_id:"";}
 }

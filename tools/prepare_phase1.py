@@ -89,6 +89,7 @@ def dependencies():
              ROOT / "data/native_dependencies.lock.json",
              ROOT / "presentation/native/earth_renderer.cpp",
              ROOT / "presentation/native/earth_renderer.hpp",
+             ROOT / "presentation/native/earth_camera.hpp",
              ROOT / "platform/src/image_decode_bimg.cpp"]
     paths += sorted(p for p in (ROOT / "presentation/native/shaders").iterdir()
                     if p.suffix in (".sc", ".sh"))

@@ -1,4 +1,5 @@
 #pragma once
+#include "earth_camera.hpp"
 #include "menu_model.hpp"
 #include <RmlUi/Core/EventListener.h>
 #include <SDL3/SDL_events.h>
@@ -27,6 +28,9 @@ public:
  bool resources_ready() const;
  std::string last_error() const;
  std::string world_id() const;
+ native::EarthCamera camera_state() const;
+ std::string resource_recipe_hash() const;
+ void set_ground_diagnostic(native::GroundDiagnostic);
 private:
  struct Impl;std::unique_ptr<Impl> impl_;
 };

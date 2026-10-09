@@ -13,7 +13,7 @@
 - 8套实际2K Poly Haven材质，保留sRGB base color、线性GL normal及AO/roughness/metallic通道；所有通道使用同一Hex变换/梯度/权重，旋转后的法线还原到统一切线基。PNG由固定bimg逐字节解码，避免系统色彩管理改变数据通道。
 - 两套8K Pure Sky实际全像素解码，替换拍摄下半球、固定明暗曝光；SH9漫反射和128样本Hammersley/GGX粗糙度预滤波、PDF/solid-angle源mip及split-sum BRDF。天空和反射使用同一处理后环境。没有天文或每日昼夜计算。
 - GPU预览和游戏共享同一EarthRenderer、full sampler、物理材质尺度/seed及岸坡。完整有限域与细相机网格构成连续网格，浮动原点只改绘制坐标。海平面ray pass延伸到地平线，当前是**静态mean-water**；固定Abyssal原生FFT/泡沫/折射不在本阶段冒充完成。
-- 原生创建页英汉德、底部无边框工具、来源窗口、命名、平移/指针缩放/框选/精细预览/取消/创建。右键拖动精细场景旋转，滚轮缩放；输入框/按钮优先接收输入。地图为宏观导航，最高可见精度通过精细预览查看，使用真实材质而非卫星图。
+- 原生创建页英汉德、底部无边框工具、来源窗口、命名、平移/指针缩放/框选/精细预览/取消/创建。默认32米透视近景；右键拖动精细场景旋转，滚轮按光标锚点缩放，底栏切换近景/总览；输入框/按钮优先接收输入。地图为宏观导航，最高可见精度通过精细预览查看，使用真实材质而非卫星图。
 - 新World初始人口/建筑/国家/任务均0，tick0、Light/manual。Darkness预览是呈现检查，创建初始固定Light；正式最高Light预览与游戏采用相同材质/seed/画质，不提供会在创建时静默重置的材质选择。八套材质由独立实际GPU探针逐项验收，生态分布与多材质区域仍按后续玩法设计。
 - 源/recipe/所有实际GPU资源就绪才允许准备。后台首写/回读，所有者poll最后落盘continue并发布；WorldId稳定、恢复SessionGeneration更新。旧世界直到新候选完成才替换；取消、旧请求、坏档和源/预算拒绝不会静默发布。
 
@@ -40,7 +40,7 @@ python3 tools/build_native.py --run
 
 - 已通过：16组真实源地理场景；18组真实创建/持久化场景；指针锚定导航。包含真实湖/小岛/极区/日期线、full字节位翻转拒绝、连续水域与粗格独立、13个落盘故障边界、最后指针重命名取消回滚、跨线程拒绝、迟到/取消及UTF-8命名。normal及ASan/UBSan均实际运行。
 - 已通过：实际Metal独立渲染探针加载全部原材质/天空，近景材质与天空/海面截图；损坏天空文件在GPU上传前被SHA拒绝。
-- 已通过：最终配方 `2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552` 的实际Metal整机窗口贯穿，真实创建→返回→继续同WorldId→取消新候选→载入旧世界；八套材质2560×1600实际GPU输出各异，正射海面平行射线修复与shader字节篡改拒绝验证。
+- 已通过：原阶段1配方 `2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552` 的实际Metal整机窗口贯穿，真实创建→返回→继续同WorldId→取消新候选→载入旧世界；八套材质2560×1600实际GPU输出各异，正射海面平行射线修复与shader字节篡改拒绝验证。
 - 已通过：真实分配失败扫点644个冻结几何、22个所有者start、13个durable poll；普通与ASan/UBSan均通过。生产及原生地理/预览/载入工作显式持有线程和packaged_task，启动失败可回退，取消/析构join，发布前线程已收尾。测试覆盖当前线程实际分配，后台线程分配不注入；各标准库具体分配数量可以不同。
 - 已通过：英汉德原生Rml布局、真实指针/键盘/Escape，1280×800与400×600、DPI 1与2，来源窗口不遮挡底栏；完整native CTest 17/17，含14项跨平台资源回归，项目准入校验及原生offline复建。
 - 已通过：Python 3.9/3.12固定AST编码与冷暖身份一致；全部资源路径使用POSIX表示，Windows原生路径、盘符/ADS/UNC/越界及符号链接拒绝规则另有持久回归。
@@ -49,3 +49,22 @@ python3 tools/build_native.py --run
 - 验收摘要和实际GPU帧hash见 [PHASE1_EVIDENCE.json](PHASE1_EVIDENCE.json)。本机未设置Node，旧网页验证在CI单独运行；本机不以此声称浏览器检查通过。
 
 当前未做Windows GPU实机/Steam Overlay/发行包；CI编译和NullRenderer不能替代它们。纹理采用未压缩RGBA8/RGBA16F完整mip，上限约1.26 GB纹理显存（8套2K约537 MB，两套8K约716 MB，GGX约2.8 MB）；这是实际格式字节预算，不是此前BC压缩128 MB估计。后续压缩/流送和完整游戏性能另行测量。
+
+## 正式试玩地表可见性补修（2026-10-08）
+
+用户实际试玩的737米正交入口把2.51米真实草地贴片滤成远景平均色。旧8材质探针在25米近景，不能证明正式默认入口已显示纹理；此前验收覆盖有缺口。现默认32米、20度透视，优先真实源陆岸定位，提供无边框三语近景/总览切换，旋转后的拖动和缩放采用与绘制一致的屏幕射线。远裁剪覆盖完整有限域，不能因近景镜头把远陆地显示成海；没有放大材质米尺度或改天然海陆。
+
+本次当前配方为`c0c9ccb340160712f24b922f7ac6833572a403e097556bc22f3d2b6e85daaabe`，旧8探针仍归属前代`2ee348fe…`，不重标成新帧。当前正式World同相机/光照/UI的三通道GPU消融验证：base替换改变54.39%像素、flat-normal改变31.73%、mean-ARM改变47.79%；上沿天空/UI不变，恢复Full逐像素一致。实际当前截图hash与差分在PHASE1_EVIDENCE的ground_visibility_fix。
+
+正常native完整CTest17/17、21组生命周期（新增三组兼容准入）、透视射线导航、实际ASan/UBSan及正式Preview/World/Continue/Load通过。fallback sanitizer新增纯相机头文件的include/link入口漏项已修，验收从该失败点继续，未重跑此前已通过门槛。上列托管CI属于前代7ab5提交；本次托管状态以PR为准，不能冒称Windows GPU实机验证。
+
+原PBR/天空/着色器/冻结地理配方未改，因此只明确许可`2ee348fe…`前代继续；未知呈现版本、坏源、坏几何与不支持状态仍拒绝，当前GPU字节准入仍严格。旧checkpoint保留原provenance，文件与Continue指针不重写。新世界记录当前配方。
+
+可复验正式画面：
+
+```sh
+.build/native/Sonnheide.app/Contents/MacOS/Sonnheide --phase1-smoke --saves .build/ground-visibility-smoke-saves --capture-dir .build/ground-visibility-captures
+python3 tools/validate_ground_frames.py .build/ground-visibility-captures --report .build/ground-visibility-report.json
+```
+
+高空总览仍会正确平均米级细节；生态分布/多材质混合、植被和动态Abyssal水体仍是后续施工，不能靠放大贴片伪造。

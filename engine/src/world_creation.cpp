@@ -31,6 +31,12 @@ void require(bool condition, const char* why) { if (!condition) throw std::runti
 bool hex_hash(const std::string& value) {
  return value.size() == 64 && value.find_first_not_of("0123456789abcdef") == std::string::npos;
 }
+bool admitted_presentation(const std::string& hash, const std::string& current,
+                           const std::vector<std::string>& compatible) {
+ if (hash == current) return true;
+ for (const auto& previous : compatible) if (hash == previous) return true;
+ return false;
+}
 bool identifier(const std::string& id) {
  return id.size() == 32 && id.find_first_not_of("0123456789abcdef") == std::string::npos;
 }
@@ -205,7 +211,8 @@ std::string encode(const WorldSession& session) {
  return "SONNHEIDE_EARTH_EMPTY 1\n" + std::to_string(checksum(bytes)) + "\n" + bytes;
 }
 std::shared_ptr<WorldSession> decode(const std::string& bytes, std::shared_ptr<const earth::GeoAtlas> atlas,
-                                     const std::string& presentation_hash, const std::function<bool()>& cancelled = {}) {
+                                     const std::string& presentation_hash, const std::function<bool()>& cancelled = {},
+                                     const std::vector<std::string>& compatible_presentations = {}) {
  require(bytes.size() <= max_checkpoint_bytes, "checkpoint exceeds bounded envelope");
  std::istringstream in(bytes); in.imbue(std::locale::classic()); std::string magic; int version{}; std::uint64_t digest{};
  require(static_cast<bool>(in >> magic >> version >> digest), "invalid checkpoint header");
@@ -227,7 +234,8 @@ std::shared_ptr<WorldSession> decode(const std::string& bytes, std::shared_ptr<c
  require(identifier(session->world_id), "invalid WorldId");
  require(valid_name(session->display_name), "invalid UTF-8 world name");
  require(source_hash == atlas->source_hash(), "checkpoint source package mismatch");
- require(session->presentation_recipe_hash == presentation_hash, "checkpoint presentation recipe mismatch");
+ require(admitted_presentation(session->presentation_recipe_hash, presentation_hash, compatible_presentations),
+         "checkpoint presentation recipe mismatch");
  require(session->tick == 0 && age == 0 && automatic == 0, "phase-one checkpoint must be initial Light/manual");
  require(session->entities.people == 0 && session->entities.buildings == 0 && session->entities.countries == 0 && session->entities.tasks == 0,
          "phase-one checkpoint contains unsupported entities");
@@ -256,11 +264,19 @@ struct CreateCoordinator::Pending {
  ~Pending() { join(); }
 };
 CreateCoordinator::CreateCoordinator(std::filesystem::path saves, std::shared_ptr<const earth::GeoAtlas> atlas,
-                                   std::string admitted_presentation_recipe_hash)
+                                   std::string admitted_presentation_recipe_hash,
+                                   std::vector<std::string> admitted_compatible_presentation_recipes)
  : saves_(std::move(saves)), atlas_(std::move(atlas)), presentation_hash_(std::move(admitted_presentation_recipe_hash)),
-   writer_(std::this_thread::get_id()) {
+   compatible_presentation_hashes_(std::move(admitted_compatible_presentation_recipes)), writer_(std::this_thread::get_id()) {
  require(atlas_ != nullptr && hex_hash(atlas_->source_hash()), "geographic source package is not admitted");
  require(hex_hash(presentation_hash_), "presentation recipe is not admitted");
+ require(compatible_presentation_hashes_.size() <= 8, "presentation compatibility list exceeds its bound");
+ for (std::size_t i=0; i<compatible_presentation_hashes_.size(); ++i) {
+  const auto& hash = compatible_presentation_hashes_[i];
+  require(hex_hash(hash) && hash != presentation_hash_, "invalid or redundant compatible presentation recipe");
+  for (std::size_t j=0; j<i; ++j)
+   require(compatible_presentation_hashes_[j] != hash, "duplicate compatible presentation recipe");
+ }
  std::vector<std::filesystem::path> missing_directories;
  for (auto path=std::filesystem::absolute(saves_); !std::filesystem::exists(path); path=path.parent_path()) missing_directories.push_back(path);
  std::filesystem::create_directories(saves_);
@@ -391,7 +407,7 @@ CreationResult CreateCoordinator::create(CreationTicket ticket,
 std::shared_ptr<const WorldSession> CreateCoordinator::prepare_continue(const std::function<bool()>& cancelled) const {
  DirectoryLock lock(saves_);
  const auto id = pointer_id(read_file(saves_ / "continue.pointer"));
- auto session = decode(read_file(saves_ / (id + ".world")), atlas_, presentation_hash_, cancelled);
+ auto session = decode(read_file(saves_ / (id + ".world")), atlas_, presentation_hash_, cancelled, compatible_presentation_hashes_);
  require(session->world_id == id, "continue pointer and checkpoint identity disagree");
  return session;
 }
@@ -402,6 +418,8 @@ CreationResult CreateCoordinator::publish_continue(std::shared_ptr<const WorldSe
   if (ticket.request != 0 && cancelled_) return {CreateStatus::Cancelled, "continue request was cancelled", {}};
   require(prepared != nullptr && prepared->definition != nullptr, "prepared continue world is missing");
   require(valid_name(prepared->display_name) && identifier(prepared->world_id), "prepared continue identity is invalid");
+  require(admitted_presentation(prepared->presentation_recipe_hash, presentation_hash_, compatible_presentation_hashes_),
+          "prepared continue presentation recipe is not admitted");
   require(prepared->tick == 0 && prepared->age == EnvironmentAge::Light && !prepared->age_automatic &&
    prepared->entities.people == 0 && prepared->entities.buildings == 0 && prepared->entities.countries == 0 && prepared->entities.tasks == 0,
    "prepared continue contains unsupported state");
@@ -429,7 +447,7 @@ bool CreateCoordinator::can_continue() const {
   const auto offset = static_cast<std::size_t>(in.tellg());
   if (checksum(bytes.substr(offset)) != digest) return false;
   return static_cast<bool>(in >> saved_id >> std::quoted(name) >> source >> recipe >> geometry_hash >> presentation) && saved_id == id &&
-         valid_name(name) && source == atlas_->source_hash() && presentation == presentation_hash_;
+         valid_name(name) && source == atlas_->source_hash() && admitted_presentation(presentation, presentation_hash_, compatible_presentation_hashes_);
  }
  catch (...) { return false; }
 }

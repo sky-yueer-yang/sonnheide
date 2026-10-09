@@ -320,6 +320,7 @@ def runtime_identity(lock):
     """Only immutable source/algorithm inputs; no cache, cooked byte or backend."""
     presentation_sources=shader_sources()
     for relative in ('presentation/native/earth_renderer.cpp','presentation/native/earth_renderer.hpp',
+                     'presentation/native/earth_camera.hpp',
                      'platform/src/image_decode_bimg.cpp'):
         presentation_sources[relative]=sources.digest(ROOT/relative)
     runtime={'schema_version':1,'recipe':RECIPE,'source_lock_sha256':sources.digest(sources.MANIFEST),

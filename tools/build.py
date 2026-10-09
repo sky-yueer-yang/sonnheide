@@ -42,6 +42,8 @@ def main():
         subprocess.run([str(executable), str(geography)], check=True, cwd=ROOT)
     navigation = out / "sonnheide_earth_navigation_tests"
     subprocess.run([compiler, *flags, "-I" + str(ROOT / "client/native"),
+                    "-I" + str(ROOT / "presentation/native"),
+                    str(ROOT / "engine/src/earth_world.cpp"),
                     str(ROOT / "client/native/earth_navigation.cpp"),
                     str(ROOT / "tests/earth_navigation_tests.cpp"), "-o", str(navigation)], check=True, cwd=ROOT)
     subprocess.run([str(navigation)], check=True, cwd=ROOT)

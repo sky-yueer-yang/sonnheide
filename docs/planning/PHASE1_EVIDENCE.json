@@ -1,6 +1,6 @@
 {
   "renderer": "actual Metal",
-  "recipe_hash": "2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552",
+  "recipe_hash": "c0c9ccb340160712f24b922f7ac6833572a403e097556bc22f3d2b6e85daaabe",
   "frames": [
     {
       "material": 0,
@@ -227,5 +227,91 @@
   "resource_identity_format": "sonnheide-python-ast-json-v1; canonical POSIX relative paths; source-only cold/warm identity",
   "build_policy": "Complete all edits and reviews before one full native build and one complete CTest; reuse byte-admitted unchanged sources/shaders/skies; fix only actual failed gates",
   "phase1_resource_regressions": 14,
-  "packaged_source_files_byte_verified": 50
+  "packaged_source_files_byte_verified": 50,
+  "prior_probe_recipe_hash": "2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552",
+  "ground_visibility_fix": {
+    "schema_version": 1,
+    "passed": true,
+    "world_id": "81651a23c1e03b405f9a704c03752584",
+    "resource_recipe_hash": "c0c9ccb340160712f24b922f7ac6833572a403e097556bc22f3d2b6e85daaabe",
+    "backend": "Metal",
+    "camera": {
+      "orthographic": false,
+      "height_m": 32,
+      "pitch_deg": 20,
+      "yaw_deg": -22.5,
+      "target_x_m": -16,
+      "target_z_m": -16
+    },
+    "width": 2560,
+    "height": 1600,
+    "comparisons": {
+      "ground-mean-base": {
+        "mean_absolute_rgb_difference_8bit": 1.538533447265625,
+        "maximum_channel_difference_8bit": 35,
+        "changed_pixel_count": 2227840,
+        "changed_pixel_fraction": 0.54390625,
+        "changed_bounds": [
+          0,
+          280,
+          2560,
+          1380
+        ],
+        "top_strip_mean_absolute_rgb_difference_8bit": 0.0
+      },
+      "ground-flat-normal": {
+        "mean_absolute_rgb_difference_8bit": 0.21674861653645833,
+        "maximum_channel_difference_8bit": 6,
+        "changed_pixel_count": 1299667,
+        "changed_pixel_fraction": 0.317301513671875,
+        "changed_bounds": [
+          0,
+          280,
+          2560,
+          1380
+        ],
+        "top_strip_mean_absolute_rgb_difference_8bit": 0.0
+      },
+      "ground-mean-arm": {
+        "mean_absolute_rgb_difference_8bit": 0.684075439453125,
+        "maximum_channel_difference_8bit": 11,
+        "changed_pixel_count": 1957326,
+        "changed_pixel_fraction": 0.47786279296875,
+        "changed_bounds": [
+          0,
+          280,
+          2560,
+          1380
+        ],
+        "top_strip_mean_absolute_rgb_difference_8bit": 0.0
+      },
+      "ground-restored": {
+        "mean_absolute_rgb_difference_8bit": 0.0,
+        "maximum_channel_difference_8bit": 0,
+        "changed_pixel_count": 0,
+        "changed_pixel_fraction": 0.0,
+        "changed_bounds": null,
+        "top_strip_mean_absolute_rgb_difference_8bit": 0.0
+      }
+    },
+    "framebuffer_sha256": {
+      "ground-full": "08914d23dc264cc03f22ca3d30d77aff3616543e31f9990cb46acc0a4f35c828",
+      "ground-mean-base": "a7c8152e624db05079d7d172d9f14e24357d7ae45cde9f0f6aac3b0b796262d1",
+      "ground-flat-normal": "a30c886cee14a90938d2c5df00106310174aa4a58038647b867ac22a0e05b63b",
+      "ground-mean-arm": "f0a1b8852adb38d50e290b35eb0b45661416b15740925c2d7cc5e1f3d5ed8796",
+      "ground-restored": "08914d23dc264cc03f22ca3d30d77aff3616543e31f9990cb46acc0a4f35c828"
+    },
+    "failures": [],
+    "scope": "formal World entry; one ground texture channel rebound at a time, same World/camera/UI/light; no global-scale detail claim",
+    "status": "passed",
+    "compatibility_predecessor": "2ee348fecc274d83b32c00db00d667f579fdc449bff8a1da4f520ceae5c6f552",
+    "validation": {
+      "native_ctest": "17/17 passed",
+      "sanitizer": "all gates passed; interrupted fallback navigation build repaired and resumed without rerunning passed gates",
+      "creation_lifecycle_cases": 21,
+      "same_world_native_scenario_frames": 273,
+      "original_assets_and_shaders": "unchanged SHA bytes",
+      "navigation": "ray-anchored perspective pan/zoom, yaw wrap, sky rejection and bounded motion"
+    }
+  }
 }

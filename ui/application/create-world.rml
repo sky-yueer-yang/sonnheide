@@ -12,6 +12,7 @@
 <button id="earth-action-light"><span id="earth-text-light">明亮环境</span></button>
 <button id="earth-action-dark"><span id="earth-text-dark">黑暗环境</span></button>
 <button id="earth-action-create"><span id="earth-text-create">创建世界</span></button>
+<button id="earth-action-view">总览</button>
 <button id="earth-action-sources"><span id="earth-text-sources">来源</span></button>
 <button id="earth-action-cancel"><span id="earth-text-cancel">取消</span></button>
 </nav></body></rml>
