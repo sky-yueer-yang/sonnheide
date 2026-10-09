@@ -1,5 +1,7 @@
 # 服装经济、真实衣橱与角色资源合同
 
+2026-10-08当前裁决：[ADR0012](../decisions/0012-editable-3d-pixel-world.md)/[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)覆盖本文旧地形/人物资产条款。有效高度/海陆可编辑、所有坡地检查必要基础、Port不再RECLAIMED-only、原创像素人体取代MakeHuman、底栏八分区。source provenance与历史只读；普通施工保通，明确Godterrain允许损坏并同事务处理人货/容纳/证书。未改的文明/衣物/法律/typed信息规则继续有效；下文旧oracle与浏览器字段按旧版本保留，不能当新生产实现。当前字段/命令补充见[机器合同](../../data/contracts/pixel_world.json)、[地形事务](PIXEL_TERRAIN_TRANSACTIONS.md)、[像素资产](PIXEL_RENDERING_AND_ASSETS.md)。
+
 本文件落实 [ADR 0004](../decisions/0004-clothing-and-makehuman.md)。这是生产设计与有限经济 oracle 的对照合同；现有世界仍没有完整人物物流/资本市场/服装渲染。原稿及提取目录逐字保留，用明确 runtime overlay 覆盖原 20.2 极简服饰和晚期抽象衣物规则。
 
 ## 1. 六个真正的缺口
@@ -170,23 +172,13 @@ IdentityTheme 与 PhysicalColour 分开：国家识别读取合法 State/theme �
 
 不另加外国兵第二套主体国家制服；个人国籍由检查器/既有身份显示。一个军装主色只有一个合法服役来源，防止把法定身份和服役关系揉成一个 affiliation。
 
-## 11. MakeHuman 资产与人物服装管线
+## 11. 原创像素人体与衣物资产
 
-实际锁定与逐文件证据见 [makehuman_sources.json](../../assets/manifests/makehuman_sources.json)：核心人体/骨架/权重来自 MakeHuman v1.3.0，commit `1f508f6083b2f823dab15de924b3bde72e08d77c`。上游 [分项 LICENSE](../../assets/source/third_party/makehuman/core/LICENSE.md) 区分程序 AGPL 与核心图形 CC0；本项目只导入核验过的图形源。MPFB v2.0.17 commit `80919fa4682335c41847f761a4d79dcad4124732` 是离线 Blender 工具（最低 Blender 4.2），程序 GPL-3.0-or-later，不进入 runtime。
+当前生产路线为原创方块人体、统一成人rig/fit、精细像素图集和原创衣片；不使用MakeHuman/MPFB/MakeClothes作为新人体衣物来源。所有年龄保持同样成人尺寸，不影响真实成年资格。基础内衣、国家色T恤/白短裤、后期自由款式、正装与同款国家色军装均自行制作，服装模型绑定实物Garment而非生成库存。详见[像素渲染与资产合同](PIXEL_RENDERING_AND_ASSETS.md)。
 
-当前选择的 [shirts01](https://static.makehumancommunity.org/assets/assetpacks/shirts01.html) 男/女基础 T 恤和 [pants01](https://static.makehumancommunity.org/assets/assetpacks/pants01.html) 短裤条目按官方逐项 CC0 核验。仅文本源/必要原字节成员归档不等于完整 ZIP/贴图/游戏角色已导入；缺失贴图、hm08 targets、眼睛/头发、导出与 fit 验证仍需落实。牛仔短裤源码不直接作为上古白短裤输出，适配内容保留新配方和哈希。
+BodyProfile、cut、UV、rig、layer mask与LOD分别版本化；款式和贴图有界、同规格兼容、不逐人重建模型。WornItemSnapshot读取实际衣物、condition和合法颜色政策；外籍军装绑定actualServingState，缺正装仍全薪正常上班。免费最低遮盖是不可交易表现fallback，不产生可售货、满足收益或免费耐久。
 
-其他社区素材均逐项核验作者、许可版本、原文件和相应 attribution。包名含 cc0、免费下载或 MakeHuman 支持导入不构成许可；已知有以 cc0 命名却条目使用 CC-BY 的包，不能整体批准。具体 [候选许可状态](../../assets/manifests/makehuman_candidates.json) 与 [生态取入研究](../research/MAKEHUMAN_ECOSYSTEM.md) 保留冲突/缺件事实；胸罩、完整正装与其他晚期服装没有来源与完整 runtime 证据时标候选，不能宣称已经交付。原始可再分发来源、转换脚本、manifest 与 notices 一起在 GitHub/LFS/Releases 保存。
-
-```text
-verified source → one age-independent canonical adult FitProfile → rig/weights cleanup
- → garment fit + layer/coverage tests → glTF exchange
- → runtime asset compile + LOD/body masks → shared renderer bindings
-```
-
-基体 helpers 与非游戏部件在导出时去除；原始权重需要归一化、骨名映射及 runtime influences 上限验证。按[ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)全龄共用成人身体尺寸、骨架和fit，年龄不产生儿童比例或换尺码需求。简易人物也保持正确覆盖，fallback 和实物 slot 并存时不会因 LOD 切换露出被屏蔽的身体区域。
-
-每件 garment 绑定有限 `FitProfile/shapeBucket` 与 canonical skeleton，通过共享 mesh/weights、材质图集/数组与 tint 参数批次化。层次表/身体遮罩声明可兼容组合；walking/carrying/turning/enter/vehicle 坐姿等 reference poses 验证穿插。换肤/LOD 和物理 condition 表现只读快照，不从动画 marker 产出衣服或扣经济耐久。
+历史[MakeHuman源锁](../../assets/manifests/makehuman_sources.json)、[逐项来源审查](../research/MAKEHUMAN_ECOSYSTEM.md)和许可保留，不重写已发布历史、不默认打包到新runtime。它们是旧路线证据，不能称当前原创角色已完成。原创建模/衣片作者源、图集、动作、manifest/hash/复建配方统一托管；没有授权就不擅给原创作品开放许可。
 
 ## 12. 事件化性能与存档
 

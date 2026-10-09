@@ -198,5 +198,15 @@
       "runtime_integrated": true,
       "game_ready": true
     }
-  ]
+  ],
+  "active_design_contract": "data/contracts/pixel_world.json",
+  "pixel_route": {
+    "status": "planned",
+    "reuse_native_libraries": true,
+    "makehuman_production_dependency": false,
+    "poly_haven_hex_required": false,
+    "abyssal_native_gpu_required": false,
+    "original_character_clothing_building_assets": true,
+    "retained_sources_role": "historical_byte_locked_not_new_pixel_world_dependencies"
+  }
 }

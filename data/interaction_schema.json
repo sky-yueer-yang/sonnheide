@@ -8439,5 +8439,17 @@
       "no_implicit_partial_commit": true,
       "invalid_targets_have_actionable_reasons": true
     }
+  },
+  "active_design_extension": {
+    "contract": "data/contracts/pixel_world.json",
+    "decision": "docs/decisions/0012-editable-3d-pixel-world.md",
+    "status": "planned_only",
+    "supersedes": [
+      "frozen_terrain_readonly",
+      "flat_land_coastal_only_foundation",
+      "reclaimed_only_port",
+      "seven_toolbar_sections"
+    ],
+    "legacy_oracle_and_browser_fixture_unchanged": true
   }
 }

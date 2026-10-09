@@ -1,5 +1,7 @@
 # 开源资源来源与准入记录
 
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](../decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+
 最新正式选定见 [ADR0011](../decisions/0011-ground-sky-and-bounded-world-preview.md)：Poly Haven＋Hex-Tiling；8套2K PNG PBR与2张8K Pure Sky原始源已取得并固定SHA，按 [资源锁](../../assets/manifests/ground_sky_sources.json) 与项目Release托管。下面“仅研究/未新增”是前次记录，不覆盖本次实际来源准入；原生GPU/生产创建仍未实现。
 
 2026年10月7日陆地表面专项见 [写实地表开源系统比较](REALISTIC_GROUND_SYSTEMS.md)，含八种具体扫描材质候选、实际覆盖尺寸、离线材质/地被生成与导出限制。本次仅完成研究，未新增正式材质资产；逐文件准入与项目托管要求继续适用。

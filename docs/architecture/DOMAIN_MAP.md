@@ -1,5 +1,7 @@
 # Sonnheide 领域地图、27章需求追踪与实现门槛
 
+2026-10-08当前裁决：[ADR0012](../decisions/0012-editable-3d-pixel-world.md)/[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)覆盖本文旧地形/人物资产条款。有效高度/海陆可编辑、所有坡地检查必要基础、Port不再RECLAIMED-only、原创像素人体取代MakeHuman、底栏八分区。source provenance与历史只读；普通施工保通，明确Godterrain允许损坏并同事务处理人货/容纳/证书。未改的文明/衣物/法律/typed信息规则继续有效；下文旧oracle与浏览器字段按旧版本保留，不能当新生产实现。当前字段/命令补充见[机器合同](../../data/contracts/pixel_world.json)、[地形事务](PIXEL_TERRAIN_TRANSACTIONS.md)、[像素资产](PIXEL_RENDERING_AND_ASSETS.md)。
+
 基线：[完整设计 v0.6](../design/Sonnheide_Complete_Design_v0.6.md)，2026-10-06。本文将需求转成领域边界、约束与可执行验收任务，不能替代源设计。用户本次新增“无游戏引擎、尽量利用合适开源部件、建筑全部自行制作、文件GitHub托管”优先于原稿中可使用Unity/Unreal等引擎的候选描述。
 
 原稿提到199条既有追踪、若干JSON目录、TypeScript规则参考和国旗工作台，但本次只提供这一份Markdown；不能假称那些配套文件已取得、已迁移或已验证。仓库中新提取的目录和章节索引只追踪此基线。下面的 `DM-xx` 是本轮章节验收组编号，`INV-xx` 是关键不变量编号；不冒充原稿199条旧ID。
@@ -8,9 +10,9 @@
 
 Sonnheide是单机的人类文明沙盒。玩家全知观察、合法编辑与有限Divine Hand；人、物、知识、机构通过真正的时间、任务、法律、空间和资源产生后果。国家和文化可以从前文化社会开始；没有全球“已进入现代”开关。
 
-排除野生动物生态、其他智慧种族、怪物、魔法战斗、疾病传播、随机天灾/灭世、复活、山地/高程编辑、空军/铁路/飞机、现代军火、建筑内部漫游、实时股票/外汇、多人服务器。马是被拥有的MountAsset；太阳能自动车是后期民用运输能力，不能外挂现代武器。没有永久城墙/城门/塔/堡垒。不存在独立Market、Warehouse、TownHall三个城市管理对象；一个CitySquare承接行政/唯一逻辑仓储/装卸/公共空间。
+排除野生动物生态、其他智慧种族、怪物、魔法战斗、疾病传播、随机天灾/灭世、复活、空军/铁路/飞机、现代军火、建筑内部漫游、实时股票/外汇、多人服务器。马是被拥有的MountAsset；太阳能自动车是后期民用运输能力，不能外挂现代武器。没有永久城墙/城门/塔/堡垒。不存在独立Market、Warehouse、TownHall三个城市管理对象；一个CitySquare承接行政/唯一逻辑仓储/装卸/公共空间。
 
-最新[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)取消真实高程，只保留真实海陆/岸线；普通陆地统一稍高于水面，狭窄水边过渡逐渐下降。内陆普通建筑无独立找平地基；沿海确需支撑时才用原创长方体基础及必要连接，不能修改冻结天然岸坡或把水上基础冒作陆地。建筑放置仍必须证明完整陆地支持、现状前侧到货与人/车入口接入。
+当前[ADR0012](../decisions/0012-editable-3d-pixel-world.md)允许玩家改变实际高度/海陆；来源证明/profile只读。Blank或Earth量化成同种TerrainWorld，山地高峰是真三维立面。建筑任何实际不平占地检查必要原创矩形基础与固定楼板，人行/车库/现状接货必须真实接入；God损坏按人货/账本/城市后果处理，普通后建项目保通。
 
 这些边界必须同时体现在定义目录、命令入口、存档校验、资产元数据和UI中。只隐藏按钮而允许通用JSON覆写不构成遵守。
 
@@ -19,10 +21,10 @@ Sonnheide是单机的人类文明沙盒。玩家全知观察、合法编辑与�
 |追踪组/原稿章节|要保留的具体行为|负责的领域/接口|非平凡点与验收证据|
 |---|---|---|---|
 |DM-01 · 01 范围与五核心|共享身份/资产/知识/任务/空间；所有权/位置/控制分开；硬约束优先|foundation、domain、transactions、definitions|同一批货、同一人、同一City不能被两个系统各自复制；每动作回答谁支付/执行/授权/在哪里|
-|DM-02 · 02 地球/前文化/文化场|离线全球水陆、局部投影/统一scale、冻结天然层、受限造陆、生命周期、前文化State、公共后备|world、people、city、scheduler|跨日界线/岛湖；计划格仍WATER；海中造岛拒绝；全海域连通拆分；公共社会可起步|
+|DM-02 · 02 地球/前文化/文化场|离线全球水陆、局部投影/统一scale、冻结来源与可编辑height columns、God与Civic造陆、生命周期、前文化State、公共后备|world、people、city、scheduler|跨日界线/岛湖；计划格仍WATER；神力海中造岛允许，文明填海仍需四邻接与真成本；全海域连通拆分；公共社会可起步|
 |DM-03 · 03 复合文化/语言/命名|文化强度不要求和为1；Primary共生、Secondary仅文化；独立派生语言/音变/历史名|culture、language、naming、transactions|原子命名解除无语言死锁；新文化不自动新语言；旧文献不回写；非文化人取得现有语言后再正式接纳|
 |DM-04 · 04 爵位/帝国/法律|phase/rank/宪制/从属分开；普通建国公国；二直属正式City升格；帝国需Grant；法域优先与过渡|politics、legal-policy、ledger|占领/附属City不计直属；成员同意/宪章重验；从属无环；同一税项不无限层层扣|
-|DM-05 · 05 城市/建筑/道路/Port|唯一CitySquare；Building/Facility/法人分开；容量与外观分开；入口道路；Port人工陆地/正交/水侧|city、construction、world、mobility、presentation|SettlementCore库存原子迁移；不能复制广场；自制资产footprint/入口/容量一致；泊位保护与实时航路|
+|DM-05 · 05 城市/建筑/道路/Port|唯一CitySquare；Building/Facility/法人分开；容量与外观分开；入口道路；Port任一真实干陆/正交/水深水侧|city、construction、world、mobility、presentation|SettlementCore库存原子迁移；不能复制广场；自制资产footprint/入口/容量一致；泊位保护与实时航路|
 |DM-06 · 06 公共经济/产权/生产|共同供给→公营专业→混合企业；双账本；整数钱；少商品；生产最短板；实际劳时；后备服务|economy、contracts、people、public-services|无货币/公司/大学仍生存；一人不能全时两岗；食物产量/节劳不双加；保障有真实成本|
 |DM-07 · 07 企业/工厂/退出|法人/业务/设施分开；迟滞准入；产品家族生产线；资产槽；船归Port；清算保代管物|enterprises、factories、mobility、legal-policy|项目市场容量锁；工装只付一次；兼容改装不新家族；清算不删无关住户/客户财产|
 |DM-08 · 08 物流/合同/税/资本|源广场→目的广场；六合同动作；预约资金/货；在途与索赔；税基唯一；保守银行|ledger、logistics、taxation、banking|满仓等待/退货/损失不吞货；同一清关不二次税；活期储备不贷出；取消只退未发生部分|
@@ -37,11 +39,11 @@ Sonnheide是单机的人类文明沙盒。玩家全知观察、合法编辑与�
 |DM-17 · 17 军令交互|六常用动作；画阵线/途经点；队列/有限AND条件；协同令牌/超时；预览原因；触控同命令|command-api、order-preview、input/UI|客户端不拥有可变Army；预览读路/预算/权限版本；同伴死后不永远等待；暂停提交不撤已发生射击|
 |DM-18 · 18 战争/和约/反叛|War目标；吞并/殖民/附属/独立不同；明确条款；真实支持者/武器的渐进反叛|war、treaties、occupation、politics、migration|附属保留StateId；和约一并处理法域/税/补给过渡；殖民不能插旗造人口；赔偿有支付能力/期限|
 |DM-19 · 19 国旗/政治图|恰23色/13模板；前文化5色字母旗；正式旗裁切疆域；theme必须为旗实际使用色|flag-definitions、states、presentation、UI|改旗同步更新有效theme；占领/主权不同图层；旗图纹不直接代表控制权；国界改动更新裁切缓存|
-|DM-20 · 20 写实3D/统一交互|真实360°透视、PBR/LOD/HLOD/实例化、MakeHuman人体/有界服装组合、六模式/一致检查器、中英、文化视觉场|client、snapshot、asset-pipeline、localization、clothing|衣着消费来自真实交付；基础主题色取法定国家，原创军装取服役国；文化shader不产生仿真格；镜头不暂停耐久|
+|DM-20 · 20 像素3D/统一交互|真实360°透视、像素图集/LOD/HLOD/实例化、原创方块人体/实物有界服装、八工具分区/一致检查器、英汉德、文化视觉场|client、snapshot、asset-pipeline、localization、clothing|衣着消费来自真实交付；基础主题色取法定国家，原创军装取服役国；文化shader不产生仿真格；镜头不暂停耐久|
 |DM-21 · 21 工程/调度/存档|稳定对象/命令查询事件；单屏障；多频率；已提交存档；冷档案；显式旧版迁移|core、scheduler、transactions、persistence|查询零副作用；幂等/修订/权限；保存再续与连续一致；不迁移未提供旧原型/魔法领域|
-|DM-22 · 22 验证/阶段|不变量/场景/100→1000→10000规模；数值是待测；A-F切片|tests、tools、telemetry、release|全负载测量；单元规则通过不叫经济平衡；每阶段完整故事与失败恢复；分阶段不永久删后期要求|
+|DM-22 · 22 验证/阶段|不变量/场景/100→1000→10000规模；数值是待测；新版0—10阶段|tests、tools、telemetry、release|全负载测量；单元规则通过不叫经济平衡；每阶段完整故事与失败恢复；分阶段不永久删后期要求|
 |DM-23 · 23 完整历史|公共农具革命；知识宗教/学者/帝国；集团/港口军运/附属和约|cross-domain scenario runner|三故事拆成可重放场景；逐段检查钱/货/人/知识/法域变化；人工编辑与自然结果分别标记|
-|DM-24 · 24 编辑边界|名称/参数自由；制度走程序；历史/章程/作者/Grant不可写；地理冻结；Divine Hand空间搬运|editor-command、authority、world、persistence|通用对象覆写拒绝；最后文化不能无处理清零；Held不改身份/Army；取消恢复原位；放置合法分散|
+|DM-24 · 24 编辑边界|名称/参数自由；制度走程序；历史/章程/作者/Grant不可写；来源冻结/当前地形可编辑；Divine Hand空间搬运|editor-command、authority、world、persistence|通用对象覆写拒绝；最后文化不能无处理清零；Held不改身份/Army；取消恢复原位；放置合法分散|
 |DM-25 · 25 科技全目录|16方向×6家族×3slots +40突破=424；定义/前置/效果/产品兼容|definitions、catalog validator、science|准确计数/唯一ID/前置DAG/武器上限；424定义不新建424系统；当前提取配置与效果实现状态区别标记|
 |DM-26 · 26 法律与业务目录|35法条族、13业务角色；法域/触发/许可/税率；同物理楼多业务|definitions、legal-policy、business-units|按正式目录去重；第7章展示聚合表不能替代第26章13项；业务不自动一类专属楼；语言资格/制度前置可验证|
 |DM-27 · 27 协议/跨系统事务|共用信封；23核心命令；生产线/Primary/教会分裂事务；最后文化处理|transactions、command-registry、persistence|canonical payload冲突/expectedRevision/可信authority；半状态拒绝；schema仅形状，跨对象约束另验|

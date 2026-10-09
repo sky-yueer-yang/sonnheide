@@ -1,77 +1,55 @@
-# 初步工程总纲
+# 当前工程总纲：三维像素文明与可编辑地形
 
-本轮把设计 v0.6 与用户追加要求变成可启动的工程基线。自研意味着我们掌握仿真、事务、场景、渲染通道、内容编译、交互工具及存档的边界；不要求重新编写窗口系统、GPU驱动、字体光栅化或骨骼插值。
+2026-10-08。[v0.7完整设计](../design/Sonnheide_Design_v0.7_Pixel_World.md)/[ADR0012](../decisions/0012-editable-3d-pixel-world.md)/[机器合同](../../data/contracts/pixel_world.json)为当前设计，旧PBR客户端是已实现基线，新pixel实现未完成。
 
-## 1. 必须先攻克的问题
+## 1. 真正的突破点
 
-|突破点|为什么目录拆分不能解决|本框架的具体推进|
-|同一份事实跨领域守恒|教会、企业、Army都可能使用同一人、同一钱和同一货；各自库存会重复制造财富|身份/关系、资产/账本、知识/许可、任务/合同、空间/运输五类共享基础；集中事务写入；材料预约与重复命令已用内核证明|
-|城市可以无私企、无货币、无大学起步|等待企业搬粮、等待大学发现大学会形成逻辑死锁|公共生产、配给、搬运、施工、师徒科研为底座；成熟机构提高能力；公共数十年存活是C切片门槛|
-|战略时间与实际空间一致|把一天当一帧或每人全天寻路都不能同时支撑长期文明和精细战斗|唯一整数时钟，按到期任务/路线段推进，战斗活跃区用固定细步；按规则而非镜头激活；时间换算作为需要测量的设计参数|
-|填海删除航路的全局拓扑|填一格海峡会改变远处连接，只重建附近Chunk不足|局部几何/门户重建＋受影响全局粗图组件更新＋epoch证书；内核全图oracle验证海峡分裂，生产异步算法再对照oracle|
-|真3D与高人口规模|10万模拟人不等于逐帧渲染10万完整骨架；单张精美截图不能证明运行规模|SimulationSnapshot与RenderProxy分离；实例、HLOD、骨骼LOD、阴影分层；用真实城市/战争测p95/p99|
-|建筑外观不能重写玩法空间|三时代×文化×容量做完整模型组合会爆炸，换皮也可能改变门和容量|固定权威占地、入口、碰撞和volume class；原创模块/材质配方；同authorityHash外观可换；3个灰盒合同已建立|
-|统一陆台与沿海房屋/车库持续可达|无地基也要保证门有路；近岸支撑、车道和网罩可能堵旧入口；填海重算岸坡会抬旧地面|[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)取消真实高程及内陆找平地基，冻结天然岸坡，联合批准完整占地/可选沿海支撑/人车接入/现状配送，保护旧证书；新生产地表/导航待接入|
-|服装成为持续消费而不形成起步死锁|一次发衣没有后续需求，免费换皮跳过生产，购买规则可能挤掉基本生活支出|[ADR 0004](../decisions/0004-clothing-and-makehuman.md)规定早期手工/公共制衣、实物耐久/有限修补、基本/正装/自由消费分级；缺正装正常上班，仅提高购买优先级；MakeHuman资产与有限oracle/生产系统分开|
-|历史增长、随机和存档可以复现|浮点、工作线程完成顺序、镜头和调度dt都会改变长期结果|稳定ID、独立随机流、明确随机采样时刻、确定归并、版本哈希、已提交checkpoint；区分同构建重放与跨平台研究目标|
+|边界|必须解决的实际问题|当前设计|
+|---|---|---|
+|地形三维与规模|高分辨率贴图不意味着世界满体素；terrain/nav/入口尺度混用会制造假可达|分块单顶面高度列+立面；独立资产texel密度/导航净空，统一权威surface revision|
+|海峡全局拓扑|删一格影响远港，只重算刷子附近会留下假航路|chunk门户+受影响粗图split/merge；dirty即证书失效，Pending不得复用旧路径|
+|Godterrain全因果|只改格会让楼/住户/货物/旧路悬空，永保通又使工具不可用|占用依赖索引、后果预览、单写者强异常发布；保护/破坏两模式，普通施工仍保通|
+|不同来源同世界|Blank与Earth两渲染器/两存档会反复分叉|统一TerrainWorldDraft/PreviewDescriptor/候选发布；source只作初始证明|
+|高精像素人/衣物|免费换色消灭服装行业，贴图像素=方块造成几何爆炸|原创cuboid+精细图集+fit/动作LOD，WornItemSnapshot读取真实实物|
+|城市灾损恢复|删楼不等于删法人/货权/国家，免费应急仓库会复制资源|逻辑实体/物理空间分离、有限应急容纳、货损分录/继承/真实迁移|
+|可靠旧新规则|加schema数字不代表能把旧档转换|explicit复制迁移、新WorldId、差异/损失预览、原档保留、新首档成功才发布|
 
-这些问题进一步拆成具体风险与实验，见 [风险清单](../planning/RISKS.md)。尤其文化自适应dt的噪声与越阈概率尚无证明，不应把一个好看的方程当已解决的机制。
+身份关系、实物/货币账本、知识许可、任务合同、空间运输仍是五共享基础，所有模拟修改单写者。镜头、UI locale、LOD和工作线程完成顺序不决定仿真RNG/收益/死亡。
 
 ## 2. 进程与依赖方向
 
-```mermaid
-flowchart LR
-  Sources[原创建筑与获准开放资源] --> Cook[离线验证与内容编译]
-  Cook --> Packs[定义集 EarthPack 资源Pack]
-  Input[SDL3 输入与地图工具] --> Preview[预览与CommandDispatcher]
-  Preview --> Sim[单写者仿真核心]
-  Packs --> Sim
-  Sim --> Snapshot[只读快照与查询]
-  Snapshot --> UI[RmlUi 检查器]
-  Snapshot --> Proxies[场景代理与LOD]
-  Packs --> Proxies
-  Proxies --> GPU[自研通道与bgfx]
-  Sim --> Save[分块存档 事件 命令日志]
-  Workers[读取快照的任务池] --> Sim
-```
+原创作者源/已核验资源→离线Cooker→PixelContentPack/定义；输入→只读预览→CommandDispatcher→单写者World→不可变快照/查询→RmlUi/场景proxy/bgfx。后台读快照生成mesh/nav/IO候选，写者依据revision接纳，不直接修改实体。生产核心不依赖SDL/GPU/DCC。
 
-首版单进程离线桌面，主线程负责窗口/输入及要求主线程的图形调用；仿真有专属单写者；工作池处理地理解码、资产I/O、导航候选、可并行读决策。写入按确定顺序归并。不要把单机23类命令拆成23个微服务。首版桌面平台为 macOS、Windows、Linux；触控等价动作在输入层扩展，不修改领域逻辑。
+沿用现有C++20、SDL3、bgfx/bx/bimg、RmlUi、FreeType；cgltf/ozz/mesh优化仅按真实资产需要核锁后接入，不为换画风先换库。Steam唯一商店，Metal只开发验证。不开23个微服务，不用Unity/Unreal/完整游戏引擎。
 
-生产核心依赖标准库和明确的序列化/压缩等独立库；不依赖SDL、bgfx、RmlUi、Blender。UI与render只持有EntityId/快照和资源句柄，不能拿可修改World引用。离线工具不被链接进客户端。
+## 3. 目标工程结构和增量顺序
 
-## 3. 模块职责与增长时机
+下面是职责/未来落点，不创建空目录冒充实现。已有engine/world_creation与earth_world/nav/native页在迁移适配完成前保持旧契约；新入口明确版本，不把类重命名就算重构。
 
-|模块|拥有的权威状态|允许依赖|接入时机|
-|foundation|ID、Clock、RNG、事务、版本、错误|标准库|P0/A|
-|world|冻结地球映射、稀疏造陆、矿物、空间索引|foundation/定义集|A|
-|identity/people|人物、家庭、位置容纳、文化/语言/姓名|foundation/world读接口|A/B|
-|assets/ledger/contracts|物权、钱、实物、预约、六动作任务图|foundation/identity/world|A/C|
-|city/public-services|唯一CitySquare、劳动优先级、施工/维护|共享基础|A/C|
-|mobility|道路、入口、容纳、车船、航次、移民旅程|world/contracts/identity|A/C/E|
-|society/politics/religion/science|规则、知识、章程、政府、教会组织|共享基础读写集|B/D/C|
-|military|Army、命令、阵位、感知、补给、控制|mobility/contracts/people/法律|E|
-|persistence|已提交快照、迁移、关系验证、重放|各领域版本化数据接口|A起持续|
-|presentation/ui|场景、相机、PBR/水、LOD、拾取、工具和文本|快照、Command、只读Pack|A起持续|
-|content tools|来源审计、原创建筑、glTF/材质/动画/EarthPack转换|编辑源、官方独立处理库|A起持续|
+|落点（按需新增/改造）|所有权/职责|首接入|
+|---|---|---|
+|engine/world/terrain_columns、terrain_profile、water_bodies|当前surface/水位/生态/来源、页与revision|P1|
+|engine/world/terrain_commands、terrain_effect_plan|typed stroke/preview、依赖读写集、占用/损失Adapter|P2|
+|engine/world/spatial_dependencies、navigation|地面/水/道路门户、支承、旧证书、split/merge|P1–P4|
+|engine/world_creation、geography importer|Blank/Earth统一草稿、量化、边缘/同路径候选与首档|P1|
+|engine/people、ledger、city、mobility|真实居民容纳/灾损/衣物与库存、应急/修复|P4|
+|engine/politics、religion、science、military|原稿领域通过共享基础，不另造地形账本|P5–P8|
+|presentation/native/pixel_terrain、pixel_water、pixel_scene|块阶面/侧面、原创像素材质/水/天空、阴影/LOD/拾取|P1–P3|
+|client/native/terrain_tool、inspector、input_router|底部八组、当前tool capture、正常字后果预览/typed关系|P2起|
+|persistence/pixel_sections、migration_registry|提交态页/坏档拒绝、legacy复制、恢复/重放|P1起|
+|assets/source/pixel、tools/pixel_content_cook|原创人物/衣物/房屋作者源、hash/fit/LOD/recipe验证|P0合同/P3正式资产|
+|tests/terrain_transactions、scenarios、native/GPU验收|拓扑/强异常/人货守恒/真实画面，非实现镜像单测|每个贯穿门槛|
 
-此表是模块规划，不预先为每格写空类。现有物理文件与状态见 [验证记录](../planning/VALIDATION.md)。后续按贯穿功能增加模块，先形成领域边界，再因实际热点拆库。
+模块路径是规划候选，不保证此刻实际存在；细分只在有功能/热点时创建。地形后果Adapter先有小fixture证明，再生产接真实人货/城市，避免先上线工具后补删除善后。
 
-## 4. 数据与尺度
+## 4. 性能与不变量
 
-热数据采用按域SoA页：人物活状态、位置、任务、移动速度、服役、基本需要；冷记录保存国家、法人、合同、谱系、章程；不可变定义共享。不为每条教义建每帧ECS system。全世界实体仍存在，显示代理可销毁/重建。
+热人物SoA、冷政治/机构/历史分页、不可变定义共享、terrain按chunk copy-on-write。保存一致revision页，网格/导航按dirty与预算，图集/实例/骨架/HLOD按投影尺寸和迟滞。不能每笔复制全世界，也不能每帧全图flood/扫全人口或Person²文化传播。
 
-坐标：右手、游戏米、+Y上，+X为投影平面右、-Z为投影平面上。按ADR 0010，worldScale只映射真实水平X/Z；Y采用统一游戏静水面、略高陆台和冻结天然岸线派生的局部过渡，不加载现实高程/EGM2008，也不使用真实三轴等比。人物/建筑保持游戏米尺寸；水平源分辨率、投影误差、拓扑/覆盖与派生profile入冻结manifest。逻辑格首轮4m、原创建筑模块0.5m均为待切片验收配置；建世界后cellSize/worldScale/profile锁定。世界逻辑格/道路节点用整数，长距离空间用double或Chunk局部定点，GPU用相机相对float，不能把GPU浮点位置写回人物身份或路径。
+权威整数/定点、右手Y上游戏米，GPU相机相对float；网格profile每世界冻结，当前height/材质可变。先真实100/1000/10000人生产/物流/衣物/城市灾损/战争负载，再探索更大容量；1080p60fps与10万人均非已测承诺。稳定ID不回收，货物owner/custodian/location、法定主权/实际控制、Culture/Language分别存储。
 
-10,000人口真实全系统负载是首个大规模验收；100,000是后续探索目标。内核1,000,000格上限只是安全读取/测试边界，不是生产规模实测。生产的格数、航路、资产、历史和人口上限要在创建界面明确预算，不让用户创建必然耗尽内存的存档。
+## 5. 当前完成度
 
-## 5. 当前明确没有的实现
+已实现的原生窗口/菜单/三语、真实GSHHG导航与旧PBR空世界创建、有限headless事务/存档与独立衣物/交互oracle保留。新像素地表、可编辑真实高度、原创像素人楼服装、占用因果生产接入、完整文明与迁移器尚未实现。旧MakeHuman/PolyHaven/Hex/Abyssal资源保留许可/哈希和历史，不自动成为新runtime必要输入。
 
-没有完整全球海陆包、投影世界生成器、新平台/岸带实现、完整生存经济、文化场、宗教政治、科研、Army、GPU世界或最终角色模型。原生菜单已接入；现有内核包含施工/港口/事务/存档，另有Abyssal CPU FFT参考。ETOPO窗口和独立坡地oracle仅历史研究/测试，后者不链接当前kernel，不作为新地表完成证据。整状态复制/同步全图BFS与CPU数学参考保留作正确性对照，不可直接搬到大型世界或逐帧海洋渲染。
-
-下一阶段最重要产物是自研窗口与写实水陆/建筑/人物查看器，以及真实岸线→冻结世界→施工→导航→港口的贯穿切片。开源接入以实际构建证据固定版本；不能让“研究已选择”成为“生产已集成”。
-
-## ADR 0005：集中交互与人口规则
-
-此次明确加入世界统计/比较、World Laws、人物/物品/地图收藏、分类清理和所有领域的互通信息/编辑页，详见[ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)及[INTERACTION](INTERACTION.md)。稳定typed refs贯穿地图拾取与页面链接；清理保留档案/产权/旧通道；所有人口只来自玩家亲自放置18岁人物或合法繁衍0岁人物；全龄同身体规格。
-
-实际交付分三层：40种实体的页面/编辑合同，示例数据的离线可点击前端，独立C++交互规则oracle。生产RmlUi/bgfx客户端、真实地图拾取、完整经济/社会和统一存档尚待接入，不能用原型替代这些系统。
+后续按[IMPLEMENTATION_PLAN](../planning/IMPLEMENTATION_PLAN.md)：先新terrain/create/3D界面+存载完整门槛，随即原创人/屋/广场/服装，再居民生活/文明制度/宗教/战争/企业。已批准艺术主菜单复用，资产合同与试样质量准则P0先定。每批先全部修改/审查后一次统一编译验收。

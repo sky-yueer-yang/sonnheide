@@ -10,6 +10,7 @@ import struct
 import import_etopo_sample
 import import_makehuman_sources
 import validate_interaction_schema
+import validate_pixel_contract
 import validate_ui_locales
 import import_menu_paintings
 import build_menu_compass
@@ -211,6 +212,7 @@ def main():
     require(character["source_manifest"] == import_makehuman_sources.MANIFEST and character["game_ready"] is False and character["program_code_imported"] is False, "MakeHuman source scope mismatch")
     import_makehuman_sources.verify(ROOT)
     interaction_summary = validate_interaction_schema.validate(ROOT)
+    pixel_summary = validate_pixel_contract.validate(ROOT)
     ui_summary = validate_ui_locales.validate(ROOT)
     painting_summary = import_menu_paintings.verify()
     interface_summary = validate_interface_assets()
@@ -225,6 +227,7 @@ def main():
             require((path.parent / base).exists(), "Broken local link in {}: {}".format(path, target))
     print("PASS: pinned Abyssal MIT sources, historical ETOPO sample integrity, baseline SHA-256, 424 technology definitions and DAG, 35 laws, 13 businesses, 23 commands, 27 chapters, 3 original glTF contracts, selected MakeHuman sources, documentation links")
     print("PASS: " + interaction_summary)
+    print("PASS: " + pixel_summary)
     print("PASS: " + ui_summary)
     print("PASS: " + painting_summary)
     print("PASS: " + interface_summary)

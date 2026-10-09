@@ -313,5 +313,10 @@
       "original_assets_and_shaders": "unchanged SHA bytes",
       "navigation": "ray-anchored perspective pan/zoom, yaw wrap, sky rejection and bounded motion"
     }
+  },
+  "design_scope": {
+    "ruleset": "legacy_earth_pbr_flat_world",
+    "superseded_by": "docs/decisions/0012-editable-3d-pixel-world.md",
+    "new_pixel_route_proven_by_this_evidence": false
   }
 }

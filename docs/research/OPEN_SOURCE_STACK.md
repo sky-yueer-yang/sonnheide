@@ -1,5 +1,7 @@
 # 开源复用决定、许可边界与锁定计划
 
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](../decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+
 最新采用 [Poly Haven＋固定mmikk Hex-Tiling](../decisions/0011-ground-sky-and-bounded-world-preview.md)。四个MIT原始算法文件归档于third_party/hextile；PBR/纯天空的准确原件与来源包见 [资源锁](../../assets/manifests/ground_sky_sources.json)。这不是新增运行时引擎，bgfx GPU移植仍待实施。
 
 2026年10月7日写实平面地表专项比较见 [REALISTIC_GROUND_SYSTEMS](REALISTIC_GROUND_SYSTEMS.md)：扫描材质、离线生成工具、抗重复算法、地被与许可边界分别核验，均明确候选与正式集成的区别。当前原生菜单依赖的实际锁定/集成状态以 [NATIVE_SOURCE_AUDIT](NATIVE_SOURCE_AUDIT.md) 为准，下面早期总览表中的待接入状态不覆盖该记录。

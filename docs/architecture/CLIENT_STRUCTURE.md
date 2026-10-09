@@ -1,6 +1,8 @@
 # 初步程序结构：自研客户端、统一对象页与生产接入
 
-补充 [ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md) 的责任分配：地理工具生成多级矢量/full包；无GPU候选冻结边缘/海域/精度描述；创建UI负责全球导航和草案；presentation共用PBR/Hex路径绘制最高预览与游戏。`tools/prepare_ground_sources.py`、资源锁及MIT源已实际加入，原生地图模块已加入 `engine/{earth_world,world_creation}`、`client/native/{earth_navigation,native_earth_page}`及`presentation/native/earth_renderer`；`prepare_phase1.py`复建实际shader/纹理/天空并生成编译期资源锁，不创建空目录表示完成。
+2026-10-08当前裁决：[ADR0012](../decisions/0012-editable-3d-pixel-world.md)/[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)覆盖本文旧地形/人物资产条款。有效高度/海陆可编辑、所有坡地检查必要基础、Port不再RECLAIMED-only、原创像素人体取代MakeHuman、底栏八分区。source provenance与历史只读；普通施工保通，明确Godterrain允许损坏并同事务处理人货/容纳/证书。未改的文明/衣物/法律/typed信息规则继续有效；下文旧oracle与浏览器字段按旧版本保留，不能当新生产实现。当前字段/命令补充见[机器合同](../../data/contracts/pixel_world.json)、[地形事务](PIXEL_TERRAIN_TRANSACTIONS.md)、[像素资产](PIXEL_RENDERING_AND_ASSETS.md)。
+
+以下是旧版[ADR 0011](../decisions/0011-ground-sky-and-bounded-world-preview.md)已实现责任分配，保留作为复用/退役清单：地理工具生成多级矢量/full包；无GPU候选冻结边缘/海域/精度描述；创建UI负责全球导航和草案；presentation共用PBR/Hex路径绘制最高预览与游戏。`tools/prepare_ground_sources.py`、资源锁及MIT源已实际加入，原生地图模块已加入 `engine/{earth_world,world_creation}`、`client/native/{earth_navigation,native_earth_page}`及`presentation/native/earth_renderer`；`prepare_phase1.py`复建实际shader/纹理/天空并生成编译期资源锁，不创建空目录表示完成。
 
 2026-10-07。本文是生产工程的目标结构与接入顺序；第1节列出当前真实实现和验证范围。最新顺序是主页面与应用启动→创建世界与真实岸线平面初始地表→基础游戏界面、镜头、保存载入和返回→再开始原创建筑与人物服装资产、建设和生活。前三阶段先形成一个可可靠进入、离开和恢复的真实海陆区域空世界。地表按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：不再导入真实高程，普通陆地统一略高于固定海平面，仅狭窄海岸过渡下降入水。计划目录在首次实现对应功能时才创建，不通过空目录或接口数量表示完成；阶段1真实地理、原生预览及可靠空世界创建已实现，证据见[阶段1验收](../planning/PHASE1_ACCEPTANCE.md)。应用状态与世界交接见[APPLICATION_FLOW](APPLICATION_FLOW.md)，阶段和退出条件见[完整施工计划](../planning/IMPLEMENTATION_PLAN.md)。
 
@@ -20,7 +22,7 @@
 |`tools/previews/world-inspector.html`|浏览器示例状态的可点击交互原型|SDL3/bgfx/RmlUi 原生客户端；原型不嵌入发行游戏，不作为生产事实源|
 |`apps/game/main.cpp`、`platform`、`presentation/native`、`client/native`、`ui/application`|原生主页面/三语设置、窗口/输入/字体/Metal、真实Rml布局与GPU运行|Steam/Windows实机验证、完整IME、全域玩法存档及阶段2完整地图界面|
 |`tools/previews/main-menu.html`、五幅用户油画|浏览器主菜单/三语设置与环境小场景；固定原字节来源|原生应用状态、真实新建/存载、World环境计时与GPU灯光；按钮不能假成功|
-|`assets/source`、`generated`、`manifests`|3 份原创灰盒、选定 MakeHuman 源件、来源与部分验证|正式建模/材质、统一成人 rig、衣物适配、动作、LOD、完整 pack|
+|`assets/source`、`generated`、`manifests`|3 份原创灰盒、选定 MakeHuman 源件、来源与部分验证|原创像素楼体/人物/衣物/统一成人rig、动作、LOD、完整pack；历史MakeHuman不入新运行依赖|
 
 运行时库选择沿用 [开源栈决定](../research/OPEN_SOURCE_STACK.md)：C++20 + SDL3 + bgfx/bx/bimg + RmlUi + FreeType；cgltf/meshoptimizer 优先离线使用；ozz-animation 用于角色动画。SDL3、bgfx/bx/bimg、RmlUi、FreeType已经接入原生主页面；准确版本、原始源归档和许可哈希见`data/native_dependencies.lock.json`。cgltf/meshoptimizer/ozz仍未接入。`data/dependencies.json`保留状态分类，不替代lock。
 
@@ -44,7 +46,7 @@ Sonnheide/
 │  ├─ include/sonnheide/
 │  └─ src/
 │     ├─ foundation/                  planned：ID/时钟/定义/RNG/事务信封
-│     ├─ world/                       planned：创建候选/冻结地理/地块/空间/通路
+│     ├─ world/                       planned：双来源候选/只读provenance/可编辑高度列/空间/通路
 │     ├─ people/                      planned：生命史/家庭/需求/任务资格
 │     ├─ economy/                     planned：物品/账户/预约/合同/物流
 │     ├─ construction/                planned：平地建址/必要沿海基/接入/建设/拆除/填海
@@ -106,7 +108,7 @@ Sonnheide/
 
 |目标|责任与依赖|禁止项|
 |---|---|---|
-|`sonnheide_kernel`|创建候选校验、冻结地理、权威 World、事务、调度、查询、存档；标准 C++20|窗口/GPU/字体/网页；按镜头执行不同规则|
+|`sonnheide_kernel`|双来源候选校验、只读provenance/可编辑TerrainWorld、权威World、事务、调度、查询、存档；标准 C++20|窗口/GPU/字体/网页；按镜头执行不同规则|
 |`sonnheide_interaction`、`sonnheide_ocean_math`|当前独立 oracle/数学参考，保留作回归对照|独立生产 World；GPU 倒灌核心|
 |`sonnheide_platform` planned|SDL3 生命周期、输入/IME、设备与原子持久化文件桥|经营人物/经济；与 bgfx 同窗口提交第二套 GPU|
 |`sonnheide_presentation` planned|bgfx/ozz、场景、只读快照/内容 pack|结算材料/劳动/伤害/死亡；动画回调判完工|
@@ -125,7 +127,7 @@ UI 数据类型可位于核心公开查询协议，但 RML 元素、翻译字符
 |---|---|---|
 |`ApplicationFlow`|Boot/MainMenu/WorldSetup/PreparingWorld/InWorld/Returning/LoadFailure 状态与可用动作|客户端状态；不创造模拟实体；统一处理取消和退出|
 |`WorldCreationController`|名称、固定海陆/岸线GeoPack、合法选区、水平比例的创建草稿；显示真实覆盖、岸线分辨率/拓扑限制、派生表面规则和预算|调用核心只读验证；预览不发布World，不提供真实高程导入或高度缩放|
-|`PreparedWorld` / 创建服务|离线海陆/岸线源校验、水平投影、统一陆台与窄海岸profile、冻结自然mask/派生面、初始空世界|核心私有候选；不要求DEM/DTM；缺海陆源或halo拒绝，不以平坦表面或免费人房补齐；填海不重算天然海岸面|
+|`PreparedWorld` / 创建服务|Blank/Earth源校验、水平投影/像素量化、初始高度列/水域、同路径预览、初始空世界|核心私有候选；Blank不要求地理源，Earth缺指定full源或有效覆盖拒绝；不要求DEM；原始来源只读，当前地表可编辑，不赠人房|
 |`SaveLoadPresenter`|继续/加载列表、兼容和缺包主因、保存进度、明确恢复版本选择|列表索引不是 World；加载失败不改原存档；完整格式见 PERSISTENCE|
 |`WorldSessionCoordinator`|候选全验、首次 checkpoint、SessionGeneration 与安全发布/释放|应用装配责任；旧世界到发布前可恢复，Continue 指针最后更新|
 |`ViewProfileStore`|按 worldId 的镜头/收藏/窗口偏好；全局 UI locale/输入偏好分离|切换同世界也撤旧订阅；profile 损坏可重置视图，不重写 World|
@@ -207,7 +209,7 @@ SDL3 IME composition 与 committed text 分开；候选框跟 caret/DPI，组合
 
 基础空世界门槛通过后，阶段3的第一批资产包含原创住宅、CitySquare、工坊/Port代表件、道路/桥/岸壁、必要沿海长方体地基、入口台阶/坡道、接货区/逐层矩形网；普通内陆不制作找平地基工程。同时统一成人角色、内衣/T恤/短裤、idle/walk/carry/enter/exit。其他楼族、原创军装、车辆按后续领域批次启动，不把阶段3扩成全资产交付。初始地表和UI的制作在前，已有建筑灰盒来源与约束继续保留。
 
-住宅同一合同定义footprint/门/garage/全宽接入/前侧接货/网罩层与包围尺寸；约数秒围起、工期全包围、约数秒反向拆。人物实际送货，本体工期World结算。内陆无需找平基仍须有效人行/车道/送货路，后建项目不得破坏旧接入保护域；沿海必要地基不把WATER变成LAND。港口不借水上基绕reclaimed-only，填海仍逐格四邻接、真实材料劳动、完工才LAND；美术不重算天然mask或海岸面。
+住宅同一合同定义footprint/门/garage/全宽接入/前侧接货/网罩层与包围尺寸；约数秒围起、工期全包围、约数秒反向拆。人物实际送货，本体工期World结算。普通平地无需额外基础，任意坡地按实际支承需要；人行/车道/送货路与后建保护域同批核验。地基不把WATER变LAND；Port任一干陆来源均验水深/通路。Civic填海逐格四邻接、真实材料劳动、完工才改地；Godterraform为独立免费地形命令，美术不能改地。
 
 准入记录作者/许可原文、原件 hash、坐标/尺寸、recipe、离线工具、派生 hash、材质/LOD/权重、权威几何 hash、场景。胸罩来源不明用原创替代，不上传冲突文件。0/18 岁共成人尺寸/骨架/绑定/fit，不造儿童 rig/成长缩放。
 
@@ -216,9 +218,9 @@ SDL3 IME composition 与 committed text 分开；候选框跟 caret/DPI，组合
 ## 9. 第一可玩空世界的退出条件（阶段 0—2）
 
 1. 原生启动到主页面；新建、继续、加载、英汉德设置和退出各有真实状态。无可载存档时继续禁用并说明；未创建世界不存在对象引用或伪统计。
-2. 创建从一个已准入、离线齐全的真实海陆/岸线GeoPack选择合法含陆地区域；显示来源/覆盖/岸线分辨率/水平比例/派生表面profile/预算。最终天然mask、陆台与窄海岸面及水平worldScale固定，不导入真实高程、不自动生人、国家或房屋；验证跨块/选区halo/窄岛/湖岸。现有25×25 ETOPO窗口仅历史研究，不是新GeoPack输入或全球覆盖证据。
+2. 创建可选Blank全海/平陆，或Earth准入选区转像素；两者共用height/material/water候选、最高预览与首档发布。Earth披露来源/量化损失/比例/profile预算；默认派生高度非DEM，可选风格化山地明确开关。人口建筑均0；验证跨块/选区/窄岛/湖岸。历史ETOPO不进入新World。
 3. 原生地表/水体、旋转平移缩放、边界/拾取、底部七组入口、中文/英文/德文与设置可使用；无对象时点地面给地理反馈，空目录明确为空。尚未接入人物/建设/制度命令不可伪造执行。
-4. 创建→进入空图→保存→返回主页面→继续/加载同图可重复；冻结自然层与 core checkpoint 同摘要，镜头/locale 单独恢复，不加速离线时间、不添人房。
+4. 创建→进入空图→保存→返回主页面→继续/加载同图可重复；有效地形与core checkpoint同摘要，镜头/窗口按WorldId恢复，locale为全应用偏好，不加速离线时间、不添人房。
 5. 缺地理块、非法选区、损坏或不兼容存档、创建中取消、保存失败、异步旧结果、退出/切换时 dirty 表单均有验证。失败留旧世界与最后有效存档，成功回菜单后撤旧订阅，不存在半个已进入世界。
 
 这些是建筑资产和建设施工的硬前提；当前浏览器原型和 headless 切片不能替代原生链路通过。具体失败矩阵与验收故事见 [APPLICATION_FLOW](APPLICATION_FLOW.md)。

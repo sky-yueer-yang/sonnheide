@@ -1,86 +1,74 @@
-# Sonnheide
+# SONNHEIDE
 
-Sonnheide 是真实地球水陆底图上的三维人类文明模拟。**不采用游戏引擎；仿真、工程框架与客户端由我们搭建，所有建筑几何与外观由我们制作。** 独立开源库承担窗口、GPU、动画、字体和资产处理；第三方人物、动作、纹理、植物及地理数据按具体文件许可证复用。
+SONNHEIDE 是**自研框架的三维像素风人类文明模拟游戏**。世界能从360°观察，玩家可以塑造海陆与山地；人物使用原创块状几何和精细像素贴图，所有建筑与人物服装自行制作。不采用游戏引擎，核心C++20，唯一发行渠道为Steam。
 
-本仓库托管初步工程设计、C++20 有限内核和可运行的原生主页面/真实岸线空世界，**尚不是可游玩的完整游戏**。GitHub：[sky-yueer-yang/sonnheide](https://github.com/sky-yueer-yang/sonnheide)。当前仓库原本即为公开仓库；托管不自动授予原创代码、美术或设计开放许可，见 [原创与第三方权利策略](OWNERSHIP.md)。
+当前有效设计是 [v0.7 像素世界](docs/design/Sonnheide_Design_v0.7_Pixel_World.md) 和 [ADR0012](docs/decisions/0012-editable-3d-pixel-world.md)。原始v0.6逐字保留；旧平坦不可编辑地形、MakeHuman人物、写实PBR默认世界、RECLAIMED-only港口及七分区界面由明确新版覆盖。
 
-## 从这里阅读
+**本轮完成设计与工程合同重构；当前可执行程序仍是旧写实空世界，新的像素世界与地形编辑尚未实现。** 不把文档、机器合同或旧阶段1测试算作新游戏功能。仓库公开托管于 [GitHub](https://github.com/sky-yueer-yang/sonnheide)，不自动授予原创代码、美术和设计开放许可，见 [权利策略](OWNERSHIP.md)。
+
+## 当前设计入口
 
 |内容|入口|
 |---|---|
-|架构总览、真正需要攻克的问题、模块边界|[工程总纲](docs/architecture/OVERVIEW.md)|
-|27章逐章对应对象、事务、不变量|[领域映射](docs/architecture/DOMAIN_MAP.md)|
-|五类共享基础、经济起步、调度、文化、战争与规模|[仿真架构](docs/architecture/SIMULATION.md)|
-|Poly Haven/Hex、纯天空、有限世界外海与高清选区|[最新ADR 0011](docs/decisions/0011-ground-sky-and-bounded-world-preview.md)、[实际资源锁](assets/manifests/ground_sky_sources.json)|
-|真实地球、投影、岸线、格网、填海与导航|[世界工程](docs/architecture/WORLD.md)|
-|原生写实客户端、水体、动画、LOD、拾取与UI|[渲染架构](docs/architecture/RENDERING.md)|
-|底部分区工具栏、地图窗口与英汉德交互|[最新前端ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)、[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[WorldBox参考](docs/research/WORLDBOX_FRONTEND.md)|
-|初步程序目录、构建目标与单一事实接入|[程序结构](docs/architecture/CLIENT_STRUCTURE.md)|
-|主菜单、创建世界、初始地表、保存载入与失败恢复|[最新顺序ADR 0007](docs/decisions/0007-foundation-experience-first.md)、[应用流程](docs/architecture/APPLICATION_FLOW.md)|
-|油画艺术主菜单、极简无框交互、光暗纪元|[最新视觉ADR 0009](docs/decisions/0009-monumental-minimal-interface.md)、[光暗ADR 0008](docs/decisions/0008-sacred-interface-and-light-ages.md)、[视觉合同](docs/architecture/VISUAL_STYLE.md)、[Light/Darkness规则](docs/architecture/LIGHT_AGES.md)|
-|40类字段编辑、人物六轴、国家宗教与35法族|[编辑矩阵](docs/architecture/EDITING.md)、[机器合同](data/interaction_schema.json)|
-|材料实送、自动建房、分层围网与反向撤网|[建筑施工变更 ADR 0002](docs/decisions/0002-building-construction.md)|
-|统一平坦陆地、近岸下降、沿海可选地基与通道保护|[最新变更ADR 0010](docs/decisions/0010-flat-land-and-coastal-transition.md)、[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
-|早期服装业、实物衣物/耐久、购买排序与原创军装|[服装变更ADR 0004](docs/decisions/0004-clothing-and-makehuman.md)、[服装经济](docs/architecture/CLOTHING_ECONOMY.md)|
-|正式MakeHuman/MPFB路线、选定源件与逐项许可|[人物生态接入](docs/research/MAKEHUMAN_ECOSYSTEM.md)、[源件manifest](assets/manifests/makehuman_sources.json)|
-|命令、预览、授权、共享合同与错误协议|[接口契约](docs/architecture/CONTRACTS.md)|
-|存档、恢复、版本迁移与确定性级别|[持久化](docs/architecture/PERSISTENCE.md)|
-|自制建筑、人体、材质、LOD、资产编译与流送|[内容流水线](docs/architecture/CONTENT_PIPELINE.md)|
-|代码依赖决定、可复用部件与拒绝理由|[开源技术栈](docs/research/OPEN_SOURCE_STACK.md)|
-|人物/动作/植物/水体/材质/地理资源及许可证|[资产来源](docs/research/ASSET_SOURCES.md)|
-|构建、GitHub/LFS/Releases、协作与交付|[工程运维](docs/architecture/ENGINEERING.md)|
-|切片顺序、必须先验证的实验与通过标准|[开发路线](docs/planning/ROADMAP.md)|
-|11阶段完整施工，先基础体验再建筑与玩法资产|[完整施工计划](docs/planning/IMPLEMENTATION_PLAN.md)|
-|工程风险、决策与当前验证边界|[风险清单](docs/planning/RISKS.md)、[架构决策](docs/decisions/0001-foundation.md)、[验证记录](docs/planning/VALIDATION.md)|
-|原始游戏规则，逐字保留与SHA-256来源|[设计基线v0.6](docs/design/Sonnheide_Complete_Design_v0.6.md)、[来源清单](data/catalogs/design_source.json)|
+|完整规则、八种地形、城市后果、两种创建、27章逐章审查|[v0.7设计](docs/design/Sonnheide_Design_v0.7_Pixel_World.md)|
+|版本覆盖、不变量和保持不变的范围|[ADR0012](docs/decisions/0012-editable-3d-pixel-world.md)|
+|真正需要攻克的问题、模块owner与初步工程结构|[工程总纲](docs/architecture/OVERVIEW.md)、[程序结构](docs/architecture/CLIENT_STRUCTURE.md)|
+|高度/材料/生态分层、水深海湖、神力编辑与人货原子后果|[地形事务](docs/architecture/PIXEL_TERRAIN_TRANSACTIONS.md)、[世界](docs/architecture/WORLD.md)|
+|原创像素人楼衣物、水天空、rig/图集/LOD与预算|[像素资产合同](docs/architecture/PIXEL_RENDERING_AND_ASSETS.md)、[渲染](docs/architecture/RENDERING.md)、[内容流水线](docs/architecture/CONTENT_PIPELINE.md)|
+|坡地基础、真实台阶坡道、人行/车库/接货及后建保护|[地形与建址](docs/architecture/TERRAIN_AND_SITES.md)|
+|Blank/Earth同路径创建、取消失败隔离、首存档发布|[应用流程](docs/architecture/APPLICATION_FLOW.md)|
+|八底栏分区、三语、互通信息页与编辑|[UI架构](docs/architecture/UI_ARCHITECTURE.md)、[交互](docs/architecture/INTERACTION.md)、[编辑矩阵](docs/architecture/EDITING.md)|
+|66工具/23命令设计、三语预设与27章覆盖|[像素机器合同](data/contracts/pixel_world.json)|
+|WorldBox官方依据、采纳/改造/不加入的功能|[研究与采纳矩阵](docs/research/WORLDBOX_PIXEL_REFACTOR.md)|
+|社会经济、服装实物、国家法规/宗教及知识战争|[仿真](docs/architecture/SIMULATION.md)、[领域映射](docs/architecture/DOMAIN_MAP.md)、[服装经济](docs/architecture/CLOTHING_ECONOMY.md)|
+|单写者、预览重验、回执、完整存载及显式旧档复制迁移|[合同](docs/architecture/CONTRACTS.md)、[持久化](docs/architecture/PERSISTENCE.md)|
+|先基础创建/地表/界面，随后原创楼体人物，最终Steam|[11阶段施工计划](docs/planning/IMPLEMENTATION_PLAN.md)、[路线图](docs/planning/ROADMAP.md)|
+|已批准油画菜单、无框按钮、Light/Darkness两Age|[视觉合同](docs/architecture/VISUAL_STYLE.md)、[光暗规则](docs/architecture/LIGHT_AGES.md)|
+|依赖来源、许可/哈希、GitHub/LFS/Releases与发行|[工程运维](docs/architecture/ENGINEERING.md)、[第三方通知](THIRD_PARTY_NOTICES.md)、[依赖锁](data/native_dependencies.lock.json)|
+|逐字保留的原始27章、技术法律业务提取|[v0.6原稿](docs/design/Sonnheide_Complete_Design_v0.6.md)、[来源hash](data/catalogs/design_source.json)|
 
-## 已经落地
+## 新版的关键规则
 
-本轮新增[集中交互ADR 0005](docs/decisions/0005-unified-inspectors-and-world-tools.md)、[全域信息/编辑合同](docs/architecture/INTERACTION.md)与[40种页面registry](data/interaction_schema.json)。[可点击信息页原型](tools/previews/world-inspector.html)可直接在浏览器离线打开：近景人物→国籍国家→城市/企业/语言等关联页面；远景点国家区域；世界统计/比较、规则、收藏/标记、分类清理、18岁玩家放置与0岁繁衍演示。原型使用明确标注的示例数据，不是可玩的3D世界或生产RmlUi客户端。
+- 地形预设：Shallow Water、Close Ocean、Deep Ocean、Sand、Soil、Hill、Mountain、High Peak。水深/高度、表层材质、生态是不同字段；沙土默认保高度，明确造陆模式才改变高度。十种自然生态单独涂抹，矿率/真实库存不随地形免费产生。
+- 分块单表面高度列是真正三维顶面与立面。首样本2m格、0.5m高度量子、64²chunk为待校准目标，人物贴图texel不等于碰撞体素；不是整世界密集XYZ体素。首版固定水位0，不做洞穴、悬空自然块、高位湖或体积流体。
+- 神力可免费塑造有效地形，有保护/明确破坏模式；普通文明填海和基础仍需真实材料劳动。淹水/断路/改山同事务处理楼基、住户、货物托管、船客、施工和远港通路，保留身份、所有权、债务与城市账本。抢救/迁址需要真实路线、空间、容量和时间，不免费重建或瞬移。
+- 空白全海/平陆和真实Earth选区转像素共用候选、最高预览、量化、水域及首档发布。Earth默认只导入海陆，派生高度不称真实海拔；风格化起伏需显式选择。人口建筑均0。来源证明不可改，发布后有效地形可改。
+- 人物仅玩家放置18岁或合法出生0岁，全龄同成人身体。衣物是有耐久和替换需求的真实物品；家庭公共制衣先于企业，缺衣不直接致死，缺正装仍正常全薪上班。军装款式统一且绑定实际服役国家色。
+- 地图中心、底栏八分区：观察、地形与生态、人物、文明制度、建设资源、经济物品、世界、设置。英汉德界面独立于模拟Language。保留已批准油画主菜单与Sonnreich标志，所有按钮无边框，不添无必要小字。
 
-前端按[ADR 0006](docs/decisions/0006-bottom-toolbar-trilingual-editing.md)改为地图中心、固定底部7个section与按需对象窗口。界面中文/English/Deutsch使用[同一消息目录](data/ui_locales.json)和离线镜像；UI locale不改游戏Language。新增六人格轴、国家宗教地位/官方宗教和35法族的草案/预览；法律记录仅“批准待领域执行”，未实现的完整税/宪制/过渡结算明确说明。最新[ADR 0007](docs/decisions/0007-foundation-experience-first.md)把[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)重排为先主菜单、创建世界、真实初始地表、基础界面和存档往返，通过原生空世界门槛后才开始建筑/人物服装制作。原生主菜单和设置已经接入 SDL3/bgfx/RmlUi；创建入口现已接入完整GSHHG全球导航、full同路径地表预览、可靠空World首存档及继续；详见[阶段1验收](docs/planning/PHASE1_ACCEPTANCE.md)。
+## 已实现与证据边界
 
-独立C++ `sonnheide_interaction` oracle验证人口来源、全龄同BodySpec、typed引用/档案、单写者原子命令、世界规则、去重统计及清理保护；它尚未连接kernel、服装Ledger、完整法务/交通或生产存档。所有新增人物只允许玩家亲自放置（固定18岁）或合法繁衍（0岁）；年龄不生成儿童体型。
+|已有内容|实际范围|
+|---|---|
+|原生SDL3/bgfx/RmlUi/FreeType窗口、主菜单与设置|三语、油画/Logo、键盘焦点/全屏/降低动态已接入；不是完整游戏界面|
+|旧阶段1真实地理与空世界|完整GSHHG导航、旧PBR/Hex/PureSky最高预览、静态海、可靠首checkpoint/继续；见[历史验收](docs/planning/PHASE1_ACCEPTANCE.md)和[证据](docs/planning/PHASE1_EVIDENCE.json)|
+|有限headless内核|单写者、材料预约/劳动造陆、正交港口、导航/回执/文本checkpoint；旧冻结底图/RECLAIMED-only规则是legacy fixture，不是新生产地形|
+|独立服装与交互oracle|实物衣物耐久/有限修补、人口18/0、稳定引用/规则/统计/清理；尚未连接完整城市生产存档|
+|浏览器信息页与主菜单/网罩预览|明确示例数据/只读呈现，非生产3D玩法；旧七分区和只读地形不能当新前端完成|
+|三份原创建筑灰盒|住宅、CitySquare组件、港口用于格式/空间验证；当前像素正式作者源/全部楼体尚待制作|
+|原始目录与来源|424技术定义、35法族、13业务、27章追踪；定义数量不等于effect已实现|
+|旧开放资源|固定Abyssal MIT源/CPU FFT参考、MakeHuman图形源、Poly Haven/Hex/天空锁与历史ETOPO样本保留；MakeHuman不进入新人物生产，写实PBR与FFT不是新默认世界门槛|
 
-最新可审阅[油画主菜单原型](tools/previews/main-menu.html)使用用户提供的五幅JPEG：小范围中央亮焦点、深暗边缘、随机四向极慢微移、微放大与交叠切换。左上向内使用原始Sonnreich标志，配静态柔光、三层内圆、窄空隙、几乎贴近内圆的细三层外圆和360条长短粗细变化明显的低亮密集射线；原创SVG可由离线配方重建。大写SONNHEIDE使用本地Cinzel字体，和右侧五项菜单统一18px字号和0.01em字距，原标题顶部固定，菜单以24px行距向上收紧、暖白微黄带柔光，和圆环/射线共用#fff6df；纯文字菜单在右下紧凑右对齐，语言与画控收进设置。新增硬约束：绝不添加无必要小字，文字按钮不再强制icon，所有按钮仍无框。世界信息页同步克制深色主题，并在环境窗口说明Light/Darkness呈现演示的范围。正式世界只采用Age of Light与Age of Darkness，支持自动交替和手动切换，不做天体昼夜；日历/人物年龄仍按原合同推进。这些浏览器呈现不代表原生新建/存载或权威光暗状态已实现。
+新像素地形/人楼衣物、Godterrain、完整领域存档、城市因果接入和旧档复制迁移器尚待实施。Windows编译、Metal开发实机、Windows GPU/Steam实机证据分别记录，不能互相替代。
 
-- C++20 headless 内核：只读天然底图、整数施工材料预约、分步劳动、取消、完工永久造陆、道路与正交港口几何、泊位保护、导航版本失效与全图连通正确性基准。
-- 命令 ID 去重、负载/授权冲突拒绝、预览修订检查；世界与回执在同一屏障提交；存档重载检查空间、材料、身份、回执及历史约束。
-- 18组内核场景、2000条确定种子压力命令、分配失败注入事务测试、headless 贯穿演示。
-- 从原稿实际提取40能力突破＋96谱系＋288槽位、35类法律、13类业务；未提供的原参考代码和配置没有被伪称导入。
-- 3份原创建筑几何配方及自包含 glTF 灰盒：住宅、CitySquare 的 CivicHall 组件、港口。它们用于格式/空间验证，正式写实模型、三时代外观与全建筑目录尚待制作。
-- CMake 构建、三平台 GitHub Actions 与 Linux sanitizer 作业、内容/来源哈希校验、LFS 规则。
-- 历史ETOPO阿尔卑斯25×25高程窗口及原始来源/许可保留；ADR 0010已取消真实高程，停止新高程采集，新世界只需要海陆/岸线包。
-- 旧ADR 0003坡地建址oracle保留19组历史反例/贯穿回归，现独立为test-only库，不再链接当前kernel。新的平地零找平地基/沿海可选支撑合同已确定，实际生产建址尚未实现。
-- 用户指定Abyssal Ocean的MIT准确源文件与commit/hash，已提取原生CPU蝶形/二维inverse FFT参考并用直接IDFT验证；native GPU海洋尚未移植。见[第三方通知](THIRD_PARTY_NOTICES.md)。
-- MakeHuman v1.3.0核心身体/骨架/权重及三款CC0服装的14份准确源文件，合计3,129,823字节；标准库离线核验覆盖hash、网格/fit索引、骨架父图、权重和材质属性。未运行DCC或生成游戏glTF/LOD/动画，未导入缺失纹理与许可冲突的胸罩。
-- 独立C++服装经济oracle：真实投入/劳时、工资、资金托管、预约/交付、两槽有界衣橱、整数穿用损耗/有限修补与购买需求。公司正装规范只提高购买优先级，无正装仍能工作并获得正常工资；具体已执行场景与长期循环范围见[验证记录](docs/planning/VALIDATION.md)。
+## 运行现有原生程序
 
-建筑施工的新设计为：小人实际把材料送到前侧接货区，到齐后建筑自动推进工期；无人物砌筑动作。原创长方体铁丝网约3秒逐层围起，中段完全包围，完工后约3秒反向拆去。已有[可播放视觉预览](tools/previews/building-construction.html)和参数示例，生产建筑/物流与GPU动画尚未实现；填海仍沿用真实材料和劳动规则。
-
-## 运行原生主页面
-
-唯一发行渠道为 **Steam**。Windows Direct3D11 原生客户端已由 MSVC 完整编译链接，三项原生交互/解码测试通过；开发设备已实测 Metal 原生窗口。Windows GPU 实机与 Steam 发行打包仍需后续验证。程序没有浏览器、JavaScript或游戏引擎运行时。
+以下运行的是**旧写实地表版本**，可验证菜单、创建/最高预览与最小继续，不是新版像素试玩：
 
 ```sh
 python3 tools/build_native.py --run
 ```
 
-脚本从本项目固定 Release 恢复七套准确源归档与原始中文字体，逐项验 SHA-256；编译缓存、工具缓存和可执行文件都在忽略的 `.build`。首次来源包发布前可显式加 `--allow-upstream` 从固定官方来源 bootstrap；已有缓存可以 `--offline`。仅本机缺 CMake 时恢复官方校验过的便携工具。资源随程序打包，偏好写入用户目录。当前原生菜单有中文、English、Deutsch、油画交叠/极慢微移/微放大、原始Logo与原创圆环射线、全屏/窗口、降低动态、键盘焦点/返回/退出。完整GSHHG地理、8套PBR/Hex、两套8K天空/GGX和静态mean-water随程序打包；三语原生地图可平移缩放/框选、最高地表预览和可靠创建。无有效资源不发布，无存档继续不可用。
+入口为 [apps/game/main.cpp](apps/game/main.cpp)，平台/渲染桥为 [platform](platform) 与 [presentation/native](presentation/native)，客户端行为为 [client/native](client/native)，界面为 [ui/application](ui/application)。固定源从本项目Releases恢复并逐项核hash；缓存/可执行文件在忽略的 `.build`。已有缓存可用 `--offline`。个人偏好与存档不入仓。
 
-生产入口为 [apps/game/main.cpp](apps/game/main.cpp)，平台/渲染桥为 [platform](platform) 与 [presentation/native](presentation/native)，菜单行为为 [client/native](client/native)，原生界面为 [ui/application](ui/application)。来源与许可见 [锁](data/native_dependencies.lock.json)、[字体清单](assets/manifests/native_fonts.json)和[独立审查](docs/research/NATIVE_SOURCE_AUDIT.md)。阶段1真实地表/空World/首checkpoint与最小继续已接入。七分区游戏底栏、World权威环境计时、完整主动保存/文件选择和固定Abyssal原生动态水在后续阶段接入。
-
-## 运行现有切片
-
-需要 C++20 编译器与 Python 3.9+。macOS/Linux 在没有 CMake 时也能立即构建并验证：
+现有CPU切片需要C++20和Python3.9+：
 
 ```sh
-python3 tools/prepare_geography.py --fetch
 python3 tools/build.py
 python3 tools/build.py --sanitizers
 ```
 
-生产构建描述使用 CMake 3.24+。Windows 使用 CMake、MSVC 和 Python，其他平台也可使用此路径：
+CMake路径：
 
 ```sh
 cmake --preset debug
@@ -88,24 +76,12 @@ cmake --build --preset debug --config Debug
 ctest --preset debug -C Debug
 ```
 
-重建可读目录与自制灰盒：
+项目源/资产/文档与新版设计合同校验：
 
 ```sh
-python3 tools/extract_catalogs.py
-python3 tools/build_grayboxes.py
-python3 tools/import_etopo_sample.py --verify
-python3 tools/import_makehuman_sources.py --verify
 python3 tools/validate_project.py
 ```
 
-headless 演示会施工两格人工陆地、建一个港口、验证天然底图未变并执行存档往返。它没有窗口、真实地球数据、人物劳动分配、经济循环或写实水体。`KernelPlacePort` 只实现空间/导航子集；生产 `PlacePort` 的科技、产权、预算和许可尚待接入。
+该检查包含来源hash、目录/许可锁、已有灰盒、旧交互合同、新像素合同、三语标签及文档链接；不证明地形编辑、GPU画面或完整文明已运行。每次实施批次先完成全部修改和跨模块审查，再统一构建全部目标与完整CTest；仅设计修改不重复编译未变的游戏代码。
 
-`sonnheide_site_tests`仅回归历史ADR 0003坡地数学，ETOPO导入器仅核验保留的历史研究来源，二者不再是新世界的地表方案。新世界按ADR 0010保留真实海陆轮廓、统一陆面和狭窄水边过渡，内陆普通房屋无额外找平地基；原生空地表已实现，新建址仍在后续阶段。`sonnheide_ocean_fft_tests`验证上游FFT数学；`sonnheide_clothing_tests`核对独立服装实物循环，没有连接全世界道路货运、公共生存、科技传播或生产存档。原稿本身逐字保留。
-
-## 当前实现不能直接作为生产规模方案
-
-信息页前端行为验收可运行 `node tools/validate_interaction_preview.js`；没有PATH中的Node时可用`SONNHEIDE_NODE`指定已有运行时再执行`python3 tools/build.py`。主菜单图片/呈现回归另运行`node tools/validate_menu_preview.js`与`node tools/validate_world_inspector.js`。Node仅用于原型JavaScript验证，无npm包或生产引擎依赖。收藏、导航与地图marker属于PlayerView，不改变世界事务revision。40种有内容的示例页面不代表40个领域业务已实现；程序性编辑的生产法务命令仍须按各域实现。
-
-内核采用整状态复制事务、`std::map/set`、同步全图水域 flood-fill，以及有界文本 checkpoint，目标是提供正确性基准。生产版将使用写集事务、热列/冷记录、Chunk与门户图、增量快照及分块存档，详见架构文档。当前 `water_reachable` 在导航未就绪时保守返回false；生产查询须返回 `Pending`，不能据此自动取消真实合同。
-
-SDL3、bgfx/bx/bimg、RmlUi与FreeType已接入原生主页面；ozz未接入；MakeHuman正式路线已保留选定源件，游戏角色输出未完成。仓库没有为了增加文件数量创建空的渲染器或社会系统。用户最新要求完成阶段1，完整地理源、原生精细地表/预览和可靠空世界首存档已接入；具体真实验证与限制见[阶段1验收](docs/planning/PHASE1_ACCEPTANCE.md)。后续仍按[新路线](docs/planning/ROADMAP.md)施工；建筑及服装接入在此门槛以后，随后按真实贯穿切片完成其余设计。
+下一工程门槛是新版阶段0—1：锁定列地形/人物尺度与生命周期接口，完成Blank/Earth同路径三维像素初态和最小首档。阶段2接地形工具、八分区及完整存载；通过基础体验后阶段3立即制作正式原创楼体、块状人物和衣服。详见[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)。

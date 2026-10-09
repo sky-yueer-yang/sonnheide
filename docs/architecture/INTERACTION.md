@@ -1,10 +1,12 @@
 # 统一信息页与世界工具合同
 
+2026-10-08当前裁决：[ADR0012](../decisions/0012-editable-3d-pixel-world.md)/[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)覆盖本文旧地形/人物资产条款。有效高度/海陆可编辑、所有坡地检查必要基础、Port不再RECLAIMED-only、原创像素人体取代MakeHuman、底栏八分区。source provenance与历史只读；普通施工保通，明确Godterrain允许损坏并同事务处理人货/容纳/证书。未改的文明/衣物/法律/typed信息规则继续有效；下文旧oracle与浏览器字段按旧版本保留，不能当新生产实现。当前字段/命令补充见[机器合同](../../data/contracts/pixel_world.json)、[地形事务](PIXEL_TERRAIN_TRANSACTIONS.md)、[像素资产](PIXEL_RENDERING_AND_ASSETS.md)。
+
 本合同落实 [ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)。机器注册表为 [interaction_schema.json](../../data/interaction_schema.json)。注册不等于对应生产领域已实现；可运行展示原型、独立有界 oracle、完整 World 接入分别登记证据。
 
 最新布局、英汉德三语与富编辑变更见[ADR 0006](../decisions/0006-bottom-toolbar-trilingual-editing.md)、[前端结构](UI_ARCHITECTURE.md)与[编辑矩阵](EDITING.md)。40类注册保持；全局入口改为地图中心的底部分区工具栏，目录按需打开，对象窗口保留局部页签、关系与编辑。程序/阶段见[CLIENT_STRUCTURE](CLIENT_STRUCTURE.md)及[施工计划](../planning/IMPLEMENTATION_PLAN.md)。
 
-地表与建址事实按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：真实数据只提供冻结海陆/完整岸线，普通陆台统一高度，只有近岸存在下降过渡。建筑页显示实际固定楼板与支撑状态，普通内陆无独立找平地基，必要近岸支撑才有对应构件/成本；页面不可修改天然mask/岸线或冻结表面配方及参数。旧坡地site oracle不代表该建址或生产页面已经接入。
+地表与建址事实按ADR0012：来源证明只读，当前height/material/biome可由地形工具修改；楼板固定，基础按实际坡地需要，道路港口消费同revision。建筑页联到TerrainCellRef/WaterBodyRef并展示支撑/淹水/受困/损坏、住户/货物和通行证书；危险编辑先显示后果再批准。旧site oracle与页面fixture不代表生产接入。
 
 ## 1. UI 与核心之间只有一份事实
 
@@ -54,7 +56,7 @@ MapPick / Search / RelationLink / Favorite / HistoryLink
 |---|---|---|---|---|
 |person / 人物|家庭、国籍、住所、位置、雇主、Army、文化、语言、信仰、衣物、文献|显示名、六性格轴、允许文化强度、任务/消费偏好|合法改信、迁移/入籍、任命、征募/退伍、换穿、神力抓取/死亡|出生来源、初始年龄、当前年龄、亲属事实、先知根、实际余额/库存/技能与作者记录|
 |household / 家庭|成员、住房、所在地、账户、衣物、迁移合同|显示名、消费优先级/预算草案|真实采购/修补、搬家、资产继承|成员亲属事实、实际货币/物品、产权、过去消费|
-|settlement / 聚落|居民、State、核心、工程、Genesis、公共任务|显示名、允许公共任务优先级|建核心、批准公共工程、正式化|创立来源、天然地形、实际人口/公共库存、正式化事实|
+|settlement / 聚落|居民、State、核心、工程、Genesis、公共任务|显示名、允许公共任务优先级|建核心、批准公共工程、正式化|创立来源、原始provenance、实际人口/公共库存、正式化事实|
 |city / 城市|State、文化/行政语言、CitySquare、居民、设施、道路、港口|显示名、公共预算草案、允许优先级|批准/取消工程、公共采购、合法官方文化/行政语言程序|唯一广场、实际仓储、主权/占领、已发生税/工程|
 |state / 国家|首都/城市、居民、统治者、Culture/Language、宗教、Army、法律/条约|显示名、合法国旗/主题色、预算草案|改法、任命、迁籍/领土/和约、官方文化/宗教、宣战|创立/爵位资格、实际主权、控制与条约事实、真实国库|
 |empire / 帝国|成员国、宗教、宪章、神授、军额/条约|显示名、合法旗、允许预算优先级|按宪章入/退成员、分摊合同、继任|神授来源、原同意记录、保留权、各城独立仓库|
@@ -76,9 +78,9 @@ MapPick / Search / RelationLink / Favorite / HistoryLink
 |innovation / 发明|作者、family/slot、研究、文献、权属/采用|个人展示别名、观察备注|真实授权/公开/保存/采用|作者快照、发明来源/结果、安装收益与历史|
 |document / 文献副本|作者/语言版本、知识、owner/custodian/location、许可|个人展示标题别名、备注|真实抄写/翻译/转移/许可|内容知识版本、作者史、已取得访问与能力|
 |plant / 植物/林木|种类、位置、年龄/储量、地块/照料任务、货主|显示名、个人备注、允许照料优先级|真实种植/砍伐/收获、神力清除|年龄/实际剩余量、位置、已产出批次|
-|mineral_deposit / 矿源|格/矿种、rate、现存量、矿场/开采、编辑史|显示名、允许rate profile、开采优先级|清除矿源/可选仅清当前矿量|冻结天然地形、已采出批次/仓储、原始来源|
-|road / 道路/桥|分段、权属、关联入口、保护证书、运输线路|显示名、允许维护优先级|建设/维护/改道、受保护神力清除|已发生运输、旧入口保护、天然水陆/岸线及冻结表面profile|
-|world / 世界|地图来源、时间、人口/经济/社会统计、规则、历史|显示名、四全球开关、显示偏好|玩家放置、世界工具、保存/新分支|冻结mask/完整岸线/水平scale/统一陆面与近岸配方、人口来源、账本历史/定义版本|
+|mineral_deposit / 矿源|格/矿种、rate、现存量、矿场/开采、编辑史|显示名、允许rate profile、开采优先级|清除矿源/可选仅清当前矿量|原始来源、已采出批次/仓储；矿工具不能顺带改地形|
+|road / 道路/桥|分段、权属、关联入口、保护证书、运输线路|显示名、允许维护优先级|建设/维护/改道、受保护神力清除|已发生运输、普通施工的旧入口保护、冻结profile；God损坏按独立事务留档|
+|world / 世界|地图来源、时间、人口/经济/社会统计、规则、历史|显示名、六全球开关、显示偏好|玩家放置、世界工具、保存/新分支|初始来源/水平scale/量化profile、人口来源、账本历史/定义版本；有效地表可编辑|
 |map_marker / 地图标记|地图坐标、锚定对象、创建者、关注列表|标题、颜色、纯文本备注、合法地图坐标|创建/移动/删除个人标记|被锚定对象身份/事实；标记不占地/有产能|
 |account / 账户|持有人、受限用途、分录、合同/债权|个人备注、展示标签|真实转账/预算/托管/债务偿付|余额、过去分录、受限资金、账户主体|
 |reservation / 预约|受益任务、StockBatch/Account/容量、期限/状态|个人备注、允许任务优先级|延期/释放未发生部分/实际消费|已消费量、来源、双计禁止、真实可用容量|
@@ -125,7 +127,7 @@ WorldRules 改动形成统计分段，图上显示变更位置；跨开关区间
 
 ## 7. 世界规则与显式人口合同
 
-规则键及默认值固定为 `reproduction=true, aging=true, hunger_consequences=true, ai_new_wars=true`。提交 `SetWorldRule` 保存 key/old/new/revision/effectiveTick/source/commandId；读页不改变状态。排队事务检查提交时的 rule revision，同 tick 的规则与 Birth/战争按稳定 writer 顺序；预览时允许不代表提交可绕过已关闭规则。
+规则键及默认值为 `reproduction=true, aging=true, hunger_consequences=true, ai_new_wars=true, god_terrain_enabled=true, natural_vegetation_regrowth=true`。旧oracle只实现前四项，新两项按像素合同待接入。提交 `SetWorldRule` 保存 key/old/new/revision/effectiveTick/source/commandId；读页不改变状态。排队事务检查提交时的 rule revision，同 tick 的规则与 Birth/战争按稳定 writer 顺序；预览时允许不代表提交可绕过已关闭规则。
 
 |规则|关闭后|重新开启|永不改变|
 |---|---|---|---|
@@ -133,6 +135,8 @@ WorldRules 改动形成统计分段，图上显示变更位置；跨开关区间
 |aging|冻结 simulationAge/成熟/自然老化，保留 bornTick、creationTick 和日历经过时间|从已保存 simulationAge 继续增龄，不补算冻结期间年龄|身体规格、生命来源、历史死亡、战争/神力死亡|
 |hunger_consequences|冻结营养欠账增长及饥饿制裁/死亡；食物需求与真实购买/消费仍运行|按冻结的营养状态恢复，显示残留欠账，不能悄悄抹零或重算关停时间|不赠食品、不虚构消费/成交、食物基本预算仍受保护|
 |ai_new_wars|拒绝新的 AI 战争发起；已有战争/占领/军令继续|未来符合合法条件的 AI 请求重新调度|玩家合法战争动作不自动禁止；不清仇怨、历史或真实军队|
+|god_terrain_enabled|拒绝新的Godterrain提交；草案提交二验|后续新合法编辑可提交|不回滚已改地/损失；不关普通真实工程|
+|natural_vegetation_regrowth|暂停自然再生调度；不删已有树/现货|从保存的生长余量继续，不补算关停期间|不凭开关赠成熟资源或仓储商品|
 
 `PlacePeople` 必须由可信 dispatcher 的 player source 发起；每人 `creation_source=player_placement, initial_age_years=18`，数量/位置预览，合法有效陆地、站位净空、有界数量、稳定 deterministic ID 与希腊识别码。不得自动附赠经济衣物/资金/国籍/文化/语言/雇主；基础遮蔽只是 ADR 0004 fallback。允许选择已存在人的搬运而不是复制；Placement 本身明确登记神意人口来源，不冒充繁衍。
 
@@ -151,9 +155,9 @@ WorldRules 改动形成统计分段，图上显示变更位置；跨开关区间
 |类别|实际操作|不得做|
 |---|---|---|
 |树木/植物|清除所选 Plant，记录实际剩余资源损失，取消未来照料/收获任务|免费生成木材/纤维，改地形，删除已产出批次|
-|地图矿物资源|默认清除矿源：整合至提交 tick 后 rate=0并核销stock；可选仅清当前矿量：核销stock且保留rate|改冻结天然mask/岸线/统一陆面与近岸规则/地下路，删除已开采仓储货，发矿石到玩家|
+|地图矿物资源|默认清除矿源：整合至提交 tick 后 rate=0并核销stock；可选仅清当前矿量：核销stock且保留rate|借矿清理修改当前地形/来源证明，删除已开采仓储货，发矿石到玩家|
 |建筑/港口|疏散实际容纳者，搬移货物到真实有容量位置或经明确方案核销，处理占用/合同/租赁/损失，保留法人及历史|凭空安置/免费房屋、吞客户货、把拆港口当删除所有船/法人|
-|道路/桥|为仍存在的建筑批准并启用替代合法路径，重路由现有交通/运输后移除所选段|断掉旧入口/车库/接货证书，拆邻楼来满足删除，改变人工造陆/天然底图|
+|道路/桥|为仍存在的建筑批准并启用替代合法路径，重路由现有交通/运输后移除所选段|断掉旧入口/车库/接货证书，拆邻楼来满足删除，借道路清理改变地表来源/高度|
 |人物|`DivineDeath` 唯一终结 Person，原子退出活动/容纳/职位/军队、遗产/物品保管交接、事件与档案|复活/克隆、清掉历史或债权、删除所有作品、生成补员|
 
 生命清除不要求普通伤害值逐帧扣至零，也不受 hunger/aging 免除；玩家明确选择产生直接死亡。家庭无人、国家无人、唯一熟练者死亡等导致正常后续制度/知识变化，必须有可见原因，不隐藏自动生人救援。
@@ -183,6 +187,6 @@ WorldRules 改动形成统计分段，图上显示变更位置；跨开关区间
 |人口|新世界0人；Placement严格18、Birth严格0且有真实亲属；无其他创建入口；加载不新增人|
 |规则|关闭生育拒绝排队Birth；aging不补算；hunger保需求无免费货；AI禁新war不结束旧war；存取续跑一致|
 |全龄规格|0/18/老年共用body/rig/fit/collision；年龄变动不生成新尺码物品，儿童成人资格仍被拒绝|
-|清理|死人只有一次结算；建/路清理保人货/合同/入口；矿清理不改冻结mask/岸线/表面profile或仓货；不自动删法人或文化|
+|清理|死人只有一次结算；建/路清理保人货/合同/入口；矿清理不改有效地表/来源/profile或仓货；不自动删法人或文化|
 
 交付按 `specified / prototype / oracle-covered / world-integrated / measured` 标明。原型只证明信息组织和交互可用；有限 oracle 只证明覆盖的状态与事务；核心范围、资产渲染、全球数据、生产 UI 接入与大人口性能分别验收。不得用 40 页面截图证明 40 仿真领域完整运行。

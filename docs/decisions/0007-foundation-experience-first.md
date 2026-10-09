@@ -1,5 +1,7 @@
 # ADR 0007 · 先完成启动、创建世界、初始地表与基础界面
 
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+
 日期：2026-10-06。状态：采纳用户最新施工顺序。覆盖[ADR 0006](0006-bottom-toolbar-trilingual-editing.md)第7条的资产启动顺序；其底部工具栏、英汉德、集中编辑及原有世界不变量继续有效。原始设计源不改写。
 
 2026-10-07地表修订：[ADR 0010](0010-flat-land-and-coastal-transition.md)取消真实高程。下述初始地表指真实海陆/岸线、统一陆台和局部水边过渡；基础体验的先后门槛不变。

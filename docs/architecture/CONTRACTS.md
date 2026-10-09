@@ -1,6 +1,6 @@
 # 命令、查询、事件与跨领域合同
 
-这是生产接口规范。当前C++内核只实现5种演示负载；[原稿第27章](../design/Sonnheide_Complete_Design_v0.6.md#27--最小命令协议与跨系统事务)列出的23个核心命令不是已经完成的API。
+2026-10-08：[ADR0012](../decisions/0012-editable-3d-pixel-world.md)及[像素地形事务](PIXEL_TERRAIN_TRANSACTIONS.md)覆盖旧平陆/冻结地形/RECLAIMED-only限制；新增命令见[机器合同](../../data/contracts/pixel_world.json)。这是生产接口规范。当前C++内核只实现5种演示负载；[原稿第27章](../design/Sonnheide_Complete_Design_v0.6.md#27--最小命令协议与跨系统事务)列出的23个核心命令不是已经完成的API。
 
 ## 1. 可信入口与预览
 
@@ -8,7 +8,7 @@ UI/输入工具提交`CommandEnvelope{protocolVersion, commandId, commandKind, t
 
 预览返回成本分项、材料来源/预约候选、执行者、目标范围、规则依赖、主要阻碍与替代。预览不预约、不扣款、不创建实体。PreviewToken绑定定义hash、目标/相关产权/法律/空间/市场容量版本、payload hash和授权主体；提交时读取最新权威状态二验。不能只检查建筑version而漏掉海侧造陆、国家法律或已批准市场项目。
 
-所有建筑必须预览完整[SitePlan](TERRAIN_AND_SITES.md)，按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)区分统一陆台与近岸过渡：普通内陆楼板直接接统一陆面，`Foundation = None`，无独立找平材料或工期；近岸存在实际支撑高差时才包含长方体地基及必要连接。方案同时核验完整陆地占地、人行与车库每个必需入口的接入证书、当前地面前侧接货和退出路线、罩范围及永久/阶段占用。token绑定冻结天然mask/完整岸线、表面配方及参数、人工陆地与已启用工程表面、运动profile、portal、保护域和通行权版本；批准一次预约所有关联claims，不准只先占主楼再期望未来修出通道。完工启用全部永久表面/入口并按claim角色释放临时占用；同一矩形的临时配送claim消失不能删掉永久接入claim。旧`SiteRegistry`仅保留ADR 0003坡地测试参考并已从当前kernel链接图隔离，不是新的平地/近岸建址实现，也不是完整生产命令或去重协议。
+所有建筑必须预览完整[SitePlan](TERRAIN_AND_SITES.md)：当前真实高度/水深/支承、固定floor、必要原创矩形地基、人行与必要车道、现状前侧接货、施工/永久claims、材料与路权。普通施工保旧接入，Godterrain可以经预览破坏其支承/通道，须同事务标损坏与撤销证书并保持物权/责任。token绑定terrain/water/occupant/container/库存/法律/路径相关版本，不能只校验刷子内几个格。旧site oracle与现有kernel执行旧规则，不是新版实现。
 
 结果为Accepted / Rejected / RequiresRepreview，含稳定reasonKey、参数、事件ID、改变实体修订、createdIDs与可选retryHint。界面先显示一个主因，可展开全部。预览缓存过期是重预览，不等于永久禁止。多选先知等原子批量操作必须完整校验再统一提交。
 
@@ -44,8 +44,9 @@ UI/输入工具提交`CommandEnvelope{protocolVersion, commandId, commandKind, t
 |事务|同屏障核心写集|失败/部分完成的恢复|
 |Primary Genesis|RootLanguage→正式姓名→Culture→成员→State文化化→正式City/旗|任何中间失败无半语言/文化；节点不会二次触发；姓名历史保留|
 |Secondary Culture|新Culture/父源/成员/历史|绝不包含CreateLanguage；独立语言分化另走命令|
-|逐格造陆（含港区人工陆地）|材料/劳动预约、任务、地表来源、固定人工表面及必要连接、空间禁占、路径版本|未完工保持水；取消只退未发生投入；完成不可挖回；不得重算旧天然岸坡；港口本体另走建筑工程且核心仅RECLAIMED|
-|平地/近岸建址批准及合法改路|固定楼板、可选近岸支撑、全入口证书、现状前侧配送、施工/永久占用、用地/通行权、材料与事件|普通内陆无独立地基工程；天然mask/岸线与派生表面规则只读；WATER不能靠地基变LAND；侵旧通道拒绝；改路先预约合格替代后同屏障切换，失败保旧路|
+|文明造陆/平整|真实材料/劳动、任务、完成表面/来源、占用/路径版本|未完保持旧表面；取消只退未发生投入；神力后续可破坏但不退已耗材料；Port按干支承/实际水深|
+|Godterrain stroke|高度/材质/生态明确写集、水域依赖、占用/容纳/物损、证书撤销、事件/回执|保护模式检查远通道；破坏经实际预览批准；不赠货/矿/人、不自动疏散/补偿、不无条件undo|
+|三维建址批准/普通改路|固定楼板、必要矩形支承、步行/车辆/接货、claims、路权与材料|平地无额外基础，坡地有实际承托；无替代侵旧通道拒绝；Godterrain为另一个损坏权限，非普通改路|
 |建筑本体开始/完成|实际SiteStorage批次、配方投入、自动工期/到期任务、Building容量/入口、事件/回执|无砌筑工人；到货未齐不启动；取消已投入不全退；完成不等待撤网，动画不结算|
 |生产线|市场容量/资金/材料/工厂槽/任务|tooling一次性；取消释放未投入；已消耗不全退；换家族另建线|
 |教会分裂|新同根教派/章程、冻结争议资产、限制性捐赠、债务/员工、合法转移|成员改派不等于财产自动迁移；旧charterHash不改|
@@ -73,4 +74,4 @@ ID永不复用；数值先验证非负、有界、有限，整数加减检查溢
 
 [INTERACTION](INTERACTION.md)与[data/interaction_schema.json](../../data/interaction_schema.json)是原稿23条命令之外的明确追加合同，不改写源提取目录。全域信息页返回typed稳定引用与只读快照；自由名称/性格编辑和程序性身份/法律/资产操作分开，无通用JSON对象写入口。当前新增C++interaction库是独立有限oracle，不属于kernel的五种payload。
 
-PlayerPlacePerson只接受可信Player且初龄固定18；ReproductionBirth只接受可信Scheduler，创建0岁Person；所有其他领域只能消费已有Person引用。ClearTargets按分类及预览revision提交，不能借生命清理扩大到财产、借建筑清理删住户或借道路清理废旧入口。World Rules命令只影响后续受控过程，禁止免费货物/人口和天然地形重写。收藏、镜头与页面导航是PlayerView行为，不占世界事务。
+PlayerPlacePerson只接受可信Player且初龄固定18；ReproductionBirth只接受可信Scheduler，创建0岁Person；所有其他领域只能消费已有Person引用。ClearTargets按分类及预览revision提交，不能借生命清理扩大到财产、借建筑清理删住户或借道路清理废旧入口。World Rules命令只影响后续受控过程，禁止免费货物/人口；Godterrain为独立可信领域命令，允许修改有效地形但不改来源/历史。收藏、镜头与页面导航是PlayerView行为，不占世界事务。

@@ -1,5 +1,7 @@
 # MakeHuman人体与服装生态：选型、原始来源和接入边界
 
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](../decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+
 核验日期：2026-10-06。用户已经指定采用MakeHuman人体与生态；本记录落实这一选择。
 经济与时代规则见[服装系统](../architecture/CLOTHING_ECONOMY.md)，本记录负责来源、许可和
 人物内容管线，不覆盖原始游戏设计源文档。
