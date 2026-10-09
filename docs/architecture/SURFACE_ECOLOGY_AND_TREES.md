@@ -12,12 +12,12 @@
 |---|---|---|---|
 |snowfield / 雪原|原创雪原地皮/覆盖|用户未指定，制作配置可稀疏或为空|松树 `pine`|
 |flower_meadow / 花甸|原创花甸地皮|多样花草，含用户要求的热带花|多种果树；首样本池为苹果、梨、桃、橙、芒果、石榴|
-|maple_field / 枫原|原创枫原地皮|用户未指定，制作配置另定|枫树 `maple`|
-|cherry_field / 樱野|原创樱野地皮|用户未指定，制作配置另定|樱花树 `cherry_blossom`，零星落瓣|
+|maple_field / 枫原|原创枫原地皮|红色落叶与有界低草|枫树 `maple`，叶片及落叶全为红色系，仅分深浅红|
+|cherry_field / 樱野|原创樱野地皮|仅深绿草|樱花树 `cherry_blossom`，零星落瓣|
 |wetland / 湿地|原创湿地地皮|芦苇|菩提树 `bodhi`|
 |savanna / 荒原|原创荒原地皮|枯草|胡杨 `huyang_poplar`|
 |sonnheide_sacred / Sonnheide 圣原|原创圣原地皮|制作配置另定，不产生资源|原创圣树 `sacred_tree`，树体发光|
-|volcanic / 炎地|原创火山表面、裂缝|首样本为空|用户未指定树种，首样本树池为空；少量有界装饰熔岩|
+|volcanic / 炎地|原创火山表面、裂缝|为空|枯树配置 `dead_tree`；可砍实际余木，不生长/结果；静态少量熔岩|
 |sand / 沙生境|沙材质优先|**没有装饰小植物**|椰子树 `coconut_palm`；周期长熟椰子，可采食|
 
 八个主题对应八个 biome ID；sand 是 substrate habitat 单列，共九个 surface profile，不强行作为第九主题。中性裸泥地 `biome=None` 作为编辑态保留，不增加新主题。水果池的六种选择属于当前首样本，不增加六套经济行业或六套科技树。
@@ -36,7 +36,8 @@ else if biomeId != None:
 else:
     effectiveSurfaceProfile = neutral_soil_or_rock
 
-treeEligibility = profile species pool
+treeEligibility = profile species/configuration pool
+                ∩ 当前创建来源的活树/枯树资格
                 ∩ 实际干湿/水深/支承允许条件
                 ∩ 地权/土地用途/净空/密度/既有通道条件
 ```
@@ -65,7 +66,7 @@ treeEligibility = profile species pool
 
 下列类型是目标合同，不是已存在的 C++ API。具体字段由生产 schema 对齐现有 Plant kind，避免再创建一套平行 Tree 身份系统。
 
-`TreeRef` 映射 `PlantRef(kind=plant, subtype=tree)`；不新增 entity kind、目录计数或独立 ID 分配器。树种 ID 固定为 `pine / apple_tree / pear_tree / peach_tree / orange_tree / mango_tree / pomegranate_tree / maple / cherry_blossom / bodhi / huyang_poplar / sacred_tree / coconut_palm`；食物变体 `coconut` 与树种 `coconut_palm` 分开。
+`TreeRef` 映射 `PlantRef(kind=plant, subtype=tree)`；不新增 entity kind、目录计数或独立 ID 分配器。树种 ID 固定为 `pine / apple_tree / pear_tree / peach_tree / orange_tree / mango_tree / pomegranate_tree / maple / cherry_blossom / bodhi / huyang_poplar / sacred_tree / coconut_palm / dead_tree`；食物变体 `coconut` 与树种 `coconut_palm` 分开。
 
 ```text
 SurfaceEcologyDefinition
@@ -91,7 +92,7 @@ TreeComponent
   plantId, speciesId, plantedOrInitialTick, effectiveAgeTicks
   creationSource, creationEventId, legalOwner, resourceRights
   location, supportBinding, landUseBinding
-  lifeState, habitatState, damageState, revision
+  lifeState, workState, habitatState, damageState, revision
   standingWood, woodGrowthRemainder, lastAdvancedTick
   growthStage, growthCredit, nextGrowthEventTick
   fruitCycleAnchor, cycleIndex, cycleBudgetUsed, fruitLots[]
@@ -125,7 +126,7 @@ TreeComponent
 
 原位木量、附着果实与 Food/Wood 商品账不能相加为两份可用库存。采伐/采摘将原位量扣下，再按固定可回收/可食换算生成真实货物；残留、不可食部分和损失有明确分录，不自动产生新副产品行业。
 
-God 植树默认登记有限幼株，初始可采木/成熟果为零；成长后才形成原位资源。首版初始地图无需生成成年树林；如以后允许初始化不同年龄的自然树，必须另在新 World 最高预览中明确 INITIAL 来源与有界初始储量/果批次，不是在游戏内重涂后反复调用世界初始化器。
+God放置活树默认登记有限幼株，初始可采木/成熟果为零；成长后才形成原位资源。dead_tree例外从DEAD起始、木果0且不成长，具体见第15节。首版初始地图无需生成成年树林；如以后允许初始化不同年龄的自然树，必须另在新 World 最高预览中明确 INITIAL 来源与有界初始储量/果批次，不是在游戏内重涂后反复调用世界初始化器。
 
 ## 5. 果实周期：逐渐出现、长大、变色、成熟
 
@@ -220,13 +221,13 @@ receipt/event/progress 一并发布
 
 ## 7. 所有功能树可砍，采果与砍树不能互相复制
 
-松、六类花甸果树、枫、樱花、菩提、胡杨、圣树和椰树都可砍。圣树无宗教豁免或无穷木量；砍掉圣树得到普通定义的木材，不自动获得发光燃料、魔法物品或免费照明设施。
+松、六类花甸果树、枫、樱花、菩提、胡杨、圣树和椰树都可砍；炎地枯树和已死树体若仍存在可用支承/可达作业空间，也可回收其实际余木，无需恢复生命状态。圣树无宗教豁免或无穷木量；砍掉圣树得到普通定义的木材，不自动获得发光燃料、魔法物品或免费照明设施。
 
 TreeUse 规则第一版保持清楚：采摘可锁定有限 lot/作业容量；开始砍伐需要独占整棵树的使用许可。存在未完成采摘预约时，砍伐计划等待完成或经明确取消/退出后重验，不能一边锁果子一边领取整树木材。普通伐木不默认取消别人的客户果合同。
 
 采摘与伐木复用 `HarvestPlant` 的 typed `mode=fruit / fell`，同树共享版本与 TreeUse 许可。多个采果任务可以预约互不重叠的真实 lot 数量，但 `fell` 与全部 `fruit` 使用互斥；毁树后果明确取消未发生工作，释放预约而不复制已采货物。
 
-树进入 FELLING 后暂停新的果形成/采摘和正常成长；现有果鲜度继续推进，不能靠长期半砍冻结成熟果。取消伐木保留已发生劳动/损伤；恢复后沿旧 cycle/history 前进，不补冻结期间果期。
+活树的workState进入FELLING作业后暂停新的果形成/采摘和正常成长；枯树只改变作业状态，lifeState保持DEAD且没有成长/果期。现有果鲜度继续推进，不能靠长期半砍冻结成熟果。取消伐木保留已发生劳动/损伤；恢复后沿旧 cycle/history 前进，不补冻结期间果期。
 
 砍伐需真实人、合法权利、可达站位、劳动/工具 profile 与安全作业范围。完成时更新到 tick 并原子扣实际 inPlaceWood，按已批准回收率生成 WoodBatch 到有容量的现场/搬运位置，关闭树的生长/果周期、处理仍附着果实、转 STUMP/退休状态、更新碰撞/占用和历史。
 
@@ -260,15 +261,15 @@ stump 保留原树退役引用/来源，实际可回收木量不得再补。新�
 
 |来源|准入|起始状态|经济边界|
 |---|---|---|---|
-|divine 神力植树|可信玩家能力和当前 God rule、有限数量/范围、实际生境/站位/claims、明确预览|幼株，无可采初始木量/果量|树创建记录 divine 子来源，不伪装公共生产或已支付植树|
-|civic 文明植树|真实公共/家户/林业 actor、苗种/传播来源、权利、劳动、真实路径与有限培育能力|真实幼株，记录实际投入|高级苗圃改善产率/规模，不阻断初期基础植树|
-|wild 自然萌发|可信有界恢复调度器、当前恢复开关/rule revision、物理适宜性、空生长槽、密度/每日额度/冷却|幼株，无可采量|是明确自然成长来源，不生成商品、不占用人类劳动|
+|divine 神力植树|可信玩家能力和当前 God rule、有限数量/范围、实际生境/站位/claims、明确预览|活树为幼株；dead_tree为DEAD；均无初始可采木果|树创建记录 divine 子来源，不伪装公共生产或已支付植树|
+|civic 文明植树|真实公共/家户/林业 actor、苗种/传播来源、权利、劳动、真实路径与有限培育能力|仅活树幼株，不含dead_tree；记录实际投入|高级苗圃改善产率/规模，不阻断初期基础植树|
+|wild 自然萌发|可信有界恢复调度器、当前恢复开关/rule revision、物理适宜性、空生长槽、密度/每日额度/冷却|仅活树幼株，不含dead_tree；无可采量|是明确自然成长来源，不生成商品、不占用人类劳动|
 
 这三种是 `PlantVegetation`/可信恢复器的运行时 authority mode；树创建子来源不替换地形合同的 `INITIAL / DIVINE_EDIT / CIVIC_EARTHWORK` mutation provenance。INITIAL 仅属于新 World 一次性初始状态，首版不强加成年树目标；如另设初始化植被，保存实际状态/seed/来源且禁止游戏内重用初始化器。
 
 文明繁殖来源可先用受限现存种植材料或已登记培育/繁殖能力与实际 labor 输入，不借画笔隐式补苗。若没有现有种苗商品定义，不为此擅造完整种子市场；生产采用的具体传播来源/预算须在 recipe 中明确，不能一面声称全部实物，一面凭空写一千个幼树。
 
-默认/自然树种由有效生境池确定，新生境没有树池就不生成树；炎地默认无树。玩家明确选择非默认种类时仍需相应种植能力/授权、物理适用与完整风险预览，不能给普通施工隐藏的无限强制通过权限。
+默认/自然树种由有效生境池确定，新生境没有树池就不生成树；炎地树体配置为dead_tree，但其不进入自然萌发或文明苗种池。玩家明确选择非默认种类时仍需相应种植能力/授权、物理适用与完整风险预览，不能给普通施工隐藏的无限强制通过权限。
 
 ### 9.2 成熟包络必须在幼树时就检查
 
@@ -336,7 +337,7 @@ GPU mesh、风动、装饰实例、花瓣、树光/熔岩 RT、果实可见代�
 
 |贯穿场景|必须验证|
 |---|---|
-|九 profile/三层|八 biome 加 sand substrate；各树/装饰精确按用户配对，volcanic 空树池，sand 没有小植物|
+|九 profile/三层|八 biome 加 sand substrate；各树/装饰精确按用户配对，volcanic 仅枯树且无小植物，sand 没有小植物|
 |同花甸重复刷百次|已有 TreeId/种类/年龄/木量/fruit anchor/lot 不重置，无额外成熟树/果；装饰可重建|
 |花甸三层近中远|多样花/热带花只装饰，六类真实果树可区分；隐藏不暂停成长|
 |果子逐渐形成/成熟|绝对数量/lot 年龄与模型长大/渐变色一致；未熟不可采，图片不结算食物|
@@ -369,3 +370,13 @@ GPU mesh、风动、装饰实例、花瓣、树光/熔岩 RT、果实可见代�
 已有 `CommitBiomeStroke / PlantVegetation / ClearTargets` 接入同一预览与单写者。树检查器使用 `TreeRef = PlantRef(kind=plant, subtype=tree)`，没有新实体 kind/平行目录计数。采摘/伐木复用 `HarvestPlant(mode=fruit / fell)` 与供货/搬货/劳动合同执行器，不由渲染直接发货；typed payload、稳定 commandId、实际 TreeRef/lot 预约、版本二验、幂等/失败恢复和同 tick 排序必须落地。清除装饰使用 mask，不混成 `fell`。当前不存在这些树经济实现，不在 UI 假装 Accepted。
 
 先做一棵真实果树从幼株→逐步果批→成熟→实际采收/到达/食用→有限替换/存载的贯穿 oracle，再接九 surface/三层样本和多种类表现；同时用独占伐木与淹水反例证明守恒。只做漂亮草地或树上果子变色不足以宣称新地表完成。
+
+## 15. 炎地枯树的终止状态与资源回收（2026-10-09）
+
+dead_tree是枯树放置archetype，不代表可遗传的生物树种。初态lifeState=DEAD，growth/fruit永久关闭，零果量；与“新活树为young”规则分开。生物死亡和作业状态分别检查：已死但尚未清除、可达且有真实余木的树仍可HarvestPlant(fell)，无需复活到ALIVE/FELLING生命状态。劳动/作业可处于FELLING，lifeState仍为DEAD；完成后扣实际余木，生成有容量位置的正量WoodBatch并退役，0木量仅清场不生成空货批。
+
+神力放置枯树由可信player/current god_rule审批，初始木果量0，不因枯枝模型大就发成年木量。INITIAL仅在新World一次性初始化可有明确有界枯木量，必须入最高预览/首档与资源来源记录。自然萌发只生成活幼株，排除dead_tree；文明种植不可将枯树当苗种，也不新增枯木种子/苗圃市场。普通树真实死亡保留原speciesId/TreeId/来源、已发生损耗和剩余木量，不变种成dead_tree来重置库存。
+
+主题涂抹到炎地不自动杀死原树，不自动生成带木量枯树；枯树摆放走显式树体配置预览。所有支承/占用/成熟或固定枝体包络/伐木站位/旧接入仍核验，模板不复制实体和余木。存载、LOD、改回适宜土层和恢复开关不重新激活已死树，也不增长枯木。枯树几何可保留，不进入圣光/樱瓣/结果效果；若既有圣树死亡，其原种类保留，发光按死亡门控关闭。
+
+验收应覆盖神力0木枯树砍后不产货、INITIAL余木→部分/完整回收→重载守恒、原树死亡不换种/补量、重复刷炎地不杀旧树/添木、野生恢复不萌发枯树、零生长/零果及旧车库通道保持。该配置仍属设计，尚无生产枯树资产或执行器。

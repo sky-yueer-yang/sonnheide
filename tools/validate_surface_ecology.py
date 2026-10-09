@@ -14,7 +14,7 @@ POOLS = {
     'wetland': {'bodhi'},
     'savanna': {'huyang_poplar'},
     'sonnheide_sacred': {'sacred_tree'},
-    'volcanic': set(),
+    'volcanic': {'dead_tree'},
     'sand': {'coconut_palm'},
 }
 THEMES = set(POOLS) - {'sand'}
@@ -61,6 +61,7 @@ def validate_contract(root, c):
         flags(profile, (), ('paint_resets_existing_trees_or_fruit', 'changes_height_or_water', 'grants_inventory'))
     require(profiles['sand']['decorative_small_plants'] == profiles['volcanic']['decorative_small_plants'] == [], 'sand/volcanic decorate automatically')
     require('clustered_tropical_flowers' in profiles['flower_meadow']['decorative_small_plants'] and profiles['wetland']['decorative_small_plants'] == ['decorative_reeds'] and profiles['savanna']['decorative_small_plants'] == ['decorative_dry_grass'], 'flowers/reeds/dry grass missing')
+    require(profiles['cherry_field']['decorative_small_plants'] == ['deep_green_grass'], 'cherry ground must have deep green grass only')
     species = indexed(c['tree_species'], 'tree species')
     require(set(species) == set().union(*POOLS.values()), 'tree species/pool mismatch')
     fruit = indexed(c['fruit_types'], 'fruit')
@@ -69,6 +70,10 @@ def validate_contract(root, c):
         require(tree['status'] == 'planned_original_asset_and_gameplay' and tree['same_tree_identity_across_lod'] and tree['harvestable_timber'], 'false tree implementation or disposable tree identity')
         expected = key[:-5] if key.endswith('_tree') and key[:-5] in MEADOW_FRUIT else ('coconut' if key == 'coconut_palm' else None)
         require(tree['fruit_type'] == expected and tree['fruiting'] is (expected is not None) and (expected is None or expected in fruit), 'fruit species relationship drift')
+    require(species['maple']['leaf_palette_policy'] == 'red_only_including_all_growth_stages_lod_and_litter' and species['maple']['leaf_palette'] == ['deep_crimson', 'red', 'bright_red'], 'maple foliage must remain red across stages/LOD/litter')
+    dead = species['dead_tree']
+    require(dead['kind'] == 'deadwood_placement_archetype_not_biological_species' and dead['initial_life_state'] == 'dead', 'deadwood confused with living species')
+    flags(dead, (), ('growth_enabled', 'natural_recruitment_allowed', 'civic_seed_planting_allowed'))
     for f in fruit.values():
         require(f['food_family'] == 'existing_food' and f['edible_when'] == 'mature_and_actual_harvested_quantity' and not f['per_fruit_entity_required'], 'food/fruit stock authority drift')
         require(len(f['palette_ends']) >= 2 and len(set(f['palette_ends'])) == len(f['palette_ends']), 'fruit maturity has no color change')
@@ -78,12 +83,14 @@ def validate_contract(root, c):
     flags(c['agriculture'], ('separate_from_small_surface_plants', 'production_and_fiber_rules_retained', 'farm_batches_not_decoration'))
     edit = c['editing']
     require(edit['writer'] == 'single' and edit['default_new_tree_stage'] == 'young', 'writer/young tree policy drift')
+    require(edit['default_new_tree_stage_applies_to'] == 'living_species_only' and edit['new_tree_stage_overrides'] == {'dead_tree': 'dead'}, 'deadwood activated as young live tree')
     require(edit['new_tree_initial_harvestable_quantity'] == {'timber': 0, 'fruit': 0} and set(edit['planting_authority_modes']) == {'divine', 'civic', 'wild'}, 'planting grants mature goods or collapses authority')
     flags(edit, (), ('theme_paint_grants_mature_tree_or_fruit', 'template_copies_trees_or_fruit'))
     require({'root_support', 'current_habitat', 'mature_growth_envelope', 'land_use', 'protected_access', 'rights', 'capacity', 'expected_tree_revision'} <= set(edit['planting_revalidates']), 'planting may block existing access')
     require({'id', 'species', 'age', 'woody_biomass', 'fruit_cohorts', 'reservations', 'history'} <= set(edit['existing_tree_fields_preserved']), 'repaint destroys tree authority')
     regrowth = c['regrowth']
     require(regrowth['rule_key'] == 'natural_vegetation_regrowth' and regrowth['controls'] == 'new_wild_tree_candidates_and_spread_only', 'regrowth scope drift')
+    require(regrowth['excluded_archetypes'] == ['dead_tree'], 'natural recruitment creates deadwood')
     flags(regrowth, ('existing_tree_growth_and_fruiting_continue_when_off', 'agriculture_continues_when_off', 'decorative_plants_do_not_enter_rule_scheduler', 'bounded_candidate_queue', 'spawn_identity_and_source_recorded'), ('catch_up_wild_spawns_when_reenabled', 'wall_time_or_visibility_changes_growth'))
     growth = c['fruiting']
     require(growth['model'] == 'bounded_attached_cohorts_per_tree' and growth['stages'] == ['forming', 'growing', 'ripe'] and growth['new_fruit_quantity'] == 'incremental_periodic_with_saved_fractional_work', 'incremental fruit lifecycle missing')
@@ -93,7 +100,12 @@ def validate_contract(root, c):
     display = c['presentation']
     flags(display['cherry_petals'], ('decorative_only', 'pause_hide_or_reduce_motion_stops_animation', 'no_actual_fruit_or_wood'), ('persistent_particle_entities', 'world_rng_consumed', 'spawn_by_world_clock_to_change_gameplay', 'lod_culling_changes_tree_stock'))
     flags(display['sacred_glow'], ('emissive_tree_parts', 'bounded_local_tree_lighting', 'steady_soft_bloom_no_strobe', 'low_settings_keep_visible_emissive', 'life_felling_state_controls_emission', 'death_gate_precedes_lod_hysteresis_and_aggregation'), ('light_proxy_lod_changes_tree_state', 'grants_lamp_energy_religion_or_stat_buffs'))
-    flags(display['volcanic_lava'], ('default_tree_pool_empty', 'default_small_plant_pool_empty'), ('fluid_simulation', 'world_water_body', 'resource_output', 'damage_or_fire_by_shader', 'automatic_eruption_or_random_disaster'))
+    flags(display['volcanic_lava'], ('default_small_plant_pool_empty',), ('default_tree_pool_empty', 'fluid_simulation', 'world_water_body', 'resource_output', 'damage_or_fire_by_shader', 'automatic_eruption_or_random_disaster'))
+    require(display['volcanic_lava']['tree_pool'] == ['dead_tree'], 'volcanic tree presentation mismatch')
+    wood = c['deadwood']
+    require(wood['configuration'] == 'dead_tree' and wood['initial_life_state'] == 'dead' and wood['divine_initial_wood'] == wood['divine_initial_fruit'] == 0, 'divine deadwood grants resources')
+    require(wood['initial_world_stock'] == 'explicit_bounded_initial_ecology_in_highest_preview_and_first_save_only', 'initial deadwood source is unbounded or reusable during play')
+    flags(wood, ('existing_dead_tree_species_identity_and_remaining_wood_preserved', 'felling_requires_real_rights_path_labor_capacity_and_actual_remaining_wood', 'life_state_and_felling_work_state_separate'), ('growth_or_fruit_increase', 'death_can_be_undone_by_theme_or_load', 'natural_recruitment', 'civic_seed_planting', 'zero_wood_felling_generates_stock_batch', 'paint_volcanic_kills_existing_trees', 'repaint_or_load_refills_deadwood'))
     flags(c['persistence'], ('same_tick_save_reload_equals_continuous',), ('load_restocks_or_resurrects',))
     require({'fruit_cohorts_age_quantity_ripeness_and_reservations', 'growth_last_tick_and_fractional_remainders', 'decoration_seed_density_clear_mask'} <= set(c['persistence']['save']), 'saved fruit age/quantity or decoration mask lost')
     inspector = c['tree_inspector']
@@ -108,13 +120,13 @@ def validate_contract(root, c):
     legacy = json.loads((root / 'data/interaction_schema.json').read_text(encoding='utf-8'))
     require(legacy['active_design_extension']['surface_ecology']['contract'] == CONTRACT, 'inspector extension missing')
     cases = c['acceptance_scenarios']
-    require(len(cases) == len(set(cases)) == 15 and {'picking_felling_stale_preview_and_duplicate_receipts', 'road_farm_entrance_growth_exclusion', 'save_at_growth_boundary_camera_independent_replay'} <= set(cases), 'causal acceptance coverage missing')
+    require(len(cases) == len(set(cases)) == 18 and {'picking_felling_stale_preview_and_duplicate_receipts', 'road_farm_entrance_growth_exclusion', 'save_at_growth_boundary_camera_independent_replay', 'red_maple_all_stages_and_cherry_deep_green_only', 'deadwood_zero_growth_no_divine_goods_initial_stock_conserved', 'volcanic_repaint_no_kill_and_no_deadwood_recruitment'} <= set(cases), 'causal acceptance coverage missing')
 
 
 def validate(root):
     c = json.loads((root / CONTRACT).read_text(encoding='utf-8'))
     validate_contract(root, c)
-    return 'ADR0013 design: 3 layers, 8 soil themes + sand habitat, 13 tree samples, 7 fruit samples; not tree/game/GPU validation'
+    return 'ADR0013 design: 3 layers, 8 soil themes + sand habitat, 13 living tree samples + deadwood configuration, 7 fruit samples; not tree/game/GPU validation'
 
 
 if __name__ == '__main__':

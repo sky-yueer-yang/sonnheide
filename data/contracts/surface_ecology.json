@@ -95,7 +95,7 @@
       "status": "specified_not_implemented",
       "ground_style": "warm_soil_leaf_litter",
       "decorative_small_plants": [
-        "decorative_leaf_litter",
+        "red_decorative_leaf_litter",
         "sparse_low_grass"
       ],
       "new_tree_pool": [
@@ -117,8 +117,7 @@
       "status": "specified_not_implemented",
       "ground_style": "muted_pink_green",
       "decorative_small_plants": [
-        "restrained_low_flowers",
-        "decorative_petal_litter"
+        "deep_green_grass"
       ],
       "new_tree_pool": [
         "cherry_blossom"
@@ -206,7 +205,9 @@
       "status": "specified_not_implemented",
       "ground_style": "dark_volcanic_rock",
       "decorative_small_plants": [],
-      "new_tree_pool": [],
+      "new_tree_pool": [
+        "dead_tree"
+      ],
       "effects": [
         "bounded_static_lava_visual"
       ],
@@ -373,7 +374,13 @@
       "fruiting": false,
       "light_source": null,
       "primary_role": "timber",
-      "same_tree_identity_across_lod": true
+      "same_tree_identity_across_lod": true,
+      "leaf_palette_policy": "red_only_including_all_growth_stages_lod_and_litter",
+      "leaf_palette": [
+        "deep_crimson",
+        "red",
+        "bright_red"
+      ]
     },
     {
       "id": "cherry_blossom",
@@ -454,6 +461,27 @@
       "light_source": null,
       "primary_role": "fruit_and_timber",
       "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "dead_tree",
+      "labels": {
+        "zh-CN": "枯树",
+        "en": "Dead Tree",
+        "de": "Abgestorbener Baum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "existing_deadwood_recovery_or_clearance",
+      "same_tree_identity_across_lod": true,
+      "kind": "deadwood_placement_archetype_not_biological_species",
+      "initial_life_state": "dead",
+      "growth_enabled": false,
+      "natural_recruitment_allowed": false,
+      "civic_seed_planting_allowed": false
     }
   ],
   "fruit_types": [
@@ -636,9 +664,13 @@
       "fruit": 0
     },
     "planting_authority_modes": {
-      "divine": "trusted_player_capability_and_current_god_rule_young_tree_no_goods",
+      "divine": "trusted_player_capability_and_current_god_rule_young_living_or_deadwood_no_goods",
       "civic": "real_actor_seed_or_propagule_labor_rights_and_path",
       "wild": "trusted_bounded_regrowth_scheduler_and_rule_revision"
+    },
+    "default_new_tree_stage_applies_to": "living_species_only",
+    "new_tree_stage_overrides": {
+      "dead_tree": "dead"
     }
   },
   "regrowth": {
@@ -650,7 +682,10 @@
     "catch_up_wild_spawns_when_reenabled": false,
     "wall_time_or_visibility_changes_growth": false,
     "bounded_candidate_queue": true,
-    "spawn_identity_and_source_recorded": true
+    "spawn_identity_and_source_recorded": true,
+    "excluded_archetypes": [
+      "dead_tree"
+    ]
   },
   "fruiting": {
     "model": "bounded_attached_cohorts_per_tree",
@@ -714,8 +749,11 @@
       "resource_output": false,
       "damage_or_fire_by_shader": false,
       "automatic_eruption_or_random_disaster": false,
-      "default_tree_pool_empty": true,
-      "default_small_plant_pool_empty": true
+      "default_tree_pool_empty": false,
+      "default_small_plant_pool_empty": true,
+      "tree_pool": [
+        "dead_tree"
+      ]
     },
     "all_layers": "true_3d_pixel_assets_top_side_and_360_degree_readable",
     "approved_menu_unchanged": true
@@ -756,7 +794,10 @@
     "sacred_tree_felling_emission_stops",
     "sparse_petals_reduced_motion_no_world_rng",
     "volcanic_visual_no_unrequested_fluid_damage",
-    "save_at_growth_boundary_camera_independent_replay"
+    "save_at_growth_boundary_camera_independent_replay",
+    "red_maple_all_stages_and_cherry_deep_green_only",
+    "deadwood_zero_growth_no_divine_goods_initial_stock_conserved",
+    "volcanic_repaint_no_kill_and_no_deadwood_recruitment"
   ],
   "evidence_boundary": "design_registry_validation_not_tree_behavior_or_gpu_evidence",
   "tree_inspector": {
@@ -772,5 +813,30 @@
     "quantity_maturity_age_read_only": true,
     "decorations_have_entity_page": false,
     "linked_output_kind": "stock_batch"
+  },
+  "deadwood": {
+    "configuration": "dead_tree",
+    "initial_life_state": "dead",
+    "growth_or_fruit_increase": false,
+    "death_can_be_undone_by_theme_or_load": false,
+    "natural_recruitment": false,
+    "civic_seed_planting": false,
+    "divine_initial_wood": 0,
+    "divine_initial_fruit": 0,
+    "initial_world_stock": "explicit_bounded_initial_ecology_in_highest_preview_and_first_save_only",
+    "existing_dead_tree_species_identity_and_remaining_wood_preserved": true,
+    "felling_requires_real_rights_path_labor_capacity_and_actual_remaining_wood": true,
+    "zero_wood_felling_generates_stock_batch": false,
+    "paint_volcanic_kills_existing_trees": false,
+    "repaint_or_load_refills_deadwood": false,
+    "life_state_and_felling_work_state_separate": true
+  },
+  "art_refinements": {
+    "decision_date": "2026-10-09",
+    "maple_leaves": "red_only_all_stages_lod_and_litter",
+    "cherry_small_plants": [
+      "deep_green_grass"
+    ],
+    "volcanic_small_plants": []
   }
 }
