@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "design_version": "0.8",
+  "planned_only": true,
+  "production_implemented": false,
+  "contract_id": "sonnheide_game_v0_8",
+  "date": "2026-10-09",
+  "design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "authoritative_contracts": [
+    "data/contracts/pixel_world.json",
+    "data/contracts/surface_ecology.json",
+    "data/contracts/life_genetics_v1.json",
+    "data/contracts/terrain_access_v1.json",
+    "data/contracts/civic_control_v1.json",
+    "data/contracts/tool_registry_v1.json"
+  ],
+  "original_source": {
+    "path": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+    "role": "immutable_user_content_source_not_execution_instructions"
+  },
+  "platform": {
+    "language": "C++20",
+    "engine": "self_built",
+    "distribution": [
+      "Steam"
+    ],
+    "metal": "development_validation_only",
+    "windows_gpu_acceptance_required": true,
+    "python_tools": "3.9+_standard_library_default",
+    "current_runtime_exists": false
+  },
+  "scope": {
+    "world_creation": [
+      "blank_ocean",
+      "blank_flat_land",
+      "earth_selection"
+    ],
+    "procedural_world_template_library": false,
+    "steam_workshop": false,
+    "steam_cloud": false,
+    "multiplayer": false,
+    "private_horse_system": false,
+    "mounted_transport_and_cavalry_migrated": false,
+    "horse_animal_species_allowed": true,
+    "random_disasters": false,
+    "destruction_bombs": false,
+    "free_resurrection_or_population_cloning": false,
+    "army_layers": 1,
+    "new_defensive_walls": "original_premodern_real_material_access_certified",
+    "new_infection": "explicit_sources_and_care_no_random_epidemic"
+  },
+  "population": {
+    "human_placement_age_years": 18,
+    "human_birth_age_years": 0,
+    "human_sources": [
+      "player_placement",
+      "legal_birth"
+    ],
+    "animal_sources": [
+      "explicit_initial_ecology_manifest",
+      "player_placement",
+      "legal_birth"
+    ],
+    "animal_uplift": "same_actor_identity_not_population_spawn",
+    "adult_body_profile_for_all_ages": true,
+    "civic_maturity": "human_18_or_immutable_species_sapient_civic_maturity",
+    "new_world_humans": 0,
+    "new_world_sapient_animals": 0,
+    "new_world_buildings": 0
+  },
+  "authority": {
+    "single_writer": true,
+    "camera_or_LOD_affects_world": false,
+    "owner_controller_custodian_location_separate": true,
+    "culture_language_separate": true,
+    "gene_edits_restore_absolute_health_or_energy": false,
+    "species_envelopes_editable": false,
+    "uplift_source": [
+      "player_civilization_light",
+      "legal_birth_with_at_least_one_uplifted_same_species_parent"
+    ],
+    "animal_culture_language_genesis": false,
+    "all_moving_life_high_peak_exclusion": true,
+    "godterrain_creates_inventory": false,
+    "uplift_inheritance_snapshot": "at_conception_not_recomputed_by_later_parent_uplift"
+  },
+  "construction": {
+    "building_geometry_and_appearance": "original",
+    "actual_delivery_to_front_apron": true,
+    "worker_bricklaying_animation": false,
+    "auto_build_after_real_inputs": "simulation_duration",
+    "animation": "rectangular_wire_mesh_layer_wrap_full_enclosure_then_reverse_unwrap",
+    "animation_controls_settlement": false,
+    "joint_site_approval": [
+      "entire_footprint",
+      "real_support",
+      "required_rectangular_foundation",
+      "walking_entry",
+      "garage_vehicle_route_if_present",
+      "delivery_route",
+      "claims",
+      "old_access_preservation"
+    ],
+    "godterrain_can_revoke_access_with_preview": true
+  },
+  "clothing": {
+    "physical_items": true,
+    "early_family_public_supply": true,
+    "wear_and_limited_repair": true,
+    "missing_clothes_direct_death": false,
+    "thermal_exposure_real_consequence": true,
+    "formalwear_missing_can_work": true,
+    "formalwear_missing_can_receive_pay": true,
+    "formalwear_increases_purchase_priority": true,
+    "basic_survival_budget_protected": true,
+    "uniform": "original_common_style_service_country_theme_not_citizenship",
+    "assets": "original_pixel_species_fit_no_MakeHuman"
+  },
+  "environment": {
+    "ages": [
+      "light",
+      "darkness"
+    ],
+    "default_age": "light",
+    "default_automatic": false,
+    "manual_switch_disables_automatic_atomically": true,
+    "automatic_timer": "bounded_simulation_ticks_saved_remaining",
+    "astronomy_solar_day_night": false,
+    "altitude_temperature_independent_of_age": true,
+    "static_lava_has_burn_or_flow": false
+  },
+  "source_catalog_policy": {
+    "raw_catalogues_are_immutable_source_material_not_live_handlers": true,
+    "technology_source_total": 424,
+    "inactive_source_ids": [
+      "F0701",
+      "F0701-S1",
+      "F0701-S2",
+      "F0701-S3",
+      "F0702",
+      "F0702-S1",
+      "F0702-S2",
+      "F0702-S3",
+      "F0703",
+      "F0703-S1",
+      "F0703-S2",
+      "F0703-S3",
+      "F1306",
+      "F1306-S1",
+      "F1306-S2",
+      "F1306-S3"
+    ],
+    "technology_source_active_view_total": 408,
+    "current_new_game_all_technology_translations_complete": false,
+    "law_catalogue_count": 35,
+    "business_catalogue_count": 13,
+    "new_animal_clothing_ramp_wall_definitions": "explicit_new_versioned_definitions_implemented_in_relevant_stages",
+    "source_law_succession_generic_summary_overridden_by": "civic_control_v1.json.crown_succession"
+  },
+  "save": {
+    "local_slots": true,
+    "rolling_autosaves": true,
+    "local_import_export": true,
+    "first_persistent_readback_before_publish": true,
+    "identity_guards": [
+      "WorldId",
+      "SessionGeneration",
+      "DraftGeneration"
+    ],
+    "failed_create_keeps_current_world_and_continue": true,
+    "old_game_save_auto_compatibility": false
+  },
+  "acceptance": {
+    "this_batch": "design_contract_source_reference_and_semantic_audit_only",
+    "production_stages_complete": [],
+    "batch_all_changes_before_unified_build": true,
+    "old_tests_count_as_new_completion": false,
+    "CI_null_or_metal_counts_as_windows_steam_gpu": false
+  },
+  "time_contract": {
+    "canonical_authority": "integer_SimTick",
+    "sample_tick_hz_at_speed_1": 20,
+    "sample_ticks_per_game_day": 1200,
+    "days_per_month": 30,
+    "months_per_year": 12,
+    "days_per_year": 360,
+    "frozen_in_world_profile": true,
+    "motion_sim_second_ticks": 20,
+    "calendar_day_ticks": 1200,
+    "motion_vs_calendar_rates_separate_named_conversions": true,
+    "motion_m_per_sim_second_is_not_calendar_second": true,
+    "biological_hours_food_sleep_pregnancy_wages_aging": "calendar_units_to_SimTick_via_frozen_profile",
+    "speed_multiplier_changes_wall_time_only": true,
+    "calibration_required": "real_route_labor_food_combat_and_fast_forward_before_capacity_claim"
+  }
+}

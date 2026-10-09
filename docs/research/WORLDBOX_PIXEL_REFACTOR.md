@@ -1,6 +1,6 @@
 # WorldBox 参考核验与三维像素重构采纳矩阵
 
-核验日期：2026-10-08。本文件是研究与实施边界，不是已运行的新游戏证据。当前产品决策见 [ADR 0012](../decisions/0012-editable-3d-pixel-world.md)、[v0.7 设计](../design/Sonnheide_Design_v0.7_Pixel_World.md)、[地形事务](../architecture/PIXEL_TERRAIN_TRANSACTIONS.md)、[三维像素资产](../architecture/PIXEL_RENDERING_AND_ASSETS.md)，主题与植物最新按[ADR 0013](../decisions/0013-layered-surfaces-and-fruiting-trees.md)和[三层地表与树木合同](../architecture/SURFACE_ECOLOGY_AND_TREES.md)。原始 v0.6 和旧阶段1验收保留；旧写实截图不证明新像素世界通过验收。
+核验日期：2026-10-08。本文件是研究与实施边界，不是已运行的新游戏证据。当前产品决策见 [ADR 0012](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0012-editable-3d-pixel-world.md)、[v0.7 设计](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Design_v0.7_Pixel_World.md)、[地形事务](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/PIXEL_TERRAIN_TRANSACTIONS.md)、[三维像素资产](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/PIXEL_RENDERING_AND_ASSETS.md)，主题与植物最新按[ADR 0013](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0013-layered-surfaces-and-fruiting-trees.md)和[三层地表与树木合同](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/SURFACE_ECOLOGY_AND_TREES.md)。原始 v0.6 和旧阶段1验收保留；旧写实截图不证明新像素世界通过验收。
 
 ## 1. 官方资料能证明什么
 
@@ -64,7 +64,7 @@ WorldBox外观可让这些操作靠近，Sonnheide的数据和命令仍须分开
 
 ## 4. 用户确定的主题与三层结构
 
-本表是用户最新决定，按[ADR0013](../decisions/0013-layered-surfaces-and-fruiting-trees.md)生效，**不是WorldBox名单的复制，也不声称已经运行**。八种地形几何预设继续存在；这里是另一组八个地表主题加沙地。此前十自然生态和十四扩展建议不作为当前首批，不擅自加主题或未指定植物。
+本表是用户最新决定，按[ADR0013](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0013-layered-surfaces-and-fruiting-trees.md)生效，**不是WorldBox名单的复制，也不声称已经运行**。八种地形几何预设继续存在；这里是另一组八个地表主题加沙地。此前十自然生态和十四扩展建议不作为当前首批，不擅自加主题或未指定植物。
 
 |主题|用户指定的功能树|纯装饰/表现与边界|
 |---|---|---|

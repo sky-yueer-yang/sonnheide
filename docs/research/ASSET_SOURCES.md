@@ -1,8 +1,8 @@
 # 开源资源来源与准入记录
 
-2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](../decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
 
-最新正式选定见 [ADR0011](../decisions/0011-ground-sky-and-bounded-world-preview.md)：Poly Haven＋Hex-Tiling；8套2K PNG PBR与2张8K Pure Sky原始源已取得并固定SHA，按 [资源锁](../../assets/manifests/ground_sky_sources.json) 与项目Release托管。下面“仅研究/未新增”是前次记录，不覆盖本次实际来源准入；原生GPU/生产创建仍未实现。
+最新正式选定见 [ADR0011](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0011-ground-sky-and-bounded-world-preview.md)：Poly Haven＋Hex-Tiling；8套2K PNG PBR与2张8K Pure Sky原始源已取得并固定SHA，按 [资源锁](../../assets/manifests/ground_sky_sources.json) 与项目Release托管。下面“仅研究/未新增”是前次记录，不覆盖本次实际来源准入；原生GPU/生产创建仍未实现。
 
 2026年10月7日陆地表面专项见 [写实地表开源系统比较](REALISTIC_GROUND_SYSTEMS.md)，含八种具体扫描材质候选、实际覆盖尺寸、离线材质/地被生成与导出限制。本次仅完成研究，未新增正式材质资产；逐文件准入与项目托管要求继续适用。
 
@@ -114,4 +114,4 @@ Releases 官方说明每个对象小于 2 GiB、一个 Release 最多 1000 个�
 5. 本项目 GitHub 原始文件副本、源和产物哈希、署名／许可通知全部完整后，状态才从 pending 转 approved。
 6. 在 Sonnheide 实际场景中验证近景写实、中景识别、远景 LOD、资源流送和占地／人物语义；合格许可不能替代这一步。
 
-保留Abyssal准确源码、历史ETOPO源窗口和MakeHuman选定源件。按[ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)停止新增高程采集，取消全球DEM/局部DTM/Copernicus DSM作为未来地表依赖；只推进真实海陆/岸线来源准入。MakeHuman身体/绑定与三款衣物经过离线源格式检查，尚缺游戏转换/材质/动画/性能验收；原始ZIP只保留实际使用成员，整包hash未冒称已知，不下载大型人物/材质整库。
+保留Abyssal准确源码、历史ETOPO源窗口和MakeHuman选定源件。按[ADR 0010](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0010-flat-land-and-coastal-transition.md)停止新增高程采集，取消全球DEM/局部DTM/Copernicus DSM作为未来地表依赖；只推进真实海陆/岸线来源准入。MakeHuman身体/绑定与三款衣物经过离线源格式检查，尚缺游戏转换/材质/动画/性能验收；原始ZIP只保留实际使用成员，整包hash未冒称已知，不下载大型人物/材质整库。

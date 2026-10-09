@@ -1,8 +1,8 @@
 # 写实陆地地表的开源系统比较与接入建议
 
-2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](../decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
 
-核验日期：2026年10月7日。范围是普通陆地的材质、自然分区、地被和实时表现；水体继续使用已选定的 Abyssal Ocean。地形几何遵循 [ADR 0010](../decisions/0010-flat-land-and-coastal-transition.md)：内陆统一平坦，天然水边窄带下降入水。本次是研究与接入建议，没有安装完整创作环境、导入正式地面资产或实现原生地表渲染。
+核验日期：2026年10月7日。范围是普通陆地的材质、自然分区、地被和实时表现；水体继续使用已选定的 Abyssal Ocean。地形几何遵循 [ADR 0010](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0010-flat-land-and-coastal-transition.md)：内陆统一平坦，天然水边窄带下降入水。本次是研究与接入建议，没有安装完整创作环境、导入正式地面资产或实现原生地表渲染。
 
 推荐路线是 **真实扫描 PBR 底材 + 离线程序化变体 + 自研多尺度材质混合 + 有预算的地被实例**。扫描来源优先 Poly Haven 和 ambientCG；生成工具优先 Material Maker 与 Blender；抗重复算法优先评估作者的 hextile 实现。Infinigen 是有价值的离线自然资产候选，需要单独解决导出与减面。已核验候选中，没有可以直接嵌入当前 bgfx 客户端、同时完成这些职责的整套系统。
 

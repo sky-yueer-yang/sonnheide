@@ -1,9 +1,9 @@
 # MakeHuman人体与服装生态：选型、原始来源和接入边界
 
-2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](../decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](../design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
 
 核验日期：2026-10-06。用户已经指定采用MakeHuman人体与生态；本记录落实这一选择。
-经济与时代规则见[服装系统](../architecture/CLOTHING_ECONOMY.md)，本记录负责来源、许可和
+经济与时代规则见[服装系统](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/CLOTHING_ECONOMY.md)，本记录负责来源、许可和
 人物内容管线，不覆盖原始游戏设计源文档。
 
 ## 1. 已经实际取得什么
@@ -79,7 +79,7 @@ Sonnheide原创建筑、原创军装或其他原创内容的权利；不擅自�
 导出器的默认unknown/CC0字段不能推翻官方包的不同声明。因此它只留下审查事实，原始
 几何与材质不复制到项目；继续在选定生态中寻找一致授权源件或取得权利人的明确说明。
 这不阻止先定义与验证原始时代衣服的经济SKU。基础遮蔽渲染资源的补齐是角色上线的验收
-条件；不会把缺资源或缺库存表示成裸露人物。按后续[ADR 0005](../decisions/0005-unified-inspectors-and-world-tools.md)全龄使用
+条件；不会把缺资源或缺库存表示成裸露人物。按后续[ADR 0005](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0005-unified-inspectors-and-world-tools.md)全龄使用
 同一成人身体尺寸、骨架及衣物fit，不按年龄缩小人物或服装；年龄仍决定生命周期资格。
 
 ## 4. 必须攻克的实际接入问题

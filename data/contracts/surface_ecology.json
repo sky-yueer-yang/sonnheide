@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "contract_id": "sonnheide_layered_surface_v1",
-  "decision": "docs/decisions/0013-layered-surfaces-and-fruiting-trees.md",
-  "design_base": "docs/design/Sonnheide_Design_v0.7_Pixel_World.md",
-  "architecture": "docs/architecture/SURFACE_ECOLOGY_AND_TREES.md",
-  "assets": "docs/architecture/PIXEL_RENDERING_AND_ASSETS.md",
+  "contract_id": "sonnheide_surface_ecology_v0_8",
+  "decision": "docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md",
+  "design_base": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "architecture": "docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
+  "assets": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
   "planned_only": true,
   "production_implemented": false,
   "replaces": "previous_ten_natural_biomes_and_unadopted_fourteen_profile_proposal",
@@ -599,14 +599,16 @@
     }
   ],
   "habitat_resolution": {
-    "wet_cell": "no_terrestrial_new_tree",
-    "dry_sand_priority": "sand",
+    "dry_sand_priority": "actual_dry_root_support_footprint_has_sand_material",
     "other_dry_cell": "selected_theme_or_neutral",
     "paint_sand_does_not_raise_height": true,
     "sand_has_small_decorations": false,
     "old_biome_provenance_not_erased_by_sand": true,
     "existing_tree_species_auto_swap": false,
-    "neutral_ground_is_extra_required_theme": false
+    "neutral_ground_is_extra_required_theme": false,
+    "wet_support_footprint": "no_terrestrial_new_tree_if_actual_root_support_footprint_intersects_wet_polygon",
+    "mixed_ramp_cell": "query_actual_surface_triangles_and_LocalWetRegion_not_whole_cell_wet_boolean",
+    "tree_and_forage_root_support": "stable_support_binding_with_actual_height_water_and_thermal_versions"
   },
   "agriculture": {
     "separate_from_small_surface_plants": true,
@@ -674,7 +676,7 @@
     }
   },
   "regrowth": {
-    "rule_key": "natural_vegetation_regrowth",
+    "rule_key": "wild_vegetation_recovery",
     "controls": "new_wild_tree_candidates_and_spread_only",
     "existing_tree_growth_and_fruiting_continue_when_off": true,
     "agriculture_continues_when_off": true,
@@ -838,5 +840,19 @@
       "deep_green_grass"
     ],
     "volcanic_small_plants": []
+  },
+  "design_version": "0.8",
+  "design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "animal_food_interface": {
+    "decor_edible": false,
+    "real_forage_and_nectar": "GroundResourceRef_ForagePatch_or_real_Tree_bloom_reserve_or_Farm_StockBatch_single_unique_reserve_never_decor",
+    "pollination": "bounded_real_actor_colony_service_to_mechanical_Plant_or_Farm",
+    "theme_changes_generate_food_or_animals": false,
+    "high_peak": "moving_actor_exclusion_not_a_Plant_navigation_rule_plant_uses_actual_temperature_habitat",
+    "life_contract": "data/contracts/life_genetics_v1.json",
+    "double_count_prevention": "source_reserve_ref_consumed_exactly_once_not_copied_into_ground_inventory",
+    "forage_source": "GroundResourceRef_ForagePatch_actual_absolute_reserve",
+    "nectar_and_pollen_source": "original_Tree_actual_bloom_reserve_or_Farm_batch_not_mirrored_into_GroundResource",
+    "forage_regeneration": "existing_ForagePatch_has_bounded_real_reserves_and_its_own_ecological_time_budget_wild_vegetation_recovery_only_controls_new_wild_seedlings"
   }
 }

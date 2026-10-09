@@ -123,67 +123,83 @@
   "sonnheide_evidence": {
     "D01": {
       "title": "保留v0.7像素设计",
-      "relative_path_from_report": "../design/Sonnheide_Design_v0.7_Pixel_World.md"
+      "relative_path_from_report": "../design/Sonnheide_Design_v0.7_Pixel_World.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Design_v0.7_Pixel_World.md"
     },
     "D02": {
       "title": "保留v0.6原始27章",
-      "relative_path_from_report": "../design/Sonnheide_Complete_Design_v0.6.md"
+      "relative_path_from_report": "../design/Sonnheide_Complete_Design_v0.6.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Complete_Design_v0.6.md"
     },
     "D03": {
       "title": "统一信息与世界工具",
-      "relative_path_from_report": "../architecture/INTERACTION.md"
+      "relative_path_from_report": "../architecture/INTERACTION.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/INTERACTION.md"
     },
     "D04": {
       "title": "typed编辑矩阵",
-      "relative_path_from_report": "../architecture/EDITING.md"
+      "relative_path_from_report": "../architecture/EDITING.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/EDITING.md"
     },
     "D05": {
       "title": "八分区UI合同",
-      "relative_path_from_report": "../architecture/UI_ARCHITECTURE.md"
+      "relative_path_from_report": "../architecture/UI_ARCHITECTURE.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/UI_ARCHITECTURE.md"
     },
     "D06": {
       "title": "像素工具/命令登记",
-      "relative_path_from_report": "../../data/contracts/pixel_world.json"
+      "relative_path_from_report": "../../data/contracts/pixel_world.json",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/data/contracts/pixel_world.json"
     },
     "D07": {
       "title": "三层地表与树木",
-      "relative_path_from_report": "../architecture/SURFACE_ECOLOGY_AND_TREES.md"
+      "relative_path_from_report": "../architecture/SURFACE_ECOLOGY_AND_TREES.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/SURFACE_ECOLOGY_AND_TREES.md"
     },
     "D08": {
       "title": "历史仿真与社会经济",
-      "relative_path_from_report": "../architecture/SIMULATION.md"
+      "relative_path_from_report": "../architecture/SIMULATION.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/SIMULATION.md"
     },
     "D09": {
       "title": "原创像素资产合同",
-      "relative_path_from_report": "../architecture/PIXEL_RENDERING_AND_ASSETS.md"
+      "relative_path_from_report": "../architecture/PIXEL_RENDERING_AND_ASSETS.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/PIXEL_RENDERING_AND_ASSETS.md"
     },
     "D10": {
       "title": "两Age环境规则",
-      "relative_path_from_report": "../architecture/LIGHT_AGES.md"
+      "relative_path_from_report": "../architecture/LIGHT_AGES.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/LIGHT_AGES.md"
     },
     "D11": {
       "title": "历史创建世界流程",
-      "relative_path_from_report": "../architecture/APPLICATION_FLOW.md"
+      "relative_path_from_report": "../architecture/APPLICATION_FLOW.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/APPLICATION_FLOW.md"
     },
     "D12": {
       "title": "40类信息页注册表",
-      "relative_path_from_report": "../../data/interaction_schema.json"
+      "relative_path_from_report": "../../data/interaction_schema.json",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/data/interaction_schema.json"
     },
     "D13": {
       "title": "服装实物经济",
-      "relative_path_from_report": "../architecture/CLOTHING_ECONOMY.md"
+      "relative_path_from_report": "../architecture/CLOTHING_ECONOMY.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/CLOTHING_ECONOMY.md"
     },
     "D14": {
       "title": "历史Steam与工程运维",
-      "relative_path_from_report": "../architecture/ENGINEERING.md"
+      "relative_path_from_report": "../architecture/ENGINEERING.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/ENGINEERING.md"
     },
     "D15": {
       "title": "此前WorldBox采纳/排除研究",
-      "relative_path_from_report": "WORLDBOX_PIXEL_REFACTOR.md"
+      "relative_path_from_report": "WORLDBOX_PIXEL_REFACTOR.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/research/WORLDBOX_PIXEL_REFACTOR.md"
     },
     "D16": {
       "title": "历史持久化合同",
-      "relative_path_from_report": "../architecture/PERSISTENCE.md"
+      "relative_path_from_report": "../architecture/PERSISTENCE.md",
+      "baseline_snapshot_url": "https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/PERSISTENCE.md"
     }
   },
   "comparison": [
@@ -3098,5 +3114,6 @@
         "S02"
       ]
     }
-  ]
+  ],
+  "historical_evidence_note": "relative paths describe the pre-reset baseline; use baseline_snapshot_url for retired or subsequently replaced documents"
 }

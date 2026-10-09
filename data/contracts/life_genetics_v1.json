@@ -1,0 +1,4314 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_life_genetics_v1",
+  "design_version": "0.8",
+  "architecture": "docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
+  "planned_only": true,
+  "production_implemented": false,
+  "authority": {
+    "writer": "single_world_writer",
+    "all_mutations_previewed": true,
+    "commit_preconditions": [
+      "WorldId",
+      "SessionGeneration",
+      "DraftGeneration",
+      "rule_revision",
+      "species_definition_version",
+      "actor_revision",
+      "subspecies_revision",
+      "terrain_revision",
+      "container_revision",
+      "reservation_revision"
+    ],
+    "authority_order": [
+      "universal_high_peak_exclusion",
+      "immutable_species_body_capabilities_diet_and_breeding",
+      "bounded_genetic_and_subspecies_capacity",
+      "real_physio_equipment_skill_and_route_state",
+      "task_and_legal_eligibility"
+    ],
+    "renderer_may_mutate": false
+  },
+  "decision_sources": {
+    "user_2026_10_09": [
+      "comprehensive_genetics_beyond_personality",
+      "immutable_species_characteristics_editable_subspecies",
+      "animals_and_civilization_light",
+      "uplifted_animals_learn_human_languages_and_join_human_cultures_without_creating_them",
+      "remove_private_horses",
+      "high_peak_unreachable_by_any_life"
+    ],
+    "design_choices_2026_10_09": [
+      "any_one_sapient_parent_passes_sapience_to_lawful_same_species_offspring",
+      "uplift_irreversible_and_not_genome_editable",
+      "animal_personhood_releases_livestock_ownership_without_refund",
+      "all_species_keep_adult_body_envelope_from_birth",
+      "all_riding_cavalry_and_horse_driven_transport_retired_in_new_engineering_scope",
+      "animal_adulthood_uses_fixed_species_maturity_plus_cognitive_maturity",
+      "wildlife_only_explicit_initial_ecology_player_placement_or_birth_after_creation"
+    ],
+    "historical_source": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "historical_source_read_only": true,
+    "worldbox_evidence": "docs/research/WORLDBOX_FULL_COMPARISON_2026-10-09.md",
+    "worldbox_private_genetic_or_thermal_formula_claimed": false
+  },
+  "identity": {
+    "actor_id": "stable_never_reused",
+    "animal_ref": "ActorRef with animal species",
+    "person_ref": "same ActorRef with civil_person facet, never a replacement body or copied actor",
+    "species_id": "immutable_for_actor_lifetime",
+    "subspecies_id": "same_species_mutable_membership_with_saved_reason_and_revision",
+    "origin": [
+      "player_human_placement",
+      "player_animal_placement",
+      "bounded_initial_animal_ecology",
+      "lawful_birth"
+    ],
+    "human_origin_allowlist": [
+      "player_human_placement",
+      "lawful_birth"
+    ],
+    "sapience_upgrade_creates_actor": false,
+    "age_changes_on_uplift": false,
+    "body_changes_on_uplift": false,
+    "saved_biology_family": "genetic_and_birth_relations",
+    "legal_family_and_household_separate": true,
+    "civil_agent_record": "CivicAgent attached to existing sapient ActorRef not a duplicate actor"
+  },
+  "species_catalogue": [
+    {
+      "id": "human",
+      "labels": {
+        "zh-CN": "人类",
+        "en": "Human",
+        "de": "Mensch"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": false,
+      "adult_body_plan": "biped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim",
+        "hand_tools"
+      ],
+      "diet_allowed_classes": [
+        "plant_food",
+        "fruit",
+        "grain",
+        "prepared_food",
+        "meat",
+        "milk",
+        "egg"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 18,
+      "player_placement_game_years": 18,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 80,
+      "native_sapient": true,
+      "cultural_or_language_genesis_founder": true,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "mixed",
+      "habitat_theme_candidates": [],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 2.4,
+          "max": 4.4
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 8,
+          "max": 22
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 60.0,
+          "max": 100.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 5.6,
+          "max": 10.4
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "fur_density": {
+          "unit": "native_body_coat_insulation",
+          "min": 0,
+          "max": 0
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "hair_and_clothes",
+      "clothing_fit_family": "biped_human",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 8,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_human",
+        "rig": "original_biped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "rabbit",
+      "labels": {
+        "zh-CN": "兔",
+        "en": "Rabbit",
+        "de": "Kaninchen"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "hop"
+      ],
+      "diet_allowed_classes": [
+        "forage",
+        "plant_food",
+        "fruit"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 8,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "meadow",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 4,
+          "max": 7
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.15,
+          "max": 0.65
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 6.0,
+          "max": 10.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 7.0,
+          "max": 13.0
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_rabbit",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 10,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_rabbit",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "cow",
+      "labels": {
+        "zh-CN": "牛",
+        "en": "Cattle",
+        "de": "Rind"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "mouth_tools"
+      ],
+      "diet_allowed_classes": [
+        "forage",
+        "plant_food"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 2,
+      "player_placement_game_years": 2,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 22,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "grassland",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "cherry_field",
+        "savanna"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 1,
+          "max": 2.8
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 24,
+          "max": 64
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 16.5,
+          "max": 27.5
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 7.0,
+          "max": 13.0
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [
+        "milk"
+      ],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_cow",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 10,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_cow",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "sheep",
+      "labels": {
+        "zh-CN": "羊",
+        "en": "Sheep",
+        "de": "Schaf"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk"
+      ],
+      "diet_allowed_classes": [
+        "forage",
+        "plant_food"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 14,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "grassland",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "maple_field",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 1.4,
+          "max": 3.2
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 2,
+          "max": 8
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 10.5,
+          "max": 17.5
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 7.0,
+          "max": 13.0
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [
+        "wool"
+      ],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_sheep",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 10,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_sheep",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "goat",
+      "labels": {
+        "zh-CN": "山羊",
+        "en": "Goat",
+        "de": "Ziege"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "climb"
+      ],
+      "diet_allowed_classes": [
+        "forage",
+        "plant_food"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 14,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "rocky",
+      "habitat_theme_candidates": [
+        "maple_field",
+        "savanna"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 1.5,
+          "max": 3.8
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 3,
+          "max": 10
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 10.5,
+          "max": 17.5
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 7.0,
+          "max": 13.0
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_goat",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 10,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_goat",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "deer",
+      "labels": {
+        "zh-CN": "鹿",
+        "en": "Deer",
+        "de": "Hirsch"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "hop"
+      ],
+      "diet_allowed_classes": [
+        "forage",
+        "plant_food",
+        "fruit"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 2,
+      "player_placement_game_years": 2,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 18,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "woodland",
+      "habitat_theme_candidates": [
+        "maple_field",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 3,
+          "max": 6
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 3,
+          "max": 11
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 13.5,
+          "max": 22.5
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 7.0,
+          "max": 13.0
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_deer",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 10,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_deer",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "horse",
+      "labels": {
+        "zh-CN": "马",
+        "en": "Horse",
+        "de": "Pferd"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk"
+      ],
+      "diet_allowed_classes": [
+        "forage",
+        "plant_food"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 3,
+      "player_placement_game_years": 3,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 28,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "grassland",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "savanna"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 4,
+          "max": 6.8
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 15,
+          "max": 36
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 21.0,
+          "max": 35.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 7.0,
+          "max": 13.0
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_horse",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 10,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_horse",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "dog",
+      "labels": {
+        "zh-CN": "狗",
+        "en": "Dog",
+        "de": "Hund"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim",
+        "mouth_tools"
+      ],
+      "diet_allowed_classes": [
+        "meat",
+        "prepared_food",
+        "plant_food"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 16,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "mixed",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 2.5,
+          "max": 5.5
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 1.5,
+          "max": 7
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 12.0,
+          "max": 20.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 8.4,
+          "max": 15.6
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_dog",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 12,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_dog",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "wolf",
+      "labels": {
+        "zh-CN": "狼",
+        "en": "Wolf",
+        "de": "Wolf"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim"
+      ],
+      "diet_allowed_classes": [
+        "meat"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 2,
+      "player_placement_game_years": 2,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 16,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "woodland",
+      "habitat_theme_candidates": [
+        "snowfield",
+        "maple_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 3.2,
+          "max": 6
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 2,
+          "max": 9
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.4,
+          "max": 0.95
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 12.0,
+          "max": 20.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 8.4,
+          "max": 15.6
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_wolf",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 12,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_wolf",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "fox",
+      "labels": {
+        "zh-CN": "狐",
+        "en": "Fox",
+        "de": "Fuchs"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk"
+      ],
+      "diet_allowed_classes": [
+        "meat",
+        "fruit",
+        "egg"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 12,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "woodland",
+      "habitat_theme_candidates": [
+        "snowfield",
+        "maple_field",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 3,
+          "max": 5.8
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.5,
+          "max": 3
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.4,
+          "max": 0.95
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 9.0,
+          "max": 15.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 8.4,
+          "max": 15.6
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_fox",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 12,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_fox",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "bear",
+      "labels": {
+        "zh-CN": "熊",
+        "en": "Bear",
+        "de": "Bär"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim",
+        "mouth_tools"
+      ],
+      "diet_allowed_classes": [
+        "meat",
+        "fruit",
+        "plant_food",
+        "honey"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 3,
+      "player_placement_game_years": 3,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 30,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "woodland",
+      "habitat_theme_candidates": [
+        "snowfield",
+        "maple_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 1.5,
+          "max": 4
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 20,
+          "max": 60
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.4,
+          "max": 0.95
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 22.5,
+          "max": 37.5
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 8.4,
+          "max": 15.6
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_bear",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 12,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_bear",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "boar",
+      "labels": {
+        "zh-CN": "野猪",
+        "en": "Boar",
+        "de": "Wildschwein"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim"
+      ],
+      "diet_allowed_classes": [
+        "plant_food",
+        "fruit",
+        "meat"
+      ],
+      "reproduction_mode": "live_birth",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 16,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "woodland",
+      "habitat_theme_candidates": [
+        "maple_field",
+        "wetland"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 2,
+          "max": 4.5
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 6,
+          "max": 20
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 12.0,
+          "max": 20.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "fur",
+      "clothing_fit_family": "quadruped_boar",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_boar",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "chicken",
+      "labels": {
+        "zh-CN": "鸡",
+        "en": "Chicken",
+        "de": "Huhn"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "bird",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "short_flight",
+        "beak_tools"
+      ],
+      "diet_allowed_classes": [
+        "grain",
+        "forage_seed",
+        "insect_food"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 9,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "grassland",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 1.5,
+          "max": 3
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.1,
+          "max": 0.5
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 6.75,
+          "max": 11.25
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [
+        "egg"
+      ],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "feather",
+      "clothing_fit_family": "bird_chicken",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_chicken",
+        "rig": "original_bird_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "duck",
+      "labels": {
+        "zh-CN": "鸭",
+        "en": "Duck",
+        "de": "Ente"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "bird",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim",
+        "fly",
+        "beak_tools"
+      ],
+      "diet_allowed_classes": [
+        "forage_seed",
+        "aquatic_food",
+        "insect_food"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 12,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "wetland",
+      "habitat_theme_candidates": [
+        "wetland"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 1,
+          "max": 2.5
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.15,
+          "max": 0.6
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 9.0,
+          "max": 15.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [
+        "egg"
+      ],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "feather",
+      "clothing_fit_family": "bird_duck",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_duck",
+        "rig": "original_bird_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "eagle",
+      "labels": {
+        "zh-CN": "鹰",
+        "en": "Eagle",
+        "de": "Adler"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "bird",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "fly",
+        "beak_tools"
+      ],
+      "diet_allowed_classes": [
+        "meat"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 3,
+      "player_placement_game_years": 3,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 28,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "rocky",
+      "habitat_theme_candidates": [
+        "maple_field",
+        "savanna"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 0.6,
+          "max": 1.6
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.4,
+          "max": 1.8
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 21.0,
+          "max": 35.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "feather",
+      "clothing_fit_family": "bird_eagle",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_eagle",
+        "rig": "original_bird_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "turtle",
+      "labels": {
+        "zh-CN": "龟",
+        "en": "Turtle",
+        "de": "Schildkröte"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "quadruped",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "swim"
+      ],
+      "diet_allowed_classes": [
+        "plant_food",
+        "aquatic_food",
+        "insect_food"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 5,
+      "player_placement_game_years": 5,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 50,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "wetland",
+      "habitat_theme_candidates": [
+        "wetland"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 0.2,
+          "max": 0.8
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.2,
+          "max": 1.2
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 37.5,
+          "max": 62.5
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "skin_or_carapace",
+      "clothing_fit_family": "quadruped_turtle",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_turtle",
+        "rig": "original_quadruped_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "frog",
+      "labels": {
+        "zh-CN": "蛙",
+        "en": "Frog",
+        "de": "Frosch"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "amphibian",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "hop",
+        "swim"
+      ],
+      "diet_allowed_classes": [
+        "insect_food"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 1,
+      "player_placement_game_years": 1,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 8,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "wetland",
+      "habitat_theme_candidates": [
+        "wetland"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 0.5,
+          "max": 1.8
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.01,
+          "max": 0.06
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.2,
+          "max": 0.7
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 6.0,
+          "max": 10.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "skin_or_carapace",
+      "clothing_fit_family": "amphibian_frog",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_frog",
+        "rig": "original_amphibian_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "carp",
+      "labels": {
+        "zh-CN": "鲤鱼",
+        "en": "Carp",
+        "de": "Karpfen"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "fish",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "swim"
+      ],
+      "diet_allowed_classes": [
+        "aquatic_food",
+        "forage_seed"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 2,
+      "player_placement_game_years": 2,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 20,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "water",
+      "habitat_theme_candidates": [],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 0,
+          "max": 0
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0,
+          "max": 0
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.2,
+          "max": 0.7
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 15.0,
+          "max": 25.0
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "skin_or_carapace",
+      "clothing_fit_family": "fish_carp",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "gestating_parent",
+        "fertilizing_parent"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_carp",
+        "rig": "original_fish_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    },
+    {
+      "id": "bee",
+      "labels": {
+        "zh-CN": "蜜蜂",
+        "en": "Bee",
+        "de": "Biene"
+      },
+      "definition_status": "planned_original_release_catalogue_not_implemented",
+      "definition_editable": false,
+      "animal": true,
+      "adult_body_plan": "insect",
+      "all_ages_same_adult_body": true,
+      "body_envelope_from_gene": false,
+      "capability_mask": [
+        "walk",
+        "fly"
+      ],
+      "diet_allowed_classes": [
+        "nectar",
+        "pollen"
+      ],
+      "reproduction_mode": "egg",
+      "cross_species_breeding": false,
+      "biological_maturity_game_years": 0.02,
+      "player_placement_game_years": 0.02,
+      "birth_game_years": 0,
+      "first_calibration_lifespan_game_years": 1,
+      "native_sapient": false,
+      "cultural_or_language_genesis_founder": false,
+      "sapience_policy_after_uplift": "same_civil_capabilities_as_human_except_new_Culture_or_Language_entity_genesis",
+      "habitat_family": "pollinator",
+      "habitat_theme_candidates": [
+        "flower_meadow",
+        "cherry_field"
+      ],
+      "habitat_is_eligibility_not_spontaneous_spawn": true,
+      "trait_envelope_overrides": {
+        "ground_speed": {
+          "unit": "game_m_per_sim_second",
+          "min": 0.1,
+          "max": 0.3
+        },
+        "strength": {
+          "unit": "game_kg_supported_carried_load",
+          "min": 0.0001,
+          "max": 0.0004
+        },
+        "cold_tolerance": {
+          "unit": "effective_cold_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "heat_tolerance": {
+          "unit": "effective_heat_tolerance_index",
+          "min": 0.15,
+          "max": 0.85
+        },
+        "lifespan_potential": {
+          "unit": "game_years",
+          "min": 0.75,
+          "max": 1.25
+        },
+        "sleep_requirement": {
+          "unit": "game_sim_hours_per_24h",
+          "min": 4.2,
+          "max": 7.8
+        },
+        "pain_sensitivity": {
+          "unit": "subjective_actual_injury_signal_multiplier",
+          "min": 0.5,
+          "max": 1.5
+        },
+        "rest_recovery_efficiency": {
+          "unit": "sleep_debt_recovery_per_actual_rest_multiplier",
+          "min": 0.7,
+          "max": 1.3
+        },
+        "gestation_duration": {
+          "unit": "species_supported_gestation_duration_multiplier",
+          "min": 0.85,
+          "max": 1.15
+        },
+        "reproductive_interval": {
+          "unit": "species_supported_birth_interval_multiplier",
+          "min": 0.85,
+          "max": 1.25
+        }
+      },
+      "products": [
+        "honey"
+      ],
+      "private_mount_asset": false,
+      "riding_or_horse_power_transport": false,
+      "high_peak_exemption": false,
+      "immutable_species_insulation_kind": "skin_or_carapace",
+      "clothing_fit_family": "insect_bee",
+      "hand_equivalent_capability_granted_by_sapience": false,
+      "sleep_profile": {
+        "unit": "game_sim_hours_per_24h",
+        "base_requirement": 6,
+        "first_slice_tunable_not_science": true
+      },
+      "reproductive_role_definitions": [
+        "queen",
+        "worker",
+        "drone"
+      ],
+      "species_asset_contract": {
+        "model": "original_pixel_bee",
+        "rig": "original_insect_species_rig",
+        "adult_body_dimensions": "locked_original_species_asset_definition_not_gene_scale",
+        "body_reference_status": "planned_art_contract_not_existing_model"
+      }
+    }
+  ],
+  "species_count": 19,
+  "animal_species_count": 18,
+  "immutable_species_fields": [
+    "id",
+    "adult_body_plan",
+    "body_dimensions_and_rig",
+    "capability_mask",
+    "diet_allowed_classes",
+    "reproduction_mode",
+    "biological_maturity",
+    "species_trait_envelopes",
+    "cultural_or_language_genesis_founder",
+    "high_peak_exemption"
+  ],
+  "genetics": {
+    "model": "game_quantitative_diploid_not_real_DNA_or_medical_genetics",
+    "trait_count": 61,
+    "trait_groups": [
+      "physical",
+      "environment",
+      "metabolism",
+      "locomotion",
+      "perception",
+      "learning",
+      "reproduction_and_life",
+      "appearance",
+      "personality_predisposition",
+      "pain_and_rest"
+    ],
+    "traits": [
+      {
+        "id": "health_capacity",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "健康容量",
+          "en": "Health capacity",
+          "de": "Gesundheitskapazität"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "health",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "body_robustness",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "身体韧性",
+          "en": "Body robustness",
+          "de": "Körperliche Robustheit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "injury",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "strength",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "力量",
+          "en": "Strength",
+          "de": "Kraft"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "load",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "stamina",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "体力",
+          "en": "Stamina",
+          "de": "Ausdauer"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "work",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "work_efficiency",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "劳动效率",
+          "en": "Work efficiency",
+          "de": "Arbeitseffizienz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "work",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "fatigue_recovery",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "疲劳恢复",
+          "en": "Fatigue recovery",
+          "de": "Ermüdungserholung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "rest",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "wound_recovery",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "伤口恢复",
+          "en": "Wound recovery",
+          "de": "Wundheilung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "healing",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "clotting_capacity",
+        "group": "physical",
+        "labels": {
+          "zh-CN": "止血能力",
+          "en": "Clotting capacity",
+          "de": "Blutstillung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "injury",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "cold_tolerance",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "耐寒",
+          "en": "Cold tolerance",
+          "de": "Kältetoleranz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "thermal",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "heat_tolerance",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "耐热",
+          "en": "Heat tolerance",
+          "de": "Hitzetoleranz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "thermal",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "thermal_regulation",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "体温调节",
+          "en": "Thermal regulation",
+          "de": "Temperaturregulation"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "thermal",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "wet_cold_tolerance",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "湿冷耐受",
+          "en": "Wet cold tolerance",
+          "de": "Nasskältetoleranz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "thermal",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "fur_density",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "毛皮保温",
+          "en": "Coat insulation",
+          "de": "Fellisolation"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "thermal",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [],
+        "species_supported_insulation_only": true
+      },
+      {
+        "id": "immune_resistance",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "免疫抵抗",
+          "en": "Immune resistance",
+          "de": "Immunresistenz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "health_load",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "toxin_resistance",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "毒素耐受",
+          "en": "Toxin tolerance",
+          "de": "Giftstofftoleranz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "health_load",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "parasite_resistance",
+        "group": "environment",
+        "labels": {
+          "zh-CN": "寄生负担抵抗",
+          "en": "Parasite resistance",
+          "de": "Parasitenresistenz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "health_load",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "basal_efficiency",
+        "group": "metabolism",
+        "labels": {
+          "zh-CN": "基础代谢效率",
+          "en": "Basal efficiency",
+          "de": "Grundstoffwechseleffizienz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "energy",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "fasting_tolerance",
+        "group": "metabolism",
+        "labels": {
+          "zh-CN": "耐饥饿",
+          "en": "Fasting tolerance",
+          "de": "Hungertoleranz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "starvation",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "energy_storage_capacity",
+        "group": "metabolism",
+        "labels": {
+          "zh-CN": "能量储备容量",
+          "en": "Energy storage",
+          "de": "Energiespeicherung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "energy",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "nutrient_absorption",
+        "group": "metabolism",
+        "labels": {
+          "zh-CN": "营养吸收",
+          "en": "Nutrient absorption",
+          "de": "Nährstoffaufnahme"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "food",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "dietary_flexibility",
+        "group": "metabolism",
+        "labels": {
+          "zh-CN": "食性适应",
+          "en": "Dietary flexibility",
+          "de": "Ernährungsflexibilität"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "food",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "reproductive_efficiency",
+        "group": "metabolism",
+        "labels": {
+          "zh-CN": "繁育营养效率",
+          "en": "Reproductive efficiency",
+          "de": "Fortpflanzungseffizienz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "reproduction",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "ground_speed",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "地面速度",
+          "en": "Ground speed",
+          "de": "Bodengeschwindigkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "walk"
+        ]
+      },
+      {
+        "id": "acceleration",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "加速能力",
+          "en": "Acceleration",
+          "de": "Beschleunigung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "walk",
+          "swim",
+          "fly",
+          "short_flight"
+        ]
+      },
+      {
+        "id": "agility",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "灵活性",
+          "en": "Agility",
+          "de": "Beweglichkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "walk",
+          "swim",
+          "fly",
+          "short_flight"
+        ]
+      },
+      {
+        "id": "reaction_speed",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "反应速度",
+          "en": "Reaction speed",
+          "de": "Reaktionsgeschwindigkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "climb_capacity",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "攀越能力",
+          "en": "Climbing capacity",
+          "de": "Klettervermögen"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "climb"
+        ]
+      },
+      {
+        "id": "swim_capacity",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "游泳耐力",
+          "en": "Swimming endurance",
+          "de": "Schwimmausdauer"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "swim"
+        ]
+      },
+      {
+        "id": "swim_speed",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "游泳速度",
+          "en": "Swimming speed",
+          "de": "Schwimmgeschwindigkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "swim"
+        ]
+      },
+      {
+        "id": "buoyancy",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "浮水能力",
+          "en": "Buoyancy",
+          "de": "Auftrieb"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "swim"
+        ]
+      },
+      {
+        "id": "flight_endurance",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "飞行耐力",
+          "en": "Flight endurance",
+          "de": "Flugausdauer"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "fly",
+          "short_flight"
+        ]
+      },
+      {
+        "id": "flight_speed",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "飞行速度",
+          "en": "Flight speed",
+          "de": "Fluggeschwindigkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "movement",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "fly",
+          "short_flight"
+        ]
+      },
+      {
+        "id": "grip_precision",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "抓握精度",
+          "en": "Grip precision",
+          "de": "Greifpräzision"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "tool_use",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "hand_tools",
+          "mouth_tools",
+          "beak_tools"
+        ]
+      },
+      {
+        "id": "fine_motor",
+        "group": "locomotion",
+        "labels": {
+          "zh-CN": "精细操作",
+          "en": "Fine motor control",
+          "de": "Feinmotorik"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "tool_use",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false,
+        "any_required_species_capability": [
+          "hand_tools"
+        ]
+      },
+      {
+        "id": "vision_range",
+        "group": "perception",
+        "labels": {
+          "zh-CN": "视距",
+          "en": "Vision range",
+          "de": "Sichtweite"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "sensing",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "hearing_sensitivity",
+        "group": "perception",
+        "labels": {
+          "zh-CN": "听觉",
+          "en": "Hearing sensitivity",
+          "de": "Hörvermögen"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "sensing",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "smell_sensitivity",
+        "group": "perception",
+        "labels": {
+          "zh-CN": "嗅觉",
+          "en": "Smell sensitivity",
+          "de": "Geruchssinn"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "sensing",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "night_vision",
+        "group": "perception",
+        "labels": {
+          "zh-CN": "暗处视力",
+          "en": "Low-light vision",
+          "de": "Dunkelsicht"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "sensing",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "spatial_reasoning",
+        "group": "perception",
+        "labels": {
+          "zh-CN": "空间判断",
+          "en": "Spatial reasoning",
+          "de": "Räumliches Denken"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "decision",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "learning_efficiency",
+        "group": "learning",
+        "labels": {
+          "zh-CN": "学习效率",
+          "en": "Learning efficiency",
+          "de": "Lerneffizienz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "learning",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "memory_retention",
+        "group": "learning",
+        "labels": {
+          "zh-CN": "记忆保持",
+          "en": "Memory retention",
+          "de": "Gedächtnisleistung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "learning",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "attention_endurance",
+        "group": "learning",
+        "labels": {
+          "zh-CN": "注意力持续",
+          "en": "Attention endurance",
+          "de": "Aufmerksamkeitsdauer"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "learning",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "social_learning",
+        "group": "learning",
+        "labels": {
+          "zh-CN": "社会学习",
+          "en": "Social learning",
+          "de": "Soziales Lernen"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "learning",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "fertility",
+        "group": "reproduction_and_life",
+        "labels": {
+          "zh-CN": "生育能力",
+          "en": "Fertility",
+          "de": "Fruchtbarkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "reproduction",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "offspring_viability",
+        "group": "reproduction_and_life",
+        "labels": {
+          "zh-CN": "后代存活基础",
+          "en": "Offspring viability",
+          "de": "Nachkommensvitalität"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "reproduction",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "gestation_duration",
+        "group": "reproduction_and_life",
+        "labels": {
+          "zh-CN": "孕育时长",
+          "en": "Gestation duration",
+          "de": "Tragzeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "reproduction",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "reproductive_interval",
+        "group": "reproduction_and_life",
+        "labels": {
+          "zh-CN": "生育间隔",
+          "en": "Reproductive interval",
+          "de": "Fortpflanzungsintervall"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "reproduction",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "lifespan_potential",
+        "group": "reproduction_and_life",
+        "labels": {
+          "zh-CN": "寿命潜力",
+          "en": "Lifespan potential",
+          "de": "Lebensdauerpotenzial"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "aging",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "age_resilience",
+        "group": "reproduction_and_life",
+        "labels": {
+          "zh-CN": "衰老韧性",
+          "en": "Aging resilience",
+          "de": "Alterungsresilienz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "aging",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "palette_variation",
+        "group": "appearance",
+        "labels": {
+          "zh-CN": "体表配色",
+          "en": "Body palette",
+          "de": "Körperfarbgebung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "appearance",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "coat_pattern",
+        "group": "appearance",
+        "labels": {
+          "zh-CN": "体表纹样",
+          "en": "Body pattern",
+          "de": "Körpermuster"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "appearance",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "eye_tint",
+        "group": "appearance",
+        "labels": {
+          "zh-CN": "眼睛颜色",
+          "en": "Eye colour",
+          "de": "Augenfarbe"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "appearance",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "curiosity",
+        "group": "personality_predisposition",
+        "labels": {
+          "zh-CN": "求知倾向",
+          "en": "Curiosity",
+          "de": "Neugier"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "personality",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "piety",
+        "group": "personality_predisposition",
+        "labels": {
+          "zh-CN": "虔诚倾向",
+          "en": "Piety",
+          "de": "Frömmigkeitsneigung"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "personality",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "altruism",
+        "group": "personality_predisposition",
+        "labels": {
+          "zh-CN": "利他倾向",
+          "en": "Altruism",
+          "de": "Altruismus"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "personality",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "risk_tolerance",
+        "group": "personality_predisposition",
+        "labels": {
+          "zh-CN": "冒险倾向",
+          "en": "Risk tolerance",
+          "de": "Risikobereitschaft"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "personality",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "order_preference",
+        "group": "personality_predisposition",
+        "labels": {
+          "zh-CN": "秩序倾向",
+          "en": "Order preference",
+          "de": "Ordnungspräferenz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "personality",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "ambition",
+        "group": "personality_predisposition",
+        "labels": {
+          "zh-CN": "野心倾向",
+          "en": "Ambition",
+          "de": "Ehrgeiz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "personality",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "pain_sensitivity",
+        "group": "pain_and_rest",
+        "labels": {
+          "zh-CN": "痛觉敏感",
+          "en": "Pain sensitivity",
+          "de": "Schmerzempfindlichkeit"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "pain_signal",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "sleep_requirement",
+        "group": "pain_and_rest",
+        "labels": {
+          "zh-CN": "睡眠需求",
+          "en": "Sleep requirement",
+          "de": "Schlafbedarf"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "rest_need",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      },
+      {
+        "id": "rest_recovery_efficiency",
+        "group": "pain_and_rest",
+        "labels": {
+          "zh-CN": "休息恢复效率",
+          "en": "Rest recovery efficiency",
+          "de": "Erholungseffizienz"
+        },
+        "allele_count": 2,
+        "allele_integer_range": [
+          0,
+          1000
+        ],
+        "dominance": "additive_mean",
+        "shared_subspecies_editable": true,
+        "individual_genome_editable": true,
+        "effect_domain": "sleep_debt",
+        "capacity_authority": "species_envelope_then_real_state",
+        "can_grant_missing_species_capability": false,
+        "can_reset_absolute_state": false
+      }
+    ],
+    "gene_groups_are_real_chromosome_claim": false,
+    "genome": "two_uint16_alleles_per_trait_0_to_1000",
+    "default_seed": "saved_creation_or_birth_event_seed_never_camera_rng",
+    "expression": {
+      "individual_score": "(maternal_allele + paternal_allele) / 2000",
+      "subspecies_score": "profile_trait_integer / 1000",
+      "effective_score": "clamp(0.7 * individual_score + 0.3 * subspecies_score, 0, 1)",
+      "species_capacity": "species_min + effective_score * (species_max - species_min)",
+      "missing_capability_output": 0,
+      "bound_override_precedes_default": true,
+      "default_bounds": {
+        "unit": "game_capacity_multiplier",
+        "min": 0.7,
+        "max": 1.3
+      },
+      "appearance": "authored_palette_and_pattern_slots_only_never_body_scale",
+      "personality": "inherited_predisposition_not_current_six_axis_state",
+      "noncapability_traits": "validated species-specific coefficient or authored slot map; 0.7..1.3 only applies to ratio capacities",
+      "tradeoffs": {
+        "strength": "larger active load and muscle throughput require larger real movement/work energy and higher bounded basal demand",
+        "fur_density": "more insulation reduces cold load and increases heat shedding burden without enlarging fixed body envelope",
+        "energy_storage_capacity": "larger possible reserve is empty until fed and stored with explicit conversion loss",
+        "fasting_tolerance": "extends deprivation damage grace but does not pay movement or work energy",
+        "fertility": "more gestation opportunities require real productive parent nutrition nest and actual care",
+        "lifespan_potential": "higher possible lifespan does not clear accumulated injuries disease age work or current health"
+      },
+      "gestation_direction": "larger duration coefficient lengthens actual required conception-snapshotted work; UI states direction explicitly rather than always calling larger better",
+      "sleep_direction": "larger sleep_requirement means more required actual rest; not a generic positive buff",
+      "illness_direction": "higher immune/toxin/parasite capacity improves clearance within finite species caps, not an immune-all flag"
+    },
+    "inheritance": {
+      "each_trait": "sample_one_of_two_alleles_from_each_recorded_biological_parent",
+      "recombination": "saved_linkage_group_crossover_not_independent_display_randomness",
+      "conception_snapshots_parent_genomes": true,
+      "editing_parent_after_conception_changes_embryo": false,
+      "mutation": "rare_bounded_allele_delta_at_conception_only_using_saved_counter",
+      "mutation_may_change_species_capability_or_sapience": false,
+      "sample_parameters": {
+        "mutation_probability_per_trait": 0.001,
+        "maximum_allele_delta": 50,
+        "parameter_status": "first_slice_tunable_engineering_not_science_or_final_balance"
+      },
+      "cross_subspecies_same_species_allowed": true,
+      "different_species_rejected_before_gestation": true,
+      "offspring_subspecies": "maternal_subspecies_if_mother_exists_otherwise_first_parent_saved_subspecies",
+      "adoption_changes_genome": false,
+      "reproductive_role_at_birth": "fixed species supported role policy with saved conception-domain draw or bee role plan; legal gender identity does not alter biological role"
+    },
+    "subspecies": {
+      "edit_fields": [
+        "display_name",
+        "display_tint",
+        "description",
+        "trait_profile",
+        "founder_distribution",
+        "mutation_budget_within_species_envelope",
+        "population_limit_policy"
+      ],
+      "profile_trait_range": [
+        0,
+        1000
+      ],
+      "shared_profile_edit_recomputes_existing_members": true,
+      "shared_profile_edit_rewrites_member_alleles": false,
+      "profile_edit_requires_exact_affected_actor_set_and_effects": true,
+      "profile_cannot_change_species_or_sapience": true,
+      "new_subspecies_creates_life": false,
+      "automatic_split": "bounded_persistent_gene_cluster_with_parent_subspecies_refs_not_birth_count_reward",
+      "automatic_split_initial_profile": "copy_existing_expression_profile_so_classification_does_not_grant_capacities",
+      "membership_changes_preserve": "origin_age_genome_civil_links_absolute_states_and_stocks",
+      "extinction": "zero_living_members_archived_ref_not_species_definition_deletion",
+      "population_limit": "preflight_placement_conception_birth_reservation_never_delete_excess_existing_members",
+      "profile_edit_preview_includes": "existing Actor members plus unborn membership reservations and predicted capacity outcomes; inherited alleles and gestation clocks remain saved",
+      "lower_population_limit_during_pregnancy": "existing conception reservations remain valid admitted birth; only new entry reservations blocked",
+      "population_limit_rule_cannot_block_uplift": true,
+      "gene_pool_distribution_edits_retroactive": false,
+      "founder_distribution": "affects new player-authored founder allele sampling within species; legal births always use saved parental alleles rather than replacement founder samples",
+      "subspecies_definition_count_limit": "limits only new branch records not mutations existing genomes sapience or biological births with existing branch",
+      "mutation_budget_boundary": {
+        "maximum_probability_per_trait": 0.01,
+        "maximum_absolute_allele_delta": 100,
+        "parameter_status": "first_slice_engineering_ceiling_not_final_balance",
+        "bounded_by_species_capabilities_and_values": true
+      },
+      "world_population_limit_interface": {
+        "rule_id": "subspecies_population_limits",
+        "value": "map_SubspeciesRef_to_nonnegative_new_Actor_cap_default_empty; zero blocks new entry but preserves current members and committed birth reservations",
+        "separate_catalogue_rule": "subspecies_catalogue_limit",
+        "precedence": "current_live_members_plus_reserved_birth_slots_must_fit_all_applicable_actor_species_subspecies_caps_for_new_entry",
+        "existing_birth_reservations_preserved": true,
+        "existing_members_and_awakenings_not_removed_or_blocked": true
+      }
+    },
+    "individual_edits": {
+      "gene_editor_and_trait_brush": "same_typed_command_with_explicit_actor_ids_and_per_trait_effect_preview",
+      "absent_trait_delete": "restore_species_supported_neutral_gene_value_not_delete_needed_metabolism",
+      "preserve": [
+        "ActorId",
+        "birth_date",
+        "existing_sapience",
+        "absolute_health_remaining",
+        "absolute_damage_history",
+        "maintenance_energy",
+        "productive_energy",
+        "fatigue_debt",
+        "thermal_exposure_debt",
+        "illness_load",
+        "pregnancy_snapshot",
+        "goods_and_product_reserves",
+        "skills_culture_language_religion_nationality",
+        "sleep_debt",
+        "current_rest_episode",
+        "pain_source_injury_state"
+      ],
+      "raising_health_capacity_increases_remaining_health": false,
+      "lowering_health_capacity": "clamp_remaining_health_only_downward_with_logged_capacity_loss_no_reversible_restore",
+      "energy_capacity_down": "retain_absolute_reserves_and_explicit_over_capacity_state_no_refund_or_recovery",
+      "trait_brush_can_spawn_clone_or_resurrect": false,
+      "gestation_clock_recomputed_by_parent_edit": false
+    }
+  },
+  "phenotype_interface": {
+    "type": "PhenotypeCapacities",
+    "readers": [
+      "TerrainNavigation",
+      "ThermalExposure",
+      "NeedsAndHealth",
+      "TaskEligibility",
+      "Breeding",
+      "Rendering"
+    ],
+    "version_keys": [
+      "species_version",
+      "subspecies_revision",
+      "genome_revision",
+      "equipment_revision",
+      "physiology_revision"
+    ],
+    "exports": [
+      "species_capability_mask",
+      "absolute_species_body_envelope",
+      "maximum_supported_load",
+      "ground_speed",
+      "climb_capacity",
+      "swim_capacity",
+      "swim_speed",
+      "flight_endurance",
+      "flight_speed",
+      "health_capacity",
+      "stamina",
+      "basal_efficiency",
+      "fasting_tolerance",
+      "energy_storage_capacity",
+      "cold_tolerance",
+      "heat_tolerance",
+      "thermal_regulation",
+      "wet_cold_tolerance",
+      "fur_density",
+      "learning_efficiency",
+      "lifespan_potential",
+      "pain_sensitivity",
+      "sleep_requirement",
+      "rest_recovery_efficiency",
+      "agility",
+      "fatigue_recovery"
+    ],
+    "can_bypass_high_peak": false,
+    "task_requires_actual_equipment_and_route": true,
+    "functional_development": "fixed species age-stage coefficients may reduce actual movement work reproductive and care capacity before maturity while adult body geometry stays unchanged; genes do not move fixed adulthood threshold",
+    "trait_to_export": {
+      "strength": "maximum_supported_load",
+      "agility": "agility",
+      "fatigue_recovery": "fatigue_recovery"
+    },
+    "export_units": {
+      "maximum_supported_load": "game_kg_supported_carried_load",
+      "agility": "dimensionless_species_bounded_control_capacity_multiplier",
+      "fatigue_recovery": "species_baseline_fatigue_debt_units_per_SimTick_multiplier"
+    },
+    "capacity_consumption_policy": "all consumers read versioned PhenotypeCapacities exports; never re-express alleles or shared-profile formulas in TerrainNavigation ThermalExposure TaskEligibility or NeedsAndHealth",
+    "fatigue_recovery_is_actual_state_recovery": "export is bounded potential recovery rate; actual debt reduction requires actual safe rest SimTick and available real metabolic energy, does not reset debt on edit"
+  },
+  "physiology": {
+    "saved_absolute_fields": [
+      "health_remaining",
+      "damage_history",
+      "maintenance_energy_nonrecoverable",
+      "productive_energy_from_real_food",
+      "fatigue_debt",
+      "exposureDebt_cold",
+      "exposureDebt_heat",
+      "starvation_debt",
+      "health_loads",
+      "reproduction_reserve",
+      "harvestable_product_reserves",
+      "sleep_debt",
+      "pain_signal_from_actual_injuries",
+      "rest_episode_work_and_last_tick",
+      "body_wetness",
+      "next_physiology_tick"
+    ],
+    "fixed_tick_order": [
+      "food_absorption",
+      "storage",
+      "basal",
+      "thermal",
+      "movement_and_work",
+      "bounded_health_consequence",
+      "recovery_and_reproduction_progress"
+    ],
+    "initial_player_placement_maintenance_energy": "finite_once_nonrecoverable_in_product_or_birth_material_converters",
+    "initial_player_placement_harvestable_reserves": 0,
+    "food": "real_batch_consumption_records_diet_quality_and_contamination",
+    "hunger_resistance": "reduces_deficit_health_damage_and_changes_tolerance_duration_not_calorie_creation",
+    "strength": "load_and_work_throughput_after_species_bounds_real_energy_skill_tool_and_route_checks",
+    "cold_resistance": "tolerance_capacity_with_actual_clothing_wetness_and_saved_exposure_debt_not_peak_immunity",
+    "sleep": "real_safe_location_and_sim_time_reduces_fatigue_not_shader_or_menu_time",
+    "healing": "bounded_time_actual_nutrition_and_care_not_trait_edit",
+    "illness_model": "bounded_game_health_load_from_real_contaminated_food_wounds_parasites_or_contact_with_existing_infected_actor_no_random_plague",
+    "immune_gene": "changes_clearance_and_damage_rates_with_finite_species_caps",
+    "infectious_random_disaster": false,
+    "work_without_sufficient_real_energy": "slow_or_pause_no_free_output_when_hunger_damage_rule_off",
+    "missing_clothes_direct_death": false,
+    "appearance_or_camera_changes_state": false,
+    "state_unit_policy": "absolute fixed-point game units with species profile conversion coefficients locked by world content version",
+    "energy_sources": {
+      "maintenance_nonrecoverable": "finite initial or supported safety energy; may pay maintenance thermal movement and bounded direct foraging needed to obtain existing real food; cannot convert into gestation new biomass milk wool egg meat or transferable feed reserve",
+      "productive_real_food": "absorbed from uniquely consumed real food batch; may fund supported work gestation stored biomass or product conversion with finite yields and losses",
+      "lost_energy": "explicit thermal basal excretion or failed conversion loss never refund or ItemBatch"
+    },
+    "structural_product_conversion": "all product reserve formation requires productive real-food material/energy inputs, finite species yield limits and actual work/time; reserves reduced once on collection",
+    "health_load_types": [
+      {
+        "id": "food_contamination",
+        "labels": {
+          "zh-CN": "食物污染负担",
+          "en": "Food contamination load",
+          "de": "Nahrungsmittelbelastung"
+        },
+        "sources": [
+          "consumed_contaminated_food_batch"
+        ],
+        "gene_inputs": [
+          "immune_resistance",
+          "toxin_resistance"
+        ]
+      },
+      {
+        "id": "wound_infection",
+        "labels": {
+          "zh-CN": "伤口感染",
+          "en": "Wound infection",
+          "de": "Wundinfektion"
+        },
+        "sources": [
+          "actual_open_wound_and_existing_contamination"
+        ],
+        "gene_inputs": [
+          "immune_resistance",
+          "wound_recovery",
+          "clotting_capacity"
+        ]
+      },
+      {
+        "id": "parasite_load",
+        "labels": {
+          "zh-CN": "寄生负担",
+          "en": "Parasite load",
+          "de": "Parasitenbelastung"
+        },
+        "sources": [
+          "actual_infected_actor_contact",
+          "actual_contaminated_food_or_ground_resource"
+        ],
+        "gene_inputs": [
+          "immune_resistance",
+          "parasite_resistance"
+        ]
+      },
+      {
+        "id": "contact_infection",
+        "labels": {
+          "zh-CN": "接触感染",
+          "en": "Contact infection",
+          "de": "Kontaktinfektion"
+        },
+        "sources": [
+          "existing_infected_actor_real_contact_event"
+        ],
+        "gene_inputs": [
+          "immune_resistance"
+        ]
+      }
+    ],
+    "health_load_formula": {
+      "step": "bounded_increment_from_actual_dose_minus_species_and_genetic_clearance; damage only above versioned threshold with per_tick_maximum",
+      "sim_randomness": "if needed saved contact-domain counter never render_rng",
+      "transmission_requires": [
+        "existing_infected_source_ref",
+        "actual_contact_record_or_consumed_batch",
+        "species_susceptibility",
+        "current_allowed_health_rule"
+      ],
+      "no_spontaneous_seed_after_creation": true,
+      "initial_source": "optional_bounded_disclosed_creation_ecology_only_not_hidden_random_outbreak",
+      "care": "real_caregiver_time_clean_site_and_existing_consumed_care_items",
+      "quarantine": "actual_contact_and_movement_restriction_with_food_care_and_personhood_costs_not_instant_clear",
+      "disease_brush": "not_in_scope",
+      "full_modern_medical_tech_tree": false,
+      "transmission_rule": "infection_spread gates new actual-source contact transmission only; existing infection course nutrition immune recovery wounds and care continue"
+    },
+    "aging_model": {
+      "chronological_age": "elapsed saved SimTick since birth including time under aging rule off",
+      "maturation": "fixed_species_age_threshold independent_of_aging_damage_switch",
+      "biological_aging_work": "saved accumulation when aging consequence enabled; off never rolls age backward",
+      "lifespan_capacity": "species-bounded potential setting threshold and decline rates not an age overwrite or immortal flag",
+      "death": "bounded health decline plus saved aging-domain hazard after profile threshold, one actor death commit no abrupt replay for off interval",
+      "edit": "recompute future threshold rates but preserve actual age work injuries and health"
+    },
+    "pain_and_sleep": {
+      "pain_sensitivity": "subjective signal multiplier on actual injury and stress; modifies warning rest seeking and willingness to risky work but never structural damage ability or real health",
+      "sleep_requirement": "within species fixed envelope sets required restorative sim-time per biological day; increases actual sleep debt when unmet independently of Light/Darkness",
+      "rest_recovery_efficiency": "decreases saved sleep debt per actual safe rest work with real nutrition and site comfort; never resets fatigue health or age on gene edit",
+      "fatigue_recovery": "separate physical fatigue recovery with actual rest and energy; not a second duplicate sleep_debt converter",
+      "insufficient_sleep": "bounded attention reaction work and learning penalties no free skipped labour or sudden scripted death",
+      "episode_state": "saved actual start due work and last_tick; hidden screen menu paused shader and wall_clock do not create rest",
+      "low_pain_tradeoff": "fewer subjective alarms may allow unsafe decisions but actual damaged limb body load and task limits still apply",
+      "higher_rest_efficiency_tradeoff": "requires actual restorative time and adequate productive energy, has finite species ceiling"
+    },
+    "bootstrap_foraging": "initial maintenance can reach and directly consume existing legal food reserve; may not synthesize harvestable animal biomass or offspring reserve",
+    "fat_storage_interpretation": "fat_and_carbohydrate_storage_are_nonduplicated_subcompartments_of_productive_energy_from_real_food_total_not_an_extra_source; energy_storage_capacity_only_bounds_existing_real_energy",
+    "body_wetness_and_scheduler": "canonical_body_wetness_and_next_physiology_tick_saved_pause_load_does_not_dry_or_reschedule_for_free"
+  },
+  "animal_ecology": {
+    "initial_world_humans": 0,
+    "initial_world_buildings": 0,
+    "blank_initial_animals": 0,
+    "earth_initial_animals": "optional_explicit_bounded_creation_preview_with_first_save_provenance",
+    "spontaneous_animal_creation_after_world_publish": false,
+    "later_animal_sources": [
+      "player_animal_placement",
+      "lawful_birth"
+    ],
+    "density_or_extinction_refills_entities": false,
+    "habitat_uses": [
+      "current_terrain_support",
+      "water_and_depth",
+      "altitude_and_high_peak_exclusion",
+      "temperature",
+      "mechanical_food_stock",
+      "nest_or_rest_cover"
+    ],
+    "soil_theme_alone_grants_food": false,
+    "decorative_grass_flowers_reeds_leaves_edible": false,
+    "forage": "GroundResourceRef finite_production_stock_attached_to_habitat_not_decoration_instance",
+    "nectar_and_pollen": "actual_tree_bloom_or_cultivated_crop_batch_not_decorative_flowers",
+    "predation": "actual_target_tracking_route_attack_and_consumption_of_available_biomass",
+    "sapient_person_target_as_livestock": false,
+    "wild_food_usage": "reserve_or_consume_real_stock_by_saved_quantity_no_duplicate_ground_and_actor_batch",
+    "forage_regrowth": "habitat_capacity_fertility_moisture_sim_tick_bounded_remainder_no_lod_or_reload_refill",
+    "social_groups": [
+      "nest",
+      "herd",
+      "pack",
+      "colony"
+    ],
+    "group_is_actor": false,
+    "bee_policy": "small_bounded_game_population_each_live_bee_has_stable_ActorId_colony_organizes_without_hidden_unlimited_members",
+    "pollination": "bounded_visit_to_real_bloom_capacity_changes_future_real_fruit_or_crop_work_not_instant_stock",
+    "livestock_ownership": "ordinary_non_sapient_legal_animal_title_separate_custodian_and_location_no_mount_asset",
+    "animal_death": "keep_identity_and_cause_transfer_only_saved_recoverable_reserves_to_carcass_once",
+    "carcass": "finite_decay_and_resource_batches_actual_butchery_path_tools_work_and_rights",
+    "sapient_body": "civil_death_and_estate_rules_no_automatic_livestock_processing",
+    "colony_birth_exception": "bee_species_uses_fixed_queen_role_and_recorded_parentage_under_same_energy_capacity_and_rule_gates_no_spontaneous_members",
+    "bee_reproductive_role_changes_by_gene_editor": false,
+    "forage_alias": "ForagePatch is GroundResourceRef forage subtype; one authoritative reserve, not separate duplicate stock",
+    "bee_reproductive_roles": [
+      "queen",
+      "worker",
+      "drone"
+    ],
+    "bee_each_role_has_same_species": "genetics and breeding role are separate immutable supported reproductive-role fields; no extra species per role",
+    "species_death_or_spawn_fills_resources": false,
+    "predation_rule": "animal_predation gates new ordinary-animal hunt initiation only; no retroactive prey restoration or biomass refund, sapient violence follows civil/war rules",
+    "vegetation_rule": "wild_vegetation_recovery gates new wild sapling candidates; existing tree bloom fruit and agriculture remain actual finite production"
+  },
+  "breeding": {
+    "human_adulthood_years": 18,
+    "human_gene_may_lower_adult_age": false,
+    "animal_biological_maturity": "fixed_species_definition_not_gene_editor",
+    "sapient_animal_adulthood": "fixed_species_biological_maturity_and_cognitive_maturity_assessment_no_universal_18_year_delay",
+    "newborn_body": "species_adult_envelope_with_age_zero_no_juvenile_scaling",
+    "allowed_modes": [
+      "live_birth",
+      "egg"
+    ],
+    "parthenogenesis_split_and_monster_birth": "not_in_original_species_catalogue",
+    "preconditions": [
+      "same_species",
+      "alive",
+      "biological_maturity",
+      "reproductive_health",
+      "actual_nutrition",
+      "current_rule",
+      "actual_contact",
+      "lawful_person_consent_if_sapient",
+      "nest_or_maternal_support",
+      "capacity_reservation"
+    ],
+    "ledger": "productive_parent_nutrition_to_embryo_or_egg_reserve_then_birth_no_adult_meat_award",
+    "fertility_gene_guarantees_birth": false,
+    "gestation_and_hatch": "saved_sim_tick_due_time_remaining_work_embryo_identity_and_parent_genome_snapshot",
+    "reproduction_off": "reject_new_pairing_and_conception_existing_committed_gestation_and_eggs_continue_without_clock_freeze_or_deletion",
+    "parent_death_or_nest_destruction": "explicit_loss_or_supported_existing_egg_survival_never_free_replacement_birth",
+    "terrain_destroys_nest": "same_damage_transaction_consumes_or_preserves_actual_embryo_reserve_and_records_loss",
+    "unfertilized_egg_goods_vs_live_egg": "same_reserve_unique_identity_mutually_exclusive_consumption_or_hatch",
+    "body_presence_is_harvestable_mass": false,
+    "new_conception_rule_gates": {
+      "human": [
+        "civ_reproduction"
+      ],
+      "ordinary_animal": [
+        "animal_reproduction"
+      ],
+      "sapient_animal": [
+        "civ_reproduction",
+        "animal_reproduction"
+      ]
+    },
+    "rule_at_conception_is_snapshotted": true,
+    "valid_pending_birth_ignores_new_conception_switch": true,
+    "breeding_roles": "fixed species reproductive role fields; no role change by gene editor or civic gender label",
+    "human_biological_birth_and_legal_family_roles_separate": true,
+    "gestation_clock_bound": "conception snapshots species/profile duration and work rate version; later parent/subspecies edits may affect maternal support but cannot reset pregnancy to free full progress or rewrite due clock",
+    "existing_reserved_birth_after_population_limit_reduction": "honor existing birth reservation with explicit over_limit state; new conception blocked",
+    "newborn_care": "actual existing caregiver time warmth and consumed suitable real food; no caregiver or milk inventory created at birth"
+  },
+  "civilization_light": {
+    "id": "civilization_light",
+    "labels": {
+      "zh-CN": "文明之光",
+      "en": "Light of Civilization",
+      "de": "Licht der Zivilisation"
+    },
+    "command": "AwakenAnimals",
+    "source": "explicit_player_brush_only",
+    "selection": "existing_alive_non_sapient_animal_ActorIds_with_authoritative_position_in_preview_volume",
+    "opaque_closed_interior": "excluded_and_explained_in_preview",
+    "water": "may_reach_submerged_valid_animal_positions_without_changing_water_or_drowning_rules",
+    "parents_and_newborns": "age_preserved_no_forced_adulthood",
+    "visual": "solemn_warm_beam_from_sky_soft_edges_no_symbol_clutter_visual_only_after_commit",
+    "scope_comes_from_effect_particle": false,
+    "effects": [
+      "set_irreversible_sapience",
+      "attach_civil_person_facet_to_same_ActorId",
+      "release_livestock_ownership_and_invalid_processing_reservations",
+      "preserve_held_goods_and_revalidate_old_animal_jobs",
+      "record_awaken_event_and_ancestry",
+      "initialize_empty_civic_learning_facets_only_when_not_preexisting_no_actual_memory_erasure"
+    ],
+    "grants": [
+      "advanced_consciousness_and_general_civil_learning_capability"
+    ],
+    "does_not_grant": [
+      "new_body",
+      "age_reset",
+      "health",
+      "energy",
+      "goods",
+      "money",
+      "CultureId",
+      "LanguageId",
+      "formal_name",
+      "StateId",
+      "citizenship",
+      "religion",
+      "prophet_status",
+      "job",
+      "skill",
+      "technology"
+    ],
+    "offspring_inheritance": {
+      "choice_status": "new_design_decision_not_user_verbatim",
+      "condition": "at_least_one_recorded_same_species_parent_sapient_at_conception",
+      "result": "sapient_child_at_lawful_birth_age_zero",
+      "changes_current_siblings_or_subspecies": false,
+      "after_conception_parent_uplift_changes_fetus": false,
+      "not_gene_or_subspecies_editable": true,
+      "fertilized_egg_or_gestation_predates_uplift": "keeps_recorded_predicted_sapience_false_child_may_receive_light_later"
+    },
+    "cultural_constraints": {
+      "new_primary_culture_root_language_founder": "human_only",
+      "new_secondary_culture_founder": "human_only",
+      "new_language_split_founder": "human_only",
+      "learn_join_transmit_teach_research_govern": "allowed_like_human_after_real_qualification",
+      "unlearned_formal_communication": "pre_cultural_signals_and_saved_greek_code_display_not_auto_language_entity",
+      "species_expression": "authored_species_compatible_symbolic_signal_channels_under_shared_formal_language_skill_no_body_organ_transformation",
+      "cultural_group_can_form_without_human_founder": false,
+      "pure_awakened_group": "can_form_pre_cultural_settlement_state_but_waits_for_real_human_cultural_contact",
+      "isolated_learned_animal_community": "retains_and_transmits_existing_CultureIds_and_LanguageIds_no_new_root_or_branch_entity"
+    },
+    "personhood": "cannot_be_owned_as_livestock_or_sold_as_person_no_refund_for_divine_conversion",
+    "repeat_receipt": "idempotent_no_repeated_rewards",
+    "reversal": "not_supported_no_devolve_or_species_switch_brush",
+    "traits_editor_can_set_sapience": false,
+    "all_other_civil_qualifications_equal": "same CivicAgent rules and species maturity; formal job or office still checks real language skill charter tools and route, never generic species ban",
+    "livestock_contracts": "stop slaughter/forced breeding/product seizure reservations, preserve already transferred goods and actual debts, revalidate optional voluntary person contracts after capability and consent",
+    "world_rule": null,
+    "tool_permission_interface": {
+      "authority": "explicit_player_capability_and_general_tool_permission",
+      "metacontrol_rule": "restrict_god_tools_during_metacontrol",
+      "standalone_civilization_light_world_law": false,
+      "inactive_permission": "reject_command_before_side_effects_no_loss_of_existing_sapience"
+    }
+  },
+  "removed_private_horse_system": {
+    "user_required": [
+      "private_horse_MountAsset",
+      "household_horse_purchase",
+      "private_horse_parking_stable_slot",
+      "private_horse_rental_contract"
+    ],
+    "additional_new_design_retirement": [
+      "all_riding_jobs",
+      "mounted_cavalry_variant",
+      "horse_power_carriage_or_freight_recipe"
+    ],
+    "live_horse_species_retained": true,
+    "live_horse_is_vehicle": false,
+    "replacement": "real_people_foot_transport_then_allowed_original_non_animal_vehicles_and_boats_no_free_upgrade",
+    "historical_horse_catalogue_entries": "historical_source_only_not_runtime_catalogue"
+  },
+  "world_rules_interface": [
+    "civ_reproduction",
+    "animal_reproduction",
+    "aging",
+    "hunger_consequences",
+    "thermal_consequences",
+    "wild_vegetation_recovery",
+    "animal_predation",
+    "infection_spread",
+    "actor_population_limit",
+    "species_population_limits",
+    "subspecies_population_limits",
+    "subspecies_catalogue_limit",
+    "restrict_god_tools_during_metacontrol"
+  ],
+  "ui": {
+    "global_buttons": "bottom_section_bar",
+    "labels_locales": [
+      "zh-CN",
+      "en",
+      "de"
+    ],
+    "panels": [
+      "actor",
+      "species_read_only",
+      "subspecies",
+      "genome",
+      "genealogy",
+      "herd_or_pack_or_colony",
+      "forage_stock",
+      "carcass",
+      "animal_products"
+    ],
+    "links": [
+      "actor_to_species_subspecies_family_and_current_state",
+      "subspecies_to_members_gene_pool_parent_branch_and_distribution",
+      "gene_to_capacity_food_cold_routes_and_inherited_alleles",
+      "colony_to_real_members_and_product_batch"
+    ],
+    "editable_fields_marked_before_draft": true,
+    "species_page_editor": false,
+    "genome_display": "linked_game_gene_groups_parent_alleles_and_species_bounds_not_real_scientific_chromosome_map",
+    "comparison": "matched_species_domains_and_units_no_unqualified_cross_species_numeric_rank",
+    "batch_edit": "exact_selection_effects_and_losses_one_commit",
+    "unnecessary_small_text": false,
+    "bordered_buttons": false
+  },
+  "persistence": {
+    "required": [
+      "actor_origin_identity_age_life_status",
+      "species_version_subspecies_revision_membership",
+      "two_parent_genome_and_conception_snapshot",
+      "shared_profile_and_branch_history",
+      "sapience_event_inheritance_source",
+      "absolute_physiology_and_nonrecoverable_energy_source",
+      "pregnancy_eggs_nests_due_work_reservations",
+      "product_reserves_food_converters_and_loss_receipts",
+      "group_member_refs",
+      "civil_links_genesis_eligibility_and_actual_language_culture_skills",
+      "illness_loads_and_sources",
+      "forage_bloom_carcass_stocks_growth_remainders",
+      "jobs_rules_deterministic_counters",
+      "body_wetness",
+      "next_physiology_tick"
+    ],
+    "reconstructed_only": [
+      "gene_ui_diagram",
+      "pixel_mesh_lod",
+      "civilization_light_beam",
+      "animal_idle_animation",
+      "sound_proxy"
+    ],
+    "load_restock_reset_health_or_generate_members": false
+  },
+  "acceptance_scenarios": [
+    {
+      "id": "L01",
+      "scenario": "rabbit_all_trait_max_vs_cow_all_trait_min",
+      "expected": "rabbit_unloaded_ground_speed_above_cow_species_max_but_cow_supported_load_above_rabbit_species_max"
+    },
+    {
+      "id": "L02",
+      "scenario": "edit_species_id_caps_diet_or_body_in_any_editor",
+      "expected": "reject_before_commit_no_species_or_body_mutation"
+    },
+    {
+      "id": "L03",
+      "scenario": "raise_health_energy_cold_capacities_while_wounded_starving_and_cold",
+      "expected": "no_health_or_energy_award_no_exposure_debt_reset_only_future_capacity_rates_change"
+    },
+    {
+      "id": "L04",
+      "scenario": "shared_subspecies_profile_edit_with_one_member_dying_after_preview",
+      "expected": "stale_preview_rejected_or_fresh_exact_repreview_no_partial_member_update"
+    },
+    {
+      "id": "L05",
+      "scenario": "human_player_placement_and_human_birth",
+      "expected": "18_and_0_years_same_adult_body_only_authorized_origins"
+    },
+    {
+      "id": "L06",
+      "scenario": "light_on_old_cow_with_held_goods_ownership_and_pregnancy",
+      "expected": "same_actor_age_goods_damage_genome_pregnancy_snapshot_civil_person_facet_no_refund"
+    },
+    {
+      "id": "L07",
+      "scenario": "light_same_receipt_twice_or_edit_subspecies_sapience",
+      "expected": "idempotent_one_event_or_reject_sapience_edit_no_other_members_uplift"
+    },
+    {
+      "id": "L08",
+      "scenario": "sapient_rabbit_one_parent_at_conception_same_species_birth",
+      "expected": "age_zero_sapient_child_no_new_Culture_or_Language_entity"
+    },
+    {
+      "id": "L09",
+      "scenario": "only_awakened_animals_alone_for_many_generations",
+      "expected": "pre_cultural_cooperation_and_survival_no_genesis_no_language_branch"
+    },
+    {
+      "id": "L10",
+      "scenario": "awakened_animal_real_contact_with_human_teacher",
+      "expected": "learn_existing_language_join_existing_culture_then_work_teach_invent_or_govern_when_qualified"
+    },
+    {
+      "id": "L11",
+      "scenario": "maximum_climb_and_flight_trait_peak_route_or_divine_destination",
+      "expected": "universal_peak_rejection_no_species_exemption"
+    },
+    {
+      "id": "L12",
+      "scenario": "spawn_animal_then_immediately_butcher_milk_shear_or_collect_egg",
+      "expected": "zero_harvestable_product_at_spawn_initial_energy_not_convertible_to_goods"
+    },
+    {
+      "id": "L13",
+      "scenario": "graze_decorative_grass_or_collect_nectar_from_decorative_flower",
+      "expected": "not_a_food_target_no_stock_gain"
+    },
+    {
+      "id": "L14",
+      "scenario": "fruit_herd_bee_honey_and_sheep_wool_save_reload_same_tick",
+      "expected": "same_absolute_reserves_no_restock_camera_independent_growth"
+    },
+    {
+      "id": "L15",
+      "scenario": "same_species_cross_subspecies_or_different_species_breeding",
+      "expected": "first_allowed_with_saved_parent_alleles_second_rejected_no_hybrid"
+    },
+    {
+      "id": "L16",
+      "scenario": "destroy_nest_or_disable_reproduction_before_hatch",
+      "expected": "nest_damage_records_actual_loss_or_supported_survival_while_new_conception_switch_off_preserves_existing_birth_no_duplicate_egg"
+    },
+    {
+      "id": "L17",
+      "scenario": "disable_hunger_or_thermal_consequences_then_reenable",
+      "expected": "actual_energy_and_debts_persist_no_free_work_or_retroactive_damage_burst"
+    },
+    {
+      "id": "L18",
+      "scenario": "herd_subspecies_extinction_and_automatic_classification_split",
+      "expected": "archive_refs_and_provenance_no_recreated_life_or_trait_reward"
+    },
+    {
+      "id": "L19",
+      "scenario": "transport_catalogue_query_or_horse_selection",
+      "expected": "no_MountAsset_private_purchase_horse_slot_cavalry_or_horse_power_vehicle"
+    },
+    {
+      "id": "L20",
+      "scenario": "trait_batch_cold_ramp_ownership_and_language_commit_cancel_or_late_result",
+      "expected": "no_partial_change_cancel_preserves_previous_world_generation_isolation"
+    },
+    {
+      "id": "L21",
+      "scenario": "lower_pain_and_sleep_gene_while_wounded_exhausted_or_mid_sleep_then_reload",
+      "expected": "pain_signal_changes_only_from_real_damage_no_injury_or_sleep_debt_clear_actual_rest_time_and_task_limits_persist"
+    },
+    {
+      "id": "L22",
+      "scenario": "high_peak_actor_gene_flight_edit_and_tree_with_fruit_on_peak",
+      "expected": "living_mobile_actor_cannot_reach_peak_but_tree_subject_to_real_habitat_no_forced_tree_deletion_or_free_harvest"
+    }
+  ],
+  "evidence_boundary": "specification_registry_not_running_genetic_animal_thermal_or_uplift_evidence",
+  "maturity_interface": {
+    "predicate": "IsCivilAdult(ActorRef)",
+    "inputs": [
+      "alive",
+      "sapient",
+      "age",
+      "species.biological_maturity_game_years",
+      "cognitive_maturity_completed"
+    ],
+    "rule": "alive && sapient && age >= fixed_species_maturity && cognitive_maturity_completed",
+    "human_maturity_game_years": 18,
+    "placed_adult_human_cognitive_maturity": true,
+    "adult_animal_uplift_cognitive_maturity": true,
+    "sapient_animal_newborn_cognitive_maturity": "normal_progress_at_species_maturity_no_language_or_culture_prerequisite",
+    "skills_or_personality_gene_may_redefine_legal_adulthood": false,
+    "predicted_sapience": "saved_at_conception_true_if_either_same_species_parent_already_sapient"
+  },
+  "design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "interfaces": {
+    "terrain": "data/contracts/terrain_access_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "surface": "data/contracts/surface_ecology.json"
+  }
+}

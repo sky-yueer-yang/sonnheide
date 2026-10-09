@@ -1,0 +1,3787 @@
+{
+  "schema_version": 1,
+  "design_version": "0.8",
+  "date": "2026-10-09",
+  "status": "approved_scope_design_not_implementation",
+  "research_source": "WORLDBOX_FULL_COMPARISON_2026-10-09.json",
+  "research_baseline_commit": "b13f01890053bd58609af3366883c93ebef18e22",
+  "worldbox_facts_not_inferred_from_our_design": true,
+  "all_research_rows_disposed": true,
+  "count": 248,
+  "decision_counts": {
+    "adopt": 102,
+    "adapt": 59,
+    "retain": 63,
+    "exclude": 15,
+    "evidence_boundary": 9
+  },
+  "sources": {
+    "S01": {
+      "title": "官方平台版本表与Changelog",
+      "url": "https://www.superworldbox.com/changelog",
+      "authority": "official"
+    },
+    "S02": {
+      "title": "2026-06-07 Meta Control/ChessBox开发预告",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/669491979075191190",
+      "authority": "official"
+    },
+    "S03": {
+      "title": "2025-06-12 Monolith 0.50.5正式发布",
+      "url": "https://store.steampowered.com/news/app/1206560/view/523093274068519300",
+      "authority": "official"
+    },
+    "S04": {
+      "title": "2025-09-11 ArmyBox 0.51.0正式发布",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/523101526048114584",
+      "authority": "official"
+    },
+    "S05": {
+      "title": "2025-04-14 Metalith 0.50.4补丁，当时开放beta",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1796631172372502",
+      "authority": "official"
+    },
+    "S06": {
+      "title": "2024-08-12 Culture/Subspecies/Genes预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/4372517795037234444",
+      "authority": "official"
+    },
+    "S07": {
+      "title": "2023-12-26 Families/Genealogy/Graphs预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/3890611710917417278",
+      "authority": "official"
+    },
+    "S08": {
+      "title": "2024-10-15 Royal Clans预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/4545912358019453882",
+      "authority": "official"
+    },
+    "S09": {
+      "title": "2025-03-12 Monolith/Brain/新UI预告",
+      "url": "https://store.steampowered.com/news/app/1206560/view/509574242369537672",
+      "authority": "official"
+    },
+    "S10": {
+      "title": "2023-12-04 Species/Subspecies/Biomes预告，含撤回段落",
+      "url": "https://store.steampowered.com/news/app/1206560/view/3905246507035128778",
+      "authority": "official"
+    },
+    "S11": {
+      "title": "2023-03-12 MegaBox 0.21正式发布",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/3682294225186994229",
+      "authority": "official"
+    },
+    "S12": {
+      "title": "2022-05-25 EverythingBox 0.14正式发布",
+      "url": "https://store.steampowered.com/news/app/1206560/view/3332113352303687598",
+      "authority": "official"
+    },
+    "S13": {
+      "title": "2024-12-01 Languages/Books/Learning预告",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1784506359118256",
+      "authority": "official"
+    },
+    "S14": {
+      "title": "0.50.6 Stone Polishing，Steam News UTC 2025-07-01",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/523095184762733160",
+      "authority": "official"
+    },
+    "S15": {
+      "title": "官方首页与产品说明",
+      "url": "https://www.superworldbox.com/",
+      "authority": "official"
+    },
+    "S16": {
+      "title": "官方FAQ：存载/云存档/分享/单人",
+      "url": "https://www.superworldbox.com/faq",
+      "authority": "official"
+    },
+    "S17": {
+      "title": "Steam商店功能标识",
+      "url": "https://store.steampowered.com/app/1206560/WorldBox__God_Simulator/",
+      "authority": "official"
+    },
+    "S18": {
+      "title": "官方Steam News API：完整正文/UTC日期",
+      "url": "https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=1206560&count=100&maxlength=0&format=json",
+      "authority": "official"
+    },
+    "S19": {
+      "title": "2021-12-18 Santa’s Workshop正式公告",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/4452369268781701217",
+      "authority": "official"
+    },
+    "S20": {
+      "title": "社区维护Powers目录，仅作待核验线索",
+      "url": "https://the-official-worldbox-wiki.fandom.com/wiki/Powers",
+      "authority": "community_clue_only"
+    },
+    "S21": {
+      "title": "社区维护Biomes目录，仅作待核验线索",
+      "url": "https://the-official-worldbox-wiki.fandom.com/wiki/Category%3ABiomes",
+      "authority": "community_clue_only"
+    },
+    "S22": {
+      "title": "2022-06-17 Trait Rain 0.14.1正式发布",
+      "url": "https://steamcommunity.com/games/1206560/announcements/detail/6023016145981848154",
+      "authority": "official"
+    }
+  },
+  "dispositions": [
+    {
+      "research_id": "F001",
+      "feature": "元对象锁定控制",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adopt",
+      "reason": "可锁定真实元对象，控制租约/成员范围可见；WorldBox此项仍是预告。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F001"
+    },
+    {
+      "research_id": "F002",
+      "feature": "可控成员范围",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adopt",
+      "reason": "成员动态加入/退出及拒绝原因，不能凭元对象控制刷人口。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F002"
+    },
+    {
+      "research_id": "F003",
+      "feature": "群体移动/建造/砍树",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adapt",
+      "reason": "群体命令转现有任务/实际送料/采伐；楼体仍自动建造无砌筑人物。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F003"
+    },
+    {
+      "research_id": "F004",
+      "feature": "所属视野战雾",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adopt",
+      "reason": "可选真实成员视野战雾，雾外仿真不停。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F004"
+    },
+    {
+      "research_id": "F005",
+      "feature": "只查看元对象视野",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adopt",
+      "reason": "选择元对象知情视图，不改变全知默认。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F005"
+    },
+    {
+      "research_id": "F006",
+      "feature": "ChessBox限制神力",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adapt",
+      "reason": "可选限制神力控制模式，不做竞技地图库/多人ChessBox。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F006"
+    },
+    {
+      "research_id": "F007",
+      "feature": "发现国家后外交",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adopt",
+      "reason": "受限视野模式外交依实际发现/知情关系。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F007"
+    },
+    {
+      "research_id": "F008",
+      "feature": "单位附身",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "同Actor附身/移动/交互/退出，无能力通行物权豁免。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F008"
+    },
+    {
+      "research_id": "F009",
+      "feature": "Brain观察",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S09",
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "Brain显示真实决策评分/任务/拒绝原因。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F009"
+    },
+    {
+      "research_id": "F010",
+      "feature": "禁用行为/设为无心智",
+      "research_section": "01 元控制、附身与观察视角",
+      "worldbox_references": [
+        "S09",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "暂停AI行为类/手动租约，不抹除意识或停止生理。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F010"
+    },
+    {
+      "research_id": "F011",
+      "feature": "城市/国家边界画笔",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S05",
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "辖区与跨国主权双模式，变化有完整预览。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F011"
+    },
+    {
+      "research_id": "F012",
+      "feature": "边界桶填充",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "边界桶只填无争议连续辖区，不跨他国/他城。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F012"
+    },
+    {
+      "research_id": "F013",
+      "feature": "跨现有边界重画",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "跨界画笔明示神意或真实条约，不伪造同意/转物权。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F013"
+    },
+    {
+      "research_id": "F014",
+      "feature": "边界选择/悬停",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "地图政治图层拾取/悬停/关系页。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F014"
+    },
+    {
+      "research_id": "F015",
+      "feature": "国家/城市/单位三视图",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "国家/城市/主体分布视图，名字与区域独立。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F015"
+    },
+    {
+      "research_id": "F016",
+      "feature": "改名和前名",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S01",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "前名/改名tick/当时名称/稳定Ref保存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F016"
+    },
+    {
+      "research_id": "F017",
+      "feature": "旗帜/主题色展示",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "保13模板23色/国家theme规则，不复制WB旗图。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F017"
+    },
+    {
+      "research_id": "F018",
+      "feature": "城市创始人",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "真实城市创始者及建城事件，不用名字作引用。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F018"
+    },
+    {
+      "research_id": "F019",
+      "feature": "历任国王/领袖",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "历任统治者/任期/死档/继位原因互通。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F019"
+    },
+    {
+      "research_id": "F020",
+      "feature": "城市忠诚与叛乱",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "实际税粮权利与继位冲突产生忠诚/反叛，不刷叛军。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F020"
+    },
+    {
+      "research_id": "F021",
+      "feature": "废城/遗迹衰退",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "废城/遗迹保实体残骸与历史，衰退不回补物资。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D14",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F021"
+    },
+    {
+      "research_id": "F022",
+      "feature": "自主扩张/定居/建城",
+      "research_section": "02 城市、国家与疆域编辑",
+      "worldbox_references": [
+        "S15",
+        "S12"
+      ],
+      "decision": "retain",
+      "reason": "真实已有居民/资源/许可自主建设，禁止自动刷新创始人。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D14",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F022"
+    },
+    {
+      "research_id": "F023",
+      "feature": "多个智慧物种",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S15",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "人类＋玩家启智动物及合法后代；不搬精灵兽人怪物。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D10",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F023"
+    },
+    {
+      "research_id": "F024",
+      "feature": "Species/Subspecies分层",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S03",
+        "S06"
+      ],
+      "decision": "adopt",
+      "reason": "固定Species/可编辑Subspecies/个体Genome分层。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F024"
+    },
+    {
+      "research_id": "F025",
+      "feature": "同物种多个亚种",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S03",
+        "S06"
+      ],
+      "decision": "adopt",
+      "reason": "同物种多亚种差异在固定包络内。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F025"
+    },
+    {
+      "research_id": "F026",
+      "feature": "亚种名称/详情/编辑",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S06",
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "亚种名/谱系/共享修饰/全成员后果预览。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F026"
+    },
+    {
+      "research_id": "F027",
+      "feature": "taxonomy分类学显示",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "固定实用species分类目录与谱系，不凭taxonomy名称获得属性。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F027"
+    },
+    {
+      "research_id": "F028",
+      "feature": "智慧/非智慧分栏",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "普通动物/高级意识/人类可筛分但共用Actor。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F028"
+    },
+    {
+      "research_id": "F029",
+      "feature": "基因编辑器",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S06",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "typed遗传编辑与锁定物种上下限。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F029"
+    },
+    {
+      "research_id": "F030",
+      "feature": "基因池/染色体展示",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S01",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "亲代/等位组合/基因池与表型差异；不假称WB内部公式。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F030"
+    },
+    {
+      "research_id": "F031",
+      "feature": "基因影响数值属性",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04",
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "力量、耐寒、耐饿、代谢、感知、学习等落真实生理。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F031"
+    },
+    {
+      "research_id": "F032",
+      "feature": "遗传寿命",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "寿命/衰老基因有界，编辑不重置已活时间。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F032"
+    },
+    {
+      "research_id": "F033",
+      "feature": "亲代性状继承",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S03",
+        "S05"
+      ],
+      "decision": "adopt",
+      "reason": "亲代来源、组合、有界突变和保存随机流。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F033"
+    },
+    {
+      "research_id": "F034",
+      "feature": "表型/外观遗传",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "像素外观遗传受固定身体profile约束。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F034"
+    },
+    {
+      "research_id": "F035",
+      "feature": "亚种分化/演化",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S09",
+        "S03",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "有真实谱系差异才能分化，非出生数升级获魔法traits。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F035"
+    },
+    {
+      "research_id": "F036",
+      "feature": "同物种跨亚种繁衍",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04",
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "同species跨亚种繁育，归属与亲代证据确定。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F036"
+    },
+    {
+      "research_id": "F037",
+      "feature": "亚种人口上限",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "新增配额而非到限杀人/停止既有个体。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F037"
+    },
+    {
+      "research_id": "F038",
+      "feature": "Monolith启智",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S09",
+        "S03",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "文明之光取代Monolith；不进化换体或自动生成文化语言。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D10",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F038"
+    },
+    {
+      "research_id": "F039",
+      "feature": "生境影响适应性状",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04",
+        "S01"
+      ],
+      "decision": "adapt",
+      "reason": "生境压力/存活与有界突变，不换主题立刻送适应gene。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F039"
+    },
+    {
+      "research_id": "F040",
+      "feature": "沙漠/沼泽/冻原适应",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "冷/热/湿地/沙地运动与生理分开，不等于免伤。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F040"
+    },
+    {
+      "research_id": "F041",
+      "feature": "耐热/防火特性",
+      "research_section": "03 物种、亚种、基因与表型",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "耐热有界生理保护，无fire-proof/熔岩免疫魔法。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D05",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F041"
+    },
+    {
+      "research_id": "F042",
+      "feature": "完整Unit trait体系",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S12",
+        "S11",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "遗传/训练/伤病/制度性状分域，不混一张buff表。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F042"
+    },
+    {
+      "research_id": "F043",
+      "feature": "增删个体性状",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S12"
+      ],
+      "decision": "adopt",
+      "reason": "增删允许遗传性状，不回满血/能量。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F043"
+    },
+    {
+      "research_id": "F044",
+      "feature": "批量特性雨",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S22",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "批量性状画笔逐成员后果，不免费加库存人口。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F044"
+    },
+    {
+      "research_id": "F045",
+      "feature": "性状发现/解锁",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "基因/知识百科与观察发现；不靠成就锁住必要编辑。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F045"
+    },
+    {
+      "research_id": "F046",
+      "feature": "经验/等级/能力",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S12",
+        "S01"
+      ],
+      "decision": "adapt",
+      "reason": "真实学习/训练/能力，不杀敌送全属性等级。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D18",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F046"
+    },
+    {
+      "research_id": "F047",
+      "feature": "饥饿/健康/战伤",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "实际摄入/能量/伤势/持续后果。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F047"
+    },
+    {
+      "research_id": "F048",
+      "feature": "冻结/燃烧/溺水状态",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "失温过热/落水/战伤，有真实源；静态炎地不自动灼烧。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F048"
+    },
+    {
+      "research_id": "F049",
+      "feature": "幼体到成年身体",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S04",
+        "S01"
+      ],
+      "decision": "exclude",
+      "reason": "用户要求全龄同成人体规，不建幼体缩放。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F049"
+    },
+    {
+      "research_id": "F050",
+      "feature": "物种成熟年龄差异",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S01"
+      ],
+      "decision": "adapt",
+      "reason": "人类18成年；动物按固定species成熟，身体仍成人规格。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F050"
+    },
+    {
+      "research_id": "F051",
+      "feature": "衰老/自然死亡",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S11",
+        "S01"
+      ],
+      "decision": "retain",
+      "reason": "年龄与死亡事件，不因关闭后果清零年龄。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F051"
+    },
+    {
+      "research_id": "F052",
+      "feature": "妊娠/孕期",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "孕期/营养/到期/父母证据保存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F052"
+    },
+    {
+      "research_id": "F053",
+      "feature": "双亲有性繁衍",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S03",
+        "S01"
+      ],
+      "decision": "retain",
+      "reason": "合法双亲及真实来源，新受孕开关。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F053"
+    },
+    {
+      "research_id": "F054",
+      "feature": "卵生/孤雌/分裂等",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S09",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "按原生species胎生/卵生；不加魔法分裂/跨species繁殖。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F054"
+    },
+    {
+      "research_id": "F055",
+      "feature": "生育能力/限制",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "成熟/营养/间隔/预算与新增配额共同限制。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F055"
+    },
+    {
+      "research_id": "F056",
+      "feature": "伴侣/父母/子女",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S03",
+        "S01"
+      ],
+      "decision": "retain",
+      "reason": "生物父母/伴侣子女与法律家庭分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F056"
+    },
+    {
+      "research_id": "F057",
+      "feature": "朋友等细分关系",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S01",
+        "S09"
+      ],
+      "decision": "adopt",
+      "reason": "友谊/冲突/照料/师生等有真实关系事件。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F057"
+    },
+    {
+      "research_id": "F058",
+      "feature": "幸福/事件哀伤",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S04",
+        "S09"
+      ],
+      "decision": "adopt",
+      "reason": "幸福/哀伤影响实际偏好，不代替食物/法律。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F058"
+    },
+    {
+      "research_id": "F059",
+      "feature": "睡眠/休息",
+      "research_section": "04 单位性状、状态与生命周期",
+      "worldbox_references": [
+        "S04",
+        "S09"
+      ],
+      "decision": "adopt",
+      "reason": "真实休息恢复体力，需要时间不补物资。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F059"
+    },
+    {
+      "research_id": "F060",
+      "feature": "动物物种与放置",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S15",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "固定species动物及玩家放置，原生角色目录。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F060"
+    },
+    {
+      "research_id": "F061",
+      "feature": "自主繁育/幼体",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "真实繁育、出生0，固定成人体规无幼体缩放。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F061"
+    },
+    {
+      "research_id": "F062",
+      "feature": "草食/肉食/杂食",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "食性/消化/口粮实际有差别。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F062"
+    },
+    {
+      "research_id": "F063",
+      "feature": "捕食关系",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S01",
+        "S15"
+      ],
+      "decision": "adopt",
+      "reason": "真实局部捕食/猎物能量转移与避险。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F063"
+    },
+    {
+      "research_id": "F064",
+      "feature": "特殊生物食性",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S01",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "只原生动物实际食性，不加怪物酸/魔法食物。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F064"
+    },
+    {
+      "research_id": "F065",
+      "feature": "肉/骨/皮等产出",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "肉骨皮真实可回收reserve，神力放置不赠商品。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F065"
+    },
+    {
+      "research_id": "F066",
+      "feature": "蜂群/蜂巢/蜂蜜",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "群体蜂/巢/蜂蜜/服务有界且真实产出。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F066"
+    },
+    {
+      "research_id": "F067",
+      "feature": "动物Family与谱系",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S07",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "动物生物亲代谱系与普通/启智筛分。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F067"
+    },
+    {
+      "research_id": "F068",
+      "feature": "动物文明",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "完整意识、公民能力平等，仅文化/语言创生受限。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D10",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F068"
+    },
+    {
+      "research_id": "F069",
+      "feature": "生物疾病/传染",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S01"
+      ],
+      "decision": "adapt",
+      "reason": "真实感染源/免疫/护理/传染，不随机瘟疫天灾。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F069"
+    },
+    {
+      "research_id": "F070",
+      "feature": "亚种/Family消亡标记",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "亚种/Family数量0保档，固定Species不删。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F070"
+    },
+    {
+      "research_id": "F071",
+      "feature": "观察/干预动物行为",
+      "research_section": "05 动物生态、食性与生物产物",
+      "worldbox_references": [
+        "S03",
+        "S04",
+        "S09"
+      ],
+      "decision": "adopt",
+      "reason": "查看动物行为/附身/任务/启智，身体约束不失效。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F071"
+    },
+    {
+      "research_id": "F072",
+      "feature": "独立跨代Family",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S07",
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "跨代Family稳定Ref，预算Household独立。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F072"
+    },
+    {
+      "research_id": "F073",
+      "feature": "可视族谱",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S07",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "可视双亲/子代/收养/血缘图；不同关系不得合并。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F073"
+    },
+    {
+      "research_id": "F074",
+      "feature": "代际/祖先/家族史",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S07",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "代际、祖先、成员与档案可追溯。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F074"
+    },
+    {
+      "research_id": "F075",
+      "feature": "Family名称/颜色/标识",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S07",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "Family名字/颜色/标识可编辑，历史不改写。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F075"
+    },
+    {
+      "research_id": "F076",
+      "feature": "Family分布/灭绝",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "Family分布/消亡/当前与历史成员。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F076"
+    },
+    {
+      "research_id": "F077",
+      "feature": "Royal Clan实体",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S11",
+        "S08",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "Dynasty真实组织章程与继位资格，不照搬Clan魔法。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F077"
+    },
+    {
+      "research_id": "F078",
+      "feature": "宗族祖先/成员血统",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S08",
+        "S11"
+      ],
+      "decision": "adopt",
+      "reason": "王室血缘与合法成员登记分别存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F078"
+    },
+    {
+      "research_id": "F079",
+      "feature": "Clan traits编辑",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S08",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "王室组织偏好/允许章程编辑，不加血统经济军力buff。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F079"
+    },
+    {
+      "research_id": "F080",
+      "feature": "宗族统治图层/族长史",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "王室统治分布/族长与君主史/成员pins。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F080"
+    },
+    {
+      "research_id": "F081",
+      "feature": "宗族与忠诚/继任",
+      "research_section": "06 Family、Clan与统治血统",
+      "worldbox_references": [
+        "S11",
+        "S08"
+      ],
+      "decision": "adopt",
+      "reason": "明确长子序/选举/摄政，王室与忠诚有实际制度来源。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F081"
+    },
+    {
+      "research_id": "F082",
+      "feature": "独立Culture对象",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "Culture独立实体/多文化强度。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F082"
+    },
+    {
+      "research_id": "F083",
+      "feature": "文化traits/编辑",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S06",
+        "S03",
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "文化习惯制度traits按typed规则编辑，不改基因。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F083"
+    },
+    {
+      "research_id": "F084",
+      "feature": "独立Language对象",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "Language独立谱系/多对多文化。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F084"
+    },
+    {
+      "research_id": "F085",
+      "feature": "语言性状编辑",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S13",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "音系语法/学习负担/命名规范，与正式父源分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F085"
+    },
+    {
+      "research_id": "F086",
+      "feature": "小谈/传播/语言学习",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S13",
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "真实语言接触/学习；动物可学不可创。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F086"
+    },
+    {
+      "research_id": "F087",
+      "feature": "读书/保存文献知识",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S13",
+        "S01"
+      ],
+      "decision": "retain",
+      "reason": "书有载体/作者/语言/知识/真实阅读。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F087"
+    },
+    {
+      "research_id": "F088",
+      "feature": "书传播性状/能力",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S13",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "书授实际知识，不遗传buff/免费等级。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F088"
+    },
+    {
+      "research_id": "F089",
+      "feature": "独立Religion对象",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "玩家创建根、真实信仰与教会。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D12",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F089"
+    },
+    {
+      "research_id": "F090",
+      "feature": "宗教性状/仪式效果",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S01",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "教义/仪式改变真实行为和任务，不治伤/战斗法术。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D12",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F090"
+    },
+    {
+      "research_id": "F091",
+      "feature": "文化/语言/宗教分裂",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S03",
+        "S05"
+      ],
+      "decision": "retain",
+      "reason": "文化/语言/教派独立分化来源与资格。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F091"
+    },
+    {
+      "research_id": "F092",
+      "feature": "元对象共有traits",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S05",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "共用typed性状metadata，各领域不混基因/制度。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F092"
+    },
+    {
+      "research_id": "F093",
+      "feature": "命名/Onomastics",
+      "research_section": "07 文化、语言、宗教与文献",
+      "worldbox_references": [
+        "S09",
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "来源姓名/语言词根/前名保存可编辑显示名。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D11",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F093"
+    },
+    {
+      "research_id": "F094",
+      "feature": "Plans/Plots对象",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adopt",
+      "reason": "独立Plot计划对象/当事人/期限/目标/投入。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F094"
+    },
+    {
+      "research_id": "F095",
+      "feature": "计划列表/进度",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "阶段/进度/失败原因/任务互通。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F095"
+    },
+    {
+      "research_id": "F096",
+      "feature": "强制开战/友好神力",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "神意关系/开战有明确事件，不伪造签字或免费动员。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F096"
+    },
+    {
+      "research_id": "F097",
+      "feature": "独立Alliance对象",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "联盟/条约/成员/持续义务。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F097"
+    },
+    {
+      "research_id": "F098",
+      "feature": "联盟等级/加成",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "实际履约/合作统计替代无来源加成。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F098"
+    },
+    {
+      "research_id": "F099",
+      "feature": "War信息对象",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "独立War与参战/目标/结果。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F099"
+    },
+    {
+      "research_id": "F100",
+      "feature": "战争连线/战斗标记",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "战争关系线/实际交战点与selected图层。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F100"
+    },
+    {
+      "research_id": "F101",
+      "feature": "胜败与参战史",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "参战/胜败/损失史稳定引用。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F101"
+    },
+    {
+      "research_id": "F102",
+      "feature": "独立Army对象",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "单层Army现有人员/器材/补给。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F102"
+    },
+    {
+      "research_id": "F103",
+      "feature": "指挥/成员/任务栏",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "成员/主责城市/指挥/任务与补给页。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F103"
+    },
+    {
+      "research_id": "F104",
+      "feature": "多层Army组织",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "WorldBox多层Army未核实；Sonnheide明确只单层。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F104"
+    },
+    {
+      "research_id": "F105",
+      "feature": "城墙/城防",
+      "research_section": "08 外交、战争与军队",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "原创前现代防御墙门，真实材料与旧通路证书。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D14",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F105"
+    },
+    {
+      "research_id": "F106",
+      "feature": "地图点选meta",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "地图点选meta/近景主体/远景政治对象共用Ref。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F106"
+    },
+    {
+      "research_id": "F107",
+      "feature": "关系页互通",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04",
+        "S07"
+      ],
+      "decision": "retain",
+      "reason": "国籍/文化/语言/亲属/雇主/gene等点击关系互通。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F107"
+    },
+    {
+      "research_id": "F108",
+      "feature": "浏览返回历史",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "浏览返回历史保对象身份/草案。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F108"
+    },
+    {
+      "research_id": "F109",
+      "feature": "底部快速资料栏",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "底部快速信息与对象相关操作，所有全局工具底栏。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F109"
+    },
+    {
+      "research_id": "F110",
+      "feature": "多选单位/成员切换",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "多选真实单位/筛分成员/批量后果预览。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F110"
+    },
+    {
+      "research_id": "F111",
+      "feature": "实时任务条",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "实际任务条/阻碍/计划与对象页。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F111"
+    },
+    {
+      "research_id": "F112",
+      "feature": "meta成员地图pins",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "所选meta成员pins有预算与可关闭。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F112"
+    },
+    {
+      "research_id": "F113",
+      "feature": "Ctrl数字控制组",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "Ctrl+1—9存真实Ref，数字切控制组。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F113"
+    },
+    {
+      "research_id": "F114",
+      "feature": "快捷收藏",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "人/动物/物品/meta/标记快捷收藏。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F114"
+    },
+    {
+      "research_id": "F115",
+      "feature": "死亡/灭绝标识",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "死档/灭绝/后继与当前状态明确。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F115"
+    },
+    {
+      "research_id": "F116",
+      "feature": "搜索/列表/筛选",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S03",
+        "S07"
+      ],
+      "decision": "retain",
+      "reason": "搜索/筛选/排序/分类对象目录。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F116"
+    },
+    {
+      "research_id": "F117",
+      "feature": "Interesting Units页",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S07"
+      ],
+      "decision": "adopt",
+      "reason": "Interesting Actor按实际事件/风险/收藏解释排序，不瞎抽传奇buff。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F117"
+    },
+    {
+      "research_id": "F118",
+      "feature": "属性编辑",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S12",
+        "S06",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "typed编辑自由属性/程序性制度/不可改事实分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F118"
+    },
+    {
+      "research_id": "F119",
+      "feature": "常驻时间/世界入口",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "retain",
+      "reason": "时间/暂停/世界入口始终可从底栏到达。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F119"
+    },
+    {
+      "research_id": "F120",
+      "feature": "分区/图层开关",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04",
+        "S11"
+      ],
+      "decision": "retain",
+      "reason": "八分区工具及可选图层，禁止另一全局工具栏。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F120"
+    },
+    {
+      "research_id": "F121",
+      "feature": "名字/区域分开开关",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "名字/区域可独立显示，不以label控制国界。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F121"
+    },
+    {
+      "research_id": "F122",
+      "feature": "只突出收藏对象",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "仅突出收藏但未选世界正常仿真。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F122"
+    },
+    {
+      "research_id": "F123",
+      "feature": "极远景物种图标",
+      "research_section": "09 信息页、选择与编辑体验",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "远景species/人口分类图标与聚合计数。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F123"
+    },
+    {
+      "research_id": "F124",
+      "feature": "世界总览统计",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S11",
+        "S03"
+      ],
+      "decision": "retain",
+      "reason": "世界统计区分人/普通动物/高级意识，避免双算。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F124"
+    },
+    {
+      "research_id": "F125",
+      "feature": "meta独立统计",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "所有新旧meta自身统计与世界可比较。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F125"
+    },
+    {
+      "research_id": "F126",
+      "feature": "人口组成breakdown",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "文化/语言/宗教/物种/年龄组成同口径分解。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F126"
+    },
+    {
+      "research_id": "F127",
+      "feature": "跨对象比较图表",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S05",
+        "S03"
+      ],
+      "decision": "retain",
+      "reason": "跨对象同单位/期间/口径比较。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F127"
+    },
+    {
+      "research_id": "F128",
+      "feature": "长期历史曲线",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "长期历史低频采样，有缺口不伪造。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F128"
+    },
+    {
+      "research_id": "F129",
+      "feature": "图表变化量/数值提示",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "变化量/采样日期/真实数值提示。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F129"
+    },
+    {
+      "research_id": "F130",
+      "feature": "出生/死亡/迁入迁出",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "出生/死亡/实际迁入迁出有来源。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F130"
+    },
+    {
+      "research_id": "F131",
+      "feature": "战争/联盟资金声望",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "战争/盟约/资金/履历声望分域，无buff转钱。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F131"
+    },
+    {
+      "research_id": "F132",
+      "feature": "灭绝meta历史",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "灭绝对象保档与历史，不删固定species。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F132"
+    },
+    {
+      "research_id": "F133",
+      "feature": "历史事件回查",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S03",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "事件回查当时名/真实关系/稳定Ref。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F133"
+    },
+    {
+      "research_id": "F134",
+      "feature": "跨地图累计玩家统计",
+      "research_section": "10 统计、历史与比较",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adopt",
+      "reason": "本地跨World玩家履历，和单World人口库存分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F134"
+    },
+    {
+      "research_id": "F135",
+      "feature": "文明生育开关",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S12",
+        "S03"
+      ],
+      "decision": "retain",
+      "reason": "civ_reproduction门控新受孕；已有孕期继续。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F135"
+    },
+    {
+      "research_id": "F136",
+      "feature": "动物生育开关",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S12",
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "animal_reproduction门控新动物受孕；启智需两开关。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F136"
+    },
+    {
+      "research_id": "F137",
+      "feature": "人口/亚种限制",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "新增配额/亚种软限额，不删除既有成员。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F137"
+    },
+    {
+      "research_id": "F138",
+      "feature": "植物种子传播",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S12",
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "新野生幼株/生态种子恢复，不能刷木果库存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F138"
+    },
+    {
+      "research_id": "F139",
+      "feature": "矿物随机出现开关",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S12"
+      ],
+      "decision": "adapt",
+      "reason": "地下受控矿速率开关，真实采掘转库存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D18",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F139"
+    },
+    {
+      "research_id": "F140",
+      "feature": "文明组建士兵开关",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S12"
+      ],
+      "decision": "adopt",
+      "reason": "AI动员/组Army仅现有人/实际装备，不自动刷士兵。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F140"
+    },
+    {
+      "research_id": "F141",
+      "feature": "外交/新战争规则",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "AI外交与新战争分开，既有战争不消失。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F141"
+    },
+    {
+      "research_id": "F142",
+      "feature": "叛乱独立开关",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S11",
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "AI新反叛组织开关，既有债务/压迫/叛军保留。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F142"
+    },
+    {
+      "research_id": "F143",
+      "feature": "边界吞并规则",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "AI新扩张/边界吞并门控，玩家明确边界事务独立。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F143"
+    },
+    {
+      "research_id": "F144",
+      "feature": "特殊生物/魔法规则",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S05",
+        "S01"
+      ],
+      "decision": "exclude",
+      "reason": "怪物魔法灾变规则不符合原生多物种文明。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F144"
+    },
+    {
+      "research_id": "F145",
+      "feature": "地表保护/熔岩规则",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "Godterrain开关/生态规则；炎地静态熔岩不变流体灾害。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F145"
+    },
+    {
+      "research_id": "F146",
+      "feature": "规则顺序重排",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S03"
+      ],
+      "decision": "adopt",
+      "reason": "规则可收藏/展示重排，顺序不改变优先级。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F146"
+    },
+    {
+      "research_id": "F147",
+      "feature": "年龄/饥饿后果",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S01",
+        "D03"
+      ],
+      "decision": "retain",
+      "reason": "aging/hunger后果与实际年龄/能量分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F147"
+    },
+    {
+      "research_id": "F148",
+      "feature": "元控制规则",
+      "research_section": "11 World Laws全球规则",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adopt",
+      "reason": "元控制/限制视野可启用，但全知默认保留。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F148"
+    },
+    {
+      "research_id": "F149",
+      "feature": "地形/生态分离",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "S11"
+      ],
+      "decision": "retain",
+      "reason": "height/material/主题/Plant/decor分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F149"
+    },
+    {
+      "research_id": "F150",
+      "feature": "biome种子画笔",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "绘八主题生态/幼株，无果木商品复制。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F150"
+    },
+    {
+      "research_id": "F151",
+      "feature": "生态扩散/竞争",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "S11"
+      ],
+      "decision": "adopt",
+      "reason": "有界种子传播/适生竞争，不免费改整棵树species。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F151"
+    },
+    {
+      "research_id": "F152",
+      "feature": "生态生物/性状提示",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "生境页显兼容species、温度、食物/固定trait边界。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F152"
+    },
+    {
+      "research_id": "F153",
+      "feature": "树木采伐",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S01",
+        "D07"
+      ],
+      "decision": "retain",
+      "reason": "真实TreeRef采伐/预约/路程/木储。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F153"
+    },
+    {
+      "research_id": "F154",
+      "feature": "可采小植物/草药",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "纯装饰小植物不采；需食用草/药时独立机制资源/配方。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F154"
+    },
+    {
+      "research_id": "F155",
+      "feature": "持续果物/berries",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S04",
+        "D07"
+      ],
+      "decision": "retain",
+      "reason": "果树批次渐长/熟色/损耗/采收。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F155"
+    },
+    {
+      "research_id": "F156",
+      "feature": "生态相关矿物/食物",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "D01"
+      ],
+      "decision": "adapt",
+      "reason": "主题不能产矿/食物；资源/ForagePatch与地下源分别建账。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D18",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F156"
+    },
+    {
+      "research_id": "F157",
+      "feature": "农业/施肥神力",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12"
+      ],
+      "decision": "adapt",
+      "reason": "真实农业/肥料批次劳动，神力只能播零库存幼株。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F157"
+    },
+    {
+      "research_id": "F158",
+      "feature": "自然/幻想biome集合",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "八原创soil主题+干沙椰树，不复制糖果/腐化等全部WB生态。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F158"
+    },
+    {
+      "research_id": "F159",
+      "feature": "Age影响作物/植被",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S11",
+        "D10"
+      ],
+      "decision": "exclude",
+      "reason": "仅两种光环境Age，不给作物/基因时代buff。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F159"
+    },
+    {
+      "research_id": "F160",
+      "feature": "地形修改后人楼变化",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S12",
+        "D01"
+      ],
+      "decision": "retain",
+      "reason": "地形→支承/水路/人货/城市的同提交后果。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D05",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F160"
+    },
+    {
+      "research_id": "F161",
+      "feature": "水雨推动生态/作物",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "可编辑有界湿度用于真实植物；无凭空赠粮雨/新天气灾变。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F161"
+    },
+    {
+      "research_id": "F162",
+      "feature": "蜂授粉/花繁殖",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "真实蜂群授粉服务读机制Plant/农田，不把decor变库存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F162"
+    },
+    {
+      "research_id": "F163",
+      "feature": "特定生物死后生树花",
+      "research_section": "12 地表生态、植物与资源",
+      "worldbox_references": [
+        "S01"
+      ],
+      "decision": "adapt",
+      "reason": "尸体真实腐败/养分入账可促机制生态，不死即刷树花。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F163"
+    },
+    {
+      "research_id": "F164",
+      "feature": "空白世界",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S15",
+        "D01"
+      ],
+      "decision": "retain",
+      "reason": "Blank海/平陆二基础，不模板。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F164"
+    },
+    {
+      "research_id": "F165",
+      "feature": "程序地形模板库",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S12",
+        "S11"
+      ],
+      "decision": "exclude",
+      "reason": "用户明确不做程序世界模板库。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F165"
+    },
+    {
+      "research_id": "F166",
+      "feature": "世界尺寸/生成seed",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11",
+        "S17",
+        "D11"
+      ],
+      "decision": "retain",
+      "reason": "尺寸/预算/种子/固定profile，与镜头分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F166"
+    },
+    {
+      "research_id": "F167",
+      "feature": "噪声/多次细化参数",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "exclude",
+      "reason": "不做模板库对应噪声/多次细化生成面板。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F167"
+    },
+    {
+      "research_id": "F168",
+      "feature": "随机附加陆块",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "exclude",
+      "reason": "不自动附加随机大陆；玩家自由画地形。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F168"
+    },
+    {
+      "research_id": "F169",
+      "feature": "中心湖/陆/边缘形状",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "局部圆/方/线/带状画笔可做湖陆；无世界生成模板。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F169"
+    },
+    {
+      "research_id": "F170",
+      "feature": "群岛/大陆/圆环/棋盘等",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S12",
+        "S11"
+      ],
+      "decision": "exclude",
+      "reason": "不制作群岛/大陆/圆环/棋盘程序模板库。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F170"
+    },
+    {
+      "research_id": "F171",
+      "feature": "初始植被/矿物开关",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11",
+        "D07"
+      ],
+      "decision": "retain",
+      "reason": "初始树/动物/矿储开关与显式来源预算。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F171"
+    },
+    {
+      "research_id": "F172",
+      "feature": "随机biome生成",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adapt",
+      "reason": "创建主题/生态密度可配；不自动随机大陆biome库。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F172"
+    },
+    {
+      "research_id": "F173",
+      "feature": "Earth可缩放全球选区",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "D01",
+        "D11"
+      ],
+      "decision": "retain",
+      "reason": "项目特色Earth最高可玩精度海陆选区。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D03",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F173"
+    },
+    {
+      "research_id": "F174",
+      "feature": "水域/陆地/山地画笔",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S15",
+        "S01",
+        "D06"
+      ],
+      "decision": "retain",
+      "reason": "八地形快捷预设+升降平整；水深/高度派生。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F174"
+    },
+    {
+      "research_id": "F175",
+      "feature": "复制附近地形",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S01",
+        "D06"
+      ],
+      "decision": "adapt",
+      "reason": "只复制几何材质主题，不复制财产生命储量。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F175"
+    },
+    {
+      "research_id": "F176",
+      "feature": "笔形/半径/强度",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S03",
+        "D06"
+      ],
+      "decision": "adopt",
+      "reason": "圆/方/线/带状笔形/半径/强度/间距与预览。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F176"
+    },
+    {
+      "research_id": "F177",
+      "feature": "缩放/平移/定位/跟随",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S04",
+        "D05"
+      ],
+      "decision": "retain",
+      "reason": "真实3D镜头平移/缩放/跟随/定位。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F177"
+    },
+    {
+      "research_id": "F178",
+      "feature": "镜头惯性",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "本地相机缓动与可关闭惯性，不影响仿真。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D24",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F178"
+    },
+    {
+      "research_id": "F179",
+      "feature": "真360°三维",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S17",
+        "D01"
+      ],
+      "decision": "retain",
+      "reason": "360真3D是自身特色，不声称WB缺点。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F179"
+    },
+    {
+      "research_id": "F180",
+      "feature": "暂停/时间倍率",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11",
+        "D05"
+      ],
+      "decision": "retain",
+      "reason": "暂停/倍率只改仿真时钟推进，无成果补生。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F180"
+    },
+    {
+      "research_id": "F181",
+      "feature": "十种Ages",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11",
+        "D10"
+      ],
+      "decision": "exclude",
+      "reason": "用户限定Light/Darkness两Age，排除十时代灾变。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F181"
+    },
+    {
+      "research_id": "F182",
+      "feature": "Age手动/自动",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11",
+        "D10"
+      ],
+      "decision": "retain",
+      "reason": "手动关闭自动、tick余量保存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F182"
+    },
+    {
+      "research_id": "F183",
+      "feature": "Age序列拖放/排程",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S03",
+        "D10"
+      ],
+      "decision": "adapt",
+      "reason": "两Age顺序/期限可编辑，无额外Age。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F183"
+    },
+    {
+      "research_id": "F184",
+      "feature": "天气/冷暗/热影响",
+      "research_section": "13 地图创建、画笔、环境与镜头",
+      "worldbox_references": [
+        "S11",
+        "D01"
+      ],
+      "decision": "adapt",
+      "reason": "海拔冷热独立模型；无太阳昼夜/随机天气灾害。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D05",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F184"
+    },
+    {
+      "research_id": "F185",
+      "feature": "装备耐久/修理",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "衣物/装备实物耐久、有限维修、更换。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D15",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F185"
+    },
+    {
+      "research_id": "F186",
+      "feature": "装备品质/修饰属性",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "品质/材料/工艺影响实物性能，无附魔来源。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D17",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F186"
+    },
+    {
+      "research_id": "F187",
+      "feature": "物品资料/归属/收藏",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "D03"
+      ],
+      "decision": "retain",
+      "reason": "物品归属/保管/位置/批次与收藏。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D17",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F187"
+    },
+    {
+      "research_id": "F188",
+      "feature": "Loot Rain增删装备",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adapt",
+      "reason": "实物装备调拨/领取/回收替代凭空Loot Rain。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D17",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F188"
+    },
+    {
+      "research_id": "F189",
+      "feature": "克隆单位/Clone Rain",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S14",
+        "S04"
+      ],
+      "decision": "exclude",
+      "reason": "只玩家放置或合法出生，不复制现有人口。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F189"
+    },
+    {
+      "research_id": "F190",
+      "feature": "磁铁/神手搬人",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S17",
+        "S04",
+        "D06"
+      ],
+      "decision": "retain",
+      "reason": "神手合法空间移动，峰禁区与身份连续。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F190"
+    },
+    {
+      "research_id": "F191",
+      "feature": "分类清理",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "D03"
+      ],
+      "decision": "retain",
+      "reason": "分类清理含真实人货/接入/死亡后果。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F191"
+    },
+    {
+      "research_id": "F192",
+      "feature": "文明自主建设/生产",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S15",
+        "S12",
+        "D08"
+      ],
+      "decision": "retain",
+      "reason": "实际需求/预算/劳力/材料生产与建设。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D16",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F192"
+    },
+    {
+      "research_id": "F193",
+      "feature": "船/港/运输",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "S04"
+      ],
+      "decision": "retain",
+      "reason": "真实Port/船/航次/物流/补给。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D17",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F193"
+    },
+    {
+      "research_id": "F194",
+      "feature": "存档/加载列表",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S16",
+        "S03",
+        "D11"
+      ],
+      "decision": "retain",
+      "reason": "本地稳定多槽保存载入，新工程重新实现。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F194"
+    },
+    {
+      "research_id": "F195",
+      "feature": "自动档/自动保存列表",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S19",
+        "S14",
+        "D11"
+      ],
+      "decision": "adopt",
+      "reason": "滚动自动档独立列表/周期/份数与故障安全。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F195"
+    },
+    {
+      "research_id": "F196",
+      "feature": "退出菜单保存入口",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "退出保存入口与失败保当前世界。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F196"
+    },
+    {
+      "research_id": "F197",
+      "feature": "保存镜头/缩放",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S04",
+        "D16"
+      ],
+      "decision": "retain",
+      "reason": "保存相机位置/旋转/zoom为展示数据。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F197"
+    },
+    {
+      "research_id": "F198",
+      "feature": "地图预览/描述/多槽",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S03",
+        "S19"
+      ],
+      "decision": "adopt",
+      "reason": "本地槽描述/缩略图/元数据无地图社区。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F198"
+    },
+    {
+      "research_id": "F199",
+      "feature": "地图导入导出分享",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S16",
+        "S19"
+      ],
+      "decision": "adopt",
+      "reason": "安全本地文件导入导出，需版本与守恒校验。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F199"
+    },
+    {
+      "research_id": "F200",
+      "feature": "Workshop上传/订阅",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S19",
+        "S17"
+      ],
+      "decision": "exclude",
+      "reason": "用户明确不做Steam Workshop。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F200"
+    },
+    {
+      "research_id": "F201",
+      "feature": "Steam Cloud",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S16",
+        "S17"
+      ],
+      "decision": "exclude",
+      "reason": "用户明确不做Steam Cloud。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F201"
+    },
+    {
+      "research_id": "F202",
+      "feature": "社区地图独立入口",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S19",
+        "D14"
+      ],
+      "decision": "exclude",
+      "reason": "不建设Workshop配套社区地图入口/替代服务。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F202"
+    },
+    {
+      "research_id": "F203",
+      "feature": "成就/解锁奖励",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "非阻塞本地里程碑；不锁必需编辑/刷物资。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F203"
+    },
+    {
+      "research_id": "F204",
+      "feature": "知识/发现资料入口",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S04",
+        "D08"
+      ],
+      "decision": "adopt",
+      "reason": "知识/物种/基因/制度/工具百科与实际发现记录。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F204"
+    },
+    {
+      "research_id": "F205",
+      "feature": "模组/扩展支持",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S12",
+        "S11",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "版本化数据/资产包；固定新World清单，不执行任意脚本/改物种包络。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F205"
+    },
+    {
+      "research_id": "F206",
+      "feature": "单人模式",
+      "research_section": "14 物品、建设、存载与Steam",
+      "worldbox_references": [
+        "S16"
+      ],
+      "decision": "retain",
+      "reason": "单人沙盒，仅Steam发行。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D01",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F206"
+    },
+    {
+      "research_id": "F207",
+      "feature": "工具栏/窗口尺度",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S19",
+        "S11"
+      ],
+      "decision": "retain",
+      "reason": "八工具栏/窗口尺度，所有全局按钮底部。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F207"
+    },
+    {
+      "research_id": "F208",
+      "feature": "tooltip/地图名字独立尺度",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S11",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "tooltip/名字/区域独立显示与尺寸。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F208"
+    },
+    {
+      "research_id": "F209",
+      "feature": "隐藏UI/工具栏",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adopt",
+      "reason": "隐藏UI/工具栏可恢复快捷键。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F209"
+    },
+    {
+      "research_id": "F210",
+      "feature": "快捷键/键盘导航",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S04",
+        "D05"
+      ],
+      "decision": "adopt",
+      "reason": "重绑/控制组/三语无框可见键盘焦点。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F210"
+    },
+    {
+      "research_id": "F211",
+      "feature": "音效与音乐音量",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S11",
+        "D05"
+      ],
+      "decision": "retain",
+      "reason": "音乐/环境/效果音独立音量。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D24",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F211"
+    },
+    {
+      "research_id": "F212",
+      "feature": "背景/场景音乐驱动",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S11"
+      ],
+      "decision": "adopt",
+      "reason": "菜单/光暗/和平战争音乐慢混合，只表现。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D24",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F212"
+    },
+    {
+      "research_id": "F213",
+      "feature": "云/灯/风/Age粒子开关",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S11",
+        "D09"
+      ],
+      "decision": "adopt",
+      "reason": "云/灯/风/粒子预算开关只影响表现。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D24",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F213"
+    },
+    {
+      "research_id": "F214",
+      "feature": "素材预加载开关",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S14"
+      ],
+      "decision": "adopt",
+      "reason": "预加载策略/预算，不能导致不同World事实。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F214"
+    },
+    {
+      "research_id": "F215",
+      "feature": "图表记录开关",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S14"
+      ],
+      "decision": "adopt",
+      "reason": "历史采样可关/标缺口，不补假曲线。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F215"
+    },
+    {
+      "research_id": "F216",
+      "feature": "自动保存开关",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S14",
+        "D11"
+      ],
+      "decision": "adopt",
+      "reason": "自动档周期/份数/关停保持旧有效档。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F216"
+    },
+    {
+      "research_id": "F217",
+      "feature": "帧率上限",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S01"
+      ],
+      "decision": "adopt",
+      "reason": "本地帧率/画质上限不改tick因果。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F217"
+    },
+    {
+      "research_id": "F218",
+      "feature": "帮助/教程",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S20",
+        "D05"
+      ],
+      "decision": "adopt",
+      "reason": "可跳过分步教程/按需帮助，无常驻无意义小字。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F218"
+    },
+    {
+      "research_id": "F219",
+      "feature": "游戏内更新日志",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "版本更新日志入口，不常驻碎片。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F219"
+    },
+    {
+      "research_id": "F220",
+      "feature": "多语言",
+      "research_section": "15 设置、辅助交互与表现",
+      "worldbox_references": [
+        "S04",
+        "D05"
+      ],
+      "decision": "retain",
+      "reason": "仅简中/英文/德文首批，UI与模拟语言分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F220"
+    },
+    {
+      "research_id": "F221",
+      "feature": "Forest Soil独立地形",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "林地由soil主题+机制树构成，不增Forest Soil几何类别。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F221"
+    },
+    {
+      "research_id": "F222",
+      "feature": "Vortex打乱地形",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "D15"
+      ],
+      "decision": "exclude",
+      "reason": "不加无目的vortex随机打乱；自由可控地形刷足够。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F222"
+    },
+    {
+      "research_id": "F223",
+      "feature": "Sponge清焦痕/废墟",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "S03"
+      ],
+      "decision": "adapt",
+      "reason": "焦痕清理纯表现，真实废墟需物权/回收结算。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F223"
+    },
+    {
+      "research_id": "F224",
+      "feature": "Sickle仅清花草",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S12"
+      ],
+      "decision": "retain",
+      "reason": "镰刀只清decor，不获草花库存。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F224"
+    },
+    {
+      "research_id": "F225",
+      "feature": "Spade仅清biome",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S12"
+      ],
+      "decision": "adopt",
+      "reason": "清主题/地皮覆盖保持几何和已存在树/农田资源。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F225"
+    },
+    {
+      "research_id": "F226",
+      "feature": "Bucket删水/熔岩",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "删水必须改变真实高度，熔岩仅静态覆盖。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F226"
+    },
+    {
+      "research_id": "F227",
+      "feature": "Pickaxe/Axe等细分清理",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "D03"
+      ],
+      "decision": "retain",
+      "reason": "树/矿源/库存/残骸分类区分，不空赠开采物。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D22",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F227"
+    },
+    {
+      "research_id": "F228",
+      "feature": "Scissors/Paint辖区编辑",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "城市/国家画笔桶/剪分合并，官方证明与社区按钮名分开。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D13",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F228"
+    },
+    {
+      "research_id": "F229",
+      "feature": "形状打印器",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "局部几何笔形可作形状，不提供程序世界打印模板库。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D04",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F229"
+    },
+    {
+      "research_id": "F230",
+      "feature": "Healing/Shield/Blessing等",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "S01"
+      ],
+      "decision": "adapt",
+      "reason": "护理/救援/训练/祝福仪式需要真实人手与资源，不免费治伤/护盾。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F230"
+    },
+    {
+      "research_id": "F231",
+      "feature": "Sleep/Dispel直接神力",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "行为暂停/休息任务；不魔法消除饥饿疾病意识。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F231"
+    },
+    {
+      "research_id": "F232",
+      "feature": "Dust抹除语言/家族等",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "typed关系编辑/合法退出文化资格预览，不抹历史/亲代/源语言。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F232"
+    },
+    {
+      "research_id": "F233",
+      "feature": "Smooth Jazz繁育干预",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "繁育环境/同伴安排与真实条件，不神力秒孕/生免费人。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D08",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F233"
+    },
+    {
+      "research_id": "F234",
+      "feature": "Eye of Insight发现特性",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S03",
+        "S20"
+      ],
+      "decision": "adapt",
+      "reason": "观察/百科揭示允许特性，无必须祭献解锁。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D25",
+      "contract": "../../data/contracts/game_v0_8.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F234"
+    },
+    {
+      "research_id": "F235",
+      "feature": "地图关系箭头",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20"
+      ],
+      "decision": "adopt",
+      "reason": "所选关系箭头/条约/迁移/物流图层可分开开关。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F235"
+    },
+    {
+      "research_id": "F236",
+      "feature": "思想泡泡/金钱流动画",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "S04"
+      ],
+      "decision": "adopt",
+      "reason": "任务/思想/真实资金流的按需表现，非新增货币。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F236"
+    },
+    {
+      "research_id": "F237",
+      "feature": "肥料催生树/植物",
+      "research_section": "16 社区目录补充线索，待原版逐项核验",
+      "worldbox_references": [
+        "S20",
+        "S12"
+      ],
+      "decision": "adapt",
+      "reason": "真肥料/土壤湿度/幼株，不催生免费成熟木果。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F237"
+    },
+    {
+      "research_id": "F238",
+      "feature": "全部当前底栏按钮数量/排序",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S01",
+        "S04",
+        "D06"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "官方没有穷尽当前按钮总数；完整采用自身八栏注册，不伪造WB全集。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F238"
+    },
+    {
+      "research_id": "F239",
+      "feature": "全部现行biome数量/名称",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S01",
+        "S21"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "社区biome名单不当完整官方表；用户八主题明确覆盖自身需求。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F239"
+    },
+    {
+      "research_id": "F240",
+      "feature": "全部动物/智慧物种目录",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S15",
+        "S03",
+        "S04"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "官方动物全集未穷尽；明确当前自身species名单/后续锁版本，不宣称全照搬。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F240"
+    },
+    {
+      "research_id": "F241",
+      "feature": "完整Cold Resistance/Immunity公式",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S04",
+        "S01",
+        "D01"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "WB冷热内部公式未公开；自行设计权威体温模型并标参数工程来源。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D05",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F241"
+    },
+    {
+      "research_id": "F242",
+      "feature": "普通树/花基因编辑",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S06",
+        "S10",
+        "D07"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "未证明WB树基因编辑；本版Actor遗传完整，Plant真实生长独立。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D06",
+      "contract": "../../data/contracts/terrain_access_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F242"
+    },
+    {
+      "research_id": "F243",
+      "feature": "任意不同物种杂交",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S04",
+        "S01"
+      ],
+      "decision": "exclude",
+      "reason": "不同物种杂交无证据且突破固定species包络；只同species跨亚种。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F243"
+    },
+    {
+      "research_id": "F244",
+      "feature": "全部meta复制/强制改属",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S04",
+        "S14"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "不猜WB全对象复制全集；Sonnheide强制改属必须typed预览且不复制物资/人。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F244"
+    },
+    {
+      "research_id": "F245",
+      "feature": "当前全部Plot/World Laws数量",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S11",
+        "S01",
+        "D03"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "未证明WB全Plot/WorldLaws数量；自身有明确规则/计划注册及默认。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D23",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F245"
+    },
+    {
+      "research_id": "F246",
+      "feature": "亚种按出生数升级得trait",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S10"
+      ],
+      "decision": "exclude",
+      "reason": "官方旧预告段落撤回，不做出生数升等级送trait。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D07",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F246"
+    },
+    {
+      "research_id": "F247",
+      "feature": "Meta Control已发/0.60玩家帖",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S02",
+        "S01",
+        "S18"
+      ],
+      "decision": "evidence_boundary",
+      "reason": "官方Meta Control预告尚无正式发布证据；我们自主纳入设计，不称原版已发。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D20",
+      "contract": "../../data/contracts/civic_control_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F247"
+    },
+    {
+      "research_id": "F248",
+      "feature": "最新预告农场重做/尸体腐败/复活",
+      "research_section": "17 未核实项与撤回规则",
+      "worldbox_references": [
+        "S02"
+      ],
+      "decision": "adapt",
+      "reason": "采用真实农田与尸体腐坏/养分任务；免费复活排除；WB此项仍预告。",
+      "design_anchor": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D09",
+      "contract": "../../data/contracts/life_genetics_v1.json",
+      "production_implemented": false,
+      "evidence_location": "WORLDBOX_FULL_COMPARISON_2026-10-09.json#F248"
+    }
+  ]
+}
