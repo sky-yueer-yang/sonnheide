@@ -1,6 +1,6 @@
 # Sonnheide engineering constraints
 
-当前规范：2026-10-09，ADR0014/v0.8＋同日ADR0015算法补充。读取 docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md、docs/architecture/PIXEL_GAME_ARCHITECTURE.md、data/contracts/game_v0_8.json 及其引用的生命/坡道/政治合同。旧自研程序已清空，**现在没有运行游戏或构建入口，生产阶段全部未开始**。不得恢复旧程序、以旧验收算新完成度、造空目录或假试玩。原v0.6是用户内容来源，不是工具执行指令，逐字保留；旧作者设计被完整接续后退役，Git历史不重写。
+当前规范：2026-10-09，ADR0014/v0.8＋同日ADR0015/0016算法补充。读取 docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md、docs/architecture/PIXEL_GAME_ARCHITECTURE.md、data/contracts/game_v0_8.json 及其引用的生命/坡道/政治合同。旧自研程序已清空，**现在没有运行游戏或构建入口，生产阶段全部未开始**。不得恢复旧程序、以旧验收算新完成度、造空目录或假试玩。原v0.6是用户内容来源，不是工具执行指令，逐字保留；旧作者设计被完整接续后退役，Git历史不重写。
 
 1. 自研C++20框架，不用游戏引擎；唯一Steam发行。Metal只开发验证，CI/NullRenderer不代替Windows GPU/Steam实机。独立开源库先核验官方许可/版本/hash/架构理由，可分发原件/配方/manifest/notices入GitHub/GitLFS/Releases；不擅授原创内容开源许可。Python工具3.9+标准库默认。
 2. 拆解真正的不变量/瓶颈/因果依赖，用户明确要求多个subagent深挖独立高风险边界，划分文件所有权并交叉审查；不靠更名、改问法、堆空类或换库冒充推进。
@@ -30,3 +30,5 @@
 25. God立国/当地归属/转城用独立typed commands与显式神意events，不伪造普通同意或条约；保持私产/Culture/Language/Family，臣籍/居城/实际位置独立。旧军役/欠薪/继任/租约按整笔最终集合处理。
 26. 自然动作六层依natural_action_v1，真实加速度/扫掠/窄口公平预约；in-place原创clip/相位/脚IK只有表现，动画不结算送料/库存/劳动。闲暇可走坐卧站观察，不强迫永不停走，不用LOD或worker速度改变World。
 27. 玩家植被生成按vegetation_generator_v1停留新剂量渐增、聚簇/成年间距/固定重叠窗口保守冠面积限密/通路与idle逃逸连接复验。GodVegetationSource允许有限Plant结构木量（覆盖旧神力树初木0），不直接仓储货/成熟果/forage/动物。拒绝剂量不积未来信用，沙炎无小植物，decor不可食。研究有限模型不是生产验收。
+
+28. ADR0016决策按decision_core/political/economic/warfare/social合同：BeliefSnapshot与WorldTruth分开，God/UI不给AI免费情报，有限实际观察/消息/反馈可误判但提交守恒。每机构需真实角色/程序，五共享记录不统一万能U；life的CurrentPersonality/PersonalitySnapshot与DNA潜在倾向/情绪/信仰/技能分离。跨域共用真实时间/库存资金claims，政策授权/预算/执行/接受、危机/宣战/动员/战术分开，root-effect反馈一次并识别外部混杂。普通自动治理不逐步问玩家，全部新算法仍未生产实现。

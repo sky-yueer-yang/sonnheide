@@ -1,0 +1,1352 @@
+{
+  "schema_version": 1,
+  "contract_id": "economic_decisions_v1",
+  "design_version": "0.8",
+  "algorithm_revision": "ADR0016-2026-10-09",
+  "audit_date": "2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/ECONOMIC_DECISIONS_AND_MARKETS.md",
+  "reference_model": "docs/research/models/economic_decision_reference_model.py",
+  "sources": [
+    "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D15",
+    "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D16",
+    "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D17",
+    "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D18",
+    "docs/design/Sonnheide_Complete_Design_v0.6.md"
+  ],
+  "interfaces": {
+    "shared_decision_kernel": "data/contracts/decision_core_v1.json",
+    "life": "data/contracts/life_genetics_v1.json",
+    "natural_actions": "data/contracts/natural_action_v1.json",
+    "settlements": "data/contracts/settlement_lifecycle_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "geography_wipe": "data/contracts/god_control_v1.json",
+    "surface": "data/contracts/surface_ecology.json",
+    "vegetation_generator": "data/contracts/vegetation_generator_v1.json",
+    "social_decisions": "data/contracts/social_decisions_v1.json"
+  },
+  "research_sources": [
+    {
+      "url": "https://developers.google.com/optimization/flow/mincostflow",
+      "kind": "official_algorithm_documentation",
+      "use": "supply_demand_arc_capacity_conservation_ideas_only_not_dependency_or_global_optimum_claim"
+    },
+    {
+      "url": "https://www.nobelprize.org/uploads/2018/06/simon-lecture.pdf",
+      "kind": "original_lecture",
+      "use": "bounded_search_satisficing_not_empirical_guarantee"
+    }
+  ],
+  "authority": {
+    "world_writer": "single_writer_prepare_validate_commit",
+    "ordinary_AI_requires_player_confirmation": false,
+    "preview": "concrete_explanation_and_god_control_UI_only_no_per_action_human_gate",
+    "complete_closure_or_no_publish": true,
+    "truth_validation_is_AI_private_information_source": false,
+    "owner_controller_custodian_location_separate": true,
+    "camera_LOD_UI_thread_speed_change_simulation": false,
+    "physical_bank_stock_and_monetary_ledgers_separate": true,
+    "money_and_quantity_integer": true,
+    "existing_humans_and_civic_animals_only_no_worker_spawn": true,
+    "supported_illicit_actions": "existing_PoliticalPlot_specific_IllicitActPlan_actual_access_participants_finite_cash_or_goods_and_illegal_evidence_not_generic_economic_permission_or_owner_rewrite"
+  },
+  "decision_interface": {
+    "episode_fields": [
+      "episodeId",
+      "subjectRef",
+      "accountableActorRef",
+      "roleAuthorityRevision",
+      "domain",
+      "decisionCounter",
+      "startTick",
+      "dueTick",
+      "BeliefSnapshotId",
+      "candidateSetVersion",
+      "selectedPlanId",
+      "CommitmentRef",
+      "logicalWorkCursor",
+      "OutcomeAttributionRefs"
+    ],
+    "subjects": [
+      "Actor",
+      "Household",
+      "CityDepartment",
+      "CityTreasury",
+      "LegalEntity",
+      "ChurchTreasury",
+      "StateTreasury"
+    ],
+    "belief_fields": [
+      "ObservedFactId",
+      "subject",
+      "predicate",
+      "estimate_lo_hi",
+      "confidenceQ",
+      "observedTick",
+      "receivedTick",
+      "sourceChain"
+    ],
+    "plan_fields": [
+      "typed_hard_preconditions",
+      "role_authority",
+      "observed_information_scope",
+      "resource_claims",
+      "time_claims",
+      "horizon",
+      "postconditions",
+      "failure_handler",
+      "task_refinement"
+    ],
+    "institution_role_death": "existing_contracts_debts_custody_continue_new_commitments_need_actual_qualified_authority",
+    "counterfactual_prediction": "may_be_wrong_no_hidden_truth_correction",
+    "rejection_privacy": "authorized_actor_knowable_typed_reason_only_no_secret_quantity_or_location",
+    "oracle_probe_prevention": "bounded_actual_counterparty_contacts_or_authorized_quote_checks_not_arbitrary_world_targets"
+  },
+  "personality": {
+    "source": "CurrentPersonality.PersonalitySnapshot_single_life_export",
+    "axes": [
+      "curiosity",
+      "piety",
+      "altruism",
+      "risk_tolerance",
+      "order_preference",
+      "ambition"
+    ],
+    "q_range": [
+      0,
+      10000
+    ],
+    "gene_potential_is_current_state": false,
+    "current_gene_edit_resets_personality_or_experience": false,
+    "separate_context": [
+      "skills",
+      "memory",
+      "mood",
+      "relationships",
+      "wealth",
+      "rights",
+      "actual_species_body",
+      "health",
+      "time_obligations",
+      "observed_information"
+    ],
+    "hard_gate_relaxation": false,
+    "effects": {
+      "curiosity": [
+        "new_product_trials",
+        "learning",
+        "bounded_paid_research_exploration"
+      ],
+      "piety": [
+        "actual_doctrine_consumption_and_donations",
+        "actual_church_charter_eligibility"
+      ],
+      "altruism": [
+        "authorized_surplus_aid",
+        "worker_welfare_after_obligations",
+        "public_need_priority"
+      ],
+      "risk_tolerance": [
+        "bounded_downside_cash_target",
+        "known_volatility_choice",
+        "finite_investment_exposure"
+      ],
+      "order_preference": [
+        "stable_schedule_supplier",
+        "switch_hysteresis",
+        "auditable_contracts"
+      ],
+      "ambition": [
+        "more_expansion_candidates",
+        "career_learning",
+        "lawful_profit_retention"
+      ]
+    },
+    "not_probabilities_or_magic_buffs": true,
+    "same_personality_different_context_may_differ": true,
+    "same_full_logical_input_replays": true
+  },
+  "units": {
+    "time": "SimTick",
+    "motion_second_ticks": 20,
+    "calendar_day_ticks": 1200,
+    "days_per_month": 30,
+    "days_per_year": 360,
+    "money": "integer_smallest_monetary_unit",
+    "items": "commodity_defined_integer_units_or_grams",
+    "energy": "life_contract_fixed_integer_energy",
+    "labor": "recipe_version_work_units_and_saved_integer_remainder",
+    "q": "dimensionless_integer_0_to_10000",
+    "dimensions_added_without_conversion": false,
+    "rates_frozen_in_world_profile": true
+  },
+  "scheduling": {
+    "household": "calendar_day_or_need_threshold_event",
+    "production": "7_day_rolling_plan_daily_actual_work_tick_integration",
+    "quotes_and_matching": "calendar_day_or_important_actual_event",
+    "wage": "contract_earned_tick_and_scheduled_pay_period",
+    "tax": "actual_taxable_event_and_month_period",
+    "startup": "monthly_or_actual_project_dependency_event",
+    "asset_expiry_damage_and_delivery": "actual_due_or_contact_tick_no_wait_for_next_daily_plan",
+    "work_worker_speed_affects_budget": false
+  },
+  "household": {
+    "need_envelope_inputs": [
+      "own_actual_consumable_food",
+      "species_diet_absorption",
+      "planned_route_work_energy",
+      "clothing_fit_durability_insulation_wetness",
+      "housing_safety_and_lease",
+      "care",
+      "essential_work_tools",
+      "authorized_actual_cash",
+      "due_obligations"
+    ],
+    "in_transit_food_is_current_supply": false,
+    "decor_is_food": false,
+    "cash_formula": "freeCash=authorized_own_available_cash-authorized_due_obligations_not_already_paid_or_reserved; discretionary=max(0,freeCash-protectedTarget)",
+    "sample_basic_food_target_days": 3,
+    "protected_target": "credible_known_near_delivery_quotes_high_bound_after_actual_owned_basic_stock_not_infinite_synthetic_reserve",
+    "unobserved_no_offer": "explicit_no_legal_near_quote_deficit_investigate_import_aid_not_zero_price",
+    "unpaid_wages_are_available_cash": false,
+    "family_private_money_auto_merged": false,
+    "lawful_due_obligation_can_create_basic_deficit": true,
+    "tier_order": [
+      "actual_immediate_safety_and_food",
+      "basic_coverage_thermal_and_care",
+      "essential_clothing_replacement",
+      "formal_attire_priority",
+      "self_expression_clothing",
+      "other_discretionary_comfort"
+    ],
+    "within_tier": "actual_need_improvement_delivery_risk_full_cost_then_personal_preference_with_bounded_saved_choice",
+    "scarce_intra_household": "urgency_diet_suitability_improvement_fair_wait_not_birth_or_Id_priority",
+    "available_cash_definition": "settled_authorized_own_balance_net_of_actual_escrow_transfers_and_remaining_cash_claims; subtract_each_claim_once_only; excludes_trust_funds_unreceived_wages_future_income",
+    "existing_reservations_subtracted_again_from_available_cash": false
+  },
+  "clothing": {
+    "routes": [
+      "continue_real_item",
+      "finite_repair",
+      "replace_purchase",
+      "actual_household_public_crafting",
+      "wait"
+    ],
+    "checks": [
+      "species_actual_fit",
+      "durability",
+      "repair_space",
+      "real_cloth_thread_tool_labor",
+      "actual_insulation_wetness",
+      "known_make_and_delivery_interval"
+    ],
+    "repair_perpetual_or_free": false,
+    "early_public_textile_before_private_company": true,
+    "formal_attire_rule": {
+      "missing_can_work": true,
+      "missing_paid_earned_wage": true,
+      "missing_retains_job": true,
+      "attire_priority_after_basic_budget": true,
+      "missing_fines_or_clock_in_exclusion": false,
+      "unavailable_attire_freezes_all_money_forever": false
+    },
+    "army_uniform": "real_ArmySupply_actual_stock_service_state_theme_not_nationality",
+    "era_or_load_free_attire": false
+  },
+  "employment": {
+    "known_job_candidates_max": 8,
+    "gates": [
+      "alive",
+      "maturity_and_lawful_work_age",
+      "actual_species_interface",
+      "health_productive_energy",
+      "skills_or_real_training_slot",
+      "real_route_entry_and_commute",
+      "existing_army_care_sleep_and_job_time",
+      "legal_permit",
+      "funded_real_employer_compensation"
+    ],
+    "employee_comparison": [
+      "basic_needs_coverage_class",
+      "expected_real_net_pay_or_deliverable_ration_interval",
+      "safe_commute_and_sleep_feasibility",
+      "observed_default_risk",
+      "learning_meaning_and_relationships",
+      "real_switch_cost"
+    ],
+    "employer_comparison": [
+      "actual_required_skills_and_fit",
+      "deliverable_schedule",
+      "actual_role_experience",
+      "observed_reliability",
+      "wait_age_and_previous_rejections_then_rotating_tie"
+    ],
+    "one_actor_multiple_full_time_claims_same_interval": false,
+    "acceptance_then_arrival_not_same_event": true,
+    "leave": "future_work_stops_earned_debt_and_surviving_actual_custody_remain_real_return_task",
+    "unfilled_role_spawns_actor": false
+  },
+  "activity_time_ledger": {
+    "per_actor_primary_intervals_nonoverlapping": true,
+    "competing_domains": [
+      "army",
+      "production",
+      "care",
+      "learning",
+      "delivery",
+      "commute",
+      "rest"
+    ],
+    "visual_overlap_produces_work": false,
+    "work_receipt": [
+      "actor",
+      "episode",
+      "facility",
+      "interval",
+      "actual_work_units",
+      "recipe_version"
+    ],
+    "work_requires": [
+      "actual_contact_interface",
+      "actual_capability_tool",
+      "real_productive_energy",
+      "permitted_process_state"
+    ],
+    "skill_counted_twice": false,
+    "paid_leave": "contractual_money_basis_separate_no_production_work_receipt",
+    "military_reallocation": "exports_actual_civilian_food_care_wage_logistics_displacement_not_magic_productivity",
+    "conscription_is_automatic_worker_consent": false,
+    "shared_authority": "decision_core_v1.ActorAvailabilityLedger; ActivityTimeLedger_is_same_ledger_economic_view_not_second_budget"
+  },
+  "wages": {
+    "earned_formula": "floor((wageNumerator*eligible_actual_work_or_contract_paid_leave_units+saved_remainder)/wageDenominator)",
+    "remainder_saved": true,
+    "receipt_unique_per_earned_or_payment_event": true,
+    "cash_shortfall": "earned_payable_debt_partial_payment_no_erasure",
+    "same_rank_shortfall": "proportional_integer_largest_remainder_with_persisted_rotating_tie_cursor",
+    "signed_offer_locks_short_horizon_compensation": true,
+    "public_pre_currency": "actual_ration_or_rights_no_fake_zero_cost_company",
+    "transition": "explicit_effective_tick_no_duplicate_in_kind_and_money_compensation"
+  },
+  "public_economy": {
+    "no_private_company_currency_bank_required": true,
+    "default_priorities": [
+      "actual_emergency_rescue_and_physiology",
+      "food_and_basic_thermal_cover",
+      "emergency_logistics_and_necessary_animal_care",
+      "necessary_maintenance",
+      "housing_and_basic_clothing_replacement",
+      "ordinary_production",
+      "teaching_research_and_nonessential_projects"
+    ],
+    "same_tier": "deadline_real_gap_and_dependency_critical_path_then_fair_wait_actual_available_work",
+    "allowed_inputs": [
+      "authorized_public_budget_stock",
+      "actual_lawful_committed_labor",
+      "explicit_lawful_requisition"
+    ],
+    "customer_custody_goods_are_public": false,
+    "entitlement_is_real_food": false,
+    "material_or_worker_exhaustion": "explicit_RESOURCE_EXHAUSTED_import_foraging_or_relocation_candidates",
+    "monetary_initialization": "one_once_controlled_total_event_based_on_public_reserves_existing_rights_no_load_or_era_mint"
+  },
+  "orders": {
+    "demand_states": [
+      "WISH",
+      "FUNDED_BID",
+      "CONTRACTED",
+      "DELIVERED",
+      "CONSUMED"
+    ],
+    "valid_market_or_project_evidence_states": [
+      "FUNDED_BID",
+      "CONTRACTED"
+    ],
+    "unique_demand_identity": true,
+    "same_cash_across_goods_shared_envelope": true,
+    "bid_fields": [
+      "BuyerRef",
+      "DemandIdentity",
+      "CashEnvelopeRef",
+      "spec_quality_fit_version",
+      "max_all_in_price",
+      "wanted_quantity",
+      "minimum_lot",
+      "partial_allowed",
+      "deadline",
+      "actual_destination_interface"
+    ],
+    "quote_fields": [
+      "SellerRef",
+      "eligible_actual_batch_refs",
+      "available_quantity",
+      "spec_quality_fit_version",
+      "minimum_price",
+      "delivery_interval",
+      "delivery_capacity",
+      "effective_expiry",
+      "public_scope"
+    ],
+    "quote_is_reservation": false,
+    "unfunded_army_future_wish_is_economic_order": false
+  },
+  "matching": {
+    "architecture": "bounded_local_posted_quote_matching_no_Market_building_or_realtime_exchange",
+    "bucket": "actual_service_region_commodity_spec_interval_and_lawful_public_scope",
+    "order_priority": [
+      "existing_commitment",
+      "wait_age",
+      "persistent_rotation_within_same_priority_near_price_class"
+    ],
+    "richest_always_first": false,
+    "special_ration_priority": "separate_lawfully_authorized_actual_funded_public_queue",
+    "buyer_known_quote_candidates_max": 16,
+    "candidate_filters": [
+      "legal_spec",
+      "actual_or_contract_verified_route_delivery",
+      "arrival_deadline_quality",
+      "full_fees_and_tax_cash",
+      "receiver_capacity"
+    ],
+    "candidate_rank": [
+      "all_in_cost_money",
+      "lateness_risk_interval",
+      "deadline_slack_ticks",
+      "observed_supplier_reliability"
+    ],
+    "price": "public_accepted_seller_price_plus_explicit_delivery_tax_fees_old_contract_price_frozen",
+    "quantity_formula": "min(wanted_remaining,actual_unreserved_eligible_stock,affordable_at_exact_all_in_cost,receiver_free_capacity,proved_delivery_capacity)",
+    "fixed_fee": "exact_bounded_candidate_quantity_cost_check_not_linear_omit",
+    "partial_disallowed_insufficient": "no_match",
+    "reservation_commit": "atomic_truth_stock_cash_capacity_rights_expiry_revision_validation_in_logical_fair_order",
+    "worker_finish_order_priority": false,
+    "global_optimality_claim": false
+  },
+  "fulfilment": {
+    "independent_escrow": [
+      "goods_value",
+      "tax",
+      "transport",
+      "risk_security"
+    ],
+    "escrow_owner_recorded_not_seller_profit_or_bank_capital": true,
+    "pickup": "real_contact_carry_route_custody_then_once_source_debit_and_IN_TRANSIT",
+    "available_source_and_transit_duplicate": false,
+    "delivery": "real_receiver_contact_capacity_quality_quantity_and_unique_receipt",
+    "legal_owner_transfer": "explicit_contract_milestone_not_physical_location_alone",
+    "default_retail_payment": "accepted_actual_quantity_proportional_goods_value_tax_actual_service_transport",
+    "cancellation_unpicked": "release_only_unconsumed_source_cash_claims",
+    "cancellation_in_transit": "retain_real_world_batch_actual_return_redirect_or_custody_no_source_teleport",
+    "loss": "once_loss_id_true_qty_expiry_wipe_seizure_contract_risk_and_finite_insurer_assets",
+    "paid_cancel_auto_refund": false,
+    "return": "new_actual_inspection_and_transport_contract",
+    "small_retail": "finite_real_shared_multi_day_household_delivery_or_pickup_not_remote_food_into_stomach",
+    "destroyed_square": "logical_account_continues_capacity_zero_no_invisible_goods"
+  },
+  "pricing": {
+    "known_public_legal_samples_only": true,
+    "minimum_valid_trade_samples": 8,
+    "ema_window_days": 30,
+    "ema_remainder_and_last_absolute_day_saved": true,
+    "unmet_demand": "funded_unique_valid_orders_not_wishes",
+    "normal_daily_reference_cap_q": 200,
+    "emergency_explicit_profile_cap_q": 500,
+    "imbalance_formula": "(funded_unmet_units-offered_unsold_units)*10000/max(1,total_qualified_units)",
+    "delta_formula": "clamp(emaImbalanceQ/10,-200,200)",
+    "reference_formula": "max(1,floor((oldRef*(10000+deltaQ)+saved_remainder)/10000))",
+    "low_sample": "keep_recent_credible_reference_LOW_SAMPLE",
+    "reference_is_spendable_asset_revaluation": false,
+    "quoted_market_price_varies_by_real_context": true,
+    "supply_crisis": "actual_aid_import_substitute_retool_ration_not_infinite_price_as_solution"
+  },
+  "production": {
+    "horizon_days": 7,
+    "recipe_candidates_max": 12,
+    "objective_by_institution": {
+      "private": "contract_then_cash_contribution_interval_and_real_risk",
+      "public": "ServicePlan_urgency_and_coverage",
+      "church": "frozen_charter_and_actual_funded_services"
+    },
+    "capacity_formula": "min(installed_capacity,labor_work/recipe_work,each_actual_input/recipe_input,output_space/recipe_output_space,dispatch_plus_finite_buffer,legal_land_or_source_reserve)",
+    "integer_batch_work_and_yield_remainders": true,
+    "WIP_actual_input_and_time_then_output_completion": true,
+    "resource_calendars": [
+      "worker_time",
+      "machine_time",
+      "shared_input",
+      "buffer_space",
+      "dispatch_capacity"
+    ],
+    "skill_or_tech_full_double_multiplier": false,
+    "no_input_work_or_tool_output": false,
+    "technology_knowledge_is_installed_capability": false,
+    "same_family_switch_sample": {
+      "minimum_persistent_evidence_days": 3,
+      "improvement_q": 2000,
+      "actual_contract_or_basic_supply_emergency_may_bypass_decision_delay": true,
+      "physical_tooling_or_capacity_may_bypass": false
+    },
+    "cross_family_switch": "real_new_tooling_and_installation",
+    "cancel_WIP": "preserve_consumed_input_losses_and_actual_surviving_WIP_no_full_refund"
+  },
+  "primary_sectors": {
+    "farm": "real_plot_seed_tools_labor_temperature_grow_ticks_mature_reserve_harvest_no_new_season_system",
+    "trees": "TreeReservation_fruit_and_felling_exclusive_actual_reserve_expiry_route_labor_carry",
+    "forest": "real_tree_right_age_finite_biomass_replant_cost_God_generator_tree_not_warehouse_wood",
+    "minerals": "actual_lawful_reserve_real_extraction_capacity_rate_is_not_stock",
+    "animals": "actual_life_productive_food_energy_feed_care_breeding_and_harvest_reserve",
+    "uplift": "livestock_owner_removed_new_products_labor_need_actual_person_contract_no_forced_inventory",
+    "decor": "no_crop_food_nectar_medicine_inventory"
+  },
+  "logistics_and_building": {
+    "carriers": "existing_eligible_Actor_automatic_actual_vehicle_Port_ship_real_loading_workers",
+    "private_horse_mount_wagon_or_hidden_drive": false,
+    "driver_profession": false,
+    "quote_costs": [
+      "actual_capacity_time",
+      "loading_labor",
+      "energy_maintenance",
+      "road_rights_depth_bridge_clearance",
+      "queue_risk",
+      "deadline"
+    ],
+    "consolidation": "only_real_same_route_time_owner_separate_ledger_capacity",
+    "delay_additional_charge": "only_preagreed_contract_or_actual_new_consent",
+    "building": "actual_joint_site_approval_front_material_delivery_then_automatic_duration_no_onsite_masonry_Actor",
+    "cancel": "only_unconsumed_uncommitted_return_held_material_remains_real_custody"
+  },
+  "enterprise_entry": {
+    "institution_gate_sample": {
+      "population": 600,
+      "basic_food_coverage_q": 9500,
+      "housing_coverage_q": 9000,
+      "observed_stability_years": 3,
+      "requires": [
+        "recordkeeping",
+        "property_registry",
+        "contract_execution",
+        "company_law",
+        "actual_stable_surplus"
+      ],
+      "population_unit": "actual_registered_alive_Civic_residents_including_humans_and_sapient_animals_not_all_ordinary_ecology_actors_or_automatically_mature_workers"
+    },
+    "project_gate_sample": {
+      "effective_demand_history_months": 24,
+      "supported_capacity_q": 6000,
+      "real_fixed_cost_cash_months": 12,
+      "real_start_labor_commitment_q": 7000,
+      "requires": [
+        "actual_construction_and_tooling_funds",
+        "confirmed_input",
+        "real_logistics",
+        "lawful_site_or_lease",
+        "actual_existing_workers"
+      ]
+    },
+    "personality_overrides_hard_gate": false,
+    "early_public_service_requires_entry_gates": false,
+    "demand_quota": "atomic_registry_dedupe_existing_and_approved_deliverable_capacity_against_unique_lawful_effective_demand",
+    "quota_is_consumer_forced_purchase_or_monopoly": false,
+    "quota_deadline_releases_unexecuted_only": true,
+    "pressure_scenarios": [
+      "observed_low_demand_delay",
+      "base_case",
+      "observed_high_input_price_or_worker_departure"
+    ],
+    "startup_stages": [
+      "APPROVED",
+      "FUNDING",
+      "SITE_LEASE_OR_BUILD",
+      "INSTALLING",
+      "HIRING",
+      "PILOT",
+      "OPEN"
+    ],
+    "opening_revalidates": true,
+    "investments": "real_transfer_real_ownership_graph_no_cycles_votes_over_100percent_or_cash_from_valuation",
+    "dividend": "min(lawful_distributable_profit,real_available_cash_after_obligations)_real_transfer_no_group_internal_double_profit",
+    "frozen_sample_units": "all_entry_parameters_world_definition_profile_calibratable_not_universal_science_or_personality_override"
+  },
+  "exit": {
+    "distinct_causes": [
+      "liquidity_shortfall",
+      "low_orders",
+      "input_blocked",
+      "machine_damaged",
+      "law_closed",
+      "route_blocked",
+      "permanent_site_loss"
+    ],
+    "sample_observation_months": 6,
+    "sample_restructure_to_liquidation_months": 12,
+    "severe_insolvency_can_stop_new_commitments_earlier": true,
+    "plans": [
+      "scale_down",
+      "sell_owned_idle_assets",
+      "real_debt_extension_or_haircut_consent",
+      "actual_new_capital",
+      "lawful_operator_transfer",
+      "funded_public_continuation",
+      "ordered_liquidation"
+    ],
+    "public_continuation_free_bailout": false,
+    "liquidation_excludes": [
+      "customer_custody_goods",
+      "tax_and_wage_escrow",
+      "leased_owner_assets"
+    ],
+    "creditor_order": "actual_law_rank_then_proportional_integer_fair_remainder",
+    "asset_valuation_creates_cash": false,
+    "archive_entity_deletes_building_or_residents": false,
+    "unpaid_final_debt": "CLOSED_LOSS_preserved_real_history_not_infinite_ghost_liability"
+  },
+  "banking": {
+    "demand_custody_reserve_q": 10000,
+    "loanable_funds": "own_capital_and_explicit_locked_term_funds_less_actual_outstanding_principal_and_lawful_safety_or_reserved_liquidity",
+    "forbidden_funds": [
+      "demand_customer_deposits",
+      "customer_goods",
+      "tax_escrow",
+      "wage_escrow"
+    ],
+    "loan_contract_is_cash_mint": false,
+    "disbursement": "actual_lender_to_borrower_transfer",
+    "information": "borrower_authorized_evidence_public_legal_debt_and_observed_history_no_global_private_read",
+    "simple_interest": "remaining_principal*numerator/denominator_actual_periods_saved_remainder_only_receivable_payable_until_actual_payment",
+    "unagreed_compound_interest": false,
+    "unpaid_interest_is_loanable_cash": false,
+    "default": "actual_partial_pay_default_real_collateral_sale_agreed_extension_or_real_loss",
+    "term_early_exit": "contract_penalty_and_actual_liquidity_no_return_of_already_loaned_cash_by_cancel",
+    "stock_exchange_forex_central_bank_unbounded_credit": false
+  },
+  "accounting_and_tax": {
+    "receipt_key": [
+      "taxType",
+      "taxableEventId",
+      "jurisdiction",
+      "period",
+      "assessmentRevision"
+    ],
+    "amendment": "difference_posting_not_second_full_tax",
+    "central_local_same_tax_base": "one_assessment_shared_by_law",
+    "wage_tax": "actual_earned_assessment_with_cash_collection_or_withhold_legal_timing_unpaid_wage_not_available_cash",
+    "sale_tax": "single_stage_no_parallel_VAT",
+    "profit_tax": "positive_income_less_allowed_cost_depreciation_losses_no_loss_tax",
+    "customs": "actual_crossed_boundary_contract_value_once_clearance",
+    "foreign_credit": "bounded_by_actual_paid_source_tax_and_resident_assessment_no_negative_cash_grant",
+    "custody_asset_inheritance_tax": false,
+    "religious_official_status_grants_all_taxes": false,
+    "activity_facility_jurisdiction_and_HQ_distribution_separate": true,
+    "group_transfer_is_second_sale": false,
+    "state_cash_deficit_sweeps_private_accounts": false,
+    "assessment_identity": "stable_TaxAssessmentId_for_original_actual_taxable_event_and_law_version; assessmentRevision_correction_receipt_posts_only_signed_delta_once",
+    "journal": {
+      "fields": [
+        "TxId",
+        "causeEvent_or_ContractRef",
+        "effectiveTick",
+        "currency_or_quantity_unit",
+        "expected_account_revisions",
+        "complete_counterpart_entries",
+        "item_tax_debt_receipts"
+      ],
+      "cash_sum": "zero_per_actual_transfer_unless_unique_explicit_authorized_issuance_or_sink",
+      "debit_credit_equal": true,
+      "goods_conversion": "actual_recipe_loss_source_and_yield_not_equal_raw_counts_of_different_commodities",
+      "escrow": "buyer_owned_not_seller_income",
+      "wage_earned": "real_receivable_payable_no_cash_creation",
+      "interest_earned": "real_receivable_payable_no_cash_creation",
+      "payment": "actual_counterparty_transfers_then_debt_decrease",
+      "tax_share": "all_cash_entries_in_one_complete_tx_zero_sum",
+      "loss": "unique_root_event_once_no_cash_from_asset_appraisal"
+    }
+  },
+  "research_and_adoption": {
+    "candidates_max": 12,
+    "requires": [
+      "real_eligible_scholars_and_time",
+      "actual_known_prerequisites",
+      "actual_tools_space_materials_budget",
+      "proper_authority"
+    ],
+    "research_failure_full_refund": false,
+    "stages": [
+      "KNOWN",
+      "LICENSE_AUTHORIZED",
+      "LOCALLY_TESTED",
+      "ADOPTED",
+      "INSTALLED"
+    ],
+    "public_knowledge_requires_fake_license_fee": false,
+    "global_discovery_updates_all_assets": false,
+    "legacy_sold_asset_free_upgrade": false,
+    "knowledge_fee_delivery_receipts_separate": true,
+    "actual_progress_unique_writer": "social_decisions_v1_existing_ResearchProject_learning_and_experiment_work_material_knowledge_receipts_only; economy_no_second_progress_or_material_consumption",
+    "economy_role": "institution_topic_funding_capacity_license_cost_adoption_and_installation_opportunity_comparison",
+    "stages_record": "AdoptionState_distinct_from_social_ResearchProject_experiment_states"
+  },
+  "aid": {
+    "providers": [
+      "Household_mutual_aid",
+      "Church_actual_charter",
+      "Public_actual_authority"
+    ],
+    "requires": [
+      "actual_authorized_funds_or_goods",
+      "real_staff_care_and_delivery",
+      "actual_fit_diet_bed_capacity"
+    ],
+    "priority": [
+      "actual_life_need_deadline",
+      "deliverable_gap_improvement",
+      "prior_receipts_and_fair_wait"
+    ],
+    "shared_need_receipt_de_dupes": true,
+    "deficit_may_get_new_actual_topup": true,
+    "promised_donation_is_actual_cash": false,
+    "empty_aid_is_health_improvement": false
+  },
+  "disaster_interfaces": {
+    "events": [
+      "GeographyWipe",
+      "BuildingDestroyed",
+      "AccessRevoked",
+      "CityStatusChanged",
+      "MilitaryRequisition",
+      "BlockadeChanged",
+      "CityTransferred",
+      "CivicMembershipChanged",
+      "ActorDied",
+      "ActorUplifted"
+    ],
+    "wipe": "upstream_once_nonlife_whole_object_and_inventory_loss_never_refund_or_recreate",
+    "living_actor_gestation": "identity_protected_actual_hazard_task_replan",
+    "same_kind_or_theme": "no_mandatory_typewipe_no_stock_refill",
+    "loss_dedup_across_war_contract_insurance": true,
+    "lost_city": "legal_debts_households_accounts_continue_square_storage_zero_no_free_refuge_housing",
+    "occupation_or_transfer_moves_private_owner": false,
+    "army_supply": "ArmySupplyRequest_candidate_only_then_real_legal_authorization_cash_actual_procurement_or_requisition_availability_claims; civilian_displacement_food_clothing_care_logistics_wages_and_actual_tools_accessability_before_commit"
+  },
+  "learning": {
+    "bounded_observed_history_only": true,
+    "unique_outcome_event_updates": true,
+    "supplier": [
+      "observed_delivery_time_quality_refund"
+    ],
+    "employer": [
+      "observed_wage_delivery_arrears"
+    ],
+    "worker": [
+      "observed_actual_work_and_commitment"
+    ],
+    "private_knowledge_global_reputation": false,
+    "attribution": "forecast_snapshot_actual_received_evidence_unknown_cause_and_investigation_separate_not_every_failure_personality_fault",
+    "choice": "one_saved_counter_draw_legal_near_best_complete_candidate_set_not_every_frame"
+  },
+  "failure_states": [
+    "NO_LEGAL_AUTHORITY",
+    "STALE_ROLE",
+    "NO_OBSERVED_OFFER",
+    "OFFER_UNAVAILABLE",
+    "UNFUNDED_BID",
+    "FLOOR_DEFICIT",
+    "NO_DIET_OR_FIT_MATCH",
+    "EXPIRED_BATCH",
+    "NO_ROUTE",
+    "RECEIVER_UNAVAILABLE",
+    "CAPACITY_CONFLICT",
+    "ACTOR_TIME_CONFLICT",
+    "WORK_INTERFACE_MISSING",
+    "PRODUCTIVE_ENERGY_MISSING",
+    "QUOTA_EXHAUSTED",
+    "QUOTE_EXPIRED",
+    "QUALITY_REJECTED",
+    "DELIVERY_PARTIAL",
+    "ASSET_WIPED",
+    "DEBT_DEFAULT",
+    "INSOLVENT",
+    "CONTROLLED_WAIT",
+    "LOGICAL_BUDGET_PENDING"
+  ],
+  "events": [
+    "NeedEnvelopeUpdated",
+    "FundedBidPublished",
+    "QuotePublished",
+    "OrderMatched",
+    "ReservationCreated",
+    "ActualPickup",
+    "ActualDelivery",
+    "QualityRejected",
+    "BatchExpired",
+    "AssetLoss",
+    "ActualWorkRecorded",
+    "WageEarned",
+    "WagePaidPartially",
+    "WageArrears",
+    "TaxAssessed",
+    "TaxPaid",
+    "ProjectQuotaReserved",
+    "ProjectQuotaReleased",
+    "FacilityProductionCompleted",
+    "LoanDisbursed",
+    "InterestAccrued",
+    "DebtPaid",
+    "DebtDefaulted",
+    "ResearchKnowledgeTransferred",
+    "TechnologyInstalled",
+    "AidActuallyReceived",
+    "EntityWindingDown",
+    "EntityArchived"
+  ],
+  "persistence": {
+    "saved": [
+      "absolute_cash_and_quantity_owner_custodian_location",
+      "all_unique_ledger_and_loss_receipts",
+      "cash_quantity_time_resource_claims",
+      "quote_revision_and_expiry",
+      "actual_contract_deadline_escrow_milestones",
+      "in_transit_and_expired_batch_states",
+      "WIP_recipe_input_loss_output_remainders",
+      "actor_work_intervals_and_wage_earned_remainder",
+      "project_quota_demand_identity_and_deadline",
+      "loan_actual_principal_interest_due_remainder_schedule_collateral",
+      "tax_assessment_credit_and_clearance_receipts",
+      "household_need_priority_and_actual_aid_receipts",
+      "due_queue_decision_counter_fair_cursor_logical_frontier",
+      "belief_provenance_commitment_and_bounded_experience"
+    ],
+    "derived": [
+      "quote_index",
+      "forecast_cache",
+      "presentation_price_chart",
+      "route_estimate_cache"
+    ],
+    "load_refills_stock_clothing_wages_lifespan_or_expiry": false,
+    "session_UI_input_ending_cancels_existing_contracts": false
+  },
+  "performance": {
+    "per_household_need_candidates": 24,
+    "known_quotes_per_commodity": 16,
+    "shopping_bundles": 8,
+    "jobs": 8,
+    "facility_recipes": 12,
+    "facility_capacity_edges": 64,
+    "project_plans": 8,
+    "pressure_scenarios": 3,
+    "all_economy_candidate_edges_per_tick": 4096,
+    "matching_bucket_active_bids": 256,
+    "matching_bucket_active_quotes": 256,
+    "over_budget": "persistent_fair_partition_or_frontier_no_partial_unsafe_world_publication",
+    "critical_expiry_damage_actual_custody_and_death_skip_for_planner_budget": false,
+    "test_actor_ladder": [
+      512,
+      1000,
+      2000
+    ],
+    "capacity_promise": false,
+    "worker_camera_LOD_affects_result": false,
+    "shared_decision_budget": "4096_economy_edges_ceiling_within_core_all_domain_4096_primitives_not_extra_independent_allowance"
+  },
+  "ui": {
+    "existing_typed_pages_only": "civic_control_v1_existing_page_ids_with_typed_subrecords_and_root_verified_routes_no_new_unregistered_page_names",
+    "locale": [
+      "zh-CN",
+      "en",
+      "de"
+    ],
+    "persistent_tiny_debug_text": false,
+    "arbitrary_JSON_edits_to_balance_ledgers": false,
+    "visible_explanations": [
+      "actual_budget_and_survival_gap",
+      "known_quote_source",
+      "clothing_priorities",
+      "real_work_and_arrears",
+      "order_escrow_vs_actual_delivery",
+      "input_WIP_bottleneck",
+      "project_quota_and_rejection",
+      "tax_credit",
+      "loan_principal_interest_and_term",
+      "aid_actual_capacity"
+    ]
+  },
+  "acceptance_scenarios": [
+    {
+      "id": "EC01",
+      "trigger": "私库隐私",
+      "expected": "商人只见公告与自己货，不知隔壁私库；校验失败不可返回其余量",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC02",
+      "trigger": "晚到报价",
+      "expected": "receivedTick晚于observedTick，过期/低可信报价不能当当下可售保证",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC03",
+      "trigger": "错误供应信息",
+      "expected": "合法错信可生成失败/滞销及实际调查成本，提交不代AI全知预测",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC04",
+      "trigger": "同人格异经历",
+      "expected": "同六轴但不同欠薪/供应经历可改变择业和订单，保存前提解释",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC05",
+      "trigger": "人格不能改库存",
+      "expected": "只编辑六轴不改变库存现金技能/现有合同或工资债",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC06",
+      "trigger": "基因不重置当前人格",
+      "expected": "编辑risk predisposition不瞬间重抽当前PersonalitySnapshot/记忆",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC07",
+      "trigger": "草食食品门控",
+      "expected": "草食Actor不把肉/装饰草当食物，无合法替代明确缺口",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC08",
+      "trigger": "同现金跨商品",
+      "expected": "100 available不能在粮/衣两个订单各锁100，只有实际余量",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC09",
+      "trigger": "基础保障与正装",
+      "expected": "不够基本食品时正装不透支保障，无正装照常工作领薪保岗位",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC10",
+      "trigger": "保温真实需要",
+      "expected": "同收入但高地暴露/体湿不同的人生成不同保温需求",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC11",
+      "trigger": "家庭私产授权",
+      "expected": "共居家庭成员私有资金未授权不得合并购买",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC12",
+      "trigger": "未来工资不是现金",
+      "expected": "已赚未到账工资是债权，不能当available重复购物",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC13",
+      "trigger": "无报价不免费",
+      "expected": "未发现可达食品价格时明确缺口/调查进口，不假定价格0",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC14",
+      "trigger": "私人捐赠底线",
+      "expected": "利他虔诚捐赠仅授权自由预算，不能拿托管工资/他人私产",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC15",
+      "trigger": "到期义务挤压",
+      "expected": "法定税租挤压基本预算则实际缺口/求助，不静默免税发币",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC16",
+      "trigger": "修补有限",
+      "expected": "每修补耗材料劳动并减少remaining repair space，不能无限回满",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC17",
+      "trigger": "服装到货fit",
+      "expected": "购买非本species fit不能装备/假显示穿戴，真实拒收/改制",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC18",
+      "trigger": "无正式服装不罚",
+      "expected": "正装偏好发明前后均不能以禁打卡/扣薪/辞退绕基本规则",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC19",
+      "trigger": "重复时代不换衣",
+      "expected": "升级时代/载入不赠主题衣物或替换现有durability",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC20",
+      "trigger": "早期制衣",
+      "expected": "无成熟私企/货币仍能通过真实家庭公共纤维工作制作衣服",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC21",
+      "trigger": "空缺不生人",
+      "expected": "厂商缺工只招聘现有合法Actor/降低产量，不造新工人",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC22",
+      "trigger": "招聘双接受冲突",
+      "expected": "一Actor不能同时接受重叠全时工作，两真实time claims原子冲突",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC23",
+      "trigger": "启智工作适配",
+      "expected": "启智者学习/经营平等，工作仍需身体接口/实际工具，不变human",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC24",
+      "trigger": "通勤不是厂内工",
+      "expected": "未到设施/在路中不生成生产WorkReceipt，真实疲劳食物继续",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC25",
+      "trigger": "军役排他",
+      "expected": "农工调军后同区间农业工作0，真实粮/照护/工资缺口返回军事方案",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC26",
+      "trigger": "照护排他",
+      "expected": "照护/睡眠/搬运窗口挤压排班，不一人一天多份全时产能",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC27",
+      "trigger": "工资分段余数",
+      "expected": "相同实际work分为不同积分段应付整数薪总额相同",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC28",
+      "trigger": "欠薪不是没劳动",
+      "expected": "资金不足仍保存earned与部分支付债，减产不倒清历史",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC29",
+      "trigger": "工资同rank公平",
+      "expected": "不足同rank按债额比例最大余数，cursor不让固定Id抢钱",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC30",
+      "trigger": "离职工具实际返",
+      "expected": "终止新工作保实际持货/返还任务/已赚债，不传物品",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC31",
+      "trigger": "公共配给实际领取",
+      "expected": "配给权不是食品；粮从真实库存/配送抵家后才可消费",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC32",
+      "trigger": "无人无原料公共后备",
+      "expected": "最低服务不生成工人粮材料，明确耗尽并供迁居等候选",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC33",
+      "trigger": "货币初始化唯一",
+      "expected": "时代/读档/加入另一国不重复MonetaryInitialization发钱",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC34",
+      "trigger": "现有需求去重",
+      "expected": "重复order同DemandIdentity不能把企业可支付需求翻倍",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC35",
+      "trigger": "未支付愿望不撮合",
+      "expected": "WISH或未funded军需不当FUNDED_BID/未来收入",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC36",
+      "trigger": "多人最后一份",
+      "expected": "并发准备快照同末份库存最终一次reserve，输者无负库存",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC37",
+      "trigger": "实际全包费用",
+      "expected": "单价+税+起运固定费共计才affordable，不忽略固定运费",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC38",
+      "trigger": "整单部分约定",
+      "expected": "partialAllowed=false量不足无成交；true仅锁实有q",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC39",
+      "trigger": "公平批次续接",
+      "expected": "报价桶过逻辑预算只续frontier，同stream不同worker顺序结果同",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC40",
+      "trigger": "报价更新旧价",
+      "expected": "后续参考价/卖方改价不改已经签合同的金额",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC41",
+      "trigger": "出库唯一",
+      "expected": "pickup receipt重播不重复源库扣，不源库/在途双可用",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC42",
+      "trigger": "实际到货与付款",
+      "expected": "部分验收到货仅释放对应货值/税/已服务运费，余额真实托管",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC43",
+      "trigger": "在途取消不回源",
+      "expected": "取消已取货订单不把货传回原仓，必须实际返运/改售",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC44",
+      "trigger": "提前腐坏",
+      "expected": "Batch expiry到期在途/预约失效并记LossEvent，不能验收新鲜量",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC45",
+      "trigger": "收货口被毁",
+      "expected": "目的Square容量0货保实际在途/替代重议，不放幽灵储库",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC46",
+      "trigger": "真实保险有限",
+      "expected": "受损赔偿只实际保险可用资产，无无限自动赔满",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC47",
+      "trigger": "少样本价格",
+      "expected": "样本<8保持可信参考价标LOW_SAMPLE，不凭一愿望涨价",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC48",
+      "trigger": "每日价格封顶",
+      "expected": "相同observed价格样本不同query次数更新同，≤冻结daily cap",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC49",
+      "trigger": "不同经营报价",
+      "expected": "易腐滞销/稳定契约/自有资金不同允许真实不同quote无随机波动",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC50",
+      "trigger": "共机多产品",
+      "expected": "一线多recipe共享capacity/time，不每品名义满产",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC51",
+      "trigger": "投入短板",
+      "expected": "缺其中任何recipe input实际输出受限，无法凭labor/technology补料",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC52",
+      "trigger": "work技能一次计",
+      "expected": "已把技能变work效率不能再同倍乘product产率",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC53",
+      "trigger": "WIP中断",
+      "expected": "已有实际耗料不全退；resume用已存remainder/receipt不二耗",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC54",
+      "trigger": "换产迟滞",
+      "expected": "微小一日价差不反复跨family建拆线套利",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC55",
+      "trigger": "农业不是decor",
+      "expected": "装饰花草/地皮不生成Farm food，不新增昼夜季节结算",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC56",
+      "trigger": "果伐互斥",
+      "expected": "同Tree成熟果预约与采伐互斥，实际取果后源reserve扣一次",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC57",
+      "trigger": "放置动物无畜产",
+      "expected": "God动物初maintenance不可变乳蛋蜜肉，需真实productive food",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC58",
+      "trigger": "照光解牲畜产权",
+      "expected": "旧牲畜启智后停止未同意畜產计划，不抹旧实际已得商品",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC59",
+      "trigger": "多人创业一份需求",
+      "expected": "已有/已批/限时quota扣相同需求，不能十家各吃满容量",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC60",
+      "trigger": "创业开业重核",
+      "expected": "批准后失route/工人/需求到期，开业不靠旧approval虚假成功",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC61",
+      "trigger": "私企门槛不挡公共",
+      "expected": "600样例/24月历史/12月资本不阻最初公营真实制衣产粮",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC62",
+      "trigger": "没有资本不能乐观",
+      "expected": "risk再高也不能用预估利润替实付开办硬资本",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC63",
+      "trigger": "活期100%储备",
+      "expected": "活期/工资/税/客户货不用于贷款，只有自有与锁期资金",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC64",
+      "trigger": "签借款不是币",
+      "expected": "LoanDisbursed实际借贷转账现金总量不变",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC65",
+      "trigger": "利息债不是现金",
+      "expected": "利息accrual只应收应付，实际缴才改变双方现金，不生币",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC66",
+      "trigger": "提前提款约束",
+      "expected": "期限钱已贷不因撤单传回来，按契约真实流动性执行",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC67",
+      "trigger": "税receipt与法域",
+      "expected": "同税基分成/转国迁HQ不重征免税，credit不能抵成发钱",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC68",
+      "trigger": "清算剔除托管",
+      "expected": "Liquidation不把client goods/工资escrow租屋并入法人资产",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC69",
+      "trigger": "研究不赠机器",
+      "expected": "研发/许可/装机/采用分别真实work，旧已售资产不自动升级",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC70",
+      "trigger": "救济多方去重",
+      "expected": "多组织同NeedReceipt不把一份粮三次分配；不足可真实续补",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC71",
+      "trigger": "地理wipe经济闭包",
+      "expected": "衣工具WIP树车货核销一次，撤qty/time/route claims不退款复活",
+      "status": "future_production_acceptance_not_run"
+    },
+    {
+      "id": "EC72",
+      "trigger": "保存损耗与游标",
+      "expected": "存载保expiry/deadline/priceEMA/work/loan remainder/fair cursor，same input同结果",
+      "status": "future_production_acceptance_not_run"
+    }
+  ],
+  "acceptance_scenario_count": 72,
+  "invariants": [
+    "no_negative_available_cash_or_quantity",
+    "integer_double_entry_real_counterparty",
+    "cash_payment_is_not_goods_delivery",
+    "single_available_location_per_batch",
+    "reservation_consumed_once",
+    "actual_expiry_or_loss_once",
+    "same_actor_primary_work_intervals_exclusive",
+    "work_earned_pay_receipts_replay_safe",
+    "personality_never_relaxes_hard_law_body_energy_stock_cash_constraints",
+    "no_formal_attire_job_or_pay_exclusion",
+    "public_bootstrap_no_company_or_currency_requirement",
+    "only_existing_eligible_actors_recruited",
+    "funded_unique_demand_no_duplicate_startup_capacity",
+    "no_loan_from_demand_custody_or_escrow",
+    "interest_accrual_does_not_mint_cash",
+    "private_owner_not_changed_by_location_city_transfer_or_occupation",
+    "custody_goods_not_liquidation_property",
+    "Godwipe_no_refund_or_goods_respawn",
+    "finite_repair_consumes_materials_and_future_repair_space",
+    "research_not_global_installed_upgrade",
+    "belief_legal_observed_only",
+    "single_writer_final_consequence_closure",
+    "save_load_no_free_refresh",
+    "fair_logical_cursor_not_worker_finish_or_static_Id"
+  ],
+  "reference_model_scope": {
+    "status": "finite_reference_model_not_production",
+    "checks": [
+      "atomic_funded_purchase_claims_and_basic_floor",
+      "conserved_cash_and_item_quantity_with_explicit_loss",
+      "actual_pickup_delivery_partial_cancel_loss_replay",
+      "nonoverlapping_work_and_prorated_wage_remainders",
+      "finite_lendable_pool_and_unique_demand_quota"
+    ],
+    "does_not_model": [
+      "full_AI_personality_or_beliefs",
+      "all_market_pricing_or_taxes",
+      "real_routes_animation_physiology",
+      "full_bank_failure_or_agriculture",
+      "production_performance_or_Steam"
+    ]
+  },
+  "invariant_count": 24
+}

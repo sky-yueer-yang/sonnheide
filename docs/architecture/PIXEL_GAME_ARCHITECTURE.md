@@ -109,3 +109,9 @@ Steam唯一发行；Windows GPU/Steam安装、控制器/键鼠/DPI/音频/存档
 application只产生God typed proposals；地理换类从精确ChangedGeographyFootprint求完整support/container实物擦除闭包，活Actor/Gestation保pose后结hazard，继任/成员/State在最终候选一次规范化。特殊God立国/改籍/转城不伪造普通支持票或资产转让。命令有唯一civic registry和独占lease，selection不是World变更。
 
 生态生成使用独立EditorInputClock规范化剂量，不吃模拟RNG；有限GodVegetationSource记录Plant生物量而不写仓库，固定窗口/保守冠多边形/成年包络/idle EscapeConnection防堵。生成器不能按renderer消失树数补种，wipe/清理/采伐的dose epoch失效同写集。细节见[城市](SETTLEMENT_LIFECYCLE_AND_EXPANSION.md)、[动作](NATURAL_BEHAVIOR_AND_LOCOMOTION.md)、[God控制](GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md)、[植被](VEGETATION_GENERATOR_AND_DENSITY.md)。
+
+## 13. ADR0016决策边界
+
+新增decision模块随真实行为功能落地：纯提案读取角色可知BeliefSnapshot/PersonalitySnapshot，不能持有World私密全图接口；政治/经济/军事/社会保独立reasoner，输出typed CandidatePlan与真实claims。world事务只做实际守恒/寿命/权限核验，不替人物免费侦察未来；受限失败结果与合法接触证据严格分开。公共ActorAvailability/库存资金预约跨所有domain，query的God真视图不注入AI。
+
+life唯一写CurrentPersonality和长期经历额度，genome潜在倾向与当前人格分离；事件/消息给实际知情者，政府议事与Army命令各有真实传递和执行时间。DecisionEpisode/Commitment/OutcomeAttribution保存逻辑工作与证据/一次effect，不用worker墙钟或UI选择决定World。实现合同见[共享核心](DECISION_CORE_PERSONALITY_AND_INFORMATION.md)及四领域文档，不先创建空decision框架。

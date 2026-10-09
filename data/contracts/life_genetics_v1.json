@@ -4146,7 +4146,8 @@
     "comparison": "matched_species_domains_and_units_no_unqualified_cross_species_numeric_rank",
     "batch_edit": "exact_selection_effects_and_losses_one_commit",
     "unnecessary_small_text": false,
-    "bordered_buttons": false
+    "bordered_buttons": false,
+    "personality_current_editor": "SetCurrentPersonalityAxes_typed_event_distinct_from_genome_edit_no_reroll_or_memory_reset"
   },
   "persistence": {
     "required": [
@@ -4173,7 +4174,8 @@
       "animal_idle_animation",
       "sound_proxy"
     ],
-    "load_restock_reset_health_or_generate_members": false
+    "load_restock_reset_health_or_generate_members": false,
+    "decision_personality": "baseline_current_explicit_edit_experience_sliding_receipts_and_remainders"
   },
   "acceptance_scenarios": [
     {
@@ -4310,5 +4312,37 @@
     "terrain": "data/contracts/terrain_access_v1.json",
     "civic": "data/contracts/civic_control_v1.json",
     "surface": "data/contracts/surface_ecology.json"
+  },
+  "algorithm_revision": "ADR0016-2026-10-09",
+  "personality_state": {
+    "author": "life",
+    "contract": "data/contracts/decision_core_v1.json",
+    "type": "CurrentPersonality",
+    "export": "PersonalitySnapshot",
+    "axes": [
+      "curiosity",
+      "piety",
+      "altruism",
+      "risk_tolerance",
+      "order_preference",
+      "ambition"
+    ],
+    "current_integer_q_range": [
+      0,
+      10000
+    ],
+    "initialization": "birth_once_from_life_expressed_genetic_predisposition_plus_explicit_initial_placement_profile_source",
+    "current_and_genetic_predisposition_separate": true,
+    "gene_edit_resets_current_memory_skill_health": false,
+    "current_typed_edit_modifies_DNA": false,
+    "real_experience": "unique_source_root_effect_bounded_saved_sliding_calendar_budget",
+    "consumers": [
+      "ActorGoalPlanner",
+      "PolicyPlanner",
+      "EconomicPlanner",
+      "MilitaryPlanner",
+      "SocialPlanner"
+    ],
+    "ordinary_animal_civic_or_religion_capability_granted_by_axis": false
   }
 }

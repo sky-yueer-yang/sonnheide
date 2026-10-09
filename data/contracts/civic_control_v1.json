@@ -532,7 +532,7 @@
     "possession_input": "actor_intents_only",
     "exit_restores_planner_without_undo": true,
     "actor_death": "exit_to_actual_death_archive_no_replacement_spawn",
-    "brain_view": "explainable_decision_graph_not_biological_neuron_claim",
+    "brain_view": "existing_person_animal_activity_and_institution_Brain_subpanels_DecisionEpisode_K_personality_contributions_claims_due_outcome_not_new_typed_population_page",
     "disableable_planning_categories": [
       "autonomous_migration",
       "social_contact",
@@ -559,7 +559,9 @@
     "camera_or_lod_changes_visibility_fact": false,
     "archive_leaks_current_unknown_positions": false,
     "scope_selection_is_control_ownership": false,
-    "control_lease_contract": "control_lease_contract"
+    "control_lease_contract": "control_lease_contract",
+    "God_UI_updates_AI_BeliefSnapshot": false,
+    "decision_explanations_limited_by_role_knowledge": true
   },
   "boundary_edit": {
     "modes": [
@@ -1762,7 +1764,8 @@
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/life_genetics_v1.json"
+            "contract_path": "data/contracts/life_genetics_v1.json",
+            "command": "SetCurrentPersonalityAxes"
           },
           {
             "field": "individual_genome_via_life_contract",
@@ -1823,6 +1826,24 @@
           ],
           "direct_edit_of_motion_or_inventory": false,
           "CivicActor_eligibility_required_for_civic_commands": true
+        },
+        "decision_subrecords": {
+          "core_contract": "data/contracts/decision_core_v1.json",
+          "view": "existing_activity_Brain_subpanel_not_new_global_page",
+          "typed_refs": [
+            "DecisionEpisodeRef",
+            "BeliefSnapshotRef",
+            "CommitmentRef",
+            "OutcomeAttributionRef"
+          ],
+          "facts": [
+            "goal_and_major_reasons",
+            "actual_permitted_known_time",
+            "role_and_approval",
+            "real_claims_and_next_due"
+          ],
+          "major_fact_limit": 4,
+          "hidden_current_truth_visible_to_limited_meta": false
         }
       },
       {
@@ -1936,7 +1957,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "settlement",
@@ -2049,7 +2071,8 @@
             "algorithm_contract": "data/contracts/settlement_lifecycle_v1.json",
             "creates_physical_assets_or_goods_immediately": false
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
       },
       {
         "id": "city",
@@ -2221,6 +2244,13 @@
             "algorithm_contract": "data/contracts/settlement_lifecycle_v1.json",
             "creates_physical_assets_or_goods_immediately": false
           }
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
+        "decision_subrecord_routes": [
+          "OpenPolicySession",
+          "CastPolicyBallot",
+          "ClosePolicySession",
+          "CommitPolicyImplementationBatch"
         ]
       },
       {
@@ -2428,6 +2458,13 @@
             ],
             "discriminant": "capital_anchor_vs_crown_office"
           }
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
+        "decision_subrecord_routes": [
+          "OpenPolicySession",
+          "CastPolicyBallot",
+          "ClosePolicySession",
+          "CommitPolicyImplementationBatch"
         ]
       },
       {
@@ -2536,7 +2573,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
       },
       {
         "id": "alliance",
@@ -2635,7 +2673,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
       },
       {
         "id": "culture",
@@ -2742,7 +2781,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "language",
@@ -2833,7 +2873,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "religion",
@@ -2918,7 +2959,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "denomination",
@@ -2997,7 +3039,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "church",
@@ -3109,7 +3152,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
       },
       {
         "id": "enterprise",
@@ -3228,7 +3272,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "building",
@@ -3560,7 +3605,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/warfare_decisions_v1.json"
       },
       {
         "id": "vehicle",
@@ -3870,7 +3916,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "contract",
@@ -3956,7 +4003,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "project",
@@ -4768,7 +4816,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "reservation",
@@ -4842,7 +4891,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "shipment",
@@ -4940,7 +4990,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "production_line",
@@ -5039,7 +5090,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "facility",
@@ -5115,7 +5167,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "knowledge_license",
@@ -5183,7 +5236,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "research_project",
@@ -5268,7 +5322,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "war",
@@ -5353,7 +5408,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/warfare_decisions_v1.json"
       },
       {
         "id": "treaty",
@@ -5427,6 +5483,10 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
+        "decision_subrecord_routes": [
+          "CommitSignedTreaty"
         ]
       },
       {
@@ -5822,6 +5882,24 @@
           ],
           "direct_edit_of_motion_or_inventory": false,
           "CivicActor_eligibility_required_for_civic_commands": true
+        },
+        "decision_subrecords": {
+          "core_contract": "data/contracts/decision_core_v1.json",
+          "view": "existing_activity_Brain_subpanel_not_new_global_page",
+          "typed_refs": [
+            "DecisionEpisodeRef",
+            "BeliefSnapshotRef",
+            "CommitmentRef",
+            "OutcomeAttributionRef"
+          ],
+          "facts": [
+            "goal_and_major_reasons",
+            "actual_permitted_known_time",
+            "role_and_approval",
+            "real_claims_and_next_due"
+          ],
+          "major_fact_limit": 4,
+          "hidden_current_truth_visible_to_limited_meta": false
         }
       },
       {
@@ -6154,7 +6232,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
       },
       {
         "id": "dynasty",
@@ -6476,7 +6555,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
       },
       {
         "id": "crown_election",
@@ -6570,7 +6650,8 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
-        ]
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
       },
       {
         "id": "regency",
@@ -6769,6 +6850,13 @@
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable"
           }
+        ],
+        "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
+        "decision_subrecord_routes": [
+          "SubmitPoliticalPetition",
+          "RespondPoliticalPetition",
+          "DeliverDiplomaticMessage",
+          "CommitIllicitPoliticalAct"
         ]
       },
       {
@@ -8281,7 +8369,8 @@
         ],
         "empty_sections": "hide_without_fake_zero",
         "unavailable_edit": "show_reason_and_legal_path",
-        "editable_field_bindings": []
+        "editable_field_bindings": [],
+        "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
       },
       {
         "id": "save_slot",
@@ -8632,7 +8721,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "ChangeStateLaw",
@@ -8651,7 +8743,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "ChangeOfficialReligion",
@@ -8688,7 +8783,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "ApproveEmpirePetition",
@@ -8778,7 +8876,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "CloseCrownElection",
@@ -8990,7 +9091,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "AdvancePoliticalPlot",
@@ -9007,7 +9111,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "CancelPoliticalPlot",
@@ -9023,7 +9130,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "ProposeDiplomaticIntent",
@@ -9040,7 +9150,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json"
+      ]
     },
     {
       "id": "CommitWarDeclaration",
@@ -9058,7 +9171,11 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json",
+        "data/contracts/warfare_decisions_v1.json"
+      ]
     },
     {
       "id": "CommitPeaceTreaty",
@@ -9075,7 +9192,11 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/political_decisions_v1.json",
+        "data/contracts/warfare_decisions_v1.json"
+      ]
     },
     {
       "id": "ChangeAllianceCharter",
@@ -9111,7 +9232,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/warfare_decisions_v1.json"
+      ]
     },
     {
       "id": "IssueArmyOrder",
@@ -9130,7 +9254,10 @@
       "arbitrary_json_overwrite": false,
       "command_class": "world_transaction",
       "mutates_world": true,
-      "idempotent_dispatch": true
+      "idempotent_dispatch": true,
+      "decision_algorithm_contracts": [
+        "data/contracts/warfare_decisions_v1.json"
+      ]
     },
     {
       "id": "EnterMetaControl",
@@ -9833,6 +9960,236 @@
         "current_definition_and_tool_capability"
       ],
       "effect": "terminate_local_input_without_World_mutation"
+    },
+    {
+      "id": "SetCurrentPersonalityAxes",
+      "target_page": "person",
+      "command_class": "typed_life_event",
+      "source_contract": "data/contracts/decision_core_v1.json",
+      "mutates_world": true,
+      "single_writer": true,
+      "preview_revalidation": true,
+      "idempotent_world_mutation": true,
+      "arbitrary_json_overwrite": false,
+      "guards": [
+        "stable_alive_ActorRef_generation",
+        "trusted_player_edit_authority",
+        "expected_personality_revision",
+        "exact_six_axis_q_0_10000",
+        "current_World_and_definition"
+      ],
+      "effect": "current_personality_revision_event_no_DNA_memory_skill_health_counter_or_commitment_reset"
+    },
+    {
+      "id": "OpenPolicySession",
+      "target_page": "state",
+      "effect": "freeze_actual_institution_agenda_procedure_and_deadline",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "actual_current_institution_and_qualified_authority",
+        "exact_agenda_procedure_notice_and_deadline"
+      ],
+      "additional_target_pages": [
+        "city"
+      ]
+    },
+    {
+      "id": "CastPolicyBallot",
+      "target_page": "state",
+      "effect": "one_valid_seat_exact_proposal_ballot",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "actual_lawful_seat_and_signature_or_registered_proxy",
+        "exact_proposal_procedure_before_deadline",
+        "no_control_lease_fabricates_vote_consent"
+      ],
+      "additional_target_pages": [
+        "city"
+      ]
+    },
+    {
+      "id": "ClosePolicySession",
+      "target_page": "state",
+      "effect": "final_seats_revalidation_and_precise_authorization_or_no_result",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "complete_final_eligible_seat_scan",
+        "frozen_proposal_procedure_and_closeTick",
+        "late_computation_does_not_accept_late_ballots"
+      ],
+      "additional_target_pages": [
+        "city"
+      ]
+    },
+    {
+      "id": "CommitPolicyImplementationBatch",
+      "target_page": "state",
+      "effect": "real_resource_reservation_and_tasks_under_current_authorization",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "existing_exact_valid_policy_authorization",
+        "current_real_executor_and_role",
+        "real_available_funds_goods_work_transport",
+        "no_replay_of_delivered_effects"
+      ],
+      "additional_target_pages": [
+        "city"
+      ]
+    },
+    {
+      "id": "SubmitPoliticalPetition",
+      "target_page": "political_plot",
+      "effect": "actual_initiator_claim_evidence_and_delivery",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "existing_actual_initiator_and_concrete_claim",
+        "real_evidence_or_marked_uncertain_testimony",
+        "actual_delivery_or_oral_access"
+      ]
+    },
+    {
+      "id": "RespondPoliticalPetition",
+      "target_page": "political_plot",
+      "effect": "actual_authorized_reply_or_remedy_obligations",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "actual_current_authorized_responder",
+        "exact_petition_and_known_evidence",
+        "no_fake_delivered_remedy_or_spawned_official"
+      ]
+    },
+    {
+      "id": "DeliverDiplomaticMessage",
+      "target_page": "political_plot",
+      "effect": "actual_delivery_receipt_and_recipient_belief_update",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "actual_current_transport_or_communicative_meeting_receipt",
+        "exact_source_recipient_payload_language_or_translation",
+        "no_delivery_before_actual_arrival"
+      ]
+    },
+    {
+      "id": "CommitSignedTreaty",
+      "target_page": "treaty",
+      "effect": "exact_ratified_compatible_typed_terms_one_transition",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "exact_terms_hash_and_all_actual_ratifications",
+        "current_signer_authority_and_parent_no_cycle",
+        "real_budget_asset_and_transport_claims",
+        "same_territorial_transition_settlement_office_contract_closure"
+      ]
+    },
+    {
+      "id": "CommitIllicitPoliticalAct",
+      "target_page": "political_plot",
+      "effect": "actual_feasible_unauthorized_conduct_loss_and_private_or_observed_evidence_no_false_authorization",
+      "command_class": "world_transaction",
+      "mutates_world": true,
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "preview_revalidation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "source_contract": "data/contracts/political_decisions_v1.json",
+      "ordinary_ai_requires_player_preview_click": false,
+      "guards": [
+        "existing_supported_specific_IllicitActPlan",
+        "actual_actor_control_custody_contact_and_physical_work",
+        "real_resource_and_time_claims",
+        "no_privileged_arbitrary_account_or_legal_owner_transfer",
+        "explicit_illicit_evidence_not_false_lawful_authorization"
+      ],
+      "supported_act_kinds": [
+        "actual_bribe_offer_and_transfer",
+        "actual_custody_embezzlement",
+        "actual_political_coercion_contact",
+        "actual_secret_message_leak",
+        "actual_unsupported_asset_seizure_with_physical_control"
+      ]
     }
   ],
   "verification_scenarios": [
@@ -10041,6 +10398,10 @@
   },
   "settlement_lifecycle_contract": "data/contracts/settlement_lifecycle_v1.json",
   "god_control_contract": "data/contracts/god_control_v1.json",
-  "command_count": 68,
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "command_count": 78,
+  "algorithm_revision": "ADR0016-2026-10-09",
+  "decision_core_contract": "data/contracts/decision_core_v1.json",
+  "political_decision_contract": "data/contracts/political_decisions_v1.json",
+  "economic_decision_contract": "data/contracts/economic_decisions_v1.json",
+  "warfare_decision_contract": "data/contracts/warfare_decisions_v1.json"
 }

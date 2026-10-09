@@ -32,7 +32,8 @@
       "BuildingDestroyed",
       "TreeDestroyed",
       "ContainerDestroyed"
-    ]
+    ],
+    "decision_core": "data/contracts/decision_core_v1.json"
   },
   "authority": {
     "world_mutations": "single_writer_prepare_validate_preview_when_destructive_commit",
@@ -322,7 +323,8 @@
       "civil_permission",
       "existing_real_food_goods_tools",
       "task_body_interface",
-      "exclusive_current_ControlLease_when_external"
+      "exclusive_current_ControlLease_when_external",
+      "domain_expected_feasibility_and_actual_claim_revalidation_not_unknown_enemy_truth_oracle"
     ],
     "formula": "clamp(needRelief+dutyBenefit+personalPreference+actualSocialBenefit+futureShelterBenefit-routeTimeCost-metabolicCost-exposureRisk-expectedQueueCost-switchLoss, scoreRange)",
     "curves": "bounded_piecewise_linear_or_frozen_lookup_not_unbounded_exp",
@@ -338,7 +340,11 @@
       "civil_permission",
       "adulthood"
     ],
-    "need_and_resource_survival_updates_continue_under_control": true
+    "need_and_resource_survival_updates_continue_under_control": true,
+    "scope_of_existing_formula": "personal_immediate_action_domain_only_not_universal_policy_economy_or_warfare_score",
+    "personality_reader": "life.PersonalitySnapshot_current_axes_not_allele_expression",
+    "knowledge_reader": "permitted_received_BeliefSnapshot_not_full_World_truth",
+    "time_claims": "shared_ActorAvailabilityLedger_for_work_care_military_and_actual_movement"
   },
   "activity_vocabularies": {
     "sapient_purposeful_idle": [
@@ -437,7 +443,8 @@
     "reservation_release_does_not_return_held_batch": true,
     "delivery_requires_actual_receiver_interface": true,
     "building_body": "front material delivery then automatic timer; no onsite masonry person animation",
-    "infection_and_energy_integrate_actual_activity": true
+    "infection_and_energy_integrate_actual_activity": true,
+    "decision_episode_interface": "actual_action_effect_and_failure_then_later_received_OutcomeAttribution_unique_learning"
   },
   "pathfinding": {
     "hierarchy": "versioned cluster portals plus actual local surface/door corridors",
@@ -1394,5 +1401,5 @@
   ],
   "acceptance_scenario_count": 42,
   "invariant_count": 20,
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "algorithm_revision": "ADR0016-2026-10-09"
 }
