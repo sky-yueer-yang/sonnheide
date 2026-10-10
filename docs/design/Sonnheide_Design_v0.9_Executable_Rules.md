@@ -287,7 +287,7 @@ Brain按需展开DecisionEpisode/K/当前人格贡献/批准与claims/复议/失
 
 ## 21 全域信息页与八分区前端
 
-中心只放三维世界，全部全局工具在底栏八分区：观察、地形与生态、人物与动物、文明制度、建设资源、经济物品、世界、设置。未切section不铺满工具；选中对象在底部给短资料/可执行动作，正式信息窗按需展开。对象窗可局部关系跳转/草案编辑/关闭，不复制另一个全局工具栏。当前合同登记101个底栏工具，包含本次9个新增入口，均标注planned未实现。
+中心只放三维世界，全部全局工具在底栏八分区：观察、地形与生态、人物与动物、文明制度、建设资源、经济物品、世界、设置。未切section不铺满工具；选中对象在底部给短资料/可执行动作，正式信息窗按需展开。对象窗可局部关系跳转/草案编辑/关闭，不复制另一个全局工具栏。当前合同登记100个底栏工具，均标注planned未实现；计数以现行tool_registry/interaction_runtime为准。
 
 地图近景点Actor/楼/树/物品可开页，远景点国家/城市/联盟/文化等图层开页；国籍、居城、culture、language、雇主、亲属、gene/subspecies/species、货主、合同、战争参战者均可直接跳转。返回历史和固定对象锁定保持，死亡/消亡对象打开只读档案并指向后继，不跳去同名新对象。支持搜索/筛选/多选/成员pins/快捷收藏/仅显收藏/地图标记/interesting actors。
 
@@ -347,7 +347,7 @@ ADR0016增加知情证据源链/receivedTick、人格经历额度、决策前沿
 
 计划模块：foundation/clock/id/errors → world/transactions/save → terrain/water/ramps/access → life/genetics/physiology/animals/uplift → ecology/plants → society/culture/language/family/state/religion → economy/items/contracts/transport/technology → buildings/army/diplomacy → application/query/edit → renderer/platform/audio/UI。没有空目录或隐藏旧代码接入，目标结构与所有者见[工程结构](../architecture/PIXEL_GAME_ARCHITECTURE.md)。
 
-C++20核心不依赖窗口/GPU；选择独立库必须证明不可替代的边界和锁定许可/版本/hash，再接入。SDL3/bgfx/RmlUi/FreeType是历史可评估候选，当前不宣称已锁新版可编译栈；不为重构更换引擎或移植Web游戏。开发Metal证据不代替Windows GPU或Steam实机验收。Python工具3.9+标准库优先。
+C++20核心不依赖窗口/GPU；选择独立库必须证明不可替代的边界和锁定许可/版本/hash，再接入。ADR0018已重新核验并复用native_dependencies.lock中的SDL3/bgfx/RmlUi/FreeType及wrapper/bx/bimg七项版本与原件hash；新生产程序的实际链接、原生输入/UI和Windows GPU仍待验证。不为重构更换引擎或移植Web游戏。开发Metal证据不代替Windows GPU或Steam实机验收。Python工具3.9+标准库优先。
 
 Actor运动/生理热列，社会法人/法律低频记录，species/定义共享不可变；地表分块dirty/nav区域和峰水拓扑边界，事件驱动到期队列，真实视线/动物/授粉都有工作配额与时间推进。不可把预算耗尽视作世界暂停，必须公平补进真实到期步。100/1000/10000含全因果的目标场景之后才承诺容量，禁止用只搬位置benchmark冒充文明性能。保存checkpoint/历史事件压缩保因果/索引，长史不可每tick复制全World。
 
@@ -355,7 +355,7 @@ Actor运动/生理热列，社会法人/法律低频记录，species/定义共�
 
 ## 27 施工、验收与遗留退役
 
-施工顺序：规则/资产合同→批准主菜单与基础原生应用→Blank/Earth同候选三维地表与360°→坡道/地形事务/八底栏/完整本地存载→立刻正式原创人物动物树果衣物建筑代表资产→真实基因生理/动物/文明之光→供货建址与公共经济/持续服装→文化语言政治继任→企业科研宗教与边界→战争/元控制/统计→Steam Windows实机。艺术规格前置，正式制作紧随地表/应用验收，不拖到末尾。
+实施顺序第二版按施工计划S00—S12：原生基础/批准主菜单→Blank/Earth真三维创建/360°/首档→地表编辑/坡道/本地存载→立即正式原创代表资产→少量生命＋真实食源/实物/工时→持续公共食衣/基础庇护/前文化聚落→完整动物基因繁育/启智→文化语言/第一批真实研究/正式城市国家→继任制度/大学科研/宗教→成熟企业与陆水物流→军事外交→全域长期收口→Steam发行。信息编辑、历史统计、存档和元控制随对应领域交付；正式住宅/广场按Culture→T001→T003，大学及跨域建筑按实际前置入场。Windows原生/GPU风险在基础舞台就验证，不拖到发行末尾；全部阶段仍待生产实现。
 
 每阶段都需具体贯穿场景与退出条件；一次完成本批改动/依赖/跨模块审查后统一编译与验收，发现实际问题集中修复再验，不能每小改反复全量构建。文档核验不是游戏验收，旧PBR阶段1和旧headless一律不继承完成度。详见[施工计划](../planning/IMPLEMENTATION_PLAN.md)与[验收规则](../planning/VALIDATION.md)。
 

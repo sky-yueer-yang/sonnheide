@@ -23,7 +23,7 @@
 19. 70类typed互通信息页，具体字段Schema见interaction_runtime；所有全局工具底部八分区，中英德UI与模拟Language分开。无任意JSON覆写事实；草案→后果→一次提交，跳页/locale/晚查询不丢新草案。自然地理不建对象页/Ref，玩家标记不生成自然实体。普通清楼路保人货旧接入，生命清理死亡档案。
 20. 保留批准油画主菜单、原logo/hash与精致新古典极简构图；右下纯文字右对齐，SONNHEIDE大写与五菜单同18px/.01em，行高24px/标题间12px/顶部位置不下移。左上内收logo静态轻微顺时针/多内圈/窄无射线空隙/贴内圈细三外圈/低亮透明密集不等长射线，#fff6df柔光不闪转。深暗边缘小中央亮焦点；68秒停/12秒交叠，140—200秒对角漂移x≤.55%y≤.4%、240秒1.018→1.036，隐藏暂停降低动态停止且不耗模拟RNG。所有按钮无border/outline/ring，键盘焦点用颜色/亮度/位置；禁无必要小字和乱icon。
 21. 只有Age Light/Darkness默认手动Light；自动tick期限/保存余量，手动原子关自动，不做太阳昼夜/自转公转/新季节。灯具真实能源不赠送。只本地存档/自动档/导出，无Workshop/Cloud/社区服务；候选首档持久读回才发布，World/Session/Draft generation隔离，失败保原World/Continue。
-22. 施工按IMPLEMENTATION_PLAN阶段0重起，先主菜单/初始地表/创建/UI/存载，再立即正式原创美术，再生命/经济社会。全部批次修改/依赖/审查后一次全target构建+完整CTest，事务/空间/存档统一sanitizer；实际错误集中补修再验，未变源件shader缓存不重复烘焙。尚未创建构建器前只做设计核验，不虚构测试结果。
+22. 施工按IMPLEMENTATION_PLAN实施顺序第二版S00—S12重起：原生主菜单/初始真3D地表/创建/UI/存载→立即正式原创代表美术→少量生命与真实食源/物品/工时→公共食衣建造→全生命/文化城市/制度产业战争；信息编辑/历史统计/保存/元控制随域交付。正式城市先实际Culture/T001/T003研究，大学后扩；Windows风险在基础舞台就验证。全部批次修改/依赖/审查后一次全target构建+完整CTest，事务/空间/存档统一sanitizer；实际错误集中补修再验，未变源件shader缓存不重复烘焙。尚未创建构建器前只做设计核验，不虚构测试结果。
 
 23. 最新地理类型改变按ADR0017/god_control_v1：先冻结活Actor实际穿戴/握持/携行及递归容器保护，再从地表整对象/support/container毁损闭包扣除。随身衣工具/军装枪弹/搬运第三方货保Ref产权数量耐久湿度期限及body-relative绑定，室内或车船祖先删也保留；owner/预约/源树关系不代替实际携行，保护不向上扩到楼船。活Actor/Gestation保pose仍真实危险，不瞬移/回满/补货；地表植物楼路及非随身货删。同kind/主题不wipe，几何恢复不复活已毁物，行政dry域与法律title分开。
 24. 城市SettlementId+CITY章程共享身份，physical/community双轴；全楼毁/全地失去不按楼数0直接灭城。final alive/成员/几何一次NormalizeSettlement及State/职位结算；新城只真实party到场建设，不能刷新人口/广场。第二城晋级需实际functional，既得法定rank默认保留无buff。

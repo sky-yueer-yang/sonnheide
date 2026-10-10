@@ -12,7 +12,7 @@
 |[商品科技与开局](docs/architecture/EXECUTABLE_CONTENT_AND_BOOTSTRAP.md)|商品/配方/建筑功能/408科技、冷启动与首次货币化|
 |[交互规格](docs/architecture/TYPED_INTERACTION_AND_INPUT.md)|70页面具体字段/命令、拾取、输入、草案和三语错误|
 |[机器总入口](data/contracts/game_v0_9.json)|全部权威合同与四份运行定义|
-|[程序结构](docs/architecture/PIXEL_GAME_ARCHITECTURE.md)、[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)|先基础应用/地表/创建/UI/存载，然后立即正式原创美术|
+|[程序结构](docs/architecture/PIXEL_GAME_ARCHITECTURE.md)、[新施工计划](docs/planning/IMPLEMENTATION_PLAN.md)|S00—S12：基础舞台→立即原创资产→真实生存/公共建造→文明制度/产业战争；信息编辑随域交付|
 |[验收](docs/planning/VALIDATION.md)、[本批报告](docs/planning/DESIGN_AUDIT_ADR0018.json)|统一规格与有限模型核验；生产验收待实际施工|
 
 统一命令：`python3 tools/validate_design.py`，Python3.9+标准库。只运行本批新增参考模型，复用未改历史模型的明确结果，不运行已删除的旧游戏。
