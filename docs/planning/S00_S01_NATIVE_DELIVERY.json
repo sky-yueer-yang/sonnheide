@@ -236,7 +236,43 @@
       "sha256": "944de431f0d45874f238609e651861ab0dff69b7320bc761632bae2abda0a76d"
     }
   ],
-  "windows_ci": "pending_publication",
+  "windows_ci": {
+    "status": "pass",
+    "source_commit": "f2f222391a10ab70a698b3a7bd7d5f04d2da65bb",
+    "checkout_commit": "12a042295bf08366c40079b645799e13a21b547f",
+    "checkout_kind": "pull_request_merge_preview",
+    "os": "Windows Server 2022",
+    "compiler": "MSVC 19.44.35229.0",
+    "python": "3.9.13",
+    "command": "python tools/build.py --jobs 4 --bundle",
+    "run_id": 38029039916,
+    "job_id": 114145917421,
+    "url": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/38029039916",
+    "completed_at": "2026-10-10T06:05:17Z",
+    "ctest": {
+      "tests": 3,
+      "passed": 3,
+      "seconds": 3.47,
+      "core_seconds": 2.07,
+      "project_seconds": 1.19,
+      "ui_seconds": 0.17
+    },
+    "artifact": {
+      "name": "windows-build-evidence",
+      "id": 11661436900,
+      "size_in_bytes": 96007783,
+      "sha256": "f50919b7b059f03a370d9063be3bd3219a7529b880abb88395414859e28d072a",
+      "url": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/38029039916/artifacts/11661436900",
+      "expires_at": "2027-01-08T05:53:31Z",
+      "includes": [
+        "build.log",
+        "CTest log",
+        "Sonnheide executable",
+        "complete runtime resources"
+      ]
+    },
+    "gpu_executed": false
+  },
   "windows_gpu": "not_run",
   "steam_installation": "not_run"
 }

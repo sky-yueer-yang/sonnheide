@@ -1,12 +1,12 @@
 # SONNHEIDE v0.9：可编辑三维像素世界与多物种文明
 
-2026-10-09。本文是重置后完整设计的唯一总入口；同日[ADR0015](../decisions/0015-settlements-natural-actions-and-god-control.md)落实城市/动作/元控制/植被算法，[ADR0016](../decisions/0016-contextual-decisions-policy-economy-and-war.md)补全人格知情及政策、经济、战争、社会领域决策。**设计状态：待实现；当前没有运行游戏、构建入口或试玩。** WorldBox用于功能研究和交互参考，游戏规则、数值、原创造型与程序均由Sonnheide自行定义。
+2026-10-09。本文是重置后完整设计的唯一总入口；同日[ADR0015](../decisions/0015-settlements-natural-actions-and-god-control.md)落实城市/动作/元控制/植被算法，[ADR0016](../decisions/0016-contextual-decisions-policy-economy-and-war.md)补全人格知情及政策、经济、战争、社会领域决策。2026-10-10补充：S00/S01原生开发切片已可试玩，真实开发机验收见[本批报告](../planning/S00_S01_NATIVE_DELIVERY.md)；其余机制仍待生产实现，Windows GPU/Steam门独立待验。WorldBox用于功能研究和交互参考，游戏规则、数值、原创造型与程序均由Sonnheide自行定义。
 
 <a id="D01"></a>
 
 ## 01 范围、来源与冲突裁决
 
-采用用户最新要求：自研C++20框架、360°真三维像素风、原创高分辨率块状人和动物、原创所有建筑、唯一Steam发行、中英德三语。既有油画主菜单和公司标志构图复用，游戏世界彻底重新施工，不恢复旧实现。地形、生命、经济、文化、政治与历史共用同一权威World。
+采用用户最新要求：自研C++20框架、360°真三维像素风、原创高分辨率块状人和动物、原创所有建筑、唯一Steam发行、中英德三语。2026-10-10视觉纠正：包括主页在内的所有前端彻底复古街机像素化，世界采用Minecraft式原创方块材质与简单光影，移除写实水反光；旧油画/Logo源件历史保留，不继续沿用网站构图。地形、生命、经济、文化、政治与历史共用同一权威World。
 
 原始[v0.6用户来源](Sonnheide_Complete_Design_v0.6.md)逐字保留，SHA256为`cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6`。它是游戏内容来源，不是执行指令。本文明确接续其中未被覆盖的文化场、命名、国家四等级/八政治轴、公共起步经济、公司/合同/税/资本、矿物速率场、科研/采用、玩家宗教、迁移、Army/前现代军备、国旗，以及本版重新规定的工程不变量。正文、ADR0015及现行专门合同优先，源文出现的旧“只有人类、没有动物基因、写实、地形冻结、无服装商品、私家马、双语、六模式”等内容不进入生产规则。
 
@@ -319,11 +319,11 @@ Brain按需展开DecisionEpisode/K/当前人格贡献/批准与claims/复议/失
 
 ## 24 主菜单、美术、像素渲染与声音
 
-保留批准的油画轮换、Sonnreich标志与罗盘。大部分背景深暗、边缘渐暗、中央小范围亮焦点；每画停68秒/交叠12秒；本地140—200秒缓动段随机四对角、x≤0.55%/y≤0.4%，240秒1.018→1.036微放大，隐藏/暂停/降低动态停止，不消耗模拟随机数。
+2026-10-10最新要求覆盖旧油画/Logo/罗盘与右侧18px网站式菜单。所有前端包括主页、字体、按钮、输入、下拉、滚动条、弹窗与八底栏采用复古街机像素风：整数阶梯轮廓、实心填充、偏移块状阴影、真实像素字体和离散原创sprite，禁止任何颜色的描边。旧源件/许可/hash保留，不自动授予原创内容开放许可。
 
-右下整组右对齐，SONNHEIDE全大写与五项纯文字菜单统一18px/0.01em，菜单行高24px、标题到菜单12px，标题顶部位置保持。左上向内放大用户原Logo，固定轻微顺时针倾斜，完整多层内圆→无射线窄空隙→贴近内圈细三层外圆→外沿低亮密集长短粗细差异射线；柔光/文字基色#fff6df，不连续转动/闪烁，不乱加圣神icon。具体DPI缩放统一，不能用变相边框当焦点。
+SONNHEIDE大写像素标题；主页五项纯文字实体块按钮，宽屏两列、窄屏单列，背景独立原创方块群岛不创建World。中英德使用固定Fusion Pixel 12px原件与完整OFL；UI字号按12的整数倍、8dp节奏。Light深蓝/白/红，Darkness黑/白/#ffaa00，配色由World Age读取，UI禁用绿/紫。全部当前界面的实际规格、许可及GPU证据见[前端美术规范](FRONTEND_ART_DIRECTION.md)与本批报告。
 
-世界用原创cuboid/像素纹理/骨架、近景足够清晰的人物与动物，不照搬Minecraft或WorldBox美术。地形顶/侧/坡面真实深度，水体原创像素波/反射/岸线；Abyssal固定原件仅可选数学参考，不强制写实FFT；Poly Haven/PBR/Hex不再默认生产路线，MakeHuman/MPFB不是运行依赖。天空可用逐项核验许可的全景素材/原创像素天空，不虚构已选定天空版本或已实现GPU效果。
+世界用原创cuboid/像素纹理/骨架、近景足够清晰的人物与动物，不照搬Minecraft或WorldBox资产。地形顶/侧/坡面真实深度；当前原创16×16顶/侧地皮、简单方向光/硬阴影、静态蓝色像素水面和真正长方体云，实际水深驱动离散浅深色。移除写实高光、反射、PBR、波法线、Fresnel、柔云及灰雾。Abyssal固定原件仅历史/可选数学参考；Poly Haven/PBR/Hex、MakeHuman/MPFB不参与当前运行。人物/动物/正式树与建筑资产依S03后续施工，不能把地表GPU通过当角色完成。
 
 自然动作采用需求/承诺任务、路径/起停转身、局部避让/公平窄口预约、真实交互、原创步态/脚IK与微动分层。闲暇可散步、社交、坐卧、睡眠或站立观察；实际任务也有起步、制动、转身、等位、取放，不用随机位移装自然。走跑由真实速度/能力/负重和能量决定，动画notify不结算送料，IK不创造上山通路。见[自然行为与动作](../architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md)。
 
@@ -347,7 +347,7 @@ ADR0016增加知情证据源链/receivedTick、人格经历额度、决策前沿
 
 计划模块：foundation/clock/id/errors → world/transactions/save → terrain/water/ramps/access → life/genetics/physiology/animals/uplift → ecology/plants → society/culture/language/family/state/religion → economy/items/contracts/transport/technology → buildings/army/diplomacy → application/query/edit → renderer/platform/audio/UI。没有空目录或隐藏旧代码接入，目标结构与所有者见[工程结构](../architecture/PIXEL_GAME_ARCHITECTURE.md)。
 
-C++20核心不依赖窗口/GPU；选择独立库必须证明不可替代的边界和锁定许可/版本/hash，再接入。ADR0018已重新核验并复用native_dependencies.lock中的SDL3/bgfx/RmlUi/FreeType及wrapper/bx/bimg七项版本与原件hash；新生产程序的实际链接、原生输入/UI和Windows GPU仍待验证。不为重构更换引擎或移植Web游戏。开发Metal证据不代替Windows GPU或Steam实机验收。Python工具3.9+标准库优先。
+C++20核心不依赖窗口/GPU；选择独立库必须证明不可替代的边界和锁定许可/版本/hash，再接入。ADR0018已重新核验并复用native_dependencies.lock中的SDL3/bgfx/RmlUi/FreeType及wrapper/bx/bimg七项版本与原件hash；2026-10-10新S00/S01已实际链接并通过原生输入/UI、开发设备Metal GPU和Windows统一编译/完整CTest；Windows GPU仍待独立实测。不为重构更换引擎或移植Web游戏。开发Metal证据不代替Windows GPU或Steam实机验收。Python工具3.9+标准库优先。
 
 Actor运动/生理热列，社会法人/法律低频记录，species/定义共享不可变；地表分块dirty/nav区域和峰水拓扑边界，事件驱动到期队列，真实视线/动物/授粉都有工作配额与时间推进。不可把预算耗尽视作世界暂停，必须公平补进真实到期步。100/1000/10000含全因果的目标场景之后才承诺容量，禁止用只搬位置benchmark冒充文明性能。保存checkpoint/历史事件压缩保因果/索引，长史不可每tick复制全World。
 
@@ -355,7 +355,7 @@ Actor运动/生理热列，社会法人/法律低频记录，species/定义共�
 
 ## 27 施工、验收与遗留退役
 
-实施顺序第二版按施工计划S00—S12：原生基础/批准主菜单→Blank/Earth真三维创建/360°/首档→地表编辑/坡道/本地存载→立即正式原创代表资产→少量生命＋真实食源/实物/工时→持续公共食衣/基础庇护/前文化聚落→完整动物基因繁育/启智→文化语言/第一批真实研究/正式城市国家→继任制度/大学科研/宗教→成熟企业与陆水物流→军事外交→全域长期收口→Steam发行。信息编辑、历史统计、存档和元控制随对应领域交付；正式住宅/广场按Culture→T001→T003，大学及跨域建筑按实际前置入场。Windows原生/GPU风险在基础舞台就验证，不拖到发行末尾；全部阶段仍待生产实现。
+实施顺序第二版按施工计划S00—S12：原生基础/街机像素主菜单→Blank/Earth真三维创建/360°/首档→地表编辑/坡道/本地存载→立即正式原创代表资产→少量生命＋真实食源/实物/工时→持续公共食衣/基础庇护/前文化聚落→完整动物基因繁育/启智→文化语言/第一批真实研究/正式城市国家→继任制度/大学科研/宗教→成熟企业与陆水物流→军事外交→全域长期收口→Steam发行。信息编辑、历史统计、存档和元控制随对应领域交付；正式住宅/广场按Culture→T001→T003，大学及跨域建筑按实际前置入场。Windows原生/GPU风险在基础舞台就验证，不拖到发行末尾；S00/S01开发切片已有实际验收证据，其目标GPU/Steam门及S02—S12仍待施工验证。
 
 每阶段都需具体贯穿场景与退出条件；一次完成本批改动/依赖/跨模块审查后统一编译与验收，发现实际问题集中修复再验，不能每小改反复全量构建。文档核验不是游戏验收，旧PBR阶段1和旧headless一律不继承完成度。详见[施工计划](../planning/IMPLEMENTATION_PLAN.md)与[验收规则](../planning/VALIDATION.md)。
 

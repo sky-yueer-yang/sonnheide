@@ -1,6 +1,6 @@
 # S00/S01 原生开发切片交付
 
-2026-10-10。本批重新实现了原生基础与创建世界，并按最新要求将所有已实现前端彻底改为复古街机像素风。**开发机验收通过；目标Windows GPU及Steam安装仍待验。** 不将设计、旧程序或CI代替目标平台实测。精确结果及图像SHA见[机器报告](S00_S01_NATIVE_DELIVERY.json)。
+2026-10-10。本批重新实现了原生基础与创建世界，并按最新要求将所有已实现前端彻底改为复古街机像素风。**开发机验收与Windows统一构建/完整CTest通过；目标Windows GPU及Steam安装仍待验。** 不将设计、旧程序或CI代替目标平台实测。精确结果及图像SHA见[机器报告](S00_S01_NATIVE_DELIVERY.json)。
 
 ## 当前可试玩
 
@@ -39,6 +39,6 @@
 
 所有世界变更经过同一Authority。候选World只有首checkpoint完成持久读回后发布；WorldId/session/draft/candidate隔离晚结果。保存payload flush、不可变checkpoint、精确hash读回、前一Continue原字节、pending读门与进程内隔离latch共同工作。pointer rename之后失败如实返回DURABILITY_UNKNOWN，不宣称磁盘指针没变。若存储同时拒绝恢复读门的flush，进程内Continue仍保旧确认World；重启不能保证自动选择旧指针，只能从保留checkpoint显式恢复。这一真实故障边界已测试并报告。
 
-Windows CI配置为Windows2022/Python3.9，统一构建完整CTest并保存包含runtime的程序包；源归档/字体/地理许可固定哈希、UTF-8显式读写。发布后的实际CI结果追加到机器报告。CI不执行GPU，不等于Windows D3D11实机、中文IME设备联测或Steam安装。Steam为唯一发行渠道，Metal仅开发设备验证，不建立Apple商店发行流程。音频设备与音量已接入，正式音乐/环境音资产尚未制作。
+Windows2022/Python3.9.13 CI已于2026-10-10 06:05 UTC通过：源提交`f2f222391a10ab70a698b3a7bd7d5f04d2da65bb`的PR合并预览`12a042295bf08366c40079b645799e13a21b547f`统一构建ALL目标，完整CTest 3/3通过，3.47秒。[实际运行日志](https://github.com/sky-yueer-yang/sonnheide/actions/runs/38029039916)与[包含runtime的Windows程序包](https://github.com/sky-yueer-yang/sonnheide/actions/runs/38029039916/artifacts/11661436900)已保留；程序包SHA与各测试时间写入机器报告。源归档/字体/地理许可固定哈希、UTF-8显式读写。CI不执行GPU，不等于Windows D3D11实机、中文IME设备联测或Steam安装。Steam为唯一发行渠道，Metal仅开发设备验证，不建立Apple商店发行流程。音频设备与音量已接入，正式音乐/环境音资产尚未制作。
 
 后续按计划进入S02可编辑地形/坡道与占用闭包，再进入S03原创建筑、人/动物/衣物正式代表件；不把当前空世界称为完整游戏。
