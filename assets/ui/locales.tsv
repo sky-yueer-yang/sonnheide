@@ -11,9 +11,9 @@ world-name	世界名称	World name	Weltname
 surface	初始地表	Initial surface	Anfangsoberfläche
 soil	平土	Flat soil	Flacher Boden
 ocean	海洋	Ocean	Ozean
-size	分辨率 · 0.25 米 / 格	Resolution · 0.25 m / cell	Auflösung · 0,25 m / Feld
-width	宽	Width	Breite
-height	高	Height	Höhe
+size	世界尺寸	World size	Weltgröße
+width	宽 · 地块数	Width · plots	Breite · Parzellen
+height	长 · 地块数	Length · plots	Länge · Parzellen
 theme	地表主题	Surface theme	Oberflächenthema
 snowfield	雪原	Snowfield	Schneefeld
 flower_meadow	花甸	Flower meadow	Blumenwiese
@@ -75,8 +75,8 @@ working	正在处理	Working	Wird bearbeitet
 pause	暂停	Pause	Pause
 play	播放	Play	Weiter
 day	日	Day	Tag
-cells	格	cells	Felder
-dry-cells	陆地格	land cells	Landfelder
+cells	微地表	micro surfaces	Mikroflächen
+dry-cells	干燥微地表	dry micro surfaces	trockene Mikroflächen
 revision	版本	Revision	Stand
 error-input	请输入有效的数值。	Enter a valid number.	Bitte eine gültige Zahl eingeben.
 error-generic	操作无法完成。	The operation could not complete.	Der Vorgang konnte nicht abgeschlossen werden.
@@ -96,7 +96,7 @@ camera-help	操作帮助	Camera controls	Kamerasteuerung
 camera-orbit	按住鼠标中键拖动旋转镜头；滚轮缩放。	Hold the middle mouse button and drag to rotate. Scroll to zoom.	Zum Drehen die mittlere Maustaste gedrückt halten und ziehen. Mit dem Mausrad zoomen.
 camera-pan	按住鼠标右键拖动平移，也可以使用方向键或 WASD。	Hold the right mouse button to pan, or use the arrow keys or WASD.	Zum Verschieben die rechte Maustaste gedrückt halten oder Pfeiltasten beziehungsweise WASD verwenden.
 camera-keys	Q / E 转向；+ / - 缩放。	Q / E turn the camera; + / - zoom.	Q / E drehen die Kamera; + / - ändern den Zoom.
-error-dimensions	地图宽高须在 32–1008 格之间；地球地图的高度由选区比例决定。	Map width and height must be 32–1008 cells. Earth map height follows the selected region’s proportions.	Kartenbreite und -höhe müssen 32–1008 Felder betragen. Bei Erdkarten ergibt sich die Höhe aus den Proportionen des gewählten Gebiets.
+error-dimensions	长宽须在 32–4096 地块之间，每地块 2 米；地球地图的长度由选区比例决定。	Width and length must be 32–4096 plots at 2 metres per plot. Earth map length follows the selected region’s proportions.	Breite und Länge müssen 32–4096 Parzellen betragen, je 2 Meter. Die Länge einer Erdkarte folgt den Proportionen des Gebiets.
 technical-details	技术详情	Technical details	Technische Details
 hide-details	收起详情	Hide details	Details ausblenden
 metres-per-cell	m/格	m/cell	m/Zelle
@@ -116,3 +116,9 @@ tool-age-darkness	黑暗	Dark	Dunkel
 tool-age-auto	自动	Auto	Auto
 tool-age-manual	手动	Manual	Manuell
 not-available	尚未开放	Not yet available	Noch nicht verfügbar
+fine-surface	微表面 31.25 mm · 地块 2 m	Surface detail 31.25 mm · plot 2 m	Oberflächendetail 31,25 mm · Parzelle 2 m
+size-256-full	512 m 方形世界	512 m square world	512 m quadratische Welt
+size-512-full	1.024 km 方形世界	1.024 km square world	1.024 km quadratische Welt
+size-1024-full	2.048 km 方形世界	2.048 km square world	2.048 km quadratische Welt
+size-2048-full	4.096 km 方形世界	4.096 km square world	4.096 km quadratische Welt
+size-4096-full	8.192 km 方形世界	8.192 km square world	8.192 km quadratische Welt

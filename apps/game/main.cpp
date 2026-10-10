@@ -55,22 +55,24 @@ class App {
  std::optional<sonn::CreationDraft> preview_draft_;
  std::optional<sonn::PreparedCommand> rename_;
  std::future<MapResult> map_job_;
- std::uint64_t map_generation_=0,preview_token_=0,command_sequence_=0;
+ std::uint64_t map_generation_=0,preview_token_=0,command_sequence_=0,map_samples_started_=0,map_uploads_=0,selection_updates_=0,map_motion_events_=0;
  bool map_pending_=false,quit_=false,paused_=false,dragging_selection_=false,inspector_was_paused_=false,inspector_open_=false;
  std::vector<ui::Action> platform_actions_;
  ui::Screen load_origin_=ui::Screen::MainMenu;
  int speed_=1;double tick_accumulator_=0,presentation_seconds_=0;double select_start_x_=0,select_start_y_=0;
+ ui::Viewport selection_drag_viewport_;sonn::GeoRect selection_drag_rect_;
  sonn::GeoRect map_rect_{-180000000,180000000,-80000000,80000000};
  ui::View view_;
  sonn::Bytes arcade_font_;
  client::Client client_;
  std::unique_ptr<ui::Ui> ui_;
- bool smoke_=false,smoke_coordinates_checked_=false,smoke_map_focus_sent_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
+ bool smoke_=false,smoke_coordinates_checked_=false,smoke_map_focus_sent_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0,smoke_selection_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
+ std::uint64_t smoke_map_samples_=0,smoke_map_epoch_=0,smoke_selection_updates_=0,smoke_map_motion_events_=0;
  client::Camera smoke_camera_before_{};
- sonn::Hash smoke_camera_world_{};
+ sonn::Hash smoke_camera_world_{},smoke_large_surface_{};
  fs::path evidence_;
  std::vector<std::string> completed_actions_;
- sonn::Uuid counted_world_{};
+ sonn::Uuid counted_world_{};std::uint64_t counted_geometry_revision_=0;
 public:
  App(fs::path resources,fs::path saves,bool smoke,fs::path evidence):resources_(std::move(resources)),save_root_(std::move(saves)),definitions_(admit_runtime(resources_)),saves_(save_root_),client_({resources_,1280,800,false}),smoke_(smoke),evidence_(std::move(evidence)) {
   Rml::SetSystemInterface(client_.system_interface());Rml::SetRenderInterface(client_.render_interface());Rml::SetFileInterface(client_.file_interface());
@@ -98,7 +100,7 @@ public:
     // Bounded work budget carries remainder; no skipped authoritative ticks.
     unsigned n=0;while(tick_accumulator_>=1&&n++<256){session_.active()->advance_tick();tick_accumulator_-=1;}
    }
-   sync_view();
+   sync_view();refresh_selection_overlay();
    // Local animation has no simulation RNG/tick owner. Resume without a time jump.
    if(client_.visible()&&!view_.reduced_motion&&!(session_.active()&&view_.screen==ui::Screen::World&&paused_))presentation_seconds_+=std::clamp(dt,0.0,0.1);
    const sonn::World* w=view_.screen==ui::Screen::World&&session_.active()?&session_.active()->world():preview_?&*preview_:nullptr;
@@ -146,7 +148,7 @@ private:
   auto u=[](double x){if(!std::isfinite(x)||x<-360||x>540)throw sonn::Error("EARTH_BOUNDS","Geographic coordinate out of range");return static_cast<std::int32_t>(std::llround(x*1000000));};
   auto west=u(view_.creation.west),east=u(view_.creation.east);std::int64_t shift=(static_cast<std::int64_t>(west)+180000000)/360000000;if(west< -180000000)shift=(static_cast<std::int64_t>(west)+180000000-359999999)/360000000;west=static_cast<std::int32_t>(west-shift*360000000);east=static_cast<std::int32_t>(east-shift*360000000);d.selection={west,east,u(view_.creation.south),u(view_.creation.north)};d.world_id=new_id();d.seed=new_seed();return d;
  }
- void invalidate_preview(){for(auto& j:jobs_)j.canceled->store(true);session_.cancel();preview_.reset();preview_draft_.reset();view_.creation.preview_ready=false;view_.creation.busy=false;view_.creation.generation=++preview_token_;map_pending_=true;}
+ void invalidate_preview(){stop_selection_drag();for(auto& j:jobs_)j.canceled->store(true);session_.cancel();preview_.reset();preview_draft_.reset();view_.creation.preview_ready=false;view_.creation.busy=false;view_.creation.generation=++preview_token_;}
  void request_preview(){invalidate_preview();auto d=session_.begin(draft());view_.creation.generation=d.draft_generation;view_.creation.busy=true;
   auto canceled=std::make_shared<std::atomic_bool>(false);auto def=definitions_;auto geo=geography_;
   if(d.kind==sonn::CreationKind::Earth&&!geo)throw sonn::Error("GEOGRAPHY_LOADING","Geographic source is still being admitted");
@@ -160,16 +162,16 @@ private:
    }}catch(const sonn::Error& e){if(!it->canceled->load()&&session_.accepts(it->draft)){view_.creation.busy=false;error(e.code,e.what());}}
    it=jobs_.erase(it);
   }
-  if(map_job_.valid()&&map_job_.wait_for(std::chrono::milliseconds(0))==std::future_status::ready){try{auto m=map_job_.get();if(m.revision==map_generation_)client_.set_map_rgba(m.width,m.height,m.rgba,m.revision);}catch(const std::exception& e){error("MAP_SAMPLE",e.what());}}
+  if(map_job_.valid()&&map_job_.wait_for(std::chrono::milliseconds(0))==std::future_status::ready){try{auto m=map_job_.get();if(m.revision==map_generation_){client_.set_map_rgba(m.width,m.height,m.rgba,m.revision);++map_uploads_;}}catch(const std::exception& e){error("MAP_SAMPLE",e.what());}}
   if(map_pending_&&geography_&&!map_job_.valid()&&view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth){
-   map_pending_=false;auto geo=geography_;auto rect=map_rect_;auto selection=draft().selection;auto gen=++map_generation_;
+   map_pending_=false;auto geo=geography_;auto rect=map_rect_;auto gen=++map_generation_;++map_samples_started_;
    auto v=ui_->viewport();int w=std::clamp(static_cast<int>(v.width),512,1600);int h=std::clamp(static_cast<int>(v.height),256,1000);
-   map_job_=std::async(std::launch::async,[geo,rect,selection,gen,w,h]{auto values=geo->sample(rect,w,h);MapResult result{w,h,gen,{}};result.rgba.resize(static_cast<std::size_t>(w)*h*4);
-    for(int y=0;y<h;y++)for(int x=0;x<w;x++){double lon=rect.west_udeg+(x+.5)*(static_cast<double>(rect.east_unwrapped_udeg)-rect.west_udeg)/w;double lat=rect.north_udeg-(y+.5)*(static_cast<double>(rect.north_udeg)-rect.south_udeg)/h;
-     // Sample source rows run south-to-north; display map north-up. Fill-only selected region, no outline.
-     bool land=values[(h-1-y)*w+x]!=0;bool selected=lon>=selection.west_udeg&&lon<=selection.east_unwrapped_udeg&&lat>=selection.south_udeg&&lat<=selection.north_udeg;
+   map_job_=std::async(std::launch::async,[geo,rect,gen,w,h]{auto values=geo->sample(rect,w,h);MapResult result{w,h,gen,{}};result.rgba.resize(static_cast<std::size_t>(w)*h*4);
+    for(int y=0;y<h;y++)for(int x=0;x<w;x++){
+     // The source runs south-to-north. Selection is a live UI overlay, never part of this expensive source raster.
+     bool land=values[(h-1-y)*w+x]!=0;
      auto i=static_cast<std::size_t>(y*w+x)*4;std::array<int,3> rgb=land?std::array<int,3>{59,132,106}:std::array<int,3>{35,67,121};
-     double shade=selected?1.20:.68;for(int k=0;k<3;k++)result.rgba[i+k]=static_cast<std::uint8_t>(std::clamp(rgb[k]*shade,0.,255.));result.rgba[i+3]=255;
+     for(int k=0;k<3;k++)result.rgba[i+k]=static_cast<std::uint8_t>(rgb[k]);result.rgba[i+3]=255;
     }return result;});
   }
  }
@@ -192,7 +194,7 @@ private:
   case A::SetCreationSize:invalidate_preview();view_.creation.width=static_cast<int>(a.a);view_.creation.height=static_cast<int>(a.b);break;
   case A::SetCreationTheme:invalidate_preview();view_.creation.theme=a.text;break;
   case A::SetCreationName:invalidate_preview();view_.creation.name=a.text;break;
-  case A::SetEarthBounds:invalidate_preview();view_.creation.west=a.a;view_.creation.south=a.b;view_.creation.east=a.c;view_.creation.north=a.d;break;
+  case A::SetEarthBounds:invalidate_preview();view_.creation.west=a.a;view_.creation.south=a.b;view_.creation.east=a.c;view_.creation.north=a.d;if(!coordinates_representable())throw sonn::Error("EARTH_BOUNDS","Longitude must be within -360…540 and latitude within -90…90 degrees");break;
   case A::MapZoom:map_zoom(a.a);break;
   case A::MapPan:map_pan(a.a*.15,a.b*.15);break;
   case A::RequestPreview:request_preview();break;
@@ -218,12 +220,52 @@ private:
   }
  }
  void show_world(){if(!session_.active())throw sonn::Error("NO_WORLD","Continue has no compatible world");view_.screen=ui::Screen::World;if(inspector_open_)paused_=inspector_was_paused_;inspector_open_=false;command_sequence_=std::max(command_sequence_,session_.active()->world().input_sequence);tick_accumulator_=0;rename_.reset();client_.frame_surface(client::surface_view(session_.active()->world()));}
- void sync_view(){if(view_.creation.mode==ui::CreationMode::Earth){const auto micro=[](double value){return static_cast<std::int64_t>(std::llround(value*1000000));};const auto span=micro(view_.creation.east)-micro(view_.creation.west),lat=micro(view_.creation.north)-micro(view_.creation.south);if(span>0&&lat>0&&view_.creation.width>0&&view_.creation.width<=sonn::maximum_core_cells){const auto h=(static_cast<std::int64_t>(view_.creation.width)*lat+span-1)/span;view_.creation.height=static_cast<int>(std::clamp<std::int64_t>(h,1,100000));}}if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id){counted_world_=w.id;view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard);view_.world.dry_cells=0;for(int z=w.terrain.guard;z<w.terrain.height-w.terrain.guard;z++)for(int x=w.terrain.guard;x<w.terrain.width-w.terrain.guard;x++)if(sonn::terrain_height_mm[static_cast<unsigned>(w.terrain.at(x,z).kind)]>0)++view_.world.dry_cells;}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
- void map_zoom(double amount){double factor=amount>0?.7:1.0/.7;double cx=(static_cast<double>(map_rect_.west_udeg)+map_rect_.east_unwrapped_udeg)/2;double cy=(static_cast<double>(map_rect_.south_udeg)+map_rect_.north_udeg)/2;double w=std::clamp((map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg))*factor,500.,360000000.);double h=std::clamp((map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg))*factor,500.,160000000.);map_rect_={static_cast<int>(cx-w/2),static_cast<int>(cx+w/2),static_cast<int>(std::max(-80000000.,cy-h/2)),static_cast<int>(std::min(80000000.,cy+h/2))};map_pending_=true;++map_generation_;}
- void map_pan(double dx,double dy){double w=map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg),h=map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg);std::int64_t x=static_cast<std::int64_t>(std::clamp(dx,-.5,.5)*w),y=static_cast<std::int64_t>(std::clamp(dy,-.5,.5)*h);std::int64_t west=map_rect_.west_udeg+x;while(west< -180000000)west+=360000000;while(west>=180000000)west-=360000000;map_rect_.west_udeg=static_cast<int>(west);map_rect_.east_unwrapped_udeg=static_cast<int>(west+w);if(map_rect_.south_udeg+y>=-80000000&&map_rect_.north_udeg+y<=80000000){map_rect_.south_udeg+=static_cast<int>(y);map_rect_.north_udeg+=static_cast<int>(y);}map_pending_=true;++map_generation_;}
+ bool coordinates_representable()const{const auto& c=view_.creation;return std::isfinite(c.west)&&std::isfinite(c.east)&&std::isfinite(c.south)&&std::isfinite(c.north)&&c.west>=-360&&c.west<=540&&c.east>=-360&&c.east<=540&&c.south>=-90&&c.south<=90&&c.north>=-90&&c.north<=90;}
+ void sync_view(){if(view_.creation.mode==ui::CreationMode::Earth&&coordinates_representable()){const auto micro=[](double value){return static_cast<std::int64_t>(std::llround(value*1000000));};const auto span=micro(view_.creation.east)-micro(view_.creation.west),lat=micro(view_.creation.north)-micro(view_.creation.south);if(span>0&&lat>0&&view_.creation.width>0&&view_.creation.width<=sonn::maximum_core_cells){const auto h=(static_cast<std::int64_t>(view_.creation.width)*lat+span-1)/span;view_.creation.height=static_cast<int>(std::clamp<std::int64_t>(h,1,100000));}}if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id||counted_geometry_revision_!=w.terrain.surface_revision()){counted_world_=w.id;counted_geometry_revision_=w.terrain.surface_revision();const auto d=static_cast<std::uint64_t>(w.terrain.micro_divisions());view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard)*d*d;view_.world.dry_cells=w.terrain.dry_micro_count();}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
+ void refresh_selection_overlay(){
+  auto& c=view_.creation;
+  c.selection_visible=view_.screen==ui::Screen::Creation&&c.mode==ui::CreationMode::Earth&&!preview_;
+  const double width=static_cast<double>(map_rect_.east_unwrapped_udeg)-map_rect_.west_udeg;
+  const double height=static_cast<double>(map_rect_.north_udeg)-map_rect_.south_udeg;
+  if(width<=0||height<=0){c.selection_visible=false;return;}
+  const double left=(c.west*1000000-map_rect_.west_udeg)/width;
+  const double right=(c.east*1000000-map_rect_.west_udeg)/width;
+  const double top=(map_rect_.north_udeg-c.north*1000000)/height;
+  const double bottom=(map_rect_.north_udeg-c.south*1000000)/height;
+  c.selection_left=std::clamp(left,0.,1.);c.selection_right=std::clamp(right,0.,1.);
+  c.selection_top=std::clamp(top,0.,1.);c.selection_bottom=std::clamp(bottom,0.,1.);
+  c.selection_visible=c.selection_visible&&right>0&&left<1&&bottom>0&&top<1;
+ }
+ void stop_selection_drag(){if(dragging_selection_)SDL_CaptureMouse(false);dragging_selection_=false;}
+ void update_selection_drag(double px,double py){
+  const auto& v=selection_drag_viewport_;if(v.width<=0||v.height<=0)return;
+  const double ax=std::clamp((select_start_x_-v.x)/v.width,0.,1.),ay=std::clamp((select_start_y_-v.y)/v.height,0.,1.);
+  const double bx=std::clamp((px-v.x)/v.width,0.,1.),by=std::clamp((py-v.y)/v.height,0.,1.);
+  const auto& r=selection_drag_rect_;
+  const double width=(static_cast<double>(r.east_unwrapped_udeg)-r.west_udeg)/1000000.;
+  const double height=(static_cast<double>(r.north_udeg)-r.south_udeg)/1000000.;
+  auto& c=view_.creation;
+  c.west=r.west_udeg/1000000.+std::min(ax,bx)*width;
+  c.east=std::min(r.east_unwrapped_udeg/1000000.,c.west+std::max(.000001,std::abs(ax-bx)*width));
+  c.north=r.north_udeg/1000000.-std::min(ay,by)*height;
+  c.south=std::max(r.south_udeg/1000000.,c.north-std::max(.000001,std::abs(ay-by)*height));
+  ++selection_updates_;refresh_selection_overlay();
+ }
+ void map_zoom(double amount){stop_selection_drag();double factor=amount>0?.7:1.0/.7;double cx=(static_cast<double>(map_rect_.west_udeg)+map_rect_.east_unwrapped_udeg)/2;double cy=(static_cast<double>(map_rect_.south_udeg)+map_rect_.north_udeg)/2;double w=std::clamp((map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg))*factor,500.,360000000.);double h=std::clamp((map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg))*factor,500.,160000000.);map_rect_={static_cast<int>(cx-w/2),static_cast<int>(cx+w/2),static_cast<int>(std::max(-80000000.,cy-h/2)),static_cast<int>(std::min(80000000.,cy+h/2))};map_pending_=true;++map_generation_;}
+ void map_pan(double dx,double dy){stop_selection_drag();double w=map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg),h=map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg);std::int64_t x=static_cast<std::int64_t>(std::clamp(dx,-.5,.5)*w),y=static_cast<std::int64_t>(std::clamp(dy,-.5,.5)*h);std::int64_t west=map_rect_.west_udeg+x;while(west< -180000000)west+=360000000;while(west>=180000000)west-=360000000;map_rect_.west_udeg=static_cast<int>(west);map_rect_.east_unwrapped_udeg=static_cast<int>(west+w);if(map_rect_.south_udeg+y>=-80000000&&map_rect_.north_udeg+y<=80000000){map_rect_.south_udeg+=static_cast<int>(y);map_rect_.north_udeg+=static_cast<int>(y);}map_pending_=true;++map_generation_;}
  void event(const SDL_Event& e){if(e.type==SDL_EVENT_QUIT){auto prior=ui_->take_actions();platform_actions_.insert(platform_actions_.end(),prior.begin(),prior.end());platform_actions_.push_back({ui::ActionKind::Exit});return;}
-  if(e.type==SDL_EVENT_WINDOW_FOCUS_LOST)dragging_selection_=false;
-  if(e.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED||e.type==SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED){auto d=client_.dimensions();ui_->resize(d.pixel_w,d.pixel_h,d.density);map_pending_=true;}
+  if(e.type==SDL_EVENT_WINDOW_FOCUS_LOST)stop_selection_drag();
+  if(e.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED||e.type==SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED){stop_selection_drag();auto d=client_.dimensions();ui_->resize(d.pixel_w,d.pixel_h,d.density);map_pending_=true;}
+  // A map press owns its entire drag, including pointer motion across UI and outside the viewport.
+  // Do not feed the release into a button under the pointer.
+  if(dragging_selection_&&(e.type==SDL_EVENT_MOUSE_MOTION||(e.type==SDL_EVENT_MOUSE_BUTTON_UP&&e.button.button==SDL_BUTTON_LEFT))){
+   const double px=e.type==SDL_EVENT_MOUSE_MOTION?e.motion.x:e.button.x;
+   const double py=e.type==SDL_EVENT_MOUSE_MOTION?e.motion.y:e.button.y;
+   if(e.type==SDL_EVENT_MOUSE_MOTION)++map_motion_events_;
+   update_selection_drag(px,py);
+   if(e.type==SDL_EVENT_MOUSE_BUTTON_UP){stop_selection_drag();invalidate_preview();}
+   return;
+  }
   bool consumed=client_.process_ui_event(e,ui_->context());
   if(e.type==SDL_EVENT_MOUSE_BUTTON_UP)client_.process_camera_event(e);
   auto v=ui_->viewport();auto dim=client_.dimensions();float mx=0,my=0;
@@ -231,15 +273,24 @@ private:
   if(e.type==SDL_EVENT_MOUSE_MOTION){mx=e.motion.x;my=e.motion.y;}else if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN||e.type==SDL_EVENT_MOUSE_BUTTON_UP){mx=e.button.x;my=e.button.y;}else if(e.type==SDL_EVENT_MOUSE_WHEEL){mx=e.wheel.mouse_x;my=e.wheel.mouse_y;}else SDL_GetMouseState(&mx,&my);
   double px=mx,py=my;
   bool inside=px>=v.x&&px<v.x+v.width&&py>=v.y&&py<v.y+v.height;
-  if(ui_->text_input_focused()||ui_->blocks_world_input()||(pointer&&ui_->captures_pointer(static_cast<int>(mx*dim.density),static_cast<int>(my*dim.density)))){if(e.type==SDL_EVENT_MOUSE_BUTTON_UP)dragging_selection_=false;return;}
+  const bool over_ui=pointer&&ui_->captures_pointer(static_cast<int>(mx*dim.density),static_cast<int>(my*dim.density));
+  // The map is deliberately pointer-transparent to RmlUi. Its context root
+  // cannot transfer document focus, so a real map press must release the
+  // previous text control before applying the typing barrier.
+  if(view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth&&!preview_&&inside&&!over_ui&&!ui_->blocks_world_input()&&e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT){
+   if(auto* focused=ui_->context().GetFocusElement())focused->Blur();
+   client_.sync_text_input(ui_->context());
+  }
+  if(ui_->text_input_focused()||ui_->blocks_world_input()||over_ui){if(e.type==SDL_EVENT_MOUSE_BUTTON_UP)stop_selection_drag();return;}
   if(view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth&&!preview_){
    if(e.type==SDL_EVENT_MOUSE_WHEEL&&inside){map_zoom(e.wheel.y);return;}
    if(e.type==SDL_EVENT_MOUSE_MOTION&&inside&&(e.motion.state&SDL_BUTTON_RMASK)){map_pan(-e.motion.xrel/v.width,e.motion.yrel/v.height);return;}
-   if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT&&inside){dragging_selection_=true;select_start_x_=px;select_start_y_=py;}
-   if((e.type==SDL_EVENT_MOUSE_MOTION||e.type==SDL_EVENT_MOUSE_BUTTON_UP)&&dragging_selection_){double ax=std::clamp((select_start_x_-v.x)/v.width,0.,1.),ay=std::clamp((select_start_y_-v.y)/v.height,0.,1.);double bx=std::clamp((px-v.x)/v.width,0.,1.),by=std::clamp((py-v.y)/v.height,0.,1.);
-    double w=(map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg))/1000000.,h=(map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg))/1000000.;view_.creation.west=map_rect_.west_udeg/1000000.+std::min(ax,bx)*w;view_.creation.east=view_.creation.west+std::max(.0001,std::min(60.,std::abs(ax-bx)*w));view_.creation.north=map_rect_.north_udeg/1000000.-std::min(ay,by)*h;view_.creation.south=view_.creation.north-std::max(.0001,std::min(60.,std::abs(ay-by)*h));map_pending_=true;
-    if(e.type==SDL_EVENT_MOUSE_BUTTON_UP){dragging_selection_=false;invalidate_preview();}return;
-   }return;
+   if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT&&inside){
+    invalidate_preview();selection_drag_viewport_=v;selection_drag_rect_=map_rect_;
+    select_start_x_=px;select_start_y_=py;dragging_selection_=true;
+    SDL_CaptureMouse(true);
+   }
+   return;
   }
   if(!consumed&&(view_.screen==ui::Screen::World||preview_)){if(e.type==SDL_EVENT_KEY_DOWN&&e.key.key==SDLK_SPACE){paused_=!paused_;tick_accumulator_=0;}else client_.process_camera_event(e);}
  }
@@ -259,13 +310,45 @@ private:
   case 2:if(!same(c.distance_m,smoke_camera_before_.distance_m*std::exp(-.3)))throw sonn::Error("SMOKE_ZOOM","Native wheel did not zoom camera");smoke_camera_before_=c;button(SDL_EVENT_MOUSE_BUTTON_DOWN,SDL_BUTTON_RIGHT);motion(20,0,SDL_BUTTON_RMASK);button(SDL_EVENT_MOUSE_BUTTON_UP,SDL_BUTTON_RIGHT);return false;
   case 3:if((same(c.target.x,smoke_camera_before_.target.x)&&same(c.target.z,smoke_camera_before_.target.z))||!same(c.target.y,smoke_camera_before_.target.y))throw sonn::Error("SMOKE_PAN","Native right drag did not pan on ground");smoke_camera_before_=c;key(SDLK_Q);return false;
   case 4:if(!same(c.yaw_deg,smoke_camera_before_.yaw_deg-8))throw sonn::Error("SMOKE_KEY","Native Q rotation failed");key(SDLK_E);return false;
-  case 5:{if(!same(c.yaw_deg,smoke_camera_before_.yaw_deg))throw sonn::Error("SMOKE_KEY","Native E rotation failed");auto surface=client::surface_view(session_.active()->world());auto hit=client_.pick(surface,cx,cy);if(!hit||!same(hit->point.y,2)||!same(hit->normal.y,1)||client_.pick(surface,v.x-1,v.y-1))throw sonn::Error("SMOKE_PICK","Screen ray did not hit the same soil top or rejected viewport incorrectly");auto support=session_.active()->world().terrain.support(static_cast<std::int64_t>(std::llround(hit->point.x*1000)),static_cast<std::int64_t>(std::llround(hit->point.z*1000)));if(!support||support->height_mm!=2000||support->wet)throw sonn::Error("SMOKE_PICK_SUPPORT","Pick and core support differ");auto* tab=ui_->context().GetDocument(0)->GetElementById("tab-observe");auto p=tab->GetAbsoluteOffset(Rml::Box::BORDER),s=tab->GetBox().GetSize(Rml::Box::BORDER);auto density=client_.dimensions().density;smoke_camera_before_=c;wheel((p.x+s.x/2)/density,(p.y+s.y/2)/density);return false;}
+  case 5:{if(!same(c.yaw_deg,smoke_camera_before_.yaw_deg))throw sonn::Error("SMOKE_KEY","Native E rotation failed");auto surface=client::surface_view(session_.active()->world());auto hit=client_.pick(surface,cx,cy);if(!hit||!same(hit->point.y,session_.active()->world().terrain.height_for(sonn::TerrainKind::Soil)/1000.)||!same(hit->normal.y,1)||client_.pick(surface,v.x-1,v.y-1))throw sonn::Error("SMOKE_PICK","Screen ray did not hit the same soil top or rejected viewport incorrectly");auto support=session_.active()->world().terrain.support(static_cast<std::int64_t>(std::llround(hit->point.x*1000)),static_cast<std::int64_t>(std::llround(hit->point.z*1000)));if(!support||support->height_mm!=session_.active()->world().terrain.height_for(sonn::TerrainKind::Soil)||support->wet)throw sonn::Error("SMOKE_PICK_SUPPORT","Pick and core support differ");auto* tab=ui_->context().GetDocument(0)->GetElementById("tab-observe");auto p=tab->GetAbsoluteOffset(Rml::Box::BORDER),s=tab->GetBox().GetSize(Rml::Box::BORDER);auto density=client_.dimensions().density;smoke_camera_before_=c;wheel((p.x+s.x/2)/density,(p.y+s.y/2)/density);return false;}
   case 6:if(!unchanged())throw sonn::Error("SMOKE_UI_CAPTURE","Wheel on toolbar changed the camera");button(SDL_EVENT_MOUSE_BUTTON_DOWN,SDL_BUTTON_MIDDLE);{SDL_Event e{};e.type=SDL_EVENT_WINDOW_FOCUS_LOST;push(e);}motion(100,0,SDL_BUTTON_MMASK);return false;
   case 7:if(!unchanged())throw sonn::Error("SMOKE_FOCUS","Lost focus retained camera drag");ui_->activate("world-info");return false;
   case 8:{auto* input=ui_->context().GetDocument(0)->GetElementById("world-name-draft");input->Focus();key(SDLK_W);return false;}
   case 9:if(!unchanged())throw sonn::Error("SMOKE_TEXT_CAPTURE","Text/modal input changed the camera");ui_->activate("world-close");return false;
   case 10:key(SDLK_W);return false;
-  case 11:{if(unchanged())throw sonn::Error("SMOKE_KEY_RELEASE","Closing the modal did not release world keyboard input");if(session_.active()->world().deterministic_hash()!=smoke_camera_world_)throw sonn::Error("SMOKE_CAMERA_WORLD","Camera/UI input changed authoritative World");std::ofstream report(evidence_/"camera-input.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"path","SDL_PushEvent -> App input routing -> native camera -> screen ray -> core terrain support"},{"orbit",true},{"wheel",true},{"pan",true},{"qe",true},{"toolbar_wheel_isolated",true},{"focus_loss_releases_drag",true},{"text_modal_isolated",true},{"modal_close_releases_keyboard",true},{"pick_top_mm",2000},{"outside_viewport_rejected",true},{"world_hash_unchanged",sonn::hex(smoke_camera_world_)}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Camera input report could not be written");return true;}
+  case 11:{if(unchanged())throw sonn::Error("SMOKE_KEY_RELEASE","Closing the modal did not release world keyboard input");if(session_.active()->world().deterministic_hash()!=smoke_camera_world_)throw sonn::Error("SMOKE_CAMERA_WORLD","Camera/UI input changed authoritative World");std::ofstream report(evidence_/"camera-input.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"path","SDL_PushEvent -> App input routing -> native camera -> screen ray -> core terrain support"},{"orbit",true},{"wheel",true},{"pan",true},{"qe",true},{"toolbar_wheel_isolated",true},{"focus_loss_releases_drag",true},{"text_modal_isolated",true},{"modal_close_releases_keyboard",true},{"pick_top_mm",session_.active()->world().terrain.height_for(sonn::TerrainKind::Soil)},{"outside_viewport_rejected",true},{"world_hash_unchanged",sonn::hex(smoke_camera_world_)}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Camera input report could not be written");return true;}
+  default:return true;
+  }
+ }
+ bool exercise_native_selection(){
+  const auto v=ui_->viewport();
+  const auto push=[](SDL_Event e){if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map drag event could not be queued");};
+  const auto button=[&](std::uint32_t type,double x,double y){SDL_Event e{};e.type=type;e.button.button=SDL_BUTTON_LEFT;e.button.x=static_cast<float>(v.x+x*v.width);e.button.y=static_cast<float>(v.y+y*v.height);push(e);};
+  const auto motion=[&](double x,double y){SDL_Event e{};e.type=SDL_EVENT_MOUSE_MOTION;e.motion.state=SDL_BUTTON_LMASK;e.motion.x=static_cast<float>(v.x+x*v.width);e.motion.y=static_cast<float>(v.y+y*v.height);push(e);};
+  const auto check=[&](double right,double bottom){
+   const auto& c=view_.creation;
+   if(!dragging_selection_||!c.selection_visible||std::abs(c.selection_right-right)>.002||std::abs(c.selection_bottom-bottom)>.002||map_samples_started_!=smoke_map_samples_||map_generation_!=smoke_map_epoch_)
+    throw sonn::Error("SMOKE_MAP_CONTINUOUS","Selection did not update continuously without source raster work");
+   auto* el=ui_->context().GetDocument(0)->GetElementById("earth-selection");
+   if(!el)throw sonn::Error("SMOKE_MAP_OVERLAY","Actual native selection element missing");
+   const auto p=el->GetAbsoluteOffset(Rml::Box::BORDER),size=el->GetBox().GetSize(Rml::Box::BORDER);const auto density=client_.dimensions().density;
+   if(std::abs(p.x/density-(v.x+c.selection_left*v.width))>3||std::abs(p.y/density-(v.y+c.selection_top*v.height))>3||std::abs(size.x/density-(c.selection_right-c.selection_left)*v.width)>3||std::abs(size.y/density-(c.selection_bottom-c.selection_top)*v.height)>3)
+    throw sonn::Error("SMOKE_MAP_OVERLAY","Frame-local native rectangle did not follow pointer geometry");
+  };
+  switch(smoke_selection_phase_++){
+  case 0:smoke_map_samples_=map_samples_started_;smoke_map_epoch_=map_generation_;smoke_selection_updates_=selection_updates_;smoke_map_motion_events_=map_motion_events_;button(SDL_EVENT_MOUSE_BUTTON_DOWN,.15,.18);return false;
+  case 1:if(!dragging_selection_)throw sonn::Error("SMOKE_MAP_CAPTURE","Map did not capture native press");motion(.25,.30);return false;
+  case 2:check(.25,.30);client_.request_screenshot(evidence_/"earth-drag-a");motion(.45,.48);return false;
+  case 3:check(.45,.48);client_.request_screenshot(evidence_/"earth-drag-b");motion(.60,.58);return false;
+  case 4:check(.60,.58);motion(.80,.68);return false;
+  case 5:check(.80,.68);button(SDL_EVENT_MOUSE_BUTTON_UP,.80,.68);return false;
+  case 6:{
+   if(dragging_selection_||selection_updates_-smoke_selection_updates_<5||map_samples_started_!=smoke_map_samples_||map_generation_!=smoke_map_epoch_)
+    throw sonn::Error("SMOKE_MAP_RELEASE","Native selection release resampled map or retained capture");
+   std::ofstream report(evidence_/"map-selection.json");
+   report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"path","SDL press/motion/release -> frame-local Rml selection overlay"},{"source_rasters_started_during_drag",0},{"source_epoch_unchanged",true},{"frame_local_geometry_checks",4},{"actual_selection_updates",static_cast<std::int64_t>(selection_updates_-smoke_selection_updates_)},{"actual_motion_events",static_cast<std::int64_t>(map_motion_events_-smoke_map_motion_events_)},{"capture_released",true}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Selection report could not be written");
+   completed_actions_.push_back("earth-continuous-frame-local-selection");act({ui::ActionKind::SetEarthBounds,0,0,"",-6,49,2,55});return true;
+  }
   default:return true;
   }
  }
@@ -280,18 +363,33 @@ private:
    if(smoke_menu_phase_==0){client_.request_screenshot(evidence_/"main-menu");smoke_menu_live_seconds_=presentation_seconds_;smoke_menu_phase_=1;break;}
    if(smoke_menu_phase_==1){if(presentation_seconds_-smoke_menu_live_seconds_<1.5)break;client_.request_screenshot(evidence_/"main-menu-motion");act({ui::ActionKind::SetReducedMotion,0,0,"",1});smoke_menu_frozen_seconds_=presentation_seconds_;smoke_menu_phase_=2;break;}
    if(smoke_menu_phase_==2){client_.request_screenshot(evidence_/"main-menu-frozen-a");smoke_menu_phase_=3;frame_count=0;break;}
-   if(smoke_menu_phase_==3){if(presentation_seconds_!=smoke_menu_frozen_seconds_||session_.active()||preview_)throw sonn::Error("SMOKE_PRESENTATION","Reduced motion changed clock or menu created authority");client_.request_screenshot(evidence_/"main-menu-frozen-b");std::ofstream report(evidence_/"presentation-motion.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"local_clock_frozen",true},{"menu_creates_world",false},{"live_advance_ms",static_cast<std::int64_t>((smoke_menu_frozen_seconds_-smoke_menu_live_seconds_)*1000)},{"image_comparison_required",true}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Presentation report write failed");completed_actions_.push_back("menu-live-motion-and-reduced-clock");act({ui::ActionKind::SetReducedMotion,0,0,"",0});smoke_menu_phase_=4;break;}
+   if(smoke_menu_phase_==3){if(presentation_seconds_!=smoke_menu_frozen_seconds_||session_.active()||preview_)throw sonn::Error("SMOKE_PRESENTATION","Reduced motion changed clock or menu created authority");client_.request_screenshot(evidence_/"main-menu-frozen-b");std::ofstream report(evidence_/"presentation-motion.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"local_clock_frozen",true},{"menu_creates_world",false},{"live_advance_ms",static_cast<std::int64_t>((smoke_menu_frozen_seconds_-smoke_menu_live_seconds_)*1000)},{"image_comparison_required",true}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Presentation report write failed");completed_actions_.push_back("menu-live-motion-and-reduced-clock");smoke_menu_phase_=4;break;}
+   // The GPU screenshot request is serviced on a later frame. Keep the
+   // presentation clock frozen until its actual readback has reached disk.
+   if(smoke_menu_phase_==4){if(presentation_seconds_!=smoke_menu_frozen_seconds_)throw sonn::Error("SMOKE_PRESENTATION","Clock resumed before frozen GPU readback");if(!fs::is_regular_file(evidence_/"main-menu-frozen-b.tga"))break;act({ui::ActionKind::SetReducedMotion,0,0,"",0});smoke_menu_phase_=5;}
    ui_->activate("new-world");step("menu-new");break;
-  case 1:if(view_.screen==ui::Screen::Creation){ui_->activate("preview");step("blank-preview-request");}break;
+  case 1:if(view_.screen==ui::Screen::Creation){act({ui::ActionKind::SetCreationSize,0,0,"",sonn::maximum_core_cells,sonn::maximum_core_cells});ui_->activate("preview");step("largest-blank-preview-request");}break;
   case 2:if(preview_){client_.request_screenshot(evidence_/"blank-preview");step("blank-preview-gpu");}break;
   case 3:ui_->activate("create");step("blank-create");break;
-  case 4:if(session_.active()&&exercise_native_camera()){client_.camera().yaw_deg=155;client_.camera().pitch_deg=18;client_.camera().distance_m=80;ui_->activate("tab-world");step("native-camera-pick-and-near-light");}break;
+  case 4:if(session_.active()&&exercise_native_camera()){
+   const auto& t=session_.active()->world().terrain;
+   if(t.profile!=2||t.width-2*t.guard!=sonn::maximum_core_cells||t.height-2*t.guard!=sonn::maximum_core_cells||t.cell_mm!=2000||t.micro_divisions()!=64||t.dry_micro_count()!=std::uint64_t(4096)*4096*64*64)throw sonn::Error("SMOKE_LARGE_WORLD","Largest Blank not admitted at the actual requested scale");
+   smoke_large_surface_=t.surface_hash();
+   std::ofstream report(evidence_/"large-world.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","created"},{"core_width_cells",4096},{"core_height_cells",4096},{"physical_width_mm",8192000},{"physical_height_mm",8192000},{"management_cell_mm",t.cell_mm},{"micro_side",t.micro_divisions()},{"micro_size_um",31250},{"actual_geometry_bytes",static_cast<std::int64_t>(t.storage_bytes())},{"geometry_budget_bytes",static_cast<std::int64_t>(t.storage_budget_bytes)},{"surface_hash",sonn::hex(smoke_large_surface_)},{"zero_plane_land_pick_mm",t.height_for(sonn::TerrainKind::Soil)}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Largest world report write failed");
+   client_.camera().yaw_deg=155;client_.camera().pitch_deg=18;client_.camera().distance_m=80;ui_->activate("tab-world");step("native-camera-pick-and-near-light");}break;
   case 5:client_.request_screenshot(evidence_/"blank-oblique");step("oblique-gpu");break;
   case 6:ui_->activate("age-darkness");step("set-darkness");break;
   case 7:client_.request_screenshot(evidence_/"darkness");step("dark-gpu");break;
   case 8:ui_->activate("save");ui_->activate("return-menu");step("save-return");break;
   case 9:if(view_.screen==ui::Screen::MainMenu){ui_->activate("continue-world");step("continue");}break;
-  case 10:if(session_.active()){ui_->activate("tab-settings");step("settings-open");}break;
+  case 10:if(session_.active()){
+   const auto& t=session_.active()->world().terrain;
+   if(t.width-2*t.guard!=4096||t.height-2*t.guard!=4096||t.surface_hash()!=smoke_large_surface_)throw sonn::Error("SMOKE_LARGE_READBACK","Largest world Continue changed fine geometry");
+   // GPU diagnostics contain presentation floats. Keep their exact JSON in
+   // a separate evidence file instead of passing it through authority JSON.
+   std::ofstream gpu(evidence_/"large-world-gpu.json");gpu<<client_.gpu_parameters_json();gpu.flush();if(!gpu)throw sonn::Error("SMOKE_REPORT","Largest world GPU report write failed");
+   auto report=sonn::parse_json(bytes_text(sonn::read_file(evidence_/"large-world.json",65536))).object();report["status"]="pass";report["continue_roundtrip_surface_identical"]=true;report["native_gpu_parameters_file"]="large-world-gpu.json";std::ofstream out(evidence_/"large-world.json");out<<sonn::canonical_json(report);out.flush();if(!out)throw sonn::Error("SMOKE_REPORT","Largest world readback report write failed");
+   ui_->activate("tab-settings");step("settings-open");}break;
   case 11:client_.request_screenshot(evidence_/"settings-zh");step("settings-zh-gpu");break;
   case 12:ui_->activate("locale-en");step("english");break;
   case 13:client_.request_screenshot(evidence_/"settings-en");step("settings-en-gpu");break;
@@ -299,9 +397,10 @@ private:
   case 15:client_.request_screenshot(evidence_/"settings-de");step("settings-de-gpu");break;
   case 16:ui_->activate("settings-close");ui_->activate("return-menu");step("settings-return");break;
   case 17:if(view_.screen==ui::Screen::MainMenu){ui_->activate("new-world");step("earth-new");}break;
-  case 18:if(view_.screen==ui::Screen::Creation&&geography_){ui_->activate("earth-mode");step("earth-mode");}break;
-  case 19:act({ui::ActionKind::SetEarthBounds,0,0,"",600,49,2,55});step("invalid-earth-coordinate");break;
+  case 18:if(view_.screen==ui::Screen::Creation&&geography_){ui_->activate("earth-mode");act({ui::ActionKind::SetCreationSize,0,0,"",sonn::default_core_cells,sonn::default_core_cells});step("earth-mode");}break;
+  case 19:try{act({ui::ActionKind::SetEarthBounds,0,0,"",1e300,49,2,55});}catch(const sonn::Error& e){error(e.code,e.what());}step("invalid-earth-coordinate");break;
   case 20:if(!smoke_coordinates_checked_){if(view_.error_key=="EARTH_BOUNDS"){ui_->activate("error-dismiss");act({ui::ActionKind::SetEarthBounds,0,0,"",-6,49,2,55});smoke_coordinates_checked_=true;completed_actions_.push_back("invalid-coordinate-corrected-without-exit");}}else if(view_.error_key.empty()&&!map_pending_&&!map_job_.valid()){
+   if(!exercise_native_selection())break;
    if(!smoke_map_focus_sent_){auto v=ui_->viewport();SDL_Event e{};e.type=SDL_EVENT_MOUSE_BUTTON_DOWN;e.button.button=SDL_BUTTON_LEFT;e.button.x=v.x+v.width*.5f;e.button.y=v.y+v.height*.5f;if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map mouse event could not be queued");e={};e.type=SDL_EVENT_WINDOW_FOCUS_LOST;if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map focus event could not be queued");e={};e.type=SDL_EVENT_MOUSE_MOTION;e.motion.x=v.x+v.width*.6f;e.motion.y=v.y+v.height*.6f;if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map motion could not be queued");smoke_map_focus_sent_=true;break;}
    if(dragging_selection_||view_.creation.west!=-6||view_.creation.south!=49||view_.creation.east!=2||view_.creation.north!=55)throw sonn::Error("SMOKE_MAP_FOCUS","Lost focus retained Earth selection drag");completed_actions_.push_back("earth-selection-focus-loss-released");client_.request_screenshot(evidence_/"earth-map");step("earth-map-gpu");}break;
   case 21:ui_->activate("preview");step("earth-preview-request");break;

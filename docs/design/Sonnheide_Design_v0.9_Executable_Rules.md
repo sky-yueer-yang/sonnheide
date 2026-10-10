@@ -1,8 +1,8 @@
 # SONNHEIDE v0.9：可编辑三维像素世界与多物种文明
 
-2026-10-10最新视觉/细格覆盖：采用[ADR0019](../decisions/0019-fine-terrain-and-colorful-arcade.md)、[ADR0020](../decisions/0020-translucent-navy-borderless-ui.md)与[前端美术](FRONTEND_ART_DIRECTION.md)。UI为深青蓝背景、深色半透明面板、无框大icon/小字，主要蓝红白黄；黄色本色#ffaa00。主页闪烁细星和流星，取消柜式大框与大字。新世界真实250mm格、32px/m材质、默认512²=128×128m；计划坡道角量子1mm，覆盖此前2m格/125mm量子。其余八档高度及游戏机制不变。
+2026-10-10最新覆盖：[ADR0021](../decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md)与[前端美术](FRONTEND_ART_DIRECTION.md)。用户取消此前全部前端规范，采用参考WorldBox的紧凑双层工具栏/像素窗口，并最新指定全部框深色半透明。新profile2为2m管理格＋独立64²微表面（31.25mm），五档512m至8.192km、默认2.048km；soil/sand顶与统一水面同高0m，海床仍为真实深度。[当前批次开发机统一原生验收已通过](../planning/LARGE_WORLD_MICRO_SURFACE_DELIVERY.md)。
 
-2026-10-09。本文是重置后完整设计的唯一总入口；同日[ADR0015](../decisions/0015-settlements-natural-actions-and-god-control.md)落实城市/动作/元控制/植被算法，[ADR0016](../decisions/0016-contextual-decisions-policy-economy-and-war.md)补全人格知情及政策、经济、战争、社会领域决策。2026-10-10补充：S00/S01原生开发切片已可试玩，真实开发机验收见[最新报告](../planning/ARCADE_V2_DELIVERY.md)；其余机制仍待生产实现，Windows GPU/Steam门独立待验。WorldBox用于功能研究和交互参考，游戏规则、数值、原创造型与程序均由Sonnheide自行定义。
+2026-10-09。本文是重置后完整设计的唯一总入口；同日[ADR0015](../decisions/0015-settlements-natural-actions-and-god-control.md)落实城市/动作/元控制/植被算法，[ADR0016](../decisions/0016-contextual-decisions-policy-economy-and-war.md)补全人格知情及政策、经济、战争、社会领域决策。2026-10-10补充：S00/S01原生开发切片已可试玩，旧开发机验收见[历史报告](../planning/ARCADE_V2_DELIVERY.md)；其余机制仍待生产实现，Windows GPU/Steam门独立待验。WorldBox用于功能研究和交互参考，游戏规则、数值、原创造型与程序均由Sonnheide自行定义。
 
 <a id="D01"></a>
 
@@ -42,7 +42,7 @@ Blank选择全海或固定高度土面、尺寸、主题、初始有界生态与
 
 ## 04 真三维地形与几何画笔
 
-新世界250mm格、64×64chunk；默认512²核心格即128×128m，当前最高1008²即252×252m。普通地形高度只为−20/−8/−2/+1/+2/+16/+48/+96游戏米，对应深海/近海/浅水/沙/土/丘陵/山地/高峰。WorldProfile冻结。计划只有合法CreateRamp能产生1mm量子四角插值面、固定NW-SE剖分，连接两固定平台；坡道尚待S02实装。全体积破坏、自然洞穴、悬空块、类型内随机高度皆不做。显式旧2000mm几何按原尺度解释，不静默迁移旧档。
+新世界2m管理格、每格64²独立微表面；最细31.25mm，均匀区RLE、只有变化格有packed palette微片。默认1024²=2.048km，最高4096²=8.192km，五档预设与独立轴。地形高度为−20/−8/−2/0/0/+16/+48/+96游戏米，对应深海/近海/浅水海床/沙/土/丘陵/山地/高峰；soil/sand与水面0m共面，kind与实际微覆盖决定陆水，管理中心不能吞细岛。WorldProfile冻结。计划只有合法CreateRamp能产生1mm量子四角插值面、固定NW-SE剖分，连接两固定平台；坡道尚待S02实装。全体积破坏、自然洞穴、悬空块、类型内随机高度皆不做。历史profile1显式250/2000mm几何按原尺度/高度解释，不静默迁移旧档。
 
 八档地形画笔＋升一级/降一级＋平整为选中档＋坡道/移除坡道＋吸取/复制平顶地形。取消局部平滑、任意高度和高度强度。圆/方/线/带状输入只决定命中格，整格写固定档；复制只复制flat preset/theme，不复制坡道身份、实物、矿储、木果、人口、产权或历史。坡道复制需重新规划真实目标几何。
 
@@ -321,11 +321,11 @@ Brain按需展开DecisionEpisode/K/当前人格贡献/批准与claims/复议/失
 
 ## 24 主菜单、美术、像素渲染与声音
 
-2026-10-10最新要求采用ADR0020：所有前端为高分辨率复古像素风，背景深青蓝、信息框深色半透明、按钮尽量无边框、底栏全部无边框，主要蓝红白黄。切角填色、像素字号/亮度/小投影建立层次，不再用柜式描边。黄色本色唯一#ffaa00，允许明暗渐变派生。旧源件/许可/hash保留，不自动授予原创内容开放许可。
+2026-10-10最新要求采用ADR0021：所有前端为高分辨率像素风，参考实际WorldBox截图的双层紧凑类别与彩图标槽、创建窗口和关闭/选中反馈；全部框深色半透明，外沿与内部不重复叠透明。用户取消此前颜色、描边、主页位置等规范。旧源件/许可/hash保留，不自动授予原创内容开放许可。
 
-SONNHEIDE大写小一号像素标题；主页五项紧凑无框操作，背景只有偏青深蓝星空、细星闪烁及偶发流星，不加载图片、不创建World。正文12dp、重要标题24/36dp；底栏宽屏大64dp icon配12dp短词，完整三语名称进tooltip。中英德使用固定Fusion Pixel原件与完整OFL；最低640×480与DPI1/2可读。UI颜色不随Age整套改写。实际规格、许可及GPU证据见[前端美术规范](FRONTEND_ART_DIRECTION.md)与[最新报告](../planning/ARCADE_V2_DELIVERY.md)。
+SONNHEIDE像素标题与五项紧凑菜单，主页深蓝星空、细星闪烁及流星，不创建World。正文12dp，重要标题适量放大；底栏128dp双层，上排八个48×44dp页签，下排44×44dp工具槽/32dp icon，完整三语名称进tooltip。中英德使用固定Fusion Pixel原件与完整OFL；最低640×480与DPI1/2可读。UI颜色不随Age整套改写。规格与当前验收要求见[前端美术规范](FRONTEND_ART_DIRECTION.md)，旧批次报告仅历史。
 
-世界用原创cuboid/像素纹理/骨架、近景足够清晰的人物与动物，不照搬Minecraft或WorldBox资产。当前250mm顶/侧面真实深度，128²材质以32px/m世界空间采样；精确合并同高度/类型/主题顶面，不改变物理格、侧面和海岸。方向光影、细像素水纹、分层漂移薄云、稀疏风动装饰花草使画面生动，实际水深控制水色。不使用写实镜面/PBR/Fresnel。表现时钟在隐藏、降低动态、世界暂停时冻结，恢复不跳时，不消费仿真RNG。Abyssal固定原件仅历史/可选数学参考；Poly Haven/PBR/Hex、MakeHuman/MPFB不参与当前运行。人物/动物/机制树与建筑资产依S03后续施工，不能把装饰花草和地表GPU通过当生命系统完成。
+世界用原创cuboid/像素纹理/骨架、近景足够清晰的人物与动物，不照搬Minecraft或WorldBox资产。当前实际31.25mm微地表与真实海床；128²材质以64px/m世界空间采样。全域微覆盖概览与预算内近景细面共同呈现；精确合并不改变实际kind/theme/侧面/海岸，未驻留细网格不能让远岛消失。方向光影、细像素水纹、分层漂移薄云、稀疏风动装饰花草使画面生动，实际水深控制水色。不使用写实镜面/PBR/Fresnel。表现时钟在隐藏、降低动态、世界暂停时冻结，恢复不跳时，不消费仿真RNG。Abyssal固定原件仅历史/可选数学参考；Poly Haven/PBR/Hex、MakeHuman/MPFB不参与当前运行。人物/动物/机制树与建筑资产依S03后续施工，不能把装饰花草和地表GPU通过当生命系统完成。
 
 自然动作采用需求/承诺任务、路径/起停转身、局部避让/公平窄口预约、真实交互、原创步态/脚IK与微动分层。闲暇可散步、社交、坐卧、睡眠或站立观察；实际任务也有起步、制动、转身、等位、取放，不用随机位移装自然。走跑由真实速度/能力/负重和能量决定，动画notify不结算送料，IK不创造上山通路。见[自然行为与动作](../architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md)。
 
@@ -349,7 +349,7 @@ ADR0016增加知情证据源链/receivedTick、人格经历额度、决策前沿
 
 计划模块：foundation/clock/id/errors → world/transactions/save → terrain/water/ramps/access → life/genetics/physiology/animals/uplift → ecology/plants → society/culture/language/family/state/religion → economy/items/contracts/transport/technology → buildings/army/diplomacy → application/query/edit → renderer/platform/audio/UI。没有空目录或隐藏旧代码接入，目标结构与所有者见[工程结构](../architecture/PIXEL_GAME_ARCHITECTURE.md)。
 
-C++20核心不依赖窗口/GPU；选择独立库必须证明不可替代的边界和锁定许可/版本/hash，再接入。ADR0018已重新核验并复用native_dependencies.lock中的SDL3/bgfx/RmlUi/FreeType及wrapper/bx/bimg七项版本与原件hash；2026-10-10新S00/S01已实际链接并通过原生输入/UI、开发设备Metal GPU和Windows统一编译/完整CTest；Windows GPU仍待独立实测。不为重构更换引擎或移植Web游戏。开发Metal证据不代替Windows GPU或Steam实机验收。Python工具3.9+标准库优先。
+C++20核心不依赖窗口/GPU；选择独立库必须证明不可替代的边界和锁定许可/版本/hash，再接入。ADR0018已重新核验并复用native_dependencies.lock中的SDL3/bgfx/RmlUi/FreeType及wrapper/bx/bimg七项版本与原件hash；2026-10-10新S00/S01已实际链接并通过原生输入/UI、开发设备Metal GPU和完整CTest；新源码Windows编译由对应CI另行登记，Windows GPU仍待独立实测。不为重构更换引擎或移植Web游戏。开发Metal证据不代替Windows GPU或Steam实机验收。Python工具3.9+标准库优先。
 
 Actor运动/生理热列，社会法人/法律低频记录，species/定义共享不可变；地表分块dirty/nav区域和峰水拓扑边界，事件驱动到期队列，真实视线/动物/授粉都有工作配额与时间推进。不可把预算耗尽视作世界暂停，必须公平补进真实到期步。100/1000/10000含全因果的目标场景之后才承诺容量，禁止用只搬位置benchmark冒充文明性能。保存checkpoint/历史事件压缩保因果/索引，长史不可每tick复制全World。
 
@@ -379,4 +379,4 @@ Actor运动/生理热列，社会法人/法律低频记录，species/定义共�
 
 默认20tick/运动秒、12000tick/游戏日、500tick/日历小时、360日/年；speed只改变墙钟。文化/语言/亚种只消费真实事件及来源，不每frame滚随机。不声明科学还原或最终平衡。新增定义覆盖旧同名骨架，消费者只能读当前版本。
 
-严格区分：规则/运行数据定义、有限参考模型、C++生产切片、GPU/Steam实机。当前S00/S01原生程序已实现并完成本批开发机GPU验收；S02及后续领域仍待生产施工，Windows GPU与Steam安装尚待独立验证。参考模型只证明自己的抽象范围；历史设计核验见DESIGN_AUDIT_ADR0018，当前程序结果见ARCADE_V2_DELIVERY。
+严格区分：规则/运行数据定义、有限参考模型、C++生产切片、GPU/Steam实机。当前S00/S01原生程序已实现并完成本批开发机GPU验收；S02及后续领域仍待生产施工，Windows GPU与Steam安装尚待独立验证。参考模型只证明自己的抽象范围；历史设计核验见DESIGN_AUDIT_ADR0018，当前程序结果见LARGE_WORLD_MICRO_SURFACE_DELIVERY；ARCADE_V2_DELIVERY仅历史。

@@ -85,6 +85,27 @@ bool Ui::initialize(int width,int height,float density,std::string& error) {
 void Ui::resize(int width,int height,float density) { if(!context_) return; context_->SetDimensions({width,height}); context_->SetDensityIndependentPixelRatio(std::max(.1f,density)); layout(); }
 void Ui::set_view(const View& view) {
     if(view_==view) return;
+    // Pointer-motion snapshots must not traverse translations or rebuild
+    // controls. Geographic selection has a separate screen-space overlay.
+    auto previous=view_;
+    previous.creation.west=view.creation.west;previous.creation.south=view.creation.south;
+    previous.creation.east=view.creation.east;previous.creation.north=view.creation.north;
+    previous.creation.selection_visible=view.creation.selection_visible;
+    previous.creation.selection_left=view.creation.selection_left;previous.creation.selection_top=view.creation.selection_top;
+    previous.creation.selection_right=view.creation.selection_right;previous.creation.selection_bottom=view.creation.selection_bottom;
+    if(view.creation.mode==CreationMode::Earth && previous.creation.mode==CreationMode::Earth) previous.creation.height=view.creation.height;
+    if(document_ && context_ && view.screen==Screen::Creation && previous==view) {
+        const bool height_changed=view_.creation.height!=view.creation.height;
+        view_=view;
+        const bool was_syncing=syncing_controls_;syncing_controls_=true;
+        input_value(context_,document_,"earth-west",number(view.creation.west));input_value(context_,document_,"earth-east",number(view.creation.east));
+        input_value(context_,document_,"earth-south",number(view.creation.south));input_value(context_,document_,"earth-north",number(view.creation.north));
+        input_value(context_,document_,"creation-height",std::to_string(view.creation.height));
+        syncing_controls_=was_syncing;
+        if(height_changed) update_creation_scale();
+        update_map_selection();
+        return;
+    }
     const bool changed_screen=view_.screen!=view.screen;
     const bool opened_error=view_.error_key.empty() && !view.error_key.empty();
     const bool closed_error=!view_.error_key.empty() && view.error_key.empty();
@@ -165,8 +186,13 @@ void Ui::refresh() {
     input_value(context_,document_,"creation-width",std::to_string(view_.creation.width));
     input_value(context_,document_,"creation-height",std::to_string(view_.creation.height));
     enable(document_,"creation-height",!earth && !view_.creation.busy);
-    const auto metres=[](std::int64_t mm){std::string value=std::to_string(mm/1000);auto fraction=std::to_string(1000+mm%1000).substr(1);while(!fraction.empty()&&fraction.back()=='0')fraction.pop_back();return fraction.empty()?value:value+"."+fraction;};
-    label(document_,"creation-scale",metres(view_.creation.cell_mm)+text("metres-per-cell")+" · "+metres(static_cast<std::int64_t>(view_.creation.width)*view_.creation.cell_mm)+" × "+metres(static_cast<std::int64_t>(view_.creation.height)*view_.creation.cell_mm)+" m");
+    enable(document_,"creation-width",!view_.creation.busy);
+    for(int size:{256,512,1024,2048,4096}) {
+        const auto id="size-"+std::to_string(size);
+        choice(document_,id.c_str(),view_.creation.width==size && (earth || view_.creation.height==size));
+        enable(document_,id.c_str(),!view_.creation.busy);
+    }
+    update_creation_scale();
     input_value(context_,document_,"earth-west",number(view_.creation.west)); input_value(context_,document_,"earth-east",number(view_.creation.east));
     input_value(context_,document_,"earth-south",number(view_.creation.south)); input_value(context_,document_,"earth-north",number(view_.creation.north));
     input_value(context_,document_,"creation-theme",view_.creation.theme);
@@ -184,7 +210,8 @@ void Ui::refresh() {
     input_value(context_,document_,"audio-volume",std::to_string(view_.audio_volume));
     const char* tabs[]={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
     for(int i=0;i<8;++i) { choice(document_,tabs[i],i==static_cast<int>(section_)); enable(document_,tabs[i],i==0 || i==6 || i==7); }
-    show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World); show(document_,"age-tools",section_==BottomSection::World,"flex");
+    show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World,"flex"); show(document_,"age-tools",section_==BottomSection::World,"flex");
+    if(auto* pause=document_->GetElementById("pause")) pause->SetAttribute("data-tooltip-key",view_.world.paused?"play":"pause");
     show(document_,"no-saves",view_.saves.empty());
     std::string signature;
     for(const auto& save:view_.saves) signature+=save.id+'\n'+save.name+'\n'+save.detail+'\n';
@@ -242,66 +269,72 @@ void Ui::layout() {
     const auto grid=[](float value){return std::floor(value/8)*8;};
     const bool narrow=w<820;
     document_->SetClass("compact",narrow);
-    const float menu_width=grid(std::min(264.f,w-32));
+    const float menu_width=grid(std::min(304.f,w-32));
     property("main-menu","width",menu_width);
-    property("main-menu","left",narrow?grid((w-menu_width)/2):grid(std::max(24.f,w*.12f)));
-    property("main-menu","top",grid(std::max(16.f,(h-320.f)/2)));
+    property("main-menu","left",grid((w-menu_width)/2));
+    property("main-menu","top",grid(std::max(16.f,(h-324.f)/2)));
     property("main-menu","max-height",std::max(160.f,h-32));
     show(document_,"creation-options",narrow,"inline-block");
     show(document_,"creation-controls",!narrow || controls_open_);
-    property("creation-controls","left",narrow?16:24);
-    property("creation-controls","width",grid(std::max(240.f,std::min(narrow?w-32:352.f,352.f))));
-    property("creation-controls","height",grid(std::max(160.f,h-88)));
-    property("scene-viewport","left",narrow?16:400);
-    property("scene-viewport","top",68);
-    property("scene-viewport","width",grid(std::max(8.f,w-(narrow?32:424))));
-    property("scene-viewport","height",grid(std::max(8.f,h-88)));
+    property("creation-controls","left",narrow?12:16);
+    property("creation-controls","width",grid(std::max(240.f,std::min(narrow?w-24:360.f,360.f))));
+    property("creation-controls","height",grid(std::max(160.f,h-72)));
+    property("scene-viewport","left",narrow?12:392);
+    property("scene-viewport","top",56);
+    property("scene-viewport","width",grid(std::max(8.f,w-(narrow?24:408))));
+    property("scene-viewport","height",grid(std::max(8.f,h-72)));
     property("save-panel","left",grid(std::max(16.f,(w-std::min(800.f,w-32))/2)));
     property("save-panel","width",grid(std::min(800.f,w-32)));
-    property("save-panel","top",68);property("save-panel","height",grid(std::max(128.f,h-88)));
+    property("save-panel","top",56);property("save-panel","height",grid(std::max(128.f,h-72)));
     for(const auto* id:{"settings-panel","world-panel","help-panel","error-panel"}) {
-        const float width=grid(std::min(704.f,w-32));
+        const float width=grid(std::min(536.f,w-24));
         property(id,"left",grid((w-width)/2));property(id,"width",width);
         const float top=grid(std::max(16.f,std::min(64.f,h*.08f)));
         property(id,"top",top);property(id,"max-height",grid(std::max(128.f,h-top-24)));
-        property(id,"padding-left",20);property(id,"padding-right",20);
+        property(id,"padding-left",16);property(id,"padding-right",16);
     }
     if(auto* bar=document_->GetElementById("bottom-bar")) {
         for(int i=0;i<bar->GetNumChildren();++i) if(auto* button=bar->GetChild(i)) {
-            button->SetProperty("width",w<760?"25%":"12.5%");
+            button->SetProperty("width","48dp");
             button->SetProperty("font-size","12dp");
-            button->SetProperty("min-height","96dp");
+            button->SetProperty("min-height","44dp");
             button->SetProperty("line-height","20dp");
         }
     }
-    property("section-tools","bottom",w<760?208:112);
-    property("section-tools","right",16);
-    property("section-tools","width",grid(std::min(section_==BottomSection::World?320.f:224.f,w-32)));
-    property("section-tools","max-height",grid(std::max(128.f,h-(w<760?336:240))));
+    property("section-tools","min-height",section_==BottomSection::World?104:56);
+    property("section-tools","max-height",std::max(104.f,std::min(160.f,h*.3f)));
     property("preview-caption","right",24);
     property("preview-caption","max-width",grid(std::max(128.f,w-(narrow?48:432))));
     if(auto* map=document_->GetElementById("map-controls")) {
-        map->SetProperty("left",narrow?"16dp":"auto");map->SetProperty("right","24dp");
-        map->SetProperty("max-width",std::to_string(grid(std::max(128.f,w-(narrow?40:424))))+"dp");
+        map->SetProperty("left","auto");map->SetProperty("right","24dp");
+        map->SetProperty("width","264dp");
     }
+    update_map_selection();
+}
+void Ui::update_creation_scale() {
+    const auto metres=[](std::int64_t mm){std::string value=std::to_string(mm/1000);auto fraction=std::to_string(1000+mm%1000).substr(1);while(!fraction.empty()&&fraction.back()=='0')fraction.pop_back();return fraction.empty()?value:value+"."+fraction;};
+    const auto distance=[&](std::int64_t mm){return mm>=1000000?metres(mm/1000)+" km":metres(mm)+" m";};
+    label(document_,"creation-scale",distance(static_cast<std::int64_t>(view_.creation.width)*view_.creation.cell_mm)+" × "+distance(static_cast<std::int64_t>(view_.creation.height)*view_.creation.cell_mm)+" · "+text("fine-surface"));
+}
+void Ui::update_map_selection() {
+    if(!document_) return;
+    const auto& selection=view_.creation;
+    const bool visible=view_.screen==Screen::Creation && selection.mode==CreationMode::Earth && !selection.preview_ready && selection.selection_visible;
+    show(document_,"earth-selection",visible);
+    if(!visible) return;
+    auto* element=document_->GetElementById("earth-selection");
+    const auto coordinate=[](double v){return std::isfinite(v)?std::clamp(v,0.0,1.0):0.0;};
+    const double left=coordinate(std::min(selection.selection_left,selection.selection_right)),right=coordinate(std::max(selection.selection_left,selection.selection_right));
+    const double top=coordinate(std::min(selection.selection_top,selection.selection_bottom)),bottom=coordinate(std::max(selection.selection_top,selection.selection_bottom));
+    const auto percent=[element](const char* key,double value){element->SetProperty(key,std::to_string(value*100)+"%");};
+    percent("left",left);percent("top",top);percent("width",right-left);percent("height",bottom-top);
 }
 void Ui::update() {
     if(!context_) return;
     context_->Update();
-    if(view_.screen==Screen::World) {
-        const float density=context_->GetDensityIndependentPixelRatio();
-        const float bar_height=document_->GetElementById("bottom-bar")->GetBox().GetSize(Rml::Box::BORDER).y/density;
-        const float h=context_->GetDimensions().y/density;
-        auto* tools=document_->GetElementById("section-tools");
-        const float bottom=std::ceil(bar_height/8)*8+8;
-        const float max_height=std::max(128.f,std::floor((h-bar_height-136)/8)*8);
-        if(std::abs(tools->ResolveNumericProperty("bottom")/density-bottom)>.1f || std::abs(tools->ResolveNumericProperty("max-height")/density-max_height)>.1f) {
-            tools->SetProperty("bottom",std::to_string(bottom)+"dp");tools->SetProperty("max-height",std::to_string(max_height)+"dp");context_->Update();
-        }
-    }
     // RmlUi has no automatic browser-style title tooltip. Render the real
     // localised full name on actual pointer hover, without emitting an intent.
-    Rml::Element* hovered=view_.screen==Screen::World && !blocks_world_input()?context_->GetHoverElement():nullptr;
+    Rml::Element* hovered=!blocks_world_input()?context_->GetHoverElement():nullptr;
     while(hovered && hovered!=document_ && hovered->GetTagName()!="button") hovered=hovered->GetParentNode();
     const std::string tooltip_key=hovered && hovered!=document_?hovered->GetAttribute<Rml::String>("data-tooltip-key",""):"";
     const bool tooltip_was_visible=document_->GetElementById("tool-tooltip")->GetComputedValues().display()!=Rml::Style::Display::None;
@@ -371,13 +404,16 @@ void Ui::activate(const std::string& id) {
     else if(id=="return-menu") emit(ActionKind::ReturnMenu);
     else if(id=="back-load") emit(ActionKind::CancelLoad);
     else if(id=="settings-main" || id=="tab-settings") { settings_open_=true; pending_focus_="locale-zh"; emit(ActionKind::OpenSettings); }
-    else if(id=="settings-close") { settings_open_=false; pending_focus_=view_.screen==Screen::MainMenu?"settings-main":"tab-settings"; emit(ActionKind::CloseSettings); }
-    else if(id=="cancel-create") emit(ActionKind::CancelCreation);
+    else if(id=="settings-close" || id=="settings-dismiss") { settings_open_=false; pending_focus_=view_.screen==Screen::MainMenu?"settings-main":"tab-settings"; emit(ActionKind::CloseSettings); }
+    else if(id=="cancel-create" || id=="creation-close") emit(ActionKind::CancelCreation);
     else if(id=="creation-options") controls_open_=!controls_open_;
     else if(id=="blank-mode") emit(ActionKind::SetCreationMode,"blank",static_cast<double>(CreationMode::Blank));
     else if(id=="earth-mode") emit(ActionKind::SetCreationMode,"earth",static_cast<double>(CreationMode::Earth));
     else if(id=="blank-soil") emit(ActionKind::SetBlankBase,"soil",static_cast<double>(BlankBase::Soil));
     else if(id=="blank-ocean") emit(ActionKind::SetBlankBase,"ocean",static_cast<double>(BlankBase::Ocean));
+    else if(id.rfind("size-",0)==0) {
+        for(int size:{256,512,1024,2048,4096}) if(id=="size-"+std::to_string(size)) emit(ActionKind::SetCreationSize,"",size,view_.creation.mode==CreationMode::Earth?view_.creation.height:size);
+    }
     else if(id=="preview") { if(!valid_creation_inputs()) { local_error_="error-input"; pending_focus_="error-dismiss"; } else emit(ActionKind::RequestPreview); }
     else if(id=="create") { if(!valid_creation_inputs()) { local_error_="error-input"; pending_focus_="error-dismiss"; } else emit(ActionKind::CreateWorld); }
     else if(id=="map-in" || id=="map-out") emit(ActionKind::MapZoom,"",id=="map-in"?1:-1);
@@ -388,7 +424,7 @@ void Ui::activate(const std::string& id) {
     else if(id=="volume-down" || id=="volume-up") emit(ActionKind::SetAudioVolume,"",std::clamp(view_.audio_volume+(id=="volume-up"?5:-5),0,100));
     else if(id=="camera-home") emit(ActionKind::CameraHome);
     else if(id=="camera-help") { help_open_=true; pending_focus_="help-close"; emit(ActionKind::OpenHelp); }
-    else if(id=="help-close") { help_open_=false; pending_focus_="camera-help"; emit(ActionKind::CloseHelp); }
+    else if(id=="help-close" || id=="help-dismiss") { help_open_=false; pending_focus_="camera-help"; emit(ActionKind::CloseHelp); }
     else if(id=="pause") emit(ActionKind::SetPaused,"",!view_.world.paused);
     else if(id=="speed-one" || id=="speed-four" || id=="speed-sixteen" || id=="speed-sixtyfour") emit(ActionKind::SetSpeed,"",id=="speed-one"?1:id=="speed-four"?4:id=="speed-sixteen"?16:64);
     else if(id=="age-light") emit(ActionKind::SetAgeLight);

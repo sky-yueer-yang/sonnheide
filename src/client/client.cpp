@@ -21,6 +21,7 @@ namespace sonnheide::client {
 namespace {
 constexpr double pi=3.14159265358979323846;
 std::string utf8(const std::filesystem::path& p){auto s=p.u8string();return {reinterpret_cast<const char*>(s.data()),s.size()};}
+Vec3 subtract(Vec3 a,Vec3 b){return {a.x-b.x,a.y-b.y,a.z-b.z};}
 Vec3 add(Vec3 a,Vec3 b){return {a.x+b.x,a.y+b.y,a.z+b.z};}
 Vec3 scale(Vec3 a,double k){return {a.x*k,a.y*k,a.z*k};}
 double dot(Vec3 a,Vec3 b){return a.x*b.x+a.y*b.y+a.z*b.z;}
@@ -46,7 +47,22 @@ bgfx::ProgramHandle program(const std::filesystem::path& folder,const char* vert
 int modifiers(SDL_Keymod m){int r=0;if(m&SDL_KMOD_CTRL)r|=Rml::Input::KM_CTRL;if(m&SDL_KMOD_SHIFT)r|=Rml::Input::KM_SHIFT;if(m&SDL_KMOD_ALT)r|=Rml::Input::KM_ALT;if(m&SDL_KMOD_GUI)r|=Rml::Input::KM_META;if(m&SDL_KMOD_CAPS)r|=Rml::Input::KM_CAPSLOCK;return r;}
 Rml::Input::KeyIdentifier key(SDL_Keycode k){using namespace Rml::Input;if(k>=SDLK_A&&k<=SDLK_Z)return KeyIdentifier(KI_A+int(k-SDLK_A));if(k>=SDLK_0&&k<=SDLK_9)return KeyIdentifier(KI_0+int(k-SDLK_0));switch(k){case SDLK_RETURN:return KI_RETURN;case SDLK_ESCAPE:return KI_ESCAPE;case SDLK_BACKSPACE:return KI_BACK;case SDLK_TAB:return KI_TAB;case SDLK_SPACE:return KI_SPACE;case SDLK_DELETE:return KI_DELETE;case SDLK_LEFT:return KI_LEFT;case SDLK_RIGHT:return KI_RIGHT;case SDLK_UP:return KI_UP;case SDLK_DOWN:return KI_DOWN;case SDLK_HOME:return KI_HOME;case SDLK_END:return KI_END;case SDLK_PAGEUP:return KI_PRIOR;case SDLK_PAGEDOWN:return KI_NEXT;case SDLK_LSHIFT:return KI_LSHIFT;case SDLK_RSHIFT:return KI_RSHIFT;case SDLK_LCTRL:return KI_LCONTROL;case SDLK_RCTRL:return KI_RCONTROL;case SDLK_LALT:return KI_LMENU;case SDLK_RALT:return KI_RMENU;default:return KI_UNKNOWN;}}
 }
-SurfaceView surface_view(const sonn::World& world){SurfaceView view;auto& terrain=world.terrain;view.identity=world.id;view.revision=terrain.surface_revision();view.width=terrain.width;view.height=terrain.height;view.cell_m=terrain.cell_mm/1000.;view.cell=[&terrain](int x,int z){auto c=terrain.at(x,z);return SurfaceCell{sonn::terrain_height_mm[std::size_t(c.kind)]/1000.f,std::uint8_t(c.kind),c.theme,!terrain.editable(x,z)};};view.mesh=[&terrain](int x,int z,int w,int h){return terrain.mesh(x,z,w,h);};view.raycast=[&terrain](const Ray& ray)->std::optional<SurfaceHit>{auto h=terrain.raycast({ray.origin.x,ray.origin.y,ray.origin.z},{ray.direction.x,ray.direction.y,ray.direction.z});if(!h)return {};return SurfaceHit{{h->position.x,h->position.y,h->position.z},{h->normal.x,h->normal.y,h->normal.z},h->cell_x,h->cell_z};};return view;}
+SurfaceView surface_view(const sonn::World& world){
+ SurfaceView view;auto& terrain=world.terrain;view.identity=world.id;view.revision=terrain.surface_revision();view.width=terrain.width;view.height=terrain.height;view.cell_m=terrain.cell_mm/1000.;view.profile=terrain.profile;
+ for(int k=0;k<8;++k)view.height_levels[k]=terrain.height_for(sonn::TerrainKind(k))/1000.f;
+ view.enumerate_fine=[&terrain](int x,int z,int w,int h,const SurfaceView::FineVisitor& visit){
+  const int x0=std::clamp(x,0,terrain.width),z0=std::clamp(z,0,terrain.height),x1=int(std::clamp(std::int64_t(x)+w,std::int64_t(0),std::int64_t(terrain.width))),z1=int(std::clamp(std::int64_t(z)+h,std::int64_t(0),std::int64_t(terrain.height)));
+  if(x1<=x0||z1<=z0)return;
+  for(int row=z0;row<z1;++row){const auto begin=std::uint64_t(row)*terrain.width+x0,end=std::uint64_t(row)*terrain.width+x1;for(auto it=terrain.fine_patches.lower_bound(begin);it!=terrain.fine_patches.end()&&it->first<end;++it)visit(int(it->first%terrain.width),row);}
+ };
+ view.cell=[&terrain](int x,int z){auto c=terrain.at(x,z);return SurfaceCell{terrain.height_for(c.kind)/1000.f,std::uint8_t(c.kind),c.theme,!terrain.editable(x,z),sonn::terrain_is_water(c.kind)};};
+ view.point=[&terrain](double x,double z){auto p=terrain.support_um(std::int64_t(std::llround(x*1000000)),std::int64_t(std::llround(z*1000000)));if(!p)return SurfaceCell{-20,0,0,true,true};return SurfaceCell{p->height_mm/1000.f,std::uint8_t(p->kind),p->theme,!p->editable,p->wet};};
+ view.coverage_counts=[&terrain](int x,int z){return terrain.coverage_counts(x,z);};
+ view.fine=[&terrain](int x,int z){auto cells=terrain.fine_cells(x,z);std::vector<SurfaceCell> result;result.reserve(cells.size());for(auto c:cells)result.push_back({terrain.height_for(c.kind)/1000.f,std::uint8_t(c.kind),c.theme,!terrain.editable(x,z),sonn::terrain_is_water(c.kind)});return result;};
+ view.mesh=[&terrain](int x,int z,int w,int h){return terrain.mesh(x,z,w,h);};view.coarse_mesh=[&terrain](int x,int z,int w,int h){return terrain.mesh_coarse(x,z,w,h);};
+ view.raycast=[&terrain](const Ray& ray)->std::optional<SurfaceHit>{auto h=terrain.raycast({ray.origin.x,ray.origin.y,ray.origin.z},{ray.direction.x,ray.direction.y,ray.direction.z});if(!h)return {};return SurfaceHit{{h->position.x,h->position.y,h->position.z},{h->normal.x,h->normal.y,h->normal.z},h->cell_x,h->cell_z};};return view;
+}
+
 struct Client::Impl {
  struct Capture final:bgfx::CallbackI {
   std::string error;
@@ -75,16 +91,21 @@ struct Client::Impl {
  } capture;
  SDL_Window* window{};SDL_AudioStream* audio{};std::string audio_message;bool sdl{},gpu{},typing{},drag{},orbit{};float volume{.7f};Camera camera;Dimensions size;ClientConfig config;int gpu_width{},gpu_height{};
  bgfx::TextureHandle map_texture=BGFX_INVALID_HANDLE;std::uint64_t map_revision=~0ULL;bool map_visible{};int map_x{},map_y{},map_w{},map_h{};
- bgfx::TextureHandle water_depth=BGFX_INVALID_HANDLE;
+ bgfx::TextureHandle water_depth=BGFX_INVALID_HANDLE,fine_atlas=BGFX_INVALID_HANDLE,fine_pages=BGFX_INVALID_HANDLE;
  sonn::Uuid depth_identity{};std::uint64_t depth_revision=~0ULL,depth_uploads{};
- std::array<float,4> depth_domain{};
+ std::array<float,4> depth_domain{},fine_domain{};std::array<float,8> surface_heights{};std::uint32_t surface_profile{};
+ static constexpr std::size_t geometry_limit=64U*1024U*1024U,frame_upload_limit=8U*1024U*1024U;
+ static constexpr int detail_cells=16,page_cells=128,atlas_slots=1024,atlas_side=2048;
+ std::vector<std::uint8_t> overview_data,page_data;std::set<std::pair<int,int>> raised_regions,raised_fine_regions;
+ std::map<std::uint64_t,int> fine_slots;std::array<std::uint64_t,atlas_slots> slot_keys{};
+ int page_origin_x{},page_origin_z{};std::uint64_t fine_texture_uploads{},fine_patch_candidates{},fine_patch_deferred{},fine_page_uploads{},geometry_evictions{},frame_upload_bytes{},frame_texture_upload_bytes{},frame_decoration_samples{},frame_decoration_chunks{},frame_counter{};Buffer land_overview;
  std::set<Rml::Input::KeyIdentifier> pressed_keys;
  MaterialDiagnostic diagnostic=MaterialDiagnostic::Full;Age age=Age::Light;double seconds{};
  bgfx::ProgramHandle world=BGFX_INVALID_HANDLE,sky=BGFX_INVALID_HANDLE,water=BGFX_INVALID_HANDLE,shadow=BGFX_INVALID_HANDLE,ui=BGFX_INVALID_HANDLE;
  bgfx::VertexLayout world_layout,screen_layout,ui_layout;
- bgfx::UniformHandle base_u=BGFX_INVALID_HANDLE,shadow_u=BGFX_INVALID_HANDLE,ui_u=BGFX_INVALID_HANDLE,eye_u=BGFX_INVALID_HANDLE,light_u=BGFX_INVALID_HANDLE,environment_u=BGFX_INVALID_HANDLE,light_matrix_u=BGFX_INVALID_HANDLE,forward_u=BGFX_INVALID_HANDLE,right_u=BGFX_INVALID_HANDLE,up_u=BGFX_INVALID_HANDLE,water_depth_u=BGFX_INVALID_HANDLE,water_domain_u=BGFX_INVALID_HANDLE,menu_u=BGFX_INVALID_HANDLE;
+ bgfx::UniformHandle base_u=BGFX_INVALID_HANDLE,mean_u=BGFX_INVALID_HANDLE,shadow_u=BGFX_INVALID_HANDLE,ui_u=BGFX_INVALID_HANDLE,eye_u=BGFX_INVALID_HANDLE,light_u=BGFX_INVALID_HANDLE,environment_u=BGFX_INVALID_HANDLE,light_matrix_u=BGFX_INVALID_HANDLE,forward_u=BGFX_INVALID_HANDLE,right_u=BGFX_INVALID_HANDLE,up_u=BGFX_INVALID_HANDLE,water_depth_u=BGFX_INVALID_HANDLE,water_domain_u=BGFX_INVALID_HANDLE,fine_atlas_u=BGFX_INVALID_HANDLE,fine_pages_u=BGFX_INVALID_HANDLE,fine_domain_u=BGFX_INVALID_HANDLE,surface_mode_u=BGFX_INVALID_HANDLE,menu_u=BGFX_INVALID_HANDLE;
  std::array<bgfx::TextureHandle,1> textures{},flat{};bgfx::TextureHandle white=BGFX_INVALID_HANDLE,shadow_texture=BGFX_INVALID_HANDLE;bgfx::FrameBufferHandle shadow_frame=BGFX_INVALID_HANDLE;Buffer ocean;sonn::Hash material_hash{};double depth_cell_m{.25};std::uint64_t material_uploads{};bool presenting_menu{};bgfx::VertexBufferHandle screen_vb=BGFX_INVALID_HANDLE;bgfx::IndexBufferHandle screen_ib=BGFX_INVALID_HANDLE;
- struct Chunk{Buffer buffer,decoration;double x{},z{};std::size_t decoration_quads{};};std::map<std::pair<int,int>,Chunk> chunks;sonn::Uuid mesh_identity{};std::uint64_t mesh_revision=~0ULL,mesh_uploads{},mesh_cache_resets{};
+ struct Chunk{Buffer buffer,decoration;double x{},z{};std::size_t decoration_quads{};std::uint64_t last_frame{};};std::map<std::pair<int,int>,Chunk> chunks,far_chunks;sonn::Uuid mesh_identity{};std::uint64_t mesh_revision=~0ULL,mesh_uploads{},mesh_cache_resets{};
  struct UiGeometry{bgfx::VertexBufferHandle vb;bgfx::IndexBufferHandle ib;bgfx::TextureHandle texture;};std::set<UiGeometry*> ui_geometry;std::set<std::uint16_t> ui_textures;
  bool scissor{},transformed{};int sx{},sy{},sw{},sh{};std::array<float,16> transform{};float light_matrix[16]{};
  struct System final:Rml::SystemInterface{double GetElapsedTime()override{return SDL_GetTicksNS()/1e9;}bool LogMessage(Rml::Log::Type,Rml::String const& message)override{SDL_Log("RmlUi: %s",message.c_str());return true;}void SetClipboardText(const Rml::String& text)override{SDL_SetClipboardText(text.c_str());}void GetClipboardText(Rml::String& text)override{char* p=SDL_GetClipboardText();text=p?p:"";SDL_free(p);}} system;
@@ -108,7 +129,7 @@ struct Client::Impl {
   void ReleaseTexture(Rml::TextureHandle h)override{if(h&&p.ui_textures.erase(std::uint16_t(h-1)))bgfx::destroy(bgfx::TextureHandle{std::uint16_t(h-1)});}
  } render;
  Impl():render(*this){for(auto& t:textures)t=BGFX_INVALID_HANDLE;for(auto& t:flat)t=BGFX_INVALID_HANDLE;}
- ~Impl(){if(gpu){for(auto* g:ui_geometry){bgfx::destroy(g->vb);bgfx::destroy(g->ib);delete g;}for(auto h:ui_textures)bgfx::destroy(bgfx::TextureHandle{h});for(auto& [key,c]:chunks){release(c.buffer);release(c.decoration);}release(ocean);if(bgfx::isValid(screen_vb))bgfx::destroy(screen_vb);if(bgfx::isValid(screen_ib))bgfx::destroy(screen_ib);for(auto t:textures)if(bgfx::isValid(t))bgfx::destroy(t);for(auto t:flat)if(bgfx::isValid(t))bgfx::destroy(t);if(bgfx::isValid(white))bgfx::destroy(white);if(bgfx::isValid(map_texture))bgfx::destroy(map_texture);if(bgfx::isValid(water_depth))bgfx::destroy(water_depth);if(bgfx::isValid(shadow_frame))bgfx::destroy(shadow_frame);for(auto p:{world,sky,water,shadow,ui})if(bgfx::isValid(p))bgfx::destroy(p);for(auto u:{base_u,shadow_u,ui_u,eye_u,light_u,environment_u,light_matrix_u,forward_u,right_u,up_u,water_depth_u,water_domain_u,menu_u})if(bgfx::isValid(u))bgfx::destroy(u);bgfx::frame();bgfx::shutdown();}if(audio)SDL_DestroyAudioStream(audio);if(window)SDL_DestroyWindow(window);if(sdl)SDL_Quit();}
+ ~Impl(){if(gpu){for(auto* g:ui_geometry){bgfx::destroy(g->vb);bgfx::destroy(g->ib);delete g;}for(auto h:ui_textures)bgfx::destroy(bgfx::TextureHandle{h});for(auto& [key,c]:chunks){release(c.buffer);release(c.decoration);}for(auto& [key,c]:far_chunks){release(c.buffer);release(c.decoration);}release(land_overview);release(ocean);if(bgfx::isValid(screen_vb))bgfx::destroy(screen_vb);if(bgfx::isValid(screen_ib))bgfx::destroy(screen_ib);for(auto t:textures)if(bgfx::isValid(t))bgfx::destroy(t);for(auto t:flat)if(bgfx::isValid(t))bgfx::destroy(t);if(bgfx::isValid(white))bgfx::destroy(white);if(bgfx::isValid(map_texture))bgfx::destroy(map_texture);if(bgfx::isValid(water_depth))bgfx::destroy(water_depth);if(bgfx::isValid(fine_atlas))bgfx::destroy(fine_atlas);if(bgfx::isValid(fine_pages))bgfx::destroy(fine_pages);if(bgfx::isValid(shadow_frame))bgfx::destroy(shadow_frame);for(auto p:{world,sky,water,shadow,ui})if(bgfx::isValid(p))bgfx::destroy(p);for(auto u:{base_u,mean_u,shadow_u,ui_u,eye_u,light_u,environment_u,light_matrix_u,forward_u,right_u,up_u,water_depth_u,water_domain_u,fine_atlas_u,fine_pages_u,fine_domain_u,surface_mode_u,menu_u})if(bgfx::isValid(u))bgfx::destroy(u);bgfx::frame();bgfx::shutdown();}if(audio)SDL_DestroyAudioStream(audio);if(window)SDL_DestroyWindow(window);if(sdl)SDL_Quit();}
  // Scene rectangles are SDL logical coordinates. Rendering and picking share
  // this exact rectangle; physical pixels are only used by the GPU/UI adapter.
  std::array<int,4> scene_rect() const {
@@ -130,7 +151,7 @@ struct Client::Impl {
  void pixel_materials(){
   constexpr int side=128,layers=32;
   using Color=std::array<int,3>;
-  // Original painted colour clusters: each 4 m tile has 128 real pixels. Fine
+  // Original painted colour clusters: each2m tile has128 real pixels. Fine
   // blades, mineral streaks and larger colour islands form a hierarchy instead
   // of enlarging sixteen random squares. This is colour art, never geometry.
   const std::array<Color,24> base={{{225,238,240},{81,150,105},{167,76,49},{79,130,99},
@@ -183,19 +204,20 @@ struct Client::Impl {
   auto base=std::uint32_t(vertices.size());for(int k=0;k<4;++k){auto a=points[k];vertices.push_back({float(a.x),float(a.y),float(a.z),float(normal.x),float(normal.y),float(normal.z),phase,(k==1||k==2)?weight:0,rgba(color[0],color[1],color[2],int(std::lround(25*255.f/31)))});}
   for(auto k:{0U,1U,2U,0U,2U,3U})indices.push_back(base+k);
  }
- Buffer ground_decoration(const SurfaceView& s,int startx,int startz,int w,int h,double ox,double oz,std::size_t& quads){
+ Buffer ground_decoration(const SurfaceView& s,int startx,int startz,int w,int h,double ox,double oz,std::size_t& quads,std::size_t maximum_bytes=SIZE_MAX){
   std::vector<Vertex> vertices;std::vector<std::uint32_t> indices;
   // Stable positions in physical space, not one plant per cell. No Actor,
   // TreeRef, food, collision, picking or simulation RNG is created by this art.
   double left=s.origin_x+startx*s.cell_m,right=left+w*s.cell_m;
   double front=s.origin_z+startz*s.cell_m,back=front+h*s.cell_m;
   for(int z=int(std::ceil(front*2));z<int(std::ceil(back*2));++z)for(int x=int(std::ceil(left*2));x<int(std::ceil(right*2));++x){
-   auto n=hash(std::uint32_t(x)*73856093U^std::uint32_t(z)*19349663U);
+   ++frame_decoration_samples;auto n=hash(std::uint32_t(x)*73856093U^std::uint32_t(z)*19349663U);
    if(n%9>1)continue;double px=x*.5+.15+double((n>>8)%11)*.018,pz=z*.5+.13+double((n>>16)%11)*.018;
    if(px<left||pz<front||px>=right||pz>=back)continue;
-   int cx=int(std::floor((px-s.origin_x)/s.cell_m)),cz=int(std::floor((pz-s.origin_z)/s.cell_m));auto cell=s.cell(cx,cz);
+   int cx=int(std::floor((px-s.origin_x)/s.cell_m)),cz=int(std::floor((pz-s.origin_z)/s.cell_m));auto cell=s.point?s.point(px,pz):s.cell(cx,cz);
    if(cell.guard||cell.kind!=std::uint8_t(sonn::TerrainKind::Soil)||cell.theme==0||cell.theme==7)continue;
    double a=px-ox,b=pz-oz,y=cell.height_m+.005,height=.11+double((n>>24)%7)*.013;
+   if((vertices.size()+12)*sizeof(Vertex)+(indices.size()+18)*sizeof(std::uint32_t)>maximum_bytes){quads=vertices.size()/4;return upload(vertices,indices,world_layout);}
    std::array<int,3> grass=cell.theme==2?std::array<int,3>{173,93,58}:cell.theme==5?std::array<int,3>{171,114,0}:std::array<int,3>{113,172,115};
    float phase=float(n%1024)*.02f;
    detail_quad(vertices,indices,{{{a-.022,y,b},{a-.011,y+height,b+.009},{a+.016,y+height*.76,b+.015},{a+.022,y,b}}},{0,.8,.2},grass,phase);
@@ -205,89 +227,126 @@ struct Client::Impl {
     detail_quad(vertices,indices,{{{a-.042,y+height,b-.032},{a-.042,y+height+.014,b+.032},{a+.042,y+height+.014,b+.032},{a+.042,y+height,b-.032}}},{0,1,0},petals,phase);
    }
   }
-  quads=vertices.size()/4;return upload(vertices,indices,world_layout);
+  quads=vertices.size()/4;if(vertices.size()*sizeof(Vertex)+indices.size()*4>maximum_bytes){quads=0;return {};}return upload(vertices,indices,world_layout);
  }
- sonn::Mesh compact_flat_faces(const sonn::Mesh& source,const SurfaceView& surface,int sx,int sz,int width,int height){
-  if(source.vertices.size()%4)throw std::runtime_error("Core column mesh quad contract changed");
-  sonn::Mesh result;std::vector<std::int64_t> tops(std::size_t(width)*height,-1);
-  auto append=[&](std::size_t face){auto base=std::uint32_t(result.vertices.size());for(int k=0;k<4;++k)result.vertices.push_back(source.vertices[face+k]);for(auto i:{0U,1U,2U,0U,2U,3U})result.indices.push_back(base+i);};
-  for(std::size_t face=0;face<source.vertices.size();face+=4){auto vertex=source.vertices[face];double cx=0,cz=0;bool flat=vertex.ny>.999f;
-   for(int k=0;k<4;++k){auto v=source.vertices[face+k];cx+=v.x*.25;cz+=v.z*.25;flat=flat&&std::abs(v.y-vertex.y)<1e-6f;}
-   int x=int(std::floor((cx-surface.origin_x)/surface.cell_m))-sx,z=int(std::floor((cz-surface.origin_z)/surface.cell_m))-sz;
-   if(flat&&x>=0&&z>=0&&x<width&&z<height)tops[std::size_t(z)*width+x]=std::int64_t(face);else append(face);
+ std::size_t buffer_bytes(const Buffer& buffer) const{return buffer.vertices*sizeof(Vertex)+buffer.indices*sizeof(std::uint32_t);}
+ std::size_t resident_bytes() const {std::size_t total=0;for(const auto& [key,c]:chunks)total+=buffer_bytes(c.buffer)+buffer_bytes(c.decoration);return total;}
+ Buffer geometry(const sonn::Mesh& mesh,double ox,double oz,bool positive_only){
+  if(mesh.vertices.size()%4)throw std::runtime_error("Core compact surface quad contract changed");std::vector<Vertex> vertices;std::vector<std::uint32_t> indices;
+  for(std::size_t face=0;face<mesh.vertices.size();face+=4){auto n=mesh.vertices[face];if(n.wet)continue;
+   if(positive_only&&surface_heights[n.material]<=0)continue;
+   if(!positive_only&&surface_heights[n.material]!=0)continue;
+   bool top=n.ny>.7f;int layer=int(n.theme)+(top?0:8);
+   if(n.material==std::uint8_t(sonn::TerrainKind::Sand))layer=top?16:17;
+   else if(n.material==std::uint8_t(sonn::TerrainKind::Hill)||n.material==std::uint8_t(sonn::TerrainKind::Mountain))layer=top?18:19;
+   else if(n.material==std::uint8_t(sonn::TerrainKind::HighPeak))layer=top?20:21;
+   auto base=std::uint32_t(vertices.size());for(int k=0;k<4;++k){auto v=mesh.vertices[face+k];vertices.push_back({float(v.x-ox),v.y,float(v.z-oz),v.nx,v.ny,v.nz,v.x/2.f,v.z/2.f,rgba(255,255,255,int(std::lround(layer*255.f/31)))});}
+   for(auto k:{0U,1U,2U,0U,2U,3U})indices.push_back(base+k);
   }
-  auto equivalent=[&](int x,int z,const SurfaceCell& reference,float y){auto face=tops[std::size_t(z)*width+x];if(face<0)return false;auto cell=surface.cell(sx+x,sz+z);return cell.kind==reference.kind&&cell.theme==reference.theme&&std::abs(source.vertices[std::size_t(face)].y-y)<1e-6f;};
-  for(int z=0;z<height;++z)for(int x=0;x<width;++x){auto face=tops[std::size_t(z)*width+x];if(face<0)continue;
-   auto cell=surface.cell(sx+x,sz+z);float y=source.vertices[std::size_t(face)].y;int spanx=1,spanz=1;
-   while(x+spanx<width&&equivalent(x+spanx,z,cell,y))++spanx;
-   for(;z+spanz<height;++spanz){bool same=true;for(int j=0;j<spanx;++j)if(!equivalent(x+j,z+spanz,cell,y)){same=false;break;}if(!same)break;}
-   // Only existing coplanar source quads are combined. No height, coastline,
-   // side surface, ramp or gameplay cell is changed or inferred from colour.
-   double minx=source.vertices[std::size_t(face)].x,minz=source.vertices[std::size_t(face)].z;
-   for(int k=1;k<4;++k){minx=std::min(minx,double(source.vertices[std::size_t(face)+k].x));minz=std::min(minz,double(source.vertices[std::size_t(face)+k].z));}
-   quad(result,{{{minx,y,minz},{minx,y,minz+spanz*surface.cell_m},{minx+spanx*surface.cell_m,y,minz+spanz*surface.cell_m},{minx+spanx*surface.cell_m,y,minz}}},{0,1,0});
-   for(int dz=0;dz<spanz;++dz)for(int dx=0;dx<spanx;++dx)tops[std::size_t(z+dz)*width+x+dx]=-1;
+  std::size_t bytes=vertices.size()*sizeof(Vertex)+indices.size()*4;if(bytes>geometry_limit)throw std::runtime_error("Exact surface region exceeds bounded GPU geometry budget");return upload(vertices,indices,world_layout);
+ }
+ // RGBA8 stores exact 0..4096 dry-column count, not rounded 8-bit alpha.
+ std::array<std::uint8_t,4> coverage_descriptor(unsigned kind,unsigned theme,unsigned dry_count,unsigned wet_kind) const {return {std::uint8_t(kind*8+theme),std::uint8_t(dry_count&255U),std::uint8_t((dry_count>>8)|(wet_kind<<5)),255};}
+ std::array<std::uint8_t,4> descriptor(const SurfaceCell& c) const {return coverage_descriptor(c.wet?unsigned(sonn::TerrainKind::Sand):c.kind,c.wet?0:c.theme,c.wet?0:4096,c.wet?c.kind:unsigned(sonn::TerrainKind::ShallowWater));}
+ void prepare_water_depth(const SurfaceView& s){
+  if(bgfx::isValid(water_depth)&&depth_identity==s.identity&&depth_revision==s.revision)return;
+  if(!s.cell||!s.enumerate_fine||!s.coverage_counts||s.width<=0||s.height<=0||s.width>4128||s.height>4128||s.cell_m<=0)throw std::runtime_error("Surface overview requires exact bounded management geometry");
+  for(auto& [key,c]:chunks){release(c.buffer);release(c.decoration);}chunks.clear();for(auto& [key,c]:far_chunks){release(c.buffer);release(c.decoration);}far_chunks.clear();raised_regions.clear();raised_fine_regions.clear();fine_slots.clear();slot_keys.fill(~0ULL);++mesh_cache_resets;
+  page_data.clear();mesh_identity=s.identity;mesh_revision=s.revision;surface_heights=s.height_levels;surface_profile=s.profile;overview_data.resize(std::size_t(s.width)*s.height*4);
+  for(int z=0;z<s.height;++z)for(int x=0;x<s.width;++x){auto c=s.cell(x,z);auto info=descriptor(c);std::copy(info.begin(),info.end(),overview_data.begin()+(std::size_t(z)*s.width+x)*4);if(!c.wet&&c.height_m>0)raised_regions.emplace(x/64,z/64);}
+  // Small unresolved islands still contribute their actual dry fraction to
+  // the overview; they are never replaced by the coarse centre's water kind.
+  s.enumerate_fine(0,0,s.width,s.height,[&](int x,int z){auto counts=s.coverage_counts(x,z);std::array<unsigned,64> dry{},wet{};unsigned dry_count=0,wet_count=0;
+   // Exact palette counts avoid4096 expanded samples for every distant coast
+   // patch. Binary codecs aggregate64 decoded rows using integer popcount.
+   for(std::size_t slot=0;slot<counts.size();++slot){unsigned count=counts[slot],kind=unsigned(slot/8);if(!count)continue;if(sonn::terrain_is_water(sonn::TerrainKind(kind))){wet[kind]+=count;wet_count+=count;}else{dry[slot]+=count;dry_count+=count;if(surface_heights[kind]>0){raised_regions.emplace(x/64,z/64);raised_fine_regions.emplace(x/64,z/64);}}}
+   if(dry_count+wet_count!=4096)throw std::runtime_error("Authoritative fine coverage count must contain exactly4096 columns");
+   auto dry_i=std::size_t(std::max_element(dry.begin(),dry.end())-dry.begin());auto wet_i=std::size_t(std::max_element(wet.begin(),wet.end())-wet.begin());
+   auto offset=(std::size_t(z)*s.width+x)*4;auto info=coverage_descriptor(dry_count?unsigned(dry_i/8):unsigned(sonn::TerrainKind::Sand),unsigned(dry_i%8),dry_count,wet_count?unsigned(wet_i):unsigned(sonn::TerrainKind::ShallowWater));std::copy(info.begin(),info.end(),overview_data.begin()+offset);
+  });
+  constexpr std::uint64_t point=BGFX_SAMPLER_MIN_POINT|BGFX_SAMPLER_MAG_POINT|BGFX_SAMPLER_MIP_POINT|BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP;
+  auto texture=bgfx::createTexture2D(std::uint16_t(s.width),std::uint16_t(s.height),false,1,bgfx::TextureFormat::RGBA8,point,bgfx::copy(overview_data.data(),std::uint32_t(overview_data.size())));
+  if(!bgfx::isValid(texture))throw std::runtime_error("Complete authoritative coverage overview GPU upload failed");if(bgfx::isValid(water_depth))bgfx::destroy(water_depth);water_depth=texture;
+  depth_identity=s.identity;depth_revision=s.revision;depth_cell_m=s.cell_m;++depth_uploads;depth_domain={float(s.origin_x),float(s.origin_z),float(s.width*s.cell_m),float(s.height*s.cell_m)};
+  if(!bgfx::isValid(fine_atlas))fine_atlas=bgfx::createTexture2D(atlas_side,atlas_side,false,1,bgfx::TextureFormat::RGBA8,point);
+  if(!bgfx::isValid(fine_pages))fine_pages=bgfx::createTexture2D(page_cells,page_cells,false,1,bgfx::TextureFormat::RGBA8,point);
+  if(!bgfx::isValid(fine_atlas)||!bgfx::isValid(fine_pages))throw std::runtime_error("Bounded fine coverage atlas allocation failed");
+  release(land_overview);std::vector<Vertex> v={ {0,0,0,0,1,0,0,0,0xffffffff},{float(s.width*s.cell_m),0,0,0,1,0,0,0,0xffffffff},{float(s.width*s.cell_m),0,float(s.height*s.cell_m),0,1,0,0,0,0xffffffff},{0,0,float(s.height*s.cell_m),0,1,0,0,0,0xffffffff} };land_overview=upload(v,{0,1,2,0,2,3},world_layout);
+  std::size_t far_bytes=0;
+  for(auto key:raised_regions){int x=key.first*64,z=key.second*64;double ox=s.origin_x+x*s.cell_m,oz=s.origin_z+z*s.cell_m;
+   auto mesh=raised_fine_regions.count(key)?s.mesh(x,z,std::min(64,s.width-x),std::min(64,s.height-z)):s.coarse_mesh(x,z,std::min(64,s.width-x),std::min(64,s.height-z));auto buffer=geometry(mesh,ox,oz,true);far_bytes+=buffer_bytes(buffer);if(far_bytes>geometry_limit){release(buffer);throw std::runtime_error("Global exact elevated terrain exceeds GPU budget; no partial world is displayed");}far_chunks.emplace(key,Chunk{buffer,{},ox,oz,0,0});++mesh_uploads;
   }
-  return result;
+ }
+ double projected_cell_pixels(const SurfaceView& s,int x,int z,double bounds_padding=0) const{
+  auto b=basis(camera);Vec3 point{s.origin_x+(x+.5)*s.cell_m,0,s.origin_z+(z+.5)*s.cell_m};auto d=subtract(point,b.eye);double depth=dot(d,b.forward);if(depth<=.1)return 0;
+  double tangent=std::tan(25*pi/180),aspect=double(scene_rect()[2])/scene_rect()[3];if(std::abs(dot(d,b.right))>depth*tangent*aspect+s.cell_m*2+bounds_padding||std::abs(dot(d,b.up))>depth*tangent+s.cell_m*2+bounds_padding)return 0;
+  return s.cell_m*size.pixel_h/(2*tangent*depth);
+ }
+ void prepare_fine_coverage(const SurfaceView& s){
+  page_origin_x=int(std::floor((camera.target.x-s.origin_x)/s.cell_m/16))*16-page_cells/2;page_origin_z=int(std::floor((camera.target.z-s.origin_z)/s.cell_m/16))*16-page_cells/2;
+  fine_domain={float(s.origin_x+page_origin_x*s.cell_m),float(s.origin_z+page_origin_z*s.cell_m),float(page_cells),float(s.cell_m)};
+  std::vector<std::pair<double,std::uint64_t>> wanted;
+  s.enumerate_fine(page_origin_x,page_origin_z,page_cells,page_cells,[&](int x,int z){double pixels=projected_cell_pixels(s,x,z);if(pixels<.8)return;wanted.emplace_back(pixels,std::uint64_t(z)*s.width+x);});
+  std::sort(wanted.begin(),wanted.end(),[](const auto& a,const auto& b){return a.first>b.first;});fine_patch_candidates=wanted.size();if(wanted.size()>atlas_slots)wanted.resize(atlas_slots);
+  std::set<std::uint64_t> desired;for(auto entry:wanted)desired.insert(entry.second);
+  for(auto it=fine_slots.begin();it!=fine_slots.end();){if(!desired.count(it->first)){slot_keys[it->second]=~0ULL;it=fine_slots.erase(it);}else ++it;}
+  for(auto [pixels,key]:wanted){if(fine_slots.count(key))continue;if(frame_texture_upload_bytes+64U*64U*4U>4U*1024U*1024U)break;
+   auto slot_it=std::find(slot_keys.begin(),slot_keys.end(),~0ULL);if(slot_it==slot_keys.end())break;int slot=int(slot_it-slot_keys.begin());auto fine=s.fine(int(key%s.width),int(key/s.width));if(fine.size()!=64U*64U)throw std::runtime_error("Fine coverage must contain exact64x64 authoritative samples");std::vector<std::uint8_t> pixels_data(64*64*4);
+   for(std::size_t i=0;i<fine.size();++i){auto info=descriptor(fine[i]);std::copy(info.begin(),info.end(),pixels_data.begin()+i*4);}
+   bgfx::updateTexture2D(fine_atlas,0,0,std::uint16_t((slot%32)*64),std::uint16_t((slot/32)*64),64,64,bgfx::copy(pixels_data.data(),std::uint32_t(pixels_data.size())));frame_texture_upload_bytes+=pixels_data.size();slot_keys[slot]=key;fine_slots.emplace(key,slot);++fine_texture_uploads;
+  }
+  std::vector<std::uint8_t> pages(page_cells*page_cells*4,0);
+  for(auto [key,slot]:fine_slots){int x=int(key%s.width)-page_origin_x,z=int(key/s.width)-page_origin_z;if(x<0||z<0||x>=page_cells||z>=page_cells)continue;int code=slot+1;auto offset=(std::size_t(z)*page_cells+x)*4;pages[offset]=std::uint8_t(code);pages[offset+1]=std::uint8_t(code>>8);pages[offset+2]=255;pages[offset+3]=255;}
+  if(pages!=page_data){bgfx::updateTexture2D(fine_pages,0,0,0,0,page_cells,page_cells,bgfx::copy(pages.data(),std::uint32_t(pages.size())));frame_texture_upload_bytes+=pages.size();++fine_page_uploads;page_data=std::move(pages);}fine_patch_deferred=fine_patch_candidates-fine_slots.size();
  }
  std::vector<std::pair<int,int>> prepare_chunks(const SurfaceView& s){
-  if(!s.mesh||!s.cell||s.width<=0||s.height<=0||(!std::isfinite(s.cell_m)||s.cell_m<=0))throw std::runtime_error("Renderer requires exact authoritative core mesh and cell scale");
-  if(mesh_identity!=s.identity||mesh_revision!=s.revision){for(auto& [key,c]:chunks){release(c.buffer);release(c.decoration);}chunks.clear();++mesh_cache_resets;mesh_identity=s.identity;mesh_revision=s.revision;}
-  // A low pitched near camera can see land far beyond a distance-only ring.
-  // Keep every bounded authoritative chunk; exact flat merging bounds normal
-  // flat scenes while actual byte diagnostics expose fragmented worst cases.
-  int minx=0,maxx=(s.width-1)/64,minz=0,maxz=(s.height-1)/64;
+  if(!s.point)throw std::runtime_error("Fine renderer requires exact authoritative point coverage");++frame_counter;
+  std::vector<std::pair<double,std::pair<int,int>>> candidates;
+  int cx=int(std::floor((camera.target.x-s.origin_x)/(detail_cells*s.cell_m))),cz=int(std::floor((camera.target.z-s.origin_z)/(detail_cells*s.cell_m)));
+  int radius=std::clamp(int(std::ceil(camera.distance_m*1.3/(detail_cells*s.cell_m)))+2,2,10);
+  for(int z=std::max(0,cz-radius);z<=std::min((s.height-1)/detail_cells,cz+radius);++z)for(int x=std::max(0,cx-radius);x<=std::min((s.width-1)/detail_cells,cx+radius);++x){int px=x*detail_cells+detail_cells/2,pz=z*detail_cells+detail_cells/2;double score=projected_cell_pixels(s,px,pz,detail_cells*s.cell_m*.75);if(score<=0)continue;double dx=x-cx,dz=z-cz;candidates.emplace_back(dx*dx+dz*dz,std::make_pair(x,z));}
+  std::sort(candidates.begin(),candidates.end());if(candidates.size()>128)candidates.resize(128);std::set<std::pair<int,int>> desired;for(auto entry:candidates)desired.insert(entry.second);
+  for(auto it=chunks.begin();it!=chunks.end();){if(!desired.count(it->first)){release(it->second.buffer);release(it->second.decoration);it=chunks.erase(it);++geometry_evictions;}else ++it;}
   std::vector<std::pair<int,int>> visible;
-  for(int z=minz;z<=maxz;++z)for(int x=minx;x<=maxx;++x){auto key=std::make_pair(x,z);visible.push_back(key);if(chunks.count(key))continue;
-   auto authoritative=s.mesh(x*64,z*64,std::min(64,s.width-x*64),std::min(64,s.height-z*64));auto mesh=compact_flat_faces(authoritative,s,x*64,z*64,std::min(64,s.width-x*64),std::min(64,s.height-z*64));double ox=s.origin_x+x*64*s.cell_m,oz=s.origin_z+z*64*s.cell_m;
-   std::vector<Vertex> vertices;vertices.reserve(mesh.vertices.size());if(mesh.vertices.size()%4)throw std::runtime_error("Core column mesh quad contract changed");
-   for(std::size_t face=0;face<mesh.vertices.size();face+=4){double cx=0,cz=0;for(int k=0;k<4;++k){cx+=mesh.vertices[face+k].x*.25;cz+=mesh.vertices[face+k].z*.25;}
-    auto n=mesh.vertices[face];int cell_x=std::clamp(int(std::floor((cx-n.nx*.001-s.origin_x)/s.cell_m)),0,s.width-1),cell_z=std::clamp(int(std::floor((cz-n.nz*.001-s.origin_z)/s.cell_m)),0,s.height-1);
-    auto cell=s.cell(cell_x,cell_z);bool top=n.ny>.7f;int layer=int(cell.theme)+(top?0:8);
-    if(cell.kind==std::uint8_t(sonn::TerrainKind::Sand))layer=top?16:17;
-    else if(cell.kind==std::uint8_t(sonn::TerrainKind::Hill)||cell.kind==std::uint8_t(sonn::TerrainKind::Mountain))layer=top?18:19;
-    else if(cell.kind==std::uint8_t(sonn::TerrainKind::HighPeak))layer=top?20:21;
-    else if(cell.height_m<0)layer=top?22:23;
-    for(int k=0;k<4;++k){auto v=mesh.vertices[face+k];vertices.push_back({float(v.x-ox),v.y,float(v.z-oz),v.nx,v.ny,v.nz,v.x/4.f,v.z/4.f,rgba(255,255,255,int(std::lround(layer*255.f/31)))});}
-   }
-   std::size_t detail_quads=0;auto decor=ground_decoration(s,x*64,z*64,std::min(64,s.width-x*64),std::min(64,s.height-z*64),ox,oz,detail_quads);chunks.emplace(key,Chunk{upload(vertices,mesh.indices,world_layout),decor,ox,oz,detail_quads});++mesh_uploads;
-  }return visible;
- }
- // One texel per exact authoritative cell, point-sampled without shore smoothing.
- // Upload only when world identity or terrain geometry revision changes.
- void prepare_water_depth(const SurfaceView& surface) {
-  if(bgfx::isValid(water_depth)&&depth_identity==surface.identity&&depth_revision==surface.revision)return;
-  if(!surface.cell||surface.width<=0||surface.height<=0||surface.width>1024||surface.height>1024||!std::isfinite(surface.cell_m)||surface.cell_m<=0)
-   throw std::runtime_error("Water requires the authoritative bounded surface and exact cell scale");
-  std::vector<float> depth(std::size_t(surface.width)*surface.height);
-  for(int z=0;z<surface.height;++z)for(int x=0;x<surface.width;++x){
-   float height=surface.cell(x,z).height_m;
-   if(!std::isfinite(height))throw std::runtime_error("Nonfinite authoritative water bed");
-   depth[std::size_t(z)*surface.width+x]=std::max(0.f,-height);
+  // Soil/sand and water share exact0m. The authoritative micro-mask plane
+  // below already rasterizes their true edges, material and depth. Building
+  // a discarded seabed mesh would multiply work by64² per fine cell.
+  for(auto [score,key]:candidates){auto existing=chunks.find(key);if(existing!=chunks.end()){visible.push_back(key);existing->second.last_frame=frame_counter;continue;}if(frame_decoration_chunks>=16||frame_upload_bytes+frame_texture_upload_bytes>=frame_upload_limit||resident_bytes()>=geometry_limit)continue;
+   int x=key.first*detail_cells,z=key.second*detail_cells,w=std::min(detail_cells,s.width-x),h=std::min(detail_cells,s.height-z);double ox=s.origin_x+x*s.cell_m,oz=s.origin_z+z*s.cell_m;
+   std::size_t available=std::min<std::size_t>(std::size_t(frame_upload_limit-frame_upload_bytes-frame_texture_upload_bytes),geometry_limit-resident_bytes()),count=0;
+   ++frame_decoration_chunks;auto decor=ground_decoration(s,x,z,w,h,ox,oz,count,available);frame_upload_bytes+=buffer_bytes(decor);chunks.emplace(key,Chunk{{},decor,ox,oz,count,frame_counter});visible.push_back(key);++mesh_uploads;
   }
-  auto texture=bgfx::createTexture2D(std::uint16_t(surface.width),std::uint16_t(surface.height),false,1,bgfx::TextureFormat::R32F,
-   BGFX_SAMPLER_MIN_POINT|BGFX_SAMPLER_MAG_POINT|BGFX_SAMPLER_MIP_POINT|BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP,
-   bgfx::copy(depth.data(),std::uint32_t(depth.size()*sizeof(float))));
-  if(!bgfx::isValid(texture))throw std::runtime_error("Authoritative water depth texture upload failed");
-  if(bgfx::isValid(water_depth))bgfx::destroy(water_depth);
-  water_depth=texture;depth_identity=surface.identity;depth_revision=surface.revision;depth_cell_m=surface.cell_m;++depth_uploads;
-  depth_domain={float(surface.origin_x),float(surface.origin_z),float(surface.width*surface.cell_m),float(surface.height*surface.cell_m)};
+  return visible;
  }
+ void surface_uniforms(float mode){float flags[4]={mode,float(depth_cell_m),0,0};float domain[4]={float(double(depth_domain[0])-camera.target.x),float(double(depth_domain[1])-camera.target.z),depth_domain[2],depth_domain[3]};float near_domain[4]={float(double(fine_domain[0])-camera.target.x),float(double(fine_domain[1])-camera.target.z),fine_domain[2],fine_domain[3]};bgfx::setUniform(surface_mode_u,flags);bgfx::setUniform(water_domain_u,domain);bgfx::setUniform(fine_domain_u,near_domain);bgfx::setTexture(4,water_depth_u,water_depth);bgfx::setTexture(5,fine_atlas_u,fine_atlas);bgfx::setTexture(6,fine_pages_u,fine_pages);}
  void environment(const Basis& b){const auto& c=scene_camera();float eye[4]={float(b.eye.x-c.target.x),float(b.eye.y),float(b.eye.z-c.target.z),age==Age::Darkness?1.f:0.f};float l[4]={-.5f,-.8f,-.35f,1};float e[4]={float(depth_cell_m),float(seconds),float(c.target.x),float(c.target.z)};bgfx::setUniform(eye_u,eye);bgfx::setUniform(light_u,l);bgfx::setUniform(environment_u,e);}
- void draw_chunks(const std::vector<std::pair<int,int>>& visible,bgfx::ViewId view,bgfx::ProgramHandle program){
-  const auto& camera=scene_camera();for(auto key:visible){auto& c=chunks.at(key);if(!bgfx::isValid(c.buffer.vb))continue;
-   float model[16];bx::mtxTranslate(model,float(c.x-camera.target.x),0,float(c.z-camera.target.z));bgfx::setTransform(model);bgfx::setVertexBuffer(0,c.buffer.vb);bgfx::setIndexBuffer(c.buffer.ib);
-   environment(basis(camera));if(view==2){bgfx::setUniform(light_matrix_u,light_matrix);bgfx::setTexture(0,base_u,diagnostic==MaterialDiagnostic::MeanBase?flat[0]:textures[0]);bgfx::setTexture(3,shadow_u,shadow_texture);}
+ void draw_collection(const std::map<std::pair<int,int>,Chunk>& collection,const std::vector<std::pair<int,int>>& visible,bgfx::ViewId view,bgfx::ProgramHandle program){
+  const auto& c=scene_camera();for(auto key:visible){const auto& chunk=collection.at(key);if(!bgfx::isValid(chunk.buffer.vb))continue;
+   float model[16];bx::mtxTranslate(model,float(chunk.x-c.target.x),0,float(chunk.z-c.target.z));bgfx::setTransform(model);bgfx::setVertexBuffer(0,chunk.buffer.vb);bgfx::setIndexBuffer(chunk.buffer.ib);environment(basis(c));
+   if(view==2){surface_uniforms(0);bgfx::setUniform(light_matrix_u,light_matrix);bgfx::setTexture(0,base_u,diagnostic==MaterialDiagnostic::MeanBase?flat[0]:textures[0]);bgfx::setTexture(1,mean_u,flat[0]);bgfx::setTexture(3,shadow_u,shadow_texture);}
    bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A|BGFX_STATE_WRITE_Z|BGFX_STATE_DEPTH_TEST_LESS|BGFX_STATE_MSAA);bgfx::submit(view,program);
   }
  }
  void draw_decoration(const std::vector<std::pair<int,int>>& visible,bgfx::ViewId view){
   const auto& c=scene_camera();for(auto key:visible){auto& chunk=chunks.at(key);auto& decoration=chunk.decoration;if(!bgfx::isValid(decoration.vb))continue;
    float model[16];bx::mtxTranslate(model,float(chunk.x-c.target.x),0,float(chunk.z-c.target.z));bgfx::setTransform(model);bgfx::setVertexBuffer(0,decoration.vb);bgfx::setIndexBuffer(decoration.ib);environment(basis(c));
-   if(view==2){bgfx::setUniform(light_matrix_u,light_matrix);bgfx::setTexture(0,base_u,textures[0]);bgfx::setTexture(3,shadow_u,shadow_texture);}
+   if(view==2){surface_uniforms(0);bgfx::setUniform(light_matrix_u,light_matrix);bgfx::setTexture(0,base_u,textures[0]);bgfx::setTexture(1,mean_u,flat[0]);bgfx::setTexture(3,shadow_u,shadow_texture);}
    bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A|BGFX_STATE_WRITE_Z|BGFX_STATE_DEPTH_TEST_LESS|BGFX_STATE_MSAA);bgfx::submit(view,view==0?shadow:world);
   }
  }
+ void draw_overview(){
+  if(surface_profile!=2)return;float model[16];bx::mtxTranslate(model,depth_domain[0]-float(camera.target.x),0,depth_domain[1]-float(camera.target.z));bgfx::setTransform(model);environment(basis(camera));surface_uniforms(1);bgfx::setUniform(light_matrix_u,light_matrix);bgfx::setTexture(0,base_u,diagnostic==MaterialDiagnostic::MeanBase?flat[0]:textures[0]);bgfx::setTexture(1,mean_u,flat[0]);bgfx::setTexture(3,shadow_u,shadow_texture);bgfx::setVertexBuffer(0,land_overview.vb);bgfx::setIndexBuffer(land_overview.ib);
+  // Pixel-area coverage is composited over the preceding water colour. No
+  // depth offset or epsilon separates nominally equal0m ground and water.
+  // Fine mask coverage is exact when resolved, so the same plane also writes
+  // actual ground depth; unresolved dry/wet area shares the same0m depth.
+  bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A|BGFX_STATE_WRITE_Z|BGFX_STATE_DEPTH_TEST_LESS|BGFX_STATE_MSAA|BGFX_STATE_BLEND_ALPHA);bgfx::submit(2,world);
+ }
+ void draw_water(const Basis& b,bool depth_only){
+  float identity[16];bx::mtxIdentity(identity);bgfx::setTransform(identity);environment(b);surface_uniforms(0);bgfx::setUniform(light_matrix_u,light_matrix);bgfx::setTexture(3,shadow_u,shadow_texture);bgfx::setVertexBuffer(0,ocean.vb);bgfx::setIndexBuffer(ocean.ib);
+  bgfx::setState((depth_only?BGFX_STATE_WRITE_Z:BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A)|BGFX_STATE_DEPTH_TEST_LESS|BGFX_STATE_MSAA);bgfx::submit(2,water);
+ }
+
 
 
 };
@@ -311,9 +370,9 @@ Client::Client(const ClientConfig& config):impl_(std::make_unique<Impl>()){
  auto folder=config.resources/"shaders"/(init.type==bgfx::RendererType::Metal?"metal":"dx11");p.world=program(folder,"world","world");p.sky=program(folder,"sky","sky");p.water=program(folder,"world","water");p.shadow=program(folder,"shadow","shadow");p.ui=program(folder,"ui","ui");
  p.world_layout.begin().add(bgfx::Attrib::Position,3,bgfx::AttribType::Float).add(bgfx::Attrib::Normal,3,bgfx::AttribType::Float).add(bgfx::Attrib::TexCoord0,2,bgfx::AttribType::Float).add(bgfx::Attrib::Color0,4,bgfx::AttribType::Uint8,true).end();
  p.screen_layout.begin().add(bgfx::Attrib::Position,3,bgfx::AttribType::Float).add(bgfx::Attrib::TexCoord0,2,bgfx::AttribType::Float).end();p.ui_layout.begin().add(bgfx::Attrib::Position,3,bgfx::AttribType::Float).add(bgfx::Attrib::TexCoord0,2,bgfx::AttribType::Float).add(bgfx::Attrib::Color0,4,bgfx::AttribType::Uint8,true).end();
- p.base_u=bgfx::createUniform("s_base",bgfx::UniformType::Sampler);p.shadow_u=bgfx::createUniform("s_shadow",bgfx::UniformType::Sampler);p.ui_u=bgfx::createUniform("s_ui",bgfx::UniformType::Sampler);
+ p.base_u=bgfx::createUniform("s_base",bgfx::UniformType::Sampler);p.mean_u=bgfx::createUniform("s_mean",bgfx::UniformType::Sampler);p.shadow_u=bgfx::createUniform("s_shadow",bgfx::UniformType::Sampler);p.ui_u=bgfx::createUniform("s_ui",bgfx::UniformType::Sampler);
  p.eye_u=bgfx::createUniform("u_eyeAge",bgfx::UniformType::Vec4);p.light_u=bgfx::createUniform("u_light",bgfx::UniformType::Vec4);p.environment_u=bgfx::createUniform("u_environment",bgfx::UniformType::Vec4);p.light_matrix_u=bgfx::createUniform("u_lightMatrix",bgfx::UniformType::Mat4);p.forward_u=bgfx::createUniform("u_cameraForward",bgfx::UniformType::Vec4);p.right_u=bgfx::createUniform("u_cameraRight",bgfx::UniformType::Vec4);p.up_u=bgfx::createUniform("u_cameraUp",bgfx::UniformType::Vec4);
- p.water_depth_u=bgfx::createUniform("s_waterDepth",bgfx::UniformType::Sampler);p.water_domain_u=bgfx::createUniform("u_waterDomain",bgfx::UniformType::Vec4);p.menu_u=bgfx::createUniform("u_menuScene",bgfx::UniformType::Vec4);
+ p.water_depth_u=bgfx::createUniform("s_surfaceInfo",bgfx::UniformType::Sampler);p.fine_atlas_u=bgfx::createUniform("s_fineAtlas",bgfx::UniformType::Sampler);p.fine_pages_u=bgfx::createUniform("s_finePages",bgfx::UniformType::Sampler);p.fine_domain_u=bgfx::createUniform("u_fineDomain",bgfx::UniformType::Vec4);p.surface_mode_u=bgfx::createUniform("u_surfaceMode",bgfx::UniformType::Vec4);p.water_domain_u=bgfx::createUniform("u_waterDomain",bgfx::UniformType::Vec4);p.menu_u=bgfx::createUniform("u_menuScene",bgfx::UniformType::Vec4);
  p.pixel_materials();auto white=rgba(255,255,255);p.white=bgfx::createTexture2D(1,1,false,1,bgfx::TextureFormat::RGBA8,0,bgfx::copy(&white,4));
  std::array<bgfx::TextureHandle,2> targets={bgfx::createTexture2D(1024,1024,false,1,bgfx::TextureFormat::RGBA8,BGFX_TEXTURE_RT|BGFX_SAMPLER_MIN_POINT|BGFX_SAMPLER_MAG_POINT|BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP),bgfx::createTexture2D(1024,1024,false,1,bgfx::TextureFormat::D24S8,BGFX_TEXTURE_RT_WRITE_ONLY)};
  if(!bgfx::isValid(targets[0])||!bgfx::isValid(targets[1])){for(auto t:targets)if(bgfx::isValid(t))bgfx::destroy(t);throw std::runtime_error("Shadow framebuffer textures unavailable");}p.shadow_texture=targets[0];p.shadow_frame=bgfx::createFrameBuffer(2,targets.data(),true);if(!bgfx::isValid(p.shadow_frame)){for(auto t:targets)bgfx::destroy(t);throw std::runtime_error("Shadow framebuffer unavailable");}
@@ -331,9 +390,9 @@ void Client::fullscreen(bool x){if(!SDL_SetWindowFullscreen(impl_->window,x))thr
 void Client::cancel_input(){auto& p=*impl_;p.drag=false;p.orbit=false;SDL_CaptureMouse(false);if(p.typing){SDL_StopTextInput(p.window);p.typing=false;}}
 void Client::sync_text_input(Rml::Context& context){auto& p=*impl_;auto* e=context.GetFocusElement();bool typing=focused()&&e&&(e->GetTagName()=="input"||e->GetTagName()=="textarea");if(typing&&!p.typing){SDL_StartTextInput(p.window);p.typing=true;}else if(!typing&&p.typing){SDL_StopTextInput(p.window);p.typing=false;}if(typing){auto pos=e->GetAbsoluteOffset(Rml::Box::BORDER);auto size=e->GetBox().GetSize(Rml::Box::BORDER);SDL_Rect rect{int(pos.x/p.size.density),int(pos.y/p.size.density),std::max(1,int(size.x/p.size.density)),std::max(1,int(size.y/p.size.density))};SDL_SetTextInputArea(p.window,&rect,rect.w);}}
 bool Client::process_ui_event(const SDL_Event& e,Rml::Context& context){auto& p=*impl_;const int mods=modifiers(SDL_GetModState());auto interactive=[&](float x,float y){auto* target=context.GetElementAtPoint({x*p.size.density,y*p.size.density});while(target){auto tag=target->GetTagName();if(tag=="button"||tag=="input"||tag=="textarea"||tag=="select"||tag=="nav"||target->GetId().find("panel")!=std::string::npos)return true;target=target->GetParentNode();}return false;};switch(e.type){case SDL_EVENT_MOUSE_MOTION:{context.ProcessMouseMove(int(e.motion.x*p.size.density),int(e.motion.y*p.size.density),mods);return !p.drag&&interactive(e.motion.x,e.motion.y);}case SDL_EVENT_MOUSE_BUTTON_DOWN:case SDL_EVENT_MOUSE_BUTTON_UP:{context.ProcessMouseMove(int(e.button.x*p.size.density),int(e.button.y*p.size.density),mods);int b=e.button.button==SDL_BUTTON_LEFT?0:e.button.button==SDL_BUTTON_RIGHT?1:2;if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN)context.ProcessMouseButtonDown(b,mods);else context.ProcessMouseButtonUp(b,mods);sync_text_input(context);return !p.drag&&interactive(e.button.x,e.button.y);}case SDL_EVENT_MOUSE_WHEEL:{context.ProcessMouseMove(int(e.wheel.mouse_x*p.size.density),int(e.wheel.mouse_y*p.size.density),mods);if(interactive(e.wheel.mouse_x,e.wheel.mouse_y)){context.ProcessMouseWheel(-e.wheel.y,mods);return true;}return false;}case SDL_EVENT_KEY_DOWN:{p.pressed_keys.insert(key(e.key.key));bool consumed=!context.ProcessKeyDown(key(e.key.key),modifiers(e.key.mod));sync_text_input(context);return consumed||p.typing;}case SDL_EVENT_KEY_UP:p.pressed_keys.erase(key(e.key.key));return !context.ProcessKeyUp(key(e.key.key),modifiers(e.key.mod))||p.typing;case SDL_EVENT_TEXT_INPUT:context.ProcessTextInput(e.text.text);return p.typing;case SDL_EVENT_TEXT_EDITING:return p.typing;case SDL_EVENT_WINDOW_FOCUS_LOST:for(auto k:p.pressed_keys)context.ProcessKeyUp(k,0);p.pressed_keys.clear();for(int i=0;i<3;++i)context.ProcessMouseButtonUp(i,0);context.ProcessMouseLeave();cancel_input();return false;case SDL_EVENT_WINDOW_MOUSE_LEAVE:context.ProcessMouseLeave();return false;default:return false;}}
-bool Client::process_camera_event(const SDL_Event& e){auto& p=*impl_;auto& c=p.camera;switch(e.type){case SDL_EVENT_WINDOW_FOCUS_LOST:cancel_input();return false;case SDL_EVENT_MOUSE_BUTTON_DOWN:if(e.button.button==SDL_BUTTON_RIGHT||e.button.button==SDL_BUTTON_MIDDLE){p.drag=true;p.orbit=e.button.button==SDL_BUTTON_MIDDLE;SDL_CaptureMouse(true);return true;}return false;case SDL_EVENT_MOUSE_BUTTON_UP:if(p.drag){p.drag=false;SDL_CaptureMouse(false);return true;}return false;case SDL_EVENT_MOUSE_MOTION:if(p.drag){if(p.orbit){c.yaw_deg=std::fmod(c.yaw_deg+e.motion.xrel*.32,360.);c.pitch_deg=std::clamp(c.pitch_deg-e.motion.yrel*.24,10.,85.);}else{auto b=basis(c);double mpp=c.distance_m*2*std::tan(25*pi/180)/std::max(1,p.scene_rect()[3]);c.target=add(c.target,add(scale(b.right,-e.motion.xrel*mpp),scale(normalized({b.forward.x,0,b.forward.z}),e.motion.yrel*mpp)));}return true;}return false;case SDL_EVENT_MOUSE_WHEEL:c.distance_m=std::clamp(c.distance_m*std::exp(-e.wheel.y*.15),3.,4000.);return true;case SDL_EVENT_KEY_DOWN:{auto b=basis(c);double d=c.distance_m*.06;if(e.key.key==SDLK_LEFT||e.key.key==SDLK_A)c.target=add(c.target,scale(b.right,-d));else if(e.key.key==SDLK_RIGHT||e.key.key==SDLK_D)c.target=add(c.target,scale(b.right,d));else if(e.key.key==SDLK_UP||e.key.key==SDLK_W)c.target=add(c.target,scale(normalized({b.forward.x,0,b.forward.z}),d));else if(e.key.key==SDLK_DOWN||e.key.key==SDLK_S)c.target=add(c.target,scale(normalized({b.forward.x,0,b.forward.z}),-d));else if(e.key.key==SDLK_Q)c.yaw_deg-=8;else if(e.key.key==SDLK_E)c.yaw_deg+=8;else if(e.key.key==SDLK_EQUALS)c.distance_m=std::max(3.,c.distance_m*.85);else if(e.key.key==SDLK_MINUS)c.distance_m=std::min(4000.,c.distance_m/ .85);else return false;return true;}default:return false;}}
+bool Client::process_camera_event(const SDL_Event& e){auto& p=*impl_;auto& c=p.camera;switch(e.type){case SDL_EVENT_WINDOW_FOCUS_LOST:cancel_input();return false;case SDL_EVENT_MOUSE_BUTTON_DOWN:if(e.button.button==SDL_BUTTON_RIGHT||e.button.button==SDL_BUTTON_MIDDLE){p.drag=true;p.orbit=e.button.button==SDL_BUTTON_MIDDLE;SDL_CaptureMouse(true);return true;}return false;case SDL_EVENT_MOUSE_BUTTON_UP:if(p.drag){p.drag=false;SDL_CaptureMouse(false);return true;}return false;case SDL_EVENT_MOUSE_MOTION:if(p.drag){if(p.orbit){c.yaw_deg=std::fmod(c.yaw_deg+e.motion.xrel*.32,360.);c.pitch_deg=std::clamp(c.pitch_deg-e.motion.yrel*.24,10.,85.);}else{auto b=basis(c);double mpp=c.distance_m*2*std::tan(25*pi/180)/std::max(1,p.scene_rect()[3]);c.target=add(c.target,add(scale(b.right,-e.motion.xrel*mpp),scale(normalized({b.forward.x,0,b.forward.z}),e.motion.yrel*mpp)));}return true;}return false;case SDL_EVENT_MOUSE_WHEEL:c.distance_m=std::clamp(c.distance_m*std::exp(-e.wheel.y*.15),1.25,14000.);return true;case SDL_EVENT_KEY_DOWN:{auto b=basis(c);double d=c.distance_m*.06;if(e.key.key==SDLK_LEFT||e.key.key==SDLK_A)c.target=add(c.target,scale(b.right,-d));else if(e.key.key==SDLK_RIGHT||e.key.key==SDLK_D)c.target=add(c.target,scale(b.right,d));else if(e.key.key==SDLK_UP||e.key.key==SDLK_W)c.target=add(c.target,scale(normalized({b.forward.x,0,b.forward.z}),d));else if(e.key.key==SDLK_DOWN||e.key.key==SDLK_S)c.target=add(c.target,scale(normalized({b.forward.x,0,b.forward.z}),-d));else if(e.key.key==SDLK_Q)c.yaw_deg-=8;else if(e.key.key==SDLK_E)c.yaw_deg+=8;else if(e.key.key==SDLK_EQUALS)c.distance_m=std::max(1.25,c.distance_m*.85);else if(e.key.key==SDLK_MINUS)c.distance_m=std::min(14000.,c.distance_m/ .85);else return false;return true;}default:return false;}}
 Camera& Client::camera(){return impl_->camera;}const Camera& Client::camera()const{return impl_->camera;}
-void Client::frame_surface(const SurfaceView& s){auto& c=impl_->camera;c={};c.target={s.origin_x+s.width*s.cell_m*.5,2,s.origin_z+s.height*s.cell_m*.5};if(s.cell){auto v=s.cell(s.width/2,s.height/2);c.target.y=std::max(0.f,v.height_m);}c.distance_m=std::clamp(std::min(s.width,s.height)*s.cell_m*.55,24.,110.);c.pitch_deg=32;c.yaw_deg=32;}
+void Client::frame_surface(const SurfaceView& s){auto& c=impl_->camera;c={};c.target={s.origin_x+s.width*s.cell_m*.5,2,s.origin_z+s.height*s.cell_m*.5};if(s.cell){auto v=s.cell(s.width/2,s.height/2);c.target.y=std::max(0.f,v.height_m);}c.distance_m=std::clamp(std::min(s.width,s.height)*s.cell_m*.55,24.,14000.);c.pitch_deg=32;c.yaw_deg=32;}
 Ray Client::screen_ray(double x,double y)const {
  auto& p=*impl_;auto b=basis(p.camera);auto rect=p.scene_rect();
  double aspect=double(rect[2])/rect[3],tangent=std::tan(25*pi/180);
@@ -345,10 +404,13 @@ std::optional<SurfaceHit> Client::pick(const SurfaceView& s,double x,double y)co
  auto r=impl_->scene_rect();if(!s.raycast||x<r[0]||y<r[1]||x>=r[0]+r[2]||y>=r[1]+r[3])return {};
  return s.raycast(screen_ray(x,y));
 }
-void Client::begin_frame(const SurfaceView* surface,Age age,double presentation_seconds){auto& p=*impl_;p.update_dimensions();if(p.size.pixel_w<=0||p.size.pixel_h<=0)return;if(p.gpu_width!=p.size.pixel_w||p.gpu_height!=p.size.pixel_h){p.gpu_width=p.size.pixel_w;p.gpu_height=p.size.pixel_h;bgfx::SwapChain sc;sc.width=std::uint32_t(p.size.pixel_w);sc.height=std::uint32_t(p.size.pixel_h);sc.flags=BGFX_SWAP_CHAIN_MSAA_X4;bgfx::reset(BGFX_RESET_VSYNC,&sc);}p.age=age;p.seconds=std::isfinite(presentation_seconds)?std::max(0.,presentation_seconds):0;p.presenting_menu=!surface&&!p.map_visible;const auto& render_camera=p.scene_camera();const int w=p.size.pixel_w,h=p.size.pixel_h;auto rect=p.scene_pixels();auto logical=p.scene_rect();float aspect=float(logical[2])/logical[3];for(int view=1;view<3;++view)bgfx::setViewRect(bgfx::ViewId(view),std::uint16_t(rect[0]),std::uint16_t(rect[1]),std::uint16_t(rect[2]),std::uint16_t(rect[3]));bgfx::setViewRect(3,0,0,std::uint16_t(w),std::uint16_t(h));bgfx::setViewRect(4,0,0,std::uint16_t(w),std::uint16_t(h));bgfx::touch(4);auto b=basis(render_camera);float view[16],projection[16];bx::mtxLookAt(view,{float(b.eye.x-render_camera.target.x),float(b.eye.y),float(b.eye.z-render_camera.target.z)},{0,float(render_camera.target.y),0});bx::mtxProj(projection,50.f,aspect,.08f,50000.f,bgfx::getCaps()->homogeneousDepth);bgfx::setViewTransform(2,view,projection);bgfx::touch(1);
+void Client::begin_frame(const SurfaceView* surface,Age age,double presentation_seconds){auto& p=*impl_;p.update_dimensions();if(p.size.pixel_w<=0||p.size.pixel_h<=0)return;if(p.gpu_width!=p.size.pixel_w||p.gpu_height!=p.size.pixel_h){p.gpu_width=p.size.pixel_w;p.gpu_height=p.size.pixel_h;bgfx::SwapChain sc;sc.width=std::uint32_t(p.size.pixel_w);sc.height=std::uint32_t(p.size.pixel_h);sc.flags=BGFX_SWAP_CHAIN_MSAA_X4;bgfx::reset(BGFX_RESET_VSYNC,&sc);}p.frame_upload_bytes=0;p.frame_texture_upload_bytes=0;p.frame_decoration_samples=0;p.frame_decoration_chunks=0;p.age=age;p.seconds=std::isfinite(presentation_seconds)?std::max(0.,presentation_seconds):0;p.presenting_menu=!surface&&!p.map_visible;const auto& render_camera=p.scene_camera();const int w=p.size.pixel_w,h=p.size.pixel_h;auto rect=p.scene_pixels();auto logical=p.scene_rect();float aspect=float(logical[2])/logical[3];for(int view=1;view<3;++view)bgfx::setViewRect(bgfx::ViewId(view),std::uint16_t(rect[0]),std::uint16_t(rect[1]),std::uint16_t(rect[2]),std::uint16_t(rect[3]));bgfx::setViewRect(3,0,0,std::uint16_t(w),std::uint16_t(h));bgfx::setViewRect(4,0,0,std::uint16_t(w),std::uint16_t(h));bgfx::touch(4);auto b=basis(render_camera);float view[16],projection[16];bx::mtxLookAt(view,{float(b.eye.x-render_camera.target.x),float(b.eye.y),float(b.eye.z-render_camera.target.z)},{0,float(render_camera.target.y),0});bx::mtxProj(projection,50.f,aspect,.08f,50000.f,bgfx::getCaps()->homogeneousDepth);bgfx::setViewTransform(2,view,projection);bgfx::touch(1);
  p.environment(b);float f[4]={float(b.forward.x),float(b.forward.y),float(b.forward.z),0},r[4]={float(b.right.x),float(b.right.y),float(b.right.z),aspect*.46630766f},u[4]={float(b.up.x),float(b.up.y),float(b.up.z),.46630766f};bgfx::setUniform(p.forward_u,f);bgfx::setUniform(p.right_u,r);bgfx::setUniform(p.up_u,u);bgfx::setVertexBuffer(0,p.screen_vb);bgfx::setIndexBuffer(p.screen_ib);float menu[4]={p.presenting_menu?1.f:0.f,float(p.seconds),float(std::max(1,p.size.logical_w)),float(std::max(1,p.size.logical_h))};bgfx::setUniform(p.menu_u,menu);bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A);bgfx::submit(1,p.sky);
- if(surface){p.prepare_water_depth(*surface);auto visible=p.prepare_chunks(*surface);float light_view[16],light_projection[16];float extent=float(std::max(24.,render_camera.distance_m*1.4));bx::mtxLookAt(light_view,{extent*.5f,float(render_camera.target.y)+extent*.8f,extent*.35f},{0,float(render_camera.target.y),0});bx::mtxOrtho(light_projection,-extent,extent,-extent,extent,1.f,extent*4,0,bgfx::getCaps()->homogeneousDepth);bx::mtxMul(p.light_matrix,light_view,light_projection);bgfx::setViewTransform(0,light_view,light_projection);bgfx::touch(0);p.draw_chunks(visible,0,p.shadow);p.draw_decoration(visible,0);
- float identity[16];bx::mtxIdentity(identity);bgfx::setTransform(identity);p.environment(b);bgfx::setUniform(p.light_matrix_u,p.light_matrix);bgfx::setTexture(3,p.shadow_u,p.shadow_texture);bgfx::setTexture(4,p.water_depth_u,p.water_depth);bgfx::setUniform(p.water_domain_u,p.depth_domain.data());bgfx::setVertexBuffer(0,p.ocean.vb);bgfx::setIndexBuffer(p.ocean.ib);bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A|BGFX_STATE_WRITE_Z|BGFX_STATE_DEPTH_TEST_LESS|BGFX_STATE_MSAA);bgfx::submit(2,p.water);p.draw_chunks(visible,2,p.world);p.draw_decoration(visible,2);
+ if(surface){
+  p.prepare_water_depth(*surface);p.prepare_fine_coverage(*surface);auto visible=p.prepare_chunks(*surface);std::vector<std::pair<int,int>> far_visible;for(const auto& [key,chunk]:p.far_chunks)far_visible.push_back(key);
+  float light_view[16],light_projection[16];float extent=float(std::max(24.,render_camera.distance_m*1.4));bx::mtxLookAt(light_view,{extent*.5f,float(render_camera.target.y)+extent*.8f,extent*.35f},{0,float(render_camera.target.y),0});bx::mtxOrtho(light_projection,-extent,extent,-extent,extent,1.f,extent*4,0,bgfx::getCaps()->homogeneousDepth);bx::mtxMul(p.light_matrix,light_view,light_projection);bgfx::setViewTransform(0,light_view,light_projection);bgfx::touch(0);
+  p.draw_collection(p.far_chunks,far_visible,0,p.shadow);p.draw_collection(p.chunks,visible,0,p.shadow);p.draw_decoration(visible,0);
+  p.draw_water(b,false);p.draw_overview();p.draw_collection(p.far_chunks,far_visible,2,p.world);p.draw_collection(p.chunks,visible,2,p.world);p.draw_decoration(visible,2);p.draw_water(b,true);
  }
  if(!surface&&p.map_visible&&bgfx::isValid(p.map_texture)&&p.map_w>0&&p.map_h>0){float projection[16];bx::mtxOrtho(projection,0,float(rect[2]),float(rect[3]),0,0,100,0,bgfx::getCaps()->homogeneousDepth);bgfx::setViewTransform(2,nullptr,projection);float x=0,y=0,mw=float(rect[2]),mh=float(rect[3]);std::array<UiVertex,4> vertices={{{x,y,0,0,0,0xffffffff},{x+mw,y,0,1,0,0xffffffff},{x+mw,y+mh,0,1,1,0xffffffff},{x,y+mh,0,0,1,0xffffffff}}};std::array<std::uint16_t,6> indices={0,1,2,0,2,3};bgfx::TransientVertexBuffer vb;bgfx::TransientIndexBuffer ib;if(bgfx::getAvailTransientVertexBuffer(4,p.ui_layout)!=4||bgfx::getAvailTransientIndexBuffer(6)!=6)throw std::runtime_error("Navigation texture geometry budget exhausted");bgfx::allocTransientVertexBuffer(&vb,4,p.ui_layout);bgfx::allocTransientIndexBuffer(&ib,6);std::memcpy(vb.data,vertices.data(),sizeof(vertices));std::memcpy(ib.data,indices.data(),sizeof(indices));float model[16];bx::mtxIdentity(model);bgfx::setTransform(model);bgfx::setScissor(UINT16_MAX);bgfx::setVertexBuffer(0,&vb);bgfx::setIndexBuffer(&ib);bgfx::setTexture(0,p.ui_u,p.map_texture);bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A);bgfx::submit(2,p.ui);}
  begin_ui();
@@ -361,9 +423,10 @@ void Client::set_map_rgba(int w,int h,std::span<const std::uint8_t> data,std::ui
 void Client::map_overlay(int x,int y,int w,int h,bool visible){auto& p=*impl_;p.map_x=x;p.map_y=y;p.map_w=w;p.map_h=h;p.map_visible=visible;}
 std::string Client::renderer_name()const{return bgfx::getRendererName(bgfx::getRendererType());}
 std::string Client::gpu_parameters_json()const{
- auto& p=*impl_;const auto& c=p.scene_camera();std::size_t vertices=0,indices=0,decoration_quads=0;
+ auto& p=*impl_;const auto& c=p.scene_camera();std::size_t vertices=0,indices=0,decoration_quads=0,far_bytes=0;
  for(const auto& [key,chunk]:p.chunks){vertices+=chunk.buffer.vertices+chunk.decoration.vertices;indices+=chunk.buffer.indices+chunk.decoration.indices;decoration_quads+=chunk.decoration_quads;}
- std::ostringstream s;s<<"{\"renderer\":\""<<renderer_name()<<"\",\"camera\":{\"yaw_deg\":"<<c.yaw_deg<<",\"pitch_deg\":"<<c.pitch_deg<<",\"distance_m\":"<<c.distance_m<<",\"target\":["<<c.target.x<<','<<c.target.y<<','<<c.target.z<<"]},\"pixel_size\":["<<p.size.pixel_w<<','<<p.size.pixel_h<<"],\"theme_layers\":24,\"atlas_layers\":32,\"tile_pixels\":128,\"pixels_per_metre\":32,\"material_atlas_bytes\":2097152,\"material_uploads\":"<<p.material_uploads<<",\"material_sha256\":\""<<sonn::hex(p.material_hash)<<"\",\"shadow_map\":1024,\"outline\":false,\"water_level_m\":0,\"diagnostic\":"<<int(p.diagnostic)<<",\"presentation_only\":"<<(p.presenting_menu?"true":"false")<<",\"presentation_seconds\":"<<p.seconds<<",\"menu_scene\":\"navy_pixel_stars_meteors\",\"menu_geometry_generated\":false,\"material_model\":\"original_fine_painted_pixel_clusters\",\"age\":\""<<(p.age==Age::Light?"Light":"Darkness")<<"\",\"surface_identity\":\""<<sonn::hex(p.mesh_identity)<<"\",\"surface_revision\":"<<(p.mesh_revision==~0ULL?0:p.mesh_revision)<<",\"mesh_uploads\":"<<p.mesh_uploads<<",\"mesh_cache_resets\":"<<p.mesh_cache_resets<<",\"cached_geometry_vertices\":"<<vertices<<",\"cached_geometry_indices\":"<<indices<<",\"cached_geometry_gpu_bytes\":"<<vertices*sizeof(Vertex)+indices*sizeof(std::uint32_t)<<",\"decoration_quads\":"<<decoration_quads<<",\"mechanical_trees_spawned_by_renderer\":0,\"water_depth_uploads\":"<<p.depth_uploads<<",\"water_depth_cell_m\":"<<p.depth_cell_m<<",\"outside_water_depth_m\":20,\"scene_logical\":["<<p.scene_rect()[0]<<','<<p.scene_rect()[1]<<','<<p.scene_rect()[2]<<','<<p.scene_rect()[3]<<"]}";return s.str();
+ for(const auto& [key,chunk]:p.far_chunks)far_bytes+=p.buffer_bytes(chunk.buffer);
+ std::ostringstream s;s<<"{\"renderer\":\""<<renderer_name()<<"\",\"camera\":{\"yaw_deg\":"<<c.yaw_deg<<",\"pitch_deg\":"<<c.pitch_deg<<",\"distance_m\":"<<c.distance_m<<",\"target\":["<<c.target.x<<','<<c.target.y<<','<<c.target.z<<"]},\"pixel_size\":["<<p.size.pixel_w<<','<<p.size.pixel_h<<"],\"world_extent_m\":["<<p.depth_domain[2]<<','<<p.depth_domain[3]<<"],\"terrain_profile\":"<<p.surface_profile<<",\"management_cell_m\":"<<p.depth_cell_m<<",\"micro_surface_m\":0.03125,\"building_grid_independent\":true,\"theme_layers\":24,\"atlas_layers\":32,\"tile_pixels\":128,\"pixels_per_metre\":64,\"material_atlas_bytes\":2097152,\"material_uploads\":"<<p.material_uploads<<",\"material_sha256\":\""<<sonn::hex(p.material_hash)<<"\",\"shadow_map\":1024,\"outline\":false,\"water_level_m\":0,\"soil_height_m\":"<<p.surface_heights[4]<<",\"sand_height_m\":"<<p.surface_heights[3]<<",\"water_land_height_epsilon_m\":0,\"diagnostic\":"<<int(p.diagnostic)<<",\"presentation_only\":"<<(p.presenting_menu?"true":"false")<<",\"presentation_seconds\":"<<p.seconds<<",\"menu_scene\":\"navy_pixel_stars_meteors\",\"menu_geometry_generated\":false,\"material_model\":\"authoritative_sparse_micro_surface_and_pixel_clusters\",\"age\":\""<<(p.age==Age::Light?"Light":"Darkness")<<"\",\"surface_identity\":\""<<sonn::hex(p.mesh_identity)<<"\",\"surface_revision\":"<<(p.mesh_revision==~0ULL?0:p.mesh_revision)<<",\"mesh_uploads\":"<<p.mesh_uploads<<",\"mesh_cache_resets\":"<<p.mesh_cache_resets<<",\"resident_detail_chunks\":"<<p.chunks.size()<<",\"resident_chunk_limit\":128,\"cached_geometry_vertices\":"<<vertices<<",\"cached_geometry_indices\":"<<indices<<",\"cached_geometry_gpu_bytes\":"<<p.resident_bytes()<<",\"geometry_resident_limit_bytes\":"<<p.geometry_limit<<",\"far_elevated_geometry_bytes\":"<<far_bytes<<",\"geometry_evictions\":"<<p.geometry_evictions<<",\"detail_geometry_upload_bytes_this_frame\":"<<p.frame_upload_bytes<<",\"detail_texture_upload_bytes_this_frame\":"<<p.frame_texture_upload_bytes<<",\"detail_upload_limit_bytes_per_frame\":"<<p.frame_upload_limit<<",\"near_surface_geometry\":\"exact_micro_mask_on_shared_zero_plane\",\"land_mask_vertices\":4,\"decoration_cpu_sample_limit_per_frame\":65536,\"decoration_cpu_samples_this_frame\":"<<p.frame_decoration_samples<<",\"decoration_cpu_chunk_limit_per_frame\":16,\"decoration_cpu_chunks_this_frame\":"<<p.frame_decoration_chunks<<",\"complete_overview_gpu_bytes\":"<<p.overview_data.size()<<",\"coverage_count_bits\":13,\"complete_overview_available\":"<<(bgfx::isValid(p.water_depth)?"true":"false")<<",\"fine_coverage_atlas_gpu_bytes\":16777216,\"fine_page_gpu_bytes\":65536,\"fine_atlas_patch_limit\":1024,\"resident_fine_patches\":"<<p.fine_slots.size()<<",\"fine_patch_candidates\":"<<p.fine_patch_candidates<<",\"fine_patch_deferred\":"<<p.fine_patch_deferred<<",\"fine_decode_column_limit_per_frame\":1048576,\"fine_window_management_cell_limit\":16384,\"fine_texture_uploads\":"<<p.fine_texture_uploads<<",\"fine_page_uploads\":"<<p.fine_page_uploads<<",\"decoration_quads\":"<<decoration_quads<<",\"mechanical_trees_spawned_by_renderer\":0,\"water_depth_uploads\":"<<p.depth_uploads<<",\"water_depth_cell_m\":"<<p.depth_cell_m<<",\"outside_water_depth_m\":20,\"scene_logical\":["<<p.scene_rect()[0]<<','<<p.scene_rect()[1]<<','<<p.scene_rect()[2]<<','<<p.scene_rect()[3]<<"]}";return s.str();
 }
 
 Rml::RenderInterface* Client::render_interface(){return &impl_->render;}Rml::SystemInterface* Client::system_interface(){return &impl_->system;}Rml::FileInterface* Client::file_interface(){return &impl_->files;}

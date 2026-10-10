@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "sonnheide_runtime_foundation_v1",
   "design_version": "0.9",
-  "algorithm_revision": "ADR0018-2026-10-09",
+  "algorithm_revision": "ADR0021-2026-10-10",
   "planned_only": true,
   "production_implemented": false,
   "document": "docs/architecture/DETERMINISTIC_WORLD_AND_RUNTIME.md",
@@ -20,8 +20,8 @@
       "deep_ocean": -20000,
       "close_ocean": -8000,
       "shallow_water": -2000,
-      "sand": 1000,
-      "soil": 2000,
+      "sand": 0,
+      "soil": 0,
       "hill": 16000,
       "mountain": 48000,
       "high_peak": 96000
@@ -41,7 +41,9 @@
     "irregular_coast_transition": false,
     "soil_sand_switch_wipes": true,
     "ramp_kind_at_point": "h<0_depth3m12m;0<=h<8m_top_material_sand_or_soil;8<=h<32hill;32<=h<80mountain;h>=80high_peak",
-    "cell_size_mm": 250
+    "cell_size_mm": 2000,
+    "micro_size_um": 31250,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height"
   },
   "operators": {
     "allowed": [
@@ -110,29 +112,29 @@
     "projection": "equirectangular_standard_parallel_0_degrees_game_distance_not_real_distance",
     "coordinates": "integer_microdegrees_with_unwrapped_east",
     "latitude_bounds_udeg": [
-      -80000000,
-      80000000
+      -90000000,
+      90000000
     ],
-    "maximum_longitude_span_udeg": 60000000,
-    "maximum_latitude_span_udeg": 60000000,
+    "maximum_longitude_span_udeg": 360000000,
+    "maximum_latitude_span_udeg": 180000000,
     "date_line": "east_unwrapped_after_west_relative_source_longitude_two_windows_one_candidate",
     "scale": "same_rational_game_mm_per_microdegree_both_axes",
     "Nx_core_range": [
       32,
-      1008
+      4096
     ],
     "Ny_core_formula": "ceil(Nx*(north-south)/(eastUnwrapped-west))",
-    "cell_center_udeg": "west+(i+1/2)*W/Nx,south+(j+1/2)*W/Nx_exact_rational",
+    "cell_center_udeg": "west+(micro_x+1/2)*W/(Nx*64),south+(micro_z+1/2)*W/(Nx*64)_exact_rational",
     "cell_center_outside_source_rect": "close_ocean",
     "source_ring_test": "point_on_segment_inside_first_then_exact_even_odd_half_open_y_crossing",
     "layer_precedence": "deepest_containing_L1land_L2water_L3land_L4water_same_depth_sourcePolygonId_ASC",
     "missing_or_invalid_nested_source": "reject_package",
-    "narrow_island": "center_sampling_can_remove_subcell_island_highest_preview_truthfully_matches",
+    "narrow_island": "full_source_scanline_micro_centers_preserve_islands_missed_by_management_centers_only_features_without_a31250um_sample_may_disappear",
     "guard_cells": 8,
     "guard_kind": "deep_ocean",
     "guard_editable": false,
-    "authority_axis_max_cells": 1024,
-    "max_authority_cells": 1048576,
+    "authority_axis_max_cells": 4112,
+    "max_authority_cells": 16908544,
     "capacity_claim": "admission_limits_only_not_measured_performance",
     "outside": "render_only_ocean_no_entities_navigation_titles_or_resources",
     "actor_boundary": "complete_body_and_sweep_in_authority_real_braking_before_edge_no_wall_no_teleport",
@@ -143,11 +145,19 @@
     "source_profile_read_only": true,
     "source_ring_unwrap": "follow_edges_min_delta_in_half_open_minus180_to180_then_whole360degree_copies_and_exact_dateline_clip_not_independent_vertex_clamp",
     "default_core_cells": [
-      512,
-      512
+      1024,
+      1024
     ],
-    "actual_core_extent_formula": "Nx_cell_count_times250mm_Ny_cell_count_times250mm",
-    "earth_scale_mode": "stylized_uniform_not_1_to_1"
+    "actual_core_extent_formula": "Nx_management_count_times2000mm_Ny_management_count_times2000mm",
+    "earth_scale_mode": "stylized_uniform_not_1_to_1",
+    "geometry_resident_budget_bytes": 134217728,
+    "presets_management_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ]
   },
   "natural_objects": {
     "persistent_natural_entities": false,
@@ -158,9 +168,9 @@
     "natural_naming": false,
     "split_merge_identity_inheritance": false,
     "sea_lake": "derived_navigation_and_display_classification_only",
-    "wet_node": "CellCoord/terrainRevision/minimumTriangleIndex",
-    "max_wet_nodes_per_cell": 2,
-    "connectivity": "positive_length_wet_shared_edge_4_neighbor_to_guard",
+    "wet_node": "ManagementCoord/MicroCoord/terrainRevision/minimumTriangleIndex",
+    "max_wet_nodes_per_cell": "two_per_micro_triangle_surface_not_management_cell",
+    "connectivity": "positive_length_actual_micro_wet_shared_edge_to_guard",
     "temporary_component_key": "minimum_current_local_node_of_component",
     "component_is_saved_entity": false,
     "route_dependency": "coordinate_portal_geometry_and_terrain_revision_not_component_identity",
@@ -168,7 +178,7 @@
   },
   "ramp_solver": {
     "endpoint": "existing_flat_actual_landing_fixed_kind_height_no_peak",
-    "input_quantize": "profile_cell_centers_ties_to_even_new250mm",
+    "input_quantize": "profile_management_cell_centers_ties_to_even_new2000mm_actual_micro_surface_support",
     "path_shape": "ordered_orthogonal_grid_polyline_with_real_flat_turn_landings",
     "nonorthogonal_segment": "enumerate_X_then_Y_and_Y_then_X",
     "max_control_points": 16,
@@ -2418,5 +2428,31 @@
     ]
   },
   "decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md",
-  "fine_profile_update": "ADR0019_geometry250mm_texture32pixels_per_metre_ramp_planned1mm"
+  "fine_profile_update": "ADR0021_RLE_management2000mm_sparse_micro31250um",
+  "micro_surface_update": {
+    "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+    "profile": 2,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "soil_sand_top_mm": 0,
+    "water_surface_mm": 0,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height",
+    "default_core_cells": 1024,
+    "maximum_core_cells": 4096,
+    "presets_core_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "reclamation": "replace_only_wet_microfaces_preserve_dry_kind_theme_revision",
+    "representation": "row_RLE_plus_sparse_palette_packed_fine_patches",
+    "production_full_game_implemented": false,
+    "binary_patch_codec": "lossless_minimum_fixed_spans_row_offset_spans_sorted_row_dictionary_or_raw_bitpacked_fallback",
+    "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
+    "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
+    "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  }
 }

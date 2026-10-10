@@ -15,7 +15,7 @@ namespace Rml { class Context; }
 namespace sonnheide::client {
 struct Vec3 { double x{},y{},z{}; };
 struct Ray { Vec3 origin,direction; };
-struct SurfaceCell { float height_m{}; std::uint8_t kind{},theme{}; bool guard{}; };
+struct SurfaceCell { float height_m{}; std::uint8_t kind{},theme{}; bool guard{},wet{}; };
 struct SurfaceHit { Vec3 point,normal; int x{},z{}; };
 // Immutable adapters must read the same core World/CreationPreview surface as
 // support/navigation. This view never owns or changes simulation geometry.
@@ -23,9 +23,17 @@ struct SurfaceView {
     sonn::Uuid identity{};
     std::uint64_t revision{};
     int width{},height{};
-    double origin_x{},origin_z{},cell_m{.25};
+    double origin_x{},origin_z{},cell_m{2};
+    std::uint32_t profile{2};
+    std::array<float,8> height_levels{};
+    using FineVisitor=std::function<void(int,int)>;
+    // Enumerate only a requested management rectangle; construction is O(1).
+    std::function<void(int,int,int,int,const FineVisitor&)> enumerate_fine;
     std::function<SurfaceCell(int,int)> cell;
-    std::function<sonn::Mesh(int,int,int,int)> mesh;
+    std::function<sonn::Mesh(int,int,int,int)> mesh,coarse_mesh;
+    std::function<SurfaceCell(double,double)> point;
+    std::function<std::vector<SurfaceCell>(int,int)> fine;
+    std::function<std::array<std::uint16_t,64>(int,int)> coverage_counts;
     std::function<std::optional<SurfaceHit>(const Ray&)> raycast;
 };
 SurfaceView surface_view(const sonn::World&);

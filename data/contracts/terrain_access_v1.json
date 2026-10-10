@@ -61,7 +61,7 @@
     "edge": "rectangular_cut_deep_ocean_guard_no_slope_or_irregular_transition",
     "projection": "equirectangular_standard_parallel_0_game_units_no_polar_selection",
     "initial_flat_heights_mm": {
-      "land": 2000,
+      "land": 0,
       "water": -8000,
       "ocean_guard": -20000
     }
@@ -69,7 +69,7 @@
   "sample_profile": {
     "status": "engineering_calibration_example_not_real_geography_or_measured_capacity",
     "frozen_per_world": true,
-    "cell_size_mm": 250,
+    "cell_size_mm": 2000,
     "height_quantum_mm": 500,
     "chunk_side_cells": 64,
     "minimum_height_q": -40,
@@ -135,8 +135,8 @@
       "deep_ocean": -20000,
       "close_ocean": -8000,
       "shallow_water": -2000,
-      "sand": 1000,
-      "soil": 2000,
+      "sand": 0,
+      "soil": 0,
       "hill": 16000,
       "mountain": 48000,
       "high_peak": 96000
@@ -189,9 +189,9 @@
         "en": "Sand",
         "de": "Sand"
       },
-      "default_target_height_mm": 1000,
+      "default_target_height_mm": 0,
       "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
-      "explicit_creation_target_height_mm": 1000
+      "explicit_creation_target_height_mm": 0
     },
     {
       "id": "soil",
@@ -200,9 +200,9 @@
         "en": "Soil",
         "de": "Boden"
       },
-      "default_target_height_mm": 2000,
+      "default_target_height_mm": 0,
       "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
-      "explicit_creation_target_height_mm": 2000
+      "explicit_creation_target_height_mm": 0
     },
     {
       "id": "hill",
@@ -1354,5 +1354,31 @@
       "expected": "rebuild_nav_components_no_WaterBodyRef_or_natural_names"
     }
   ],
-  "fine_profile_update": "ADR0019_new250mm_grid_ramp_quantum1mm_legacy125mm_examples_are_historical_not_new_profile"
+  "fine_profile_update": "ADR0021_management2000mm_micro31250um_ramp_planned1mm_legacy_calibration_examples_are_historical",
+  "micro_surface_update": {
+    "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+    "profile": 2,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "soil_sand_top_mm": 0,
+    "water_surface_mm": 0,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height",
+    "default_core_cells": 1024,
+    "maximum_core_cells": 4096,
+    "presets_core_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "reclamation": "replace_only_wet_microfaces_preserve_dry_kind_theme_revision",
+    "representation": "row_RLE_plus_sparse_palette_packed_fine_patches",
+    "production_full_game_implemented": false,
+    "binary_patch_codec": "lossless_minimum_fixed_spans_row_offset_spans_sorted_row_dictionary_or_raw_bitpacked_fallback",
+    "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
+    "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
+    "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  }
 }

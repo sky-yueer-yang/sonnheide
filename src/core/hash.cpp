@@ -12,7 +12,16 @@ void le(Bytes& b,uint64_t v,unsigned n){for(unsigned i=0;i<n;i++)b.push_back(uin
 std::string_view scope(std::string_view k){auto it=std::lower_bound(std::begin(kind_scopes),std::end(kind_scopes),k,[](auto p,auto x){return p.first<x;});return it!=std::end(kind_scopes)&&it->first==k?it->second:std::string_view{};}
 std::filesystem::path safe_member(const std::filesystem::path& root,const std::string& name){std::filesystem::path rel(name);if(rel.empty()||rel.is_absolute()||name.find(':')!=std::string::npos||name.find('\\')!=std::string::npos)throw Error("UNSAFE_PATH",name);for(const auto& p:rel)if(p==".."||p==".")throw Error("UNSAFE_PATH",name);auto base=std::filesystem::weakly_canonical(root),full=std::filesystem::weakly_canonical(base/rel);auto a=base.begin(),b=full.begin();for(;a!=base.end();++a,++b)if(b==full.end()||*a!=*b)throw Error("UNSAFE_PATH",name);return full;}
 }
-Hash sha256(std::span<const uint8_t> bytes){std::array<uint32_t,8> h{0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};size_t i=0;for(;bytes.size()-i>=64;i+=64)block(h,bytes.data()+i);std::array<uint8_t,128>tail{};size_t n=bytes.size()-i;std::copy(bytes.begin()+static_cast<std::ptrdiff_t>(i),bytes.end(),tail.begin());tail[n]=0x80;size_t len=n<56?64:128;uint64_t bits=uint64_t(bytes.size())*8;for(unsigned j=0;j<8;j++)tail[len-1-j]=uint8_t(bits>>(8*j));block(h,tail.data());if(len==128)block(h,tail.data()+64);Hash out{};for(size_t j=0;j<8;j++)for(size_t k=0;k<4;k++)out[j*4+k]=uint8_t(h[j]>>(24-8*k));return out;}
+void Sha256Stream::update(std::span<const uint8_t> bytes){
+ if(uint64_t(bytes.size())>UINT64_MAX/8-total_bytes_)throw Error("HASH_LIMIT","SHA256 byte length");total_bytes_+=uint64_t(bytes.size());size_t pos=0;
+ if(buffered_bytes_){size_t n=std::min(size_t(64)-buffered_bytes_,bytes.size());std::copy_n(bytes.begin(),n,buffered_.begin()+ptrdiff_t(buffered_bytes_));buffered_bytes_+=n;pos+=n;if(buffered_bytes_==64){block(state_,buffered_.data());buffered_bytes_=0;}}
+ for(;bytes.size()-pos>=64;pos+=64)block(state_,bytes.data()+pos);
+ if(pos<bytes.size()){buffered_bytes_=bytes.size()-pos;std::copy(bytes.begin()+ptrdiff_t(pos),bytes.end(),buffered_.begin());}
+}
+Hash Sha256Stream::finish()const{
+ auto state=state_;std::array<uint8_t,128>tail{};std::copy_n(buffered_.begin(),buffered_bytes_,tail.begin());tail[buffered_bytes_]=0x80;size_t length=buffered_bytes_<56?64:128;uint64_t bits=total_bytes_*8;for(unsigned j=0;j<8;j++)tail[length-1-j]=uint8_t(bits>>(8*j));block(state,tail.data());if(length==128)block(state,tail.data()+64);Hash out{};for(size_t j=0;j<8;j++)for(size_t k=0;k<4;k++)out[j*4+k]=uint8_t(state[j]>>(24-8*k));return out;
+}
+Hash sha256(std::span<const uint8_t> bytes){Sha256Stream stream;stream.update(bytes);return stream.finish();}
 Hash sha256(std::string_view s){return sha256(std::span(reinterpret_cast<const uint8_t*>(s.data()),s.size()));}
 std::string hex(std::span<const uint8_t>b){constexpr char h[]="0123456789abcdef";std::string s;s.reserve(b.size()*2);for(auto v:b){s+=h[v>>4];s+=h[v&15];}return s;}
 Bytes unhex(std::string_view s){if(s.size()%2)throw Error("INVALID_HEX","length");Bytes b;for(size_t i=0;i<s.size();i+=2){auto digit=[](char c){if(c>='0'&&c<='9')return c-'0';if(c>='a'&&c<='f')return c-'a'+10;throw Error("INVALID_HEX","lowercase required");};b.push_back(uint8_t(digit(s[i])*16+digit(s[i+1])));}return b;}

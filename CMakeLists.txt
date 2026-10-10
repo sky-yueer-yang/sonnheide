@@ -105,10 +105,14 @@ foreach(pair world.vs world.fs water.fs sky.vs sky.fs ui.vs ui.fs shadow.vs shad
     set(SHADER_PROFILE ${SHADER_PROFILE_WINDOWS})
   endif()
   set(out "${SONN_RUNTIME}/shaders/${SHADER_BACKEND}/${pair}.bin")
+  set(SURFACE_INCLUDE_DEPENDENCY)
+  if(pair STREQUAL "world.fs" OR pair STREQUAL "water.fs")
+    set(SURFACE_INCLUDE_DEPENDENCY assets/shaders/surface.sh)
+  endif()
   add_custom_command(OUTPUT "${out}"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${SONN_RUNTIME}/shaders/${SHADER_BACKEND}"
     COMMAND $<TARGET_FILE:shaderc> -f "${CMAKE_SOURCE_DIR}/assets/shaders/${pair}.sc" -o "${out}" --type ${SHADER_TYPE} --platform ${SHADER_PLATFORM} --profile ${SHADER_PROFILE} --varyingdef "${CMAKE_SOURCE_DIR}/assets/shaders/varying.def.sc" -i "${SONN_DEPS}/bgfx/src" -i "${CMAKE_SOURCE_DIR}/assets/shaders"
-    DEPENDS shaderc "assets/shaders/${pair}.sc" assets/shaders/common.sh assets/shaders/varying.def.sc VERBATIM)
+    DEPENDS shaderc "assets/shaders/${pair}.sc" assets/shaders/common.sh assets/shaders/varying.def.sc ${SURFACE_INCLUDE_DEPENDENCY} VERBATIM)
   list(APPEND SHADER_OUTPUTS "${out}")
 endforeach()
 add_custom_target(sonn_shaders ALL DEPENDS ${SHADER_OUTPUTS})

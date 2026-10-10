@@ -66,3 +66,5 @@ docs/evidence/s00-s01-arcade/*.png -filter -diff -merge -text
 *.command text eol=lf
 # Bounded actual native visual proof images.
 docs/evidence/arcade-v2/*.png -filter -diff -merge -text
+# Bounded lossless captures of the actual large-world/translucent native batch.
+docs/evidence/large-world-micro/*.png -filter -diff -merge -text

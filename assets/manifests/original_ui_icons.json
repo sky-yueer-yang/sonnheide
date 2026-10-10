@@ -1,20 +1,23 @@
 {
-  "format": "SonnOriginalIcons4",
+  "format": "SonnOriginalIcons5",
   "author": "Sonnheide project",
   "license": "Original project artwork; no public license granted",
   "recipe": "tools/generate_visual_assets.py",
-  "recipe_sha256": "406c918cafa3e73fe01c852e39eb257ffa77bb2f3c40f8b44ad9f91dff362503",
+  "recipe_sha256": "13dabddadfcae4f81aed423e87211333ca9fad777d58c37bd4c9d08298134860",
   "stroke": true,
   "external_frame": false,
   "logical_grid": 32,
   "scaling": "nearest_integer",
   "alpha": "binary",
-  "palette": "blue_red_white_ffaa00",
+  "palette": "original_sandbox_materials",
   "primary_colors": {
     "blue": "#397dde",
     "red": "#e34b3f",
     "white": "#ffffff",
-    "yellow": "#ffaa00"
+    "yellow": "#ffaa00",
+    "green": "#69ad51",
+    "stone": "#959c87",
+    "soil": "#a67340"
   },
   "pigment_recipe": "base_times_shade_then_linear_white_tint_round_half_up",
   "pigment_derivatives": {
@@ -38,14 +41,34 @@
       "shade": 1.0,
       "white_tint": 0.0
     },
+    "#447035": {
+      "base": "green",
+      "shade": 0.65,
+      "white_tint": 0.0
+    },
     "#491814": {
       "base": "red",
       "shade": 0.32,
       "white_tint": 0.0
     },
+    "#616558": {
+      "base": "stone",
+      "shade": 0.65,
+      "white_tint": 0.0
+    },
+    "#69ad51": {
+      "base": "green",
+      "shade": 1.0,
+      "white_tint": 0.0
+    },
     "#943129": {
       "base": "red",
       "shade": 0.65,
+      "white_tint": 0.0
+    },
+    "#959c87": {
+      "base": "stone",
+      "shade": 1.0,
       "white_tint": 0.0
     },
     "#996600": {
@@ -58,10 +81,20 @@
       "shade": 1.0,
       "white_tint": 0.5
     },
+    "#a5ce97": {
+      "base": "green",
+      "shade": 1.0,
+      "white_tint": 0.4
+    },
     "#bad2f3": {
       "base": "blue",
       "shade": 1.0,
       "white_tint": 0.65
+    },
+    "#bfc4b7": {
+      "base": "stone",
+      "shade": 1.0,
+      "white_tint": 0.4
     },
     "#cc8800": {
       "base": "yellow",
@@ -103,6 +136,11 @@
       "shade": 1.0,
       "white_tint": 0.2
     },
+    "#ffc44d": {
+      "base": "yellow",
+      "shade": 1.0,
+      "white_tint": 0.3
+    },
     "#ffffff": {
       "base": "white",
       "shade": 1.0,
@@ -127,508 +165,842 @@
     "#ffbb33": {
       "shade": 1.0,
       "tint": 0.2
+    },
+    "#ffc44d": {
+      "shade": 1.0,
+      "tint": 0.3
     }
   },
   "themes": [],
+  "category_silhouettes": [
+    "tab-camera",
+    "tab-terrain",
+    "tab-people",
+    "tab-laws",
+    "tab-buildings",
+    "tab-economy",
+    "tab-world",
+    "tab-settings"
+  ],
   "outputs": [
     {
       "path": "assets/generated/ui/icons/world.svg",
-      "sha256": "14d6a5f14f8c3943f16c232321c6d7b13ef54d341ddc4edb06cf9b28c3c9401f",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "c5cfd3b7f590f66fee018dd3bbaed95cc9e1a5e792eacba63234741b1f8fdcd2",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/world-96.png",
-      "sha256": "89ad4df74d5db55ee950e18bdc679e13468fc420dd3502ed741a370bbb3f1c51",
+      "sha256": "c96d303d666b6b6642c2559b4414b5ecbab9253b2d22d30ccd2c7ceb4728c176",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/world-192.png",
-      "sha256": "f658a4a4bac5e18e869774141b985dc4b6f79409c2bce55c1205902948bb73b9",
+      "sha256": "79bb0b236a8f307da519b5fb7b57fac06ed615cdc1058d46eddebd29e354e380",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/earth.svg",
-      "sha256": "240b6efc4f171addd39ea167790025f1b9ac9255c437f653f38be3ee143ac02f",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "cb6d4c79e51e8f76aa15e9fd79bf01df8154ecfa5e56a5c1eb7e5d25aa0bb1a3",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/earth-96.png",
-      "sha256": "ff6778f1946de1c15902f5cfaedd33fd2c54c78c2ea74fe2b36a3e0917aaef60",
+      "sha256": "2a65029bd596f4476145294d1bd74f19cc247e98cf6c10f0f1deb8ef8bf03fbe",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/earth-192.png",
-      "sha256": "b64653687771159319fb6bdcafbe6db89b41354b2a2bd0f6cffd21d67db0106f",
+      "sha256": "492e2c57e1de7528bf12ceba25fdfe0b13dbcb336d97ceb82b4e5f3e3cef8e82",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/camera.svg",
-      "sha256": "210cdfbc5d34edc1db0a90c6b290422f334fc7c3ae4e1b2b468d7ca063b70dbd",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "f17517cc94c7483dacd7e4dff63a10bddd7c35b43ad584b1e5445336b48c174e",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/camera-96.png",
-      "sha256": "712a841786cf2e9b00b8eb1847fb091f11d2ff0a3e4e1a0ffbb3b5535d85cbe3",
+      "sha256": "de2404b3ffbb2ea63b7faf1328726a7a46bc2c2f25d04d09fa6948a42590ad09",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/camera-192.png",
-      "sha256": "d4b83e85ee053284e75b6bdec4b5c0ee71c2b8d27ec5d3c94ceef07a113692f2",
+      "sha256": "31d1111b53939713066fc70ec453acd8933ec7cb1036f34ca6bc987294b6f04e",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/blank.svg",
       "sha256": "e37c24d8eb93198e9be4491e893d9d046a867a0e76daa0b68d146dd7bfc3dc2d",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/blank-96.png",
       "sha256": "7bcb26a6159379be8ef305325bc5079ecf118b57508467c223977b921afd933d",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/blank-192.png",
       "sha256": "c475e4bb12c9fadd7391d0b400761cc04c6f7efe72a5a12884673ef9ab7953b1",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/people.svg",
       "sha256": "027111a448511fecdbb0e507d45f8238b1146e46ca2e3420bfd6880bdfb7183f",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/people-96.png",
       "sha256": "0322906b203aea1a0d64fc957c8623d315675009740d490a621c666c70d7bbdb",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/people-192.png",
       "sha256": "c251b923ceca3dcb1c6883aad1133353ba6030f1b24563dad7cbeb99f43faf35",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/buildings.svg",
       "sha256": "4eb8baa49fc54067f07120c871a7a3e8292899ca969ff09631c6a419bfa925ba",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/buildings-96.png",
       "sha256": "f5ee72f51909e9e0226bd466a4b2954b662b4c25cbb2c952aabb1258ed8092ca",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/buildings-192.png",
       "sha256": "cb9cc9eefb0747894fa1157688ae90e7eda128d117497779abc670af622472b4",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/terrain.svg",
-      "sha256": "7fbac8771fa5e0dd575856439d3808bf194e5dd5a5866b018a3b551fb274fa23",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "75ca91cac6d79028ab6b02ce12b19f78d2234d08162770dde5e4dc81a6fbbb54",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/terrain-96.png",
-      "sha256": "e4d2ee35e47d13f016292de99f118c38e9842bbba836bf5029afa01457aea483",
+      "sha256": "e7d36219ff897527c6bb8dc2ad7fa6288040ec84519f66604d61a92cf0e63835",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/terrain-192.png",
-      "sha256": "794807cca990c08d12558d215efbf1239df010b8a7bb2707a7de47b4ac8a9aa6",
+      "sha256": "5e533f834b02162d033e2d074c7b65563a6124edd7e4033941366bdd9e112601",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/economy.svg",
       "sha256": "5c2b935ed3fe991fb86e7daec73f82782d27830860b97f2371731c78525ff796",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/economy-96.png",
       "sha256": "3caeecde43e41ec4e65232c92a3a3d88018090335e97a1300bbd77db26c6fa49",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/economy-192.png",
       "sha256": "eb4d94b36f8d6af7326b64d3b852952da75dd487598b87652f2a00b8f7ce7087",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/laws.svg",
       "sha256": "a8085c8488c640a277e1fe2d29ee403ada477050e8e3f1b1a64d2e7aa90546ae",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/laws-96.png",
       "sha256": "47185ff7af0c31b217625c44bc4c7fee018cf65343084a496a4c6610c67a094e",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/laws-192.png",
       "sha256": "7198258f60923b8783e287ece9efd8b89733d7b18506d414421dc728584700ac",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/settings.svg",
       "sha256": "58f9c567bd2f5c5ec1ad5fe818696f5b3507ee689cf1d6a57a7fcee6a6723a05",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/settings-96.png",
       "sha256": "cb3bef05c192d9459e5bc765c958207cedcbb2c312f013e3a4e0bcadbcc082e6",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/settings-192.png",
       "sha256": "db4f75b4e379f5b1f700347d0f0737582e2f51a8cadaef4ef6fa8ef4a6b7d296",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/pause.svg",
       "sha256": "bdf5ffdfa4310ee6b3cca7cf4b78d03630ee545d7a41a25fe5c090c303d5136a",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/pause-96.png",
       "sha256": "d17a160f6e436046efff70d3033652749166b6ba0b0cd7466c7ead2e18361bcd",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/pause-192.png",
       "sha256": "58a94294944a58fed29593ed83241c5ab8d8d1b710918b5f3d27588137e5a99c",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/play.svg",
-      "sha256": "5dc71e8b56f2e3eeb71fbc56e8a4777b70b0edafb170f4644b24efe0cfc1e8de",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "f88bbd419d8de14f8812d87d804c256f06593575eaf4b86ecceaa32ba4281be3",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/play-96.png",
-      "sha256": "fe660744e04e29a58646f3466a2ec7c42d9670c44d7fac5104cfd020a518ccc4",
+      "sha256": "fc8e8d3bcdeff58b46318ec357dbe7ed5bdbb1fd1482ae9d1f9ed00ac7529be6",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/play-192.png",
-      "sha256": "55d2ae7154170f32aad2b338ffbc028723e4c98ef4949e354bdc1a49b8461885",
+      "sha256": "eff92085de5e618c13f82b634ce42c941584aa12ccd8490a07df86e309059bdf",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/save.svg",
       "sha256": "a1ca2545162f87a1b98af333c40bda5d86b4b8775fd0832b1725814dd6bab226",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/save-96.png",
       "sha256": "1038a0c9f29efa50d52485562fa88083ca2e8adf67ec56316bb4eedaef2cb01f",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/save-192.png",
       "sha256": "06c6bcc21232759f8145a0e2ec945a04c49105a4ef10e2d428889ebdd618a15c",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/load.svg",
       "sha256": "2b9313e627bf47d330722c045e05cc44cf729d829f18fc4b168456c83e3360f9",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/load-96.png",
       "sha256": "cf6d4e3d2d89407d8517ab5b4fbdb465a0bb8f7f86a9bd329da31813696f066f",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/load-192.png",
       "sha256": "b97f4287c287b187ecae1b297806db801dc71aa02cc07dfffe1d7a64b07057f6",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/back.svg",
       "sha256": "7f1abb12baca0aa5f012b38fdff361f6c96ae87b4006cd720e3a00f904d8c42e",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/back-96.png",
       "sha256": "4590969362e379f52d4b9ad29cbcc915b71ea84773737448fbc86ed40ce6db88",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/back-192.png",
       "sha256": "19922adafcc520dfda0c14e8c8fddab897e67083cde2d505ba2ab975cab5d99b",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/close.svg",
       "sha256": "b03fecaa40bd172a4debc0a7aa32aee9680a6e445ebf4b800f6ab0d2ebc0e2a2",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/close-96.png",
       "sha256": "5480ae58a2b664748499aa765711d7ad732eb5cf7308591293125333d1b62700",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/close-192.png",
       "sha256": "72d9b099f0fb7797cc0062469e4bdfab7f8f229fe708491acabd5635270e2525",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/create.svg",
-      "sha256": "085d1dfb5671ddabd1c7764e453b098d2d415aa802b47d7f916d8c196e4bf2a8",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "6b69a25849e98fc093d7a4b5ce691d9d679b1c303b274700071f95be7296f7eb",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/create-96.png",
-      "sha256": "40148304d8dc7dd273fda782c547b52352073b3cd7698a1ee2170930968c40d0",
+      "sha256": "f52775b6e6206da378700f02f4b54b0a66b496a123ece3d8e1df5376625cf6dc",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/create-192.png",
-      "sha256": "525b6b6c549ad47f23bf871efb4db015e3c16383870720491e24808e14307b11",
+      "sha256": "e465dfb1a32c4c123901ec20350612b487af1f0cdfb413b5a26376e0c761dcb1",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/check.svg",
-      "sha256": "c561c2ff6bd1d144d34038aa12a76ed251222f97b99abd1a86b70dbd11fffbf6",
-      "palette": "blue_red_white_ffaa00",
+      "sha256": "971119c587357aea9c991c25485301b2c7c97a865a696a985c37d831a1e9d732",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/check-96.png",
-      "sha256": "80950de6cde776bc493f75d84b06adacf442c18a1ee6b156f28c74760e617e0e",
+      "sha256": "1bcd301429cd49b19ac695ee059b568016fe5cde4b377ffadcc5572ebc46269c",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/check-192.png",
-      "sha256": "a1e1ee9785eb1638e880eaf19260cf1e9924b9961998ae7a62869d3bc736a96d",
+      "sha256": "49590ca798b46b83435c0123e5e24c304ace8481aadadcd303ce564e72a01447",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/audio.svg",
       "sha256": "d72fa554cb994ed59c52dc934c35ec127c771936e3e10872916c753119a5abc4",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/audio-96.png",
       "sha256": "faf962224fb10c5a59dac82c27dce5f7479e6e701c21c904405b97be3df9e549",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/audio-192.png",
       "sha256": "9edf6c7a6bb63ec81156e94dfc36ab0c344869fb5618f1e12fc396cb1c3ca927",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/help.svg",
       "sha256": "7469ac89759abf69d9514290f222d98bd7397aeb946a67d2a7841473c66e12fb",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/help-96.png",
       "sha256": "c2ddcae487690e43f3bb70ffa7531fda534a967b5d8936c8ab7811e51d49de6c",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/help-192.png",
       "sha256": "2db3eaa58c4511028e92547c01b1d2ee373fb1782c0dd235adb2753d1c76519d",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tools.svg",
       "sha256": "ba75fc1c28f4d921c33e74723dba7c78d35d033a82ff1e092ad5976ced7f33b9",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tools-96.png",
       "sha256": "ef9664b77f6e06a3a88658bee3eac3b03fcb834b0a0c6de174fe5c79fbeb9373",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tools-192.png",
       "sha256": "b45d3233f22670f92aa7d856bddfd2386eb9080e10c7bb794debff73fef92301",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/star.svg",
       "sha256": "aaff6338d655ba89e7104b8987e4c46e8649b528461263dae9210a2cf94aac2a",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/star-96.png",
       "sha256": "3a7fc4b4ff7d9c8c46ae4ab6ffb1b5b1fe37297ad4617c534b771ec85092bf64",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/star-192.png",
       "sha256": "cd28a4759e2216c91942e13aa2d7cf038eb1dfd80bb6fda69f06e95f95b5eec1",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/sun.svg",
       "sha256": "2a435e7c75cedaa9127c7c8641912dcdc9e22306df4db254df10c66cd236aa5d",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/sun-96.png",
       "sha256": "5acf68754100b5a270efa6d798d481992861fb52a46c5676c12d18b009e1511f",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/sun-192.png",
       "sha256": "157b4fac0dceb180616e7c30e2a88ef4c8292b2740fb9bb3ba650c5ea0d439e3",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/moon.svg",
       "sha256": "be866de1eccb5eb8235b18a916618316d5a810358a79cff8e816fd4c2d8588a6",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/moon-96.png",
       "sha256": "66faee3437a511460b4c400a72879f90daf66fe93dbdf97b13159763ebe6f55f",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/moon-192.png",
       "sha256": "7fec0eb1bbf4c4bde08b622126bef849cd7971b67085f20b962bb976cc9d8f2b",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/exit.svg",
       "sha256": "649f81b43f25c5dbe78ef9bba39199b90833172a26b5e75cfb9fb7c7a0c0b9e4",
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/exit-96.png",
       "sha256": "6ebf939cafe43d69ecc1c6e64a59e0d385e714b0a01a8a98d4d97b3d7ddae66a",
       "pixels": 96,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/exit-192.png",
       "sha256": "2cdb898dde57e62fbcd60c5f6962f7b9912fcfa93e8a4080245121be19aceb00",
       "pixels": 192,
-      "palette": "blue_red_white_ffaa00",
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/cycle.svg",
+      "sha256": "ac4a50643d97e8e2d897304072790dd5dd4c51b6d705546cbd186509cc1f4f44",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/cycle-96.png",
+      "sha256": "7767d670dda074cedc1a061f51b58ec50d7014e1db55b323a4c669dea0700ad2",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/cycle-192.png",
+      "sha256": "6c2efcc609b91fec314dc0bfbc6425a2957999ab85b492e9aee202733ffdcaeb",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/hand.svg",
+      "sha256": "2da7739d6fa6acb82c416e7d14b0e7323f9806100ab39da1e7d56bf96a02f873",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/hand-96.png",
+      "sha256": "71f2967be75aec2a727ef82e3256eb19beca4eec8b3978f415358426a5a3046a",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/hand-192.png",
+      "sha256": "098a17154ea525804cba67396bfedcae436113803d25200efc5d22a83b9bb5b5",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-in.svg",
+      "sha256": "52079cba7808d4dba2e222e19793662a542616846ab75e8e6731cf4840add03c",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-in-96.png",
+      "sha256": "35fbf81b5f57399065a74fd8c4b9c3058b089663ecaa11080c3d4465ac1fdde6",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-in-192.png",
+      "sha256": "4416594c6237299d70a3074c1bd8320eba0d419396caeba8ef070f7bc165228b",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-out.svg",
+      "sha256": "350910d2519a9769a83d08eec5aed9d0516208563a3c8369164c713af36e47c5",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-out-96.png",
+      "sha256": "2d13c7cab660ede5df501c34b6ed4e45fa4b11c8c76937f7ff319e929104eed8",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-out-192.png",
+      "sha256": "988d0f0c2875447f88cf932b0f838d6cc874a423673f2795b09cc462ff5d558a",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-left.svg",
+      "sha256": "e366661ae5c8b625570365380ab713f464384358e9aaa2491a1b6d76488cd9b8",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-left-96.png",
+      "sha256": "47391de5e584a6de6cc583ea5e7cd4b93ec76d6e578aba2715ad821b3f802c2a",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-left-192.png",
+      "sha256": "266badaafcbad902bf63c4fa3167d3a2cabb61ca38c55452120a577f042e05cd",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-right.svg",
+      "sha256": "295b2506e1f2b5145d1291130d36d621cedb8f9c7f1ceca0ae37ef1a22182b72",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-right-96.png",
+      "sha256": "3512d2787fd075f2d3a057e2204afa6f747cfc168520c93eab00e28173756f78",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-right-192.png",
+      "sha256": "ca38208d33d7c41b620d672c3febda3532667ec3c6853cf1952e28f40478097f",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-up.svg",
+      "sha256": "e6df162fd50d169d1539a84523734300634bfd049bbab9c869b6a8333ad10348",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-up-96.png",
+      "sha256": "11ff2dd00514eb9786905e5543702d150be381ef82a46661b358d3d6292bf883",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-up-192.png",
+      "sha256": "592912c581ba6de2a22cfa6b746a0e09bdaf6e6b083d5d77775d10bea0bc493d",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-down.svg",
+      "sha256": "23738ed1254aad990d8b865679397dbd0c79c34eb896675b8c247f69c1727c5e",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-down-96.png",
+      "sha256": "bf5faba090ee401bd5b802d78016d00bf523deaeed51522279924eba3e6c1c44",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-down-192.png",
+      "sha256": "d08f7ec602893ccf66876b93088aaf8dd1d98443a8088fff2cf7ae51ddf75e6e",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-camera.svg",
+      "sha256": "57212ba2020460b3cd1698d757860141c8e7e0512bc41ce382745ec1db27c412",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-camera-96.png",
+      "sha256": "64a56d0069839acdc8c26cd59f161a95c48dacc45bf40b873a8f0fc913f1b2bf",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-camera-192.png",
+      "sha256": "5d50472dc3a62a23249a00cf63843d181667c2eade31d133dd52e5028e51dbf9",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-terrain.svg",
+      "sha256": "59cf3a61e2b4ed3b2c89faf45fab5f63460faba4b0eff197384b2236d233b63b",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-terrain-96.png",
+      "sha256": "7e4904dcedcce2e61943050c482652adc2902c9a6f8fe51c287f09ba24e5c6ba",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-terrain-192.png",
+      "sha256": "997828fa3776bc1a7ff2fbd8242914bd2779828ec6c0b5f9ce947def74902fe6",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-people.svg",
+      "sha256": "f55991520ab12229fc8d457db275fa9d1dbdac498c7cb534dd6cf3a63a619ab6",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-people-96.png",
+      "sha256": "8227641cd28c11c990c9a6a419b14e33f8fa9267f20ee4822deed9d636bdf22d",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-people-192.png",
+      "sha256": "7cad96d4136f46079136a59fa81096587aeb9d4c316d438d8fcd846544b9dcf4",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-laws.svg",
+      "sha256": "e09af51f8f8b44833d77224fb321d1c33479242ebc2391fd644311afa2f1b5d7",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-laws-96.png",
+      "sha256": "81afcedf90537379e41fd86e634112ef42719c9efbfedf11eaee8e3bf999b66c",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-laws-192.png",
+      "sha256": "7024fc012ace029db852f88509576cf32570b897020eede4d44c10137313675d",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-buildings.svg",
+      "sha256": "3a8e7c63a3fb9fa9d9d60db88edaf5d95cfa7f4558fca16a3819034c694f6d48",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-buildings-96.png",
+      "sha256": "131b77ae3efafddbfd44e34704e749a4de5ea211032f0dc9c3495340301a9d48",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-buildings-192.png",
+      "sha256": "d8705bcd7a0bc4c269cc3d7399f1849b93ffcbba767fb705ea014cd82cbcd600",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-economy.svg",
+      "sha256": "687961e5f124736b134eceb9950e4299c7a5d8f0b89da183f741373dce67773f",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-economy-96.png",
+      "sha256": "de626982dc4640dc02b3cf21a6e2191562dbbfa90142ce4ff1ae398faf9c88e3",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-economy-192.png",
+      "sha256": "a4876907735ddbfa7598a9a3582f7e323f894397db48de7a35b23cb3b638392f",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-world.svg",
+      "sha256": "90fe7479d968578853270940ac692326adb3ef6790efdf4114c4e60c29de3a8d",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-world-96.png",
+      "sha256": "2c65cb5256e0f5f79bd58d09af2e4f0a49d627816b99d945242eeb3047ef62d9",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-world-192.png",
+      "sha256": "b5fc7d690496283ac755751a990d1b5d1da102c860b696e211ab105741654e7a",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-settings.svg",
+      "sha256": "4798fbaf7471d11198119ba1584d6daf5752c7cb952145cddb9ab36d546fae5e",
+      "palette": "original_sandbox_materials",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-settings-96.png",
+      "sha256": "5dc85205bac52058fb5b212d162bbc4376b1209503f0db8ca2f472dd6ea147b0",
+      "pixels": 96,
+      "palette": "original_sandbox_materials",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-settings-192.png",
+      "sha256": "e8adf4e0d697117236f230a0addbcb95ff384d98edb120ada4cc56a9b52993a4",
+      "pixels": 192,
+      "palette": "original_sandbox_materials",
       "format": "png"
     }
   ]

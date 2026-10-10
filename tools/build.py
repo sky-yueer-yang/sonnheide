@@ -100,10 +100,25 @@ def main():
         if not report.is_file():raise SystemExit('Native GPU flow did not produce a completion report: '+str(evidence))
         flow=json.loads(report.read_text(encoding="utf-8"))
         if flow.get('status')!='pass' or 'exit-durable-readback' not in flow.get('actions',[]):raise SystemExit('Native flow did not prove the final exit checkpoint.')
-        required=['main-menu','main-menu-motion','main-menu-frozen-a','main-menu-frozen-b','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','earth-map','earth-preview','earth-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
+        required=['main-menu','main-menu-motion','main-menu-frozen-a','main-menu-frozen-b','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','earth-map','earth-drag-a','earth-drag-b','earth-preview','earth-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
         if any(not (evidence/(name+'.tga')).is_file() for name in required):raise SystemExit('Native screenshot evidence is incomplete: '+str(evidence))
         camera=evidence/'camera-input.json'
         if not camera.is_file() or json.loads(camera.read_text(encoding="utf-8")).get('status')!='pass':raise SystemExit('Actual SDL camera and core pick acceptance missing.')
+        selection=json.loads((evidence/'map-selection.json').read_text(encoding='utf-8'))
+        if (selection.get('status')!='pass' or selection.get('source_rasters_started_during_drag')!=0 or
+            selection.get('source_epoch_unchanged') is not True or selection.get('frame_local_geometry_checks')!=4 or
+            selection.get('actual_motion_events',0)<4 or selection.get('actual_selection_updates',0)<5 or selection.get('capture_released') is not True):
+            raise SystemExit('Continuous actual native map selection acceptance missing.')
+        large=json.loads((evidence/'large-world.json').read_text(encoding='utf-8'))
+        if (large.get('status')!='pass' or large.get('core_width_cells')!=4096 or large.get('core_height_cells')!=4096 or
+            large.get('physical_width_mm')!=8192000 or large.get('physical_height_mm')!=8192000 or
+            large.get('micro_size_um')!=31250 or large.get('zero_plane_land_pick_mm')!=0 or
+            large.get('continue_roundtrip_surface_identical') is not True or
+            not 0<large.get('actual_geometry_bytes',0)<=large.get('geometry_budget_bytes',0)):
+            raise SystemExit('Largest actual world creation/GPU/Continue acceptance missing.')
+        large_gpu=evidence/large.get('native_gpu_parameters_file','')
+        if not large_gpu.is_file() or large_gpu.name!='large-world-gpu.json':raise SystemExit('Largest world native GPU parameters missing.')
+        json.loads(large_gpu.read_text(encoding='utf-8'))
         motion=json.loads((evidence/'presentation-motion.json').read_text(encoding='utf-8'))
         def actual_pixels(name):
             image=(evidence/(name+'.tga')).read_bytes()

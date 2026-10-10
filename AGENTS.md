@@ -1,12 +1,14 @@
 # Sonnheide engineering constraints
 
-最新视觉覆盖：2026-10-10 / ADR0020。背景偏青深蓝，信息框深色半透明；按钮尽量无边框，底栏按钮全部无边框。大icon、小字，正文12dp、重要标题用实际字号/投影/明暗，不伪造未加载的粗体。UI与icon以蓝红白黄为主，黄色本色#ffaa00。主页保留闪星和流星，取消柜式外框；Age不锁UI颜色。最新入口docs/decisions/0020-translucent-navy-borderless-ui.md及FRONTEND_ART_DIRECTION，覆盖下方此前视觉要求。250mm真实格和32px/m材质继续有效。
+最新覆盖：本轮用户取消所有此前前端规范，改为参考WorldBox的紧凑双层工具栏、深色半透明像素窗口、地图创建尺寸选择与连续框选；不再执行旧颜色、边框、图标尺寸、主页位置限制。工程转ADR0021：2m管理/占地格与独立64²微地表（31.25mm）分离，RLE均匀区＋稀疏压缩微片；新soil/sand顶面与统一水面均0m，水深/海床独立，湿干由真实kind/微覆盖决定。五档512m至8.192km、默认2.048km，长宽独立；创建/预算/保存/碰撞/拾取/渲染同源，不能以视觉噪声或缩小贴图代替细几何。部分格填海只补水面微片，保已有陆地完整kind/theme/revision。本批开发机统一验收通过，见docs/planning/LARGE_WORLD_MICRO_SURFACE_DELIVERY.md；Windows GPU/Steam实机仍待验。旧250mm/252m口径仅历史。
+
+历史视觉记录：2026-10-10 / ADR0020，已被顶端ADR0021覆盖。背景偏青深蓝，信息框深色半透明；按钮尽量无边框，底栏按钮全部无边框。大icon、小字，正文12dp、重要标题用实际字号/投影/明暗，不伪造未加载的粗体。UI与icon以蓝红白黄为主，黄色本色#ffaa00。主页保留闪星和流星，取消柜式外框；Age不锁UI颜色。最新入口docs/decisions/0020-translucent-navy-borderless-ui.md及FRONTEND_ART_DIRECTION，覆盖下方此前视觉要求。旧250mm格与32px/m材质只为历史结果。
 
 最新覆盖：2026-10-10 / ADR0019。所有前端重做为色彩丰富、高分辨率、细像素复古街机；取消旧主题色、禁绿紫、禁描边与主页纯文字等全部视觉限制。黄色本色统一#ffaa00，允许从它派生明暗渐变。主页仅深蓝星空、闪烁细星、流星，不用图片、油画或菜单假World。新世界真实250mm格，32px/m原创材质，默认512²=128×128m、最大1008²=252×252m（当前边界而非最终容量承诺）；计划坡角量子1mm，旧2m/125mm文字仅历史。geometry revision是变更序号，保存显式格距。各查询/生成/最高预览/网格/拾取/水深/存载同源。Age不是强制UI主题；本地动画在隐藏/降低动态/世界暂停时冻结，不消费仿真RNG。以下旧视觉20/24/25及2m样例被本条覆盖，见docs/decisions/0019-fine-terrain-and-colorful-arcade.md与FRONTEND_ART_DIRECTION。
 
 当前规范：2026-10-09，v0.9/ADR0018。入口 docs/design/Sonnheide_Design_v0.9_Executable_Rules.md、data/contracts/game_v0_9.json 及runtime/emergence/interaction合同和data/content运行定义。普通地形八档固定高度，无岸线/外缘过渡；坡道为唯一连续面例外；自然山海湖无实体身份/命名/谱系。开局冷兵器，枪炮后期实际研究制造装备。20tick/运动秒、12000tick/游戏日。原v0.6逐字保留，历史文档不当当前默认。S00/S01新原生实现正在施工，入口tools/build.py；验收结果见本批报告，未测不称通过；不得恢复旧程序或以历史证据冒充试玩。
 
-当前美术要求按ADR0020；旧禁止所有颜色/绿紫与网站/柜式菜单均为历史，不作为当前验收条件。世界自然植物配色不受UI四主色约束。
+当前美术要求按ADR0021和最新全部框深色半透明的指示；ADR0020的旧四主色、无边框和位置限制已取消。网站/柜式菜单及更早颜色限制仅历史。
 
 1. 自研C++20框架，不用游戏引擎；唯一Steam发行。Metal只开发验证，CI/NullRenderer不代替Windows GPU/Steam实机。独立开源库先核验官方许可/版本/hash/架构理由，可分发原件/配方/manifest/notices入GitHub/GitLFS/Releases；不擅授原创内容开源许可。Python工具3.9+标准库默认。
 2. 拆解真正的不变量/瓶颈/因果依赖，用户明确要求多个subagent深挖独立高风险边界，划分文件所有权并交叉审查；不靠更名、改问法、堆空类或换库冒充推进。
@@ -42,6 +44,6 @@
 29. ADR0018：life_profiles唯一生理/危险/伤势计算所有者，combat只提交hit/impulse，economy不复制科研进度；emergence唯一文化/语言/亚种创生计算。Ref经alias归一保持同Actor。各域同tick按runtime_foundation全域phases结算死亡/遗产/继任一次。
 30. 当前统一规格/模型验收`python3 tools/validate_design.py`，仅验证具体有限状态与算式，不证明原生3D/长期经济/容量/Steam实机。尚未创建C++工程前不伪造build/CTest/sanitizer通过。
 
-24. 当前所有UI按ADR0020：真实像素字体、无描边填色控件、深色半透明信息框、深青蓝背景与蓝红白黄icon；大icon配12dp短标签，全称tooltip三语保留。键盘focus可见不依赖描边。主页五项紧凑菜单及真实星空/流星；本地表现时间冻结独立于World。
+24. 历史ADR0020（当前以顶端ADR0021及用户最新深色半透明要求为准）：真实像素字体、无描边填色控件、深色半透明信息框、深青蓝背景与蓝红白黄icon；大icon配12dp短标签，全称tooltip三语保留。键盘focus可见不依赖描边。主页五项紧凑菜单及真实星空/流星；本地表现时间冻结独立于World。
 
 25. 世界保持真实250mm像素地形、32px/m原创顶侧色簇、方向光影、细像素水纹、漂移薄云与稀疏风动装饰；不写实PBR/Fresnel/镜面反射，不复制Minecraft资源。油画Logo历史原件保留，不进入主页。人物、动物、机制树和楼仍待后续生产，纯装饰不产生资源或身份。

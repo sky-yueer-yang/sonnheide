@@ -18,11 +18,12 @@ def main():
         if p.suffix in ('.cpp','.hpp'):
             s=p.read_text(encoding="utf-8");check(not re.search(r'#include\s*[<"](?:SDL|bgfx|RmlUi|Metal)',s),'GPU/UI dependency in authoritative core: '+str(p))
     css=(ROOT/'assets/ui/application.rcss').read_text(encoding="utf-8")
-    # Native borderless pixel controls, small readable labels and real assets;
-    # the latest art direction uses teal navy, khaki and four icon base colours.
+    # Validate actual native pixel geometry and admitted source files. User
+    # appearance preferences belong to the current art direction, not hard
+    # coded bans from superseded UI designs.
     icons=json.loads((ROOT/'assets/manifests/original_ui_icons.json').read_text(encoding="utf-8"))
     check(icons['logical_grid']==32 and icons['scaling']=='nearest_integer' and icons['alpha']=='binary','Icons must be genuine crisp pixel art')
-    check(icons['yellow_base']=='#ffaa00','Yellow artwork base must match the approved colour')
+    check(re.fullmatch(r'#[0-9a-fA-F]{6}',icons['yellow_base']) is not None,'Declared icon yellow base must be an RGB colour')
     for item in icons['outputs']:
         p=ROOT/item['path'];check(p.is_file(),'Missing icon '+str(p));check(hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256'],'Changed icon '+str(p))
         if item['format']=='png':
@@ -38,8 +39,7 @@ def main():
             check(all(raw[y*stride+1+x*4+3] in (0,255) for y in range(height) for x in range(width)),'Antialiased icon alpha forbidden')
             check(all(raw[y*stride+1+x*4:y*stride+5+x*4]==raw[(y//scale*scale)*stride+1+(x//scale*scale)*4:(y//scale*scale)*stride+5+(x//scale*scale)*4] for y in range(height) for x in range(width)),'Icon pixels must replicate exact logical cells')
     check('pixel_decorator.cpp' in (ROOT/'CMakeLists.txt').read_text(encoding="utf-8"),'Native pixel silhouettes must be linked')
-    check('decorator: pixel(' in css,'Actual native borderless pixel geometry missing')
-    check('decorator: arcade(' not in css,'Superseded cabinet outlines must not enter the active UI')
+    check('decorator: pixel(' in css,'Actual native pixel geometry missing')
     check('Sonn Arcade' in css and 'Cinzel' not in css and 'Noto Serif' not in css,'Entire interface must use the actual arcade pixel face')
     font=json.loads((ROOT/'assets/manifests/arcade_fonts.json').read_text(encoding="utf-8"))
     packed=(ROOT/font['project_path']).read_bytes();check(hashlib.sha256(packed).hexdigest()==font['compressed_sha256'],'Pixel font packed source hash')

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Original blue/red/white/ffaa00 32-cell arcade sprites; stdlib, Python3.9+."""
+"""Original compact sandbox tool sprites and category silhouettes; stdlib Python3.9+."""
 import hashlib
 import json
 import math
@@ -44,14 +44,24 @@ SHAPES['star']=([poly((64,13),(75,50),(112,64),(75,77),(64,114),(51,77),(14,64),
 SHAPES['sun']=([circle(64,64,28)]+[rect(59,9,10,17),rect(59,103,10,17),rect(9,59,17,10),rect(103,59,17,10)]+[poly((x,y),(x+10,y),(x+18,y+8),(x+8,y+8)) for x,y in ((24,24),(87,24),(24,94),(87,94))],[])
 SHAPES['moon']=([circle(62,64,42)],[circle(80,48,34)])
 SHAPES['exit']=([rect(27,23,52,83),rect(65,57,38,11),poly((91,39),(111,63),(91,86))],[rect(39,35,28,59)])
-# Four shared pigment families. All highlights and shadows have an explicit
-# base/shade/white-tint recipe; no purple or green pigment enters UI artwork.
-BASE_COLORS={'blue':(57,125,222),'red':(227,75,63),'white':(255,255,255),'yellow':(255,170,0)}
-PALETTE_ID='blue_red_white_ffaa00'
+SHAPES['cycle']=([circle(64,64,39),poly((77,13),(108,20),(94,47)),poly((50,116),(20,105),(32,80))],[circle(64,64,25),rect(13,18,33,20),rect(82,91,30,22)])
+SHAPES['hand']=([poly((32,68),(28,57),(36,49),(49,60),(49,22),(58,17),(65,22),(65,50),(68,16),(78,17),(80,50),(85,24),(94,25),(94,60),(99,41),(108,44),(108,77),(91,107),(57,107),(42,90))],[])
+for name in ('zoom-in','zoom-out'):
+    SHAPES[name]=([circle(54,53,31),poly((73,71),(84,69),(111,99),(101,111))],[circle(54,53,21)])
+SHAPES['arrow-left']=SHAPES['back']
+SHAPES['arrow-right']=([poly(*[(128-x,y) for x,y in SHAPES['back'][0][0][1]])],[])
+SHAPES['arrow-up']=([poly(*[(y,x) for x,y in SHAPES['back'][0][0][1]])],[])
+SHAPES['arrow-down']=([poly(*[(y,128-x) for x,y in SHAPES['back'][0][0][1]])],[])
+CATEGORY_ICONS=('camera','terrain','people','laws','buildings','economy','world','settings')
+for name in CATEGORY_ICONS:SHAPES['tab-'+name]=SHAPES[name]
+
+# Original materials use explicit base/shade/white-tint recipes.
+BASE_COLORS={'blue':(57,125,222),'red':(227,75,63),'white':(255,255,255),'yellow':(255,170,0),'green':(105,173,81),'stone':(149,156,135),'soil':(166,115,64)}
+PALETTE_ID='original_sandbox_materials'
 PIGMENT_RECIPES={}
 def pigment(family,shade=1.0,tint=0.0):
     if family not in BASE_COLORS or not 0<=shade<=1 or not 0<=tint<=1:
-        raise ValueError('bounded four-family pigment recipe required')
+        raise ValueError('bounded original pigment recipe required')
     value='#'+''.join('%02x'%int(math.floor(channel*shade+(255-channel*shade)*tint+.5)) for channel in BASE_COLORS[family])
     PIGMENT_RECIPES[value]={'base':family,'shade':shade,'white_tint':tint}
     return value
@@ -62,23 +72,28 @@ def white():return pigment('white')
 BLUES=(blue(tint=.5),blue(),blue(.7),blue(.32))
 REDS=(red(tint=.5),red(),red(.65),red(.32))
 WHITES=(white(),blue(tint=.88),blue(tint=.65),blue(.32))
+GREENS=(pigment('green',tint=.4),pigment('green'),pigment('green',.65),blue(.32))
+STONES=(pigment('stone',tint=.4),pigment('stone'),pigment('stone',.65),blue(.32))
 GOLDS=(gold(),gold(.8),gold(.6),blue(.32))
 PIGMENTS={
-'world':BLUES,'earth':BLUES,'camera':BLUES,'blank':WHITES,
-'people':WHITES,'buildings':WHITES,'terrain':BLUES,
+'world':BLUES,'earth':BLUES,'camera':STONES,'blank':WHITES,
+'people':WHITES,'buildings':WHITES,'terrain':STONES,
 'economy':GOLDS,'laws':GOLDS,'settings':BLUES,'pause':GOLDS,
-'play':BLUES,'save':BLUES,'load':GOLDS,'back':BLUES,'close':REDS,
-'create':GOLDS,'check':WHITES,'audio':BLUES,'help':BLUES,
+'play':GREENS,'save':BLUES,'load':GOLDS,'back':BLUES,'close':REDS,
+'create':GREENS,'check':GREENS,'audio':BLUES,'help':BLUES,
 'tools':BLUES,'star':GOLDS,'sun':GOLDS,'moon':WHITES,'exit':REDS,
+'cycle':GOLDS,'hand':GOLDS,'zoom-in':WHITES,'zoom-out':WHITES,
+'arrow-left':GOLDS,'arrow-right':GOLDS,'arrow-up':GOLDS,'arrow-down':GOLDS,
 }
+for name in CATEGORY_ICONS:PIGMENTS['tab-'+name]=(white(),white(),white(),white())
 DETAILS={
-'world':[(poly((34,36),(51,29),(66,38),(61,51),(45,56),(43,75),(31,63)),white()),(poly((72,56),(99,62),(89,85),(78,97),(68,80)),blue(tint=.8))],
-'earth':[(poly((29,39),(50,29),(71,37),(63,53),(44,58),(38,78),(27,64)),white()),(poly((73,56),(101,60),(94,84),(79,98),(68,80)),blue(tint=.8))],
+'world':[(poly((34,36),(51,29),(66,38),(61,51),(45,56),(43,75),(31,63)),pigment('green')),(poly((72,56),(99,62),(89,85),(78,97),(68,80)),blue(tint=.8))],
+'earth':[(poly((29,39),(50,29),(71,37),(63,53),(44,58),(38,78),(27,64)),pigment('green')),(poly((73,56),(101,60),(94,84),(79,98),(68,80)),blue(tint=.8))],
 'camera':[(rect(32,48,63,5),red()),(circle(64,69,21),blue(.32)),(circle(64,69,16),white()),(circle(64,69,9),blue()),(rect(59,60,7,6),white()),(rect(86,50,7,5),gold())],
 'blank':[(rect(41,60,48,5),blue()),(rect(41,74,42,5),blue()),(rect(41,88,29,5),red()),(poly((80,23),(80,42),(98,42)),blue(tint=.5))],
 'people':[(rect(26,66,31,31),blue()),(rect(60,70,33,30),red()),(rect(31,26,31,11),blue(.55)),(rect(75,36,23,8),red(.65)),(rect(39,42,4,4),blue(.32)),(rect(53,42,4,4),blue(.32)),(rect(37,71,8,7),white()),(rect(78,77,7,6),gold())],
 'buildings':[(poly((22,61),(64,26),(106,61)),red()),(poly((32,58),(63,35),(96,58)),red(tint=.4)),(rect(39,67,9,13),blue()),(rect(81,67,9,13),blue()),(rect(56,75,16,28),blue(.55)),(rect(58,75,3,28),blue(tint=.5)),(rect(66,87,4,4),gold())],
-'terrain':[(poly((36,54),(47,28),(61,52),(49,45)),white()),(poly((69,80),(91,43),(109,85)),blue(tint=.5)),(poly((76,68),(91,43),(100,66),(90,61)),white()),(rect(14,99,99,5),blue(.55))],
+'terrain':[(rect(14,90,99,14),pigment('green')),(poly((36,54),(47,28),(61,52),(49,45)),white()),(poly((69,80),(91,43),(109,85)),blue(tint=.5)),(poly((76,68),(91,43),(100,66),(90,61)),white()),(rect(14,99,99,5),blue(.55))],
 'economy':[(rect(25,44,78,6),gold(tint=.2)),(rect(58,53,13,28),gold()),(rect(62,62,5,8),blue(.32)),(rect(26,91,75,5),red(.65))],
 'laws':[(rect(60,29,7,68),gold(tint=.2)),(rect(22,78,19,7),white()),(rect(88,78,19,7),white()),(rect(36,98,55,7),blue())],
 'settings':[(circle(64,64,16),blue(.32)),(circle(64,64,10),white()),(rect(58,53,5,4),blue(tint=.5))],
@@ -86,6 +101,10 @@ DETAILS={
 'load':[(rect(58,24,9,41),white()),(poly((44,51),(63,72),(83,51)),white()),(rect(24,80,79,17),gold(.8))],
 'help':[(circle(64,90,5),red()),(poly((45,43),(54,34),(73,34),(85,45),(85,56),(70,69),(70,77),(60,77),(60,65),(75,53),(75,47),(68,43),(59,43),(53,50)),white())],
 'exit':[(rect(39,35,28,59),blue(.32)),(rect(65,57,38,11),white()),(poly((91,39),(111,63),(91,86)),white()),(rect(61,67,4,5),gold())],
+'zoom-in':[(circle(54,53,21),blue(.32)),(rect(38,49,32,8),white()),(rect(50,37,8,32),white())],
+'zoom-out':[(circle(54,53,21),blue(.32)),(rect(38,49,32,8),white())],
+'hand':[(rect(56,74,36,22),gold(tint=.3)),(rect(59,84,5,4),gold(.6))],
+'cycle':[(poly((77,13),(108,20),(94,47)),white()),(poly((50,116),(20,105),(32,80)),white())],
 'tools':[(poly((38,43),(47,34),(106,94),(96,104)),blue(tint=.8)),(poly((19,33),(39,13),(62,36),(42,56)),red()),(poly((24,32),(39,18),(56,36),(42,49)),red(tint=.5)),(rect(26,89,6,6),white())],
 }
 
@@ -114,7 +133,7 @@ def cells(name,solids,holes):
         for x in range(GRID):
             px,py=(x+.5)*128/GRID,(y+.5)*128/GRID
             filled=any(inside(shape,px,py) for shape in solids)
-            if name=='moon':filled=filled and not any(inside(shape,px,py) for shape in holes)
+            if name=='moon' or name=='cycle' or name.startswith('tab-'):filled=filled and not any(inside(shape,px,py) for shape in holes)
             row.append(filled)
         mask.append(row)
     result=[]
@@ -147,8 +166,8 @@ def validate_grid(name,grid):
     if not any(pixel[3] for row in grid for pixel in row):
         raise ValueError(name+': empty symbol')
 def generate():
-    if set(PIGMENTS)!=set(SHAPES) or len(SHAPES)!=25:
-        raise ValueError('Only the25 consumed original UI symbols are generated')
+    if set(PIGMENTS)!=set(SHAPES) or len(SHAPES)!=41:
+        raise ValueError('Only the 41 consumed original UI symbols are generated')
     OUT.mkdir(parents=True,exist_ok=True)
     outputs=[]
     expected=set()
@@ -168,7 +187,7 @@ def generate():
     for path in OUT.iterdir():
         if path.is_file() and path.suffix in ('.svg','.png') and path.name not in expected:path.unlink()
     manifest={
-        'format':'SonnOriginalIcons4','author':'Sonnheide project',
+        'format':'SonnOriginalIcons5','author':'Sonnheide project',
         'license':'Original project artwork; no public license granted',
         'recipe':'tools/generate_visual_assets.py','recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'stroke':True,'external_frame':False,'logical_grid':GRID,'scaling':'nearest_integer','alpha':'binary',
@@ -177,7 +196,7 @@ def generate():
         'pigment_derivatives':dict(sorted(PIGMENT_RECIPES.items())),
         'yellow_base':'#ffaa00','yellow_recipe':'shade_then_linear_white_tint_round_half_up',
         'yellow_derivatives':{value:{'shade':recipe['shade'],'tint':recipe['white_tint']} for value,recipe in sorted(PIGMENT_RECIPES.items()) if recipe['base']=='yellow'},
-        'themes':[],'outputs':outputs,
+        'themes':[],'category_silhouettes':['tab-'+name for name in CATEGORY_ICONS],'outputs':outputs,
     }
     write_changed(ROOT/'assets/manifests/original_ui_icons.json',(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
     print('Original pixel icon outputs:',len(outputs))

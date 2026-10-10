@@ -38,7 +38,7 @@ struct CreationView {
     BlankBase base = BlankBase::Soil;
     std::string name;
     std::string theme = "flower_meadow";
-    int width = 512, height = 512, cell_mm = 250;
+    int width = 1024, height = 1024, cell_mm = 2000;
     double west = -12, south = 35, east = 15, north = 58;
     bool earth_available = false;
     bool can_select_theme = false;
@@ -46,6 +46,9 @@ struct CreationView {
     bool busy = false;
     std::uint64_t preview_token = 0;
     std::string package_status;
+    // Screen-space presentation only. The controller owns geographic bounds.
+    bool selection_visible = false;
+    double selection_left = 0, selection_top = 0, selection_right = 0, selection_bottom = 0;
     friend bool operator==(const CreationView&,const CreationView&)=default;
 };
 struct WorldView {
@@ -103,6 +106,8 @@ public:
 private:
     void refresh();
     void layout();
+    void update_map_selection();
+    void update_creation_scale();
     void emit(ActionKind kind,const std::string& text={},double a=0,double b=0,double c=0,double d=0);
     std::string text(const std::string& key) const;
     std::map<std::string,std::array<std::string,3>> messages_;

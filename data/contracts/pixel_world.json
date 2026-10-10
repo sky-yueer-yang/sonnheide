@@ -4,7 +4,7 @@
   "planned_only": true,
   "production_implemented": false,
   "contract_id": "sonnheide_pixel_world_v0_8",
-  "decision": "docs/decisions/0019-fine-terrain-and-colorful-arcade.md",
+  "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
   "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "detailed_terrain_contract": "data/contracts/terrain_access_v1.json",
   "game_contract": "data/contracts/game_v0_9.json",
@@ -34,7 +34,7 @@
     "polar_selection": false
   },
   "grid": {
-    "representation": "single_surface_columns_with_flat_or_continuous_ramp_patch",
+    "representation": "management_columns_row_RLE_and_sparse_64x64_micro_surface_patches",
     "sample_base_height_quantum_mm": 500,
     "sample_ramp_corner_height_quantum_mm": 1,
     "sample_chunk_cells": [
@@ -48,8 +48,8 @@
       "deep_ocean": -20000,
       "close_ocean": -8000,
       "shallow_water": -2000,
-      "sand": 1000,
-      "soil": 2000,
+      "sand": 0,
+      "soil": 0,
       "hill": 16000,
       "mountain": 48000,
       "high_peak": 96000
@@ -57,17 +57,22 @@
     "arbitrary_flat_heights": false,
     "continuous_exception": "owned_ramp_patch_only",
     "natural_edge_height_transition": false,
-    "sample_cell_size_mm": 250,
-    "legacy_geometry_cell_size_mm": 2000,
+    "sample_cell_size_mm": 2000,
     "new_world_default_core_cells": [
-      512,
-      512
+      1024,
+      1024
     ],
     "current_capacity_limit_core_cells": [
-      1008,
-      1008
+      4096,
+      4096
     ],
-    "texture_pixels_per_metre": 32
+    "texture_pixels_per_metre": 32,
+    "legacy_geometry_cell_sizes_mm": [
+      250,
+      2000
+    ],
+    "surface_micro_size_um": 31250,
+    "management_equals_surface_resolution": false
   },
   "water": {
     "sea_level_m": 0,
@@ -135,5 +140,31 @@
     "StrengthAsContinuousHeightDelta"
   ],
   "clock_contract": "runtime_foundation_v1.clock",
-  "save_wire_contract": "runtime_foundation_v1.save_wire"
+  "save_wire_contract": "runtime_foundation_v1.save_wire",
+  "micro_surface_update": {
+    "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+    "profile": 2,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "soil_sand_top_mm": 0,
+    "water_surface_mm": 0,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height",
+    "default_core_cells": 1024,
+    "maximum_core_cells": 4096,
+    "presets_core_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "reclamation": "replace_only_wet_microfaces_preserve_dry_kind_theme_revision",
+    "representation": "row_RLE_plus_sparse_palette_packed_fine_patches",
+    "production_full_game_implemented": false,
+    "binary_patch_codec": "lossless_minimum_fixed_spans_row_offset_spans_sorted_row_dictionary_or_raw_bitpacked_fallback",
+    "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
+    "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
+    "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  }
 }
