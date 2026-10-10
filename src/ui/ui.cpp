@@ -11,7 +11,6 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
-#include <iomanip>
 #include <limits>
 #include <sstream>
 #include <stdexcept>
@@ -38,7 +37,6 @@ void input_value(Rml::Context* context,Rml::ElementDocument* doc,const char* id,
         if(context->GetFocusElement()!=input && input->GetValue()!=value) input->SetValue(value);
     }
 }
-std::string number(double value) { std::ostringstream out; out.imbue(std::locale::classic()); out<<std::fixed<<std::setprecision(5)<<value; return out.str(); }
 bool parse_number(std::string value,double& result) {
     if(value.empty() || value.size()>32) return false;
     std::replace(value.begin(),value.end(),',','.');
@@ -85,33 +83,16 @@ bool Ui::initialize(int width,int height,float density,std::string& error) {
 void Ui::resize(int width,int height,float density) { if(!context_) return; context_->SetDimensions({width,height}); context_->SetDensityIndependentPixelRatio(std::max(.1f,density)); layout(); }
 void Ui::set_view(const View& view) {
     if(view_==view) return;
-    // Pointer-motion snapshots must not traverse translations or rebuild
-    // controls. Geographic selection has a separate screen-space overlay.
-    auto previous=view_;
-    previous.creation.west=view.creation.west;previous.creation.south=view.creation.south;
-    previous.creation.east=view.creation.east;previous.creation.north=view.creation.north;
-    previous.creation.selection_visible=view.creation.selection_visible;
-    previous.creation.selection_left=view.creation.selection_left;previous.creation.selection_top=view.creation.selection_top;
-    previous.creation.selection_right=view.creation.selection_right;previous.creation.selection_bottom=view.creation.selection_bottom;
-    if(view.creation.mode==CreationMode::Earth && previous.creation.mode==CreationMode::Earth) previous.creation.height=view.creation.height;
-    if(document_ && context_ && view.screen==Screen::Creation && previous==view) {
-        const bool height_changed=view_.creation.height!=view.creation.height;
-        view_=view;
-        const bool was_syncing=syncing_controls_;syncing_controls_=true;
-        input_value(context_,document_,"earth-west",number(view.creation.west));input_value(context_,document_,"earth-east",number(view.creation.east));
-        input_value(context_,document_,"earth-south",number(view.creation.south));input_value(context_,document_,"earth-north",number(view.creation.north));
-        input_value(context_,document_,"creation-height",std::to_string(view.creation.height));
-        syncing_controls_=was_syncing;
-        if(height_changed) update_creation_scale();
-        update_map_selection();
-        return;
-    }
     const bool changed_screen=view_.screen!=view.screen;
     const bool opened_error=view_.error_key.empty() && !view.error_key.empty();
     const bool closed_error=!view_.error_key.empty() && view.error_key.empty();
     const bool changed_session=view_.world.session!=view.world.session;
     if(view_.error_key!=view.error_key || view_.error_detail!=view.error_detail) error_details_open_=false;
-    if(view.screen==Screen::Creation && !view_.creation.preview_ready && view.creation.preview_ready && context_ && context_->GetDimensions().x/context_->GetDensityIndependentPixelRatio()<820) controls_open_=false;
+    if(view.screen==Screen::Creation && !view_.creation.preview_ready && view.creation.preview_ready) {
+        controls_open_=false;pending_focus_="create";
+        if(document_) document_->GetElementById("creation-controls")->SetScrollTop(0);
+    }
+    if(view.screen==Screen::Creation && view_.creation.preview_ready && !view.creation.preview_ready) controls_open_=true;
     view_=view;
     if(creation_generation_!=view.creation.generation) { creation_generation_=view.creation.generation; creation_name_=view.creation.name; }
     if(rename_session_!=view.world.session) { rename_session_=view.world.session; rename_name_=view.world.name; world_open_=false; }
@@ -119,8 +100,18 @@ void Ui::set_view(const View& view) {
     if(changed_session) section_=BottomSection::Observe;
     if(changed_screen) pending_focus_=view.screen==Screen::MainMenu?"new-world":view.screen==Screen::Creation?"creation-name":view.screen==Screen::Load?"back-load":"tab-observe";
     if(opened_error) pending_focus_="error-dismiss";
-    if(closed_error) pending_focus_=view.screen==Screen::Creation?"creation-width":view.screen==Screen::World?"tab-observe":"new-world";
+    if(closed_error) focus_underlying_controls();
     refresh(); layout();
+}
+void Ui::focus_underlying_controls() {
+    if(!view_.error_key.empty() || !local_error_.empty()) pending_focus_="error-dismiss";
+    else if(settings_open_) pending_focus_="locale-zh";
+    else if(world_open_ && view_.screen==Screen::World) pending_focus_="world-name-draft";
+    else if(help_open_) pending_focus_="help-close";
+    else if(view_.screen==Screen::Creation) pending_focus_=controls_open_ || !view_.creation.preview_ready?"creation-width":"create";
+    else if(view_.screen==Screen::World) pending_focus_="tab-observe";
+    else if(view_.screen==Screen::Load) pending_focus_="back-load";
+    else pending_focus_="new-world";
 }
 std::string Ui::text(const std::string& key) const { const auto it=messages_.find(key); return it==messages_.end()?key:it->second[static_cast<std::size_t>(view_.locale)]; }
 void Ui::refresh() {
@@ -168,33 +159,24 @@ void Ui::refresh() {
     enable(document_,"continue-world",view_.can_continue && !view_.busy);
     for(const auto* id:{"new-world","load","exit","return-menu","world-load","save","load-selected"}) enable(document_,id,!view_.busy);
     enable(document_,"load-selected",!view_.selected_save.empty() && !view_.busy);
-    const bool earth=view_.creation.mode==CreationMode::Earth;
-    show(document_,"blank-controls",!earth); show(document_,"earth-controls",earth);
-    const bool themes=view_.creation.can_select_theme && (earth || view_.creation.base==BlankBase::Soil);
+    const bool themes=view_.creation.can_select_theme && view_.creation.base==BlankBase::Soil;
     show(document_,"creation-theme-label",themes);
     show(document_,"creation-theme",themes);
-    show(document_,"map-controls",earth && !view_.creation.preview_ready);
     show(document_,"preview-caption",view_.creation.preview_ready);
-    choice(document_,"blank-mode",!earth); choice(document_,"earth-mode",earth);
     choice(document_,"blank-soil",view_.creation.base==BlankBase::Soil); choice(document_,"blank-ocean",view_.creation.base==BlankBase::Ocean);
-    enable(document_,"earth-mode",view_.creation.earth_available && !view_.creation.busy);
-    enable(document_,"blank-mode",!view_.creation.busy);
-    enable(document_,"preview",!view_.creation.busy && (!earth || view_.creation.earth_available));
+    enable(document_,"preview",!view_.creation.busy);
     enable(document_,"create",view_.creation.preview_ready && !view_.creation.busy);
-    label(document_,"earth-package",view_.creation.package_status);
     input_value(context_,document_,"creation-name",creation_name_);
     input_value(context_,document_,"creation-width",std::to_string(view_.creation.width));
     input_value(context_,document_,"creation-height",std::to_string(view_.creation.height));
-    enable(document_,"creation-height",!earth && !view_.creation.busy);
+    enable(document_,"creation-height",!view_.creation.busy);
     enable(document_,"creation-width",!view_.creation.busy);
     for(int size:{256,512,1024,2048,4096}) {
         const auto id="size-"+std::to_string(size);
-        choice(document_,id.c_str(),view_.creation.width==size && (earth || view_.creation.height==size));
+        choice(document_,id.c_str(),view_.creation.width==size && view_.creation.height==size);
         enable(document_,id.c_str(),!view_.creation.busy);
     }
     update_creation_scale();
-    input_value(context_,document_,"earth-west",number(view_.creation.west)); input_value(context_,document_,"earth-east",number(view_.creation.east));
-    input_value(context_,document_,"earth-south",number(view_.creation.south)); input_value(context_,document_,"earth-north",number(view_.creation.north));
     input_value(context_,document_,"creation-theme",view_.creation.theme);
     label(document_,"world-name",view_.world.name);
     label(document_,"world-time",text("day")+" "+std::to_string(view_.world.day));
@@ -209,8 +191,11 @@ void Ui::refresh() {
     choice(document_,"motion-normal",!view_.reduced_motion); choice(document_,"motion-reduced",view_.reduced_motion);
     input_value(context_,document_,"audio-volume",std::to_string(view_.audio_volume));
     const char* tabs[]={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
-    for(int i=0;i<8;++i) { choice(document_,tabs[i],i==static_cast<int>(section_)); enable(document_,tabs[i],i==0 || i==6 || i==7); }
+    for(int i=0;i<8;++i) { choice(document_,tabs[i],i==static_cast<int>(section_)); enable(document_,tabs[i],true); }
     show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World,"flex"); show(document_,"age-tools",section_==BottomSection::World,"flex");
+    const char* future_panels[]={"terrain-tools","life-tools","civilization-tools","construction-tools","economy-tools"};
+    for(int i=0;i<5;++i) show(document_,future_panels[i],static_cast<int>(section_)==i+1,"flex");
+    show(document_,"settings-tools",section_==BottomSection::Settings,"flex");
     if(auto* pause=document_->GetElementById("pause")) pause->SetAttribute("data-tooltip-key",view_.world.paused?"play":"pause");
     show(document_,"no-saves",view_.saves.empty());
     std::string signature;
@@ -230,11 +215,9 @@ void Ui::refresh() {
         if(error_key.find("STALE")!=std::string::npos || error_key.find("GENERATION")!=std::string::npos || error_key.find("REVISION")!=std::string::npos) error_key="error-stale";
         else if(error_key.find("DURABILITY")!=std::string::npos) error_key="error-durability";
         else if(error_key.find("SAVE")!=std::string::npos || error_key.find("WRITE")!=std::string::npos || error_key.find("FLUSH")!=std::string::npos) error_key="error-save";
-        else if(error_key.find("PACKAGE")!=std::string::npos || error_key.find("GSHHG")!=std::string::npos || error_key.find("GEOGRAPHY")!=std::string::npos) error_key="error-package";
         else if(error_key.find("NAME")!=std::string::npos || error_key=="INVALID_UTF8" || error_key=="NON_NFC") error_key="error-name";
         else if(error_key=="CREATION_DIMENSIONS") error_key="error-dimensions";
         else if(error_key.find("BUDGET")!=std::string::npos || error_key.find("SIZE")!=std::string::npos) error_key="error-size";
-        else if(error_key=="EARTH_SELECTION" || error_key=="EARTH_BOUNDS" || error_key.find("REGION")!=std::string::npos || error_key.find("RECT")!=std::string::npos) error_key="error-region";
         else if(error_key.find("CHECKPOINT")!=std::string::npos || error_key.find("CONTENT")!=std::string::npos || error_key.find("FORMAT")!=std::string::npos) error_key="error-checkpoint";
         else error_key="error-generic";
     }
@@ -269,20 +252,47 @@ void Ui::layout() {
     const auto grid=[](float value){return std::floor(value/8)*8;};
     const bool narrow=w<820;
     document_->SetClass("compact",narrow);
+    // RmlUi5's font-effect parser passes length values to the instancer without
+    // resolving dp. Resolve our logical widths here into physical whole pixels,
+    // including every heading and the wordmark's inheriting inline spans.
+    if(outline_density_!=density || outline_compact_!=narrow) {
+        const auto apply=[&](auto&& self,Rml::Element* element,bool topbar)->void {
+            topbar=topbar || element->IsClassSet("topbar");
+            const bool title=element->GetId()=="main-title";
+            if(title || element->GetTagName()=="h2" || element->GetId()=="world-name") {
+                if(topbar && narrow) element->SetProperty("font-effect","none");
+                else {
+                    const int outer=std::clamp(static_cast<int>(std::round((title?3.f:2.f)*density)),1,16);
+                    const int pigment=std::clamp(static_cast<int>(std::round(density)),1,16);
+                    const std::string colour=element->IsClassSet("danger-heading")?"#de402d":"#ffaa00";
+                    element->SetProperty("font-effect","pixel-outline("+std::to_string(outer)+"px #ffffff), "+std::string(title?"pixel-outline":"pixel-bold")+"("+std::to_string(pigment)+"px "+colour+")");
+                }
+            }
+            for(int i=0;i<element->GetNumChildren();++i) self(self,element->GetChild(i),topbar);
+        };
+        apply(apply,document_,false);
+        outline_density_=density;outline_compact_=narrow;
+    }
+
     const float menu_width=grid(std::min(304.f,w-32));
     property("main-menu","width",menu_width);
     property("main-menu","left",grid((w-menu_width)/2));
     property("main-menu","top",grid(std::max(16.f,(h-324.f)/2)));
     property("main-menu","max-height",std::max(160.f,h-32));
-    show(document_,"creation-options",narrow,"inline-block");
-    show(document_,"creation-controls",!narrow || controls_open_);
-    property("creation-controls","left",narrow?12:16);
-    property("creation-controls","width",grid(std::max(240.f,std::min(narrow?w-24:360.f,360.f))));
-    property("creation-controls","height",grid(std::max(160.f,h-72)));
-    property("scene-viewport","left",narrow?12:392);
-    property("scene-viewport","top",56);
-    property("scene-viewport","width",grid(std::max(8.f,w-(narrow?24:408))));
-    property("scene-viewport","height",grid(std::max(8.f,h-72)));
+    const bool editing=controls_open_ || !view_.creation.preview_ready;
+    show(document_,"creation-topbar",!editing);
+    show(document_,"creation-form",editing);
+    show(document_,"creation-heading",editing,"flex");
+    show(document_,"preview",editing,"inline-block");
+    document_->GetElementById("creation-controls")->SetClass("preview-tray",!editing);
+    const float creation_width=std::min(editing?608.f:480.f,w-32.f);
+    const float creation_height=std::min(editing?648.f:96.f,h-32.f);
+    property("creation-controls","width",creation_width);
+    property("creation-controls","height",creation_height);
+    property("creation-controls","left",std::round((w-creation_width)/2));
+    property("creation-controls","top",editing?std::round((h-creation_height)/2):h-creation_height-16.f);
+    property("scene-viewport","left",0);property("scene-viewport","top",0);
+    property("scene-viewport","width",w);property("scene-viewport","height",h);
     property("save-panel","left",grid(std::max(16.f,(w-std::min(800.f,w-32))/2)));
     property("save-panel","width",grid(std::min(800.f,w-32)));
     property("save-panel","top",56);property("save-panel","height",grid(std::max(128.f,h-72)));
@@ -293,48 +303,37 @@ void Ui::layout() {
         property(id,"top",top);property(id,"max-height",grid(std::max(128.f,h-top-24)));
         property(id,"padding-left",16);property(id,"padding-right",16);
     }
+    const float tab_width=std::floor(std::min(68.f,(w-16.f)/8.f));
     if(auto* bar=document_->GetElementById("bottom-bar")) {
         for(int i=0;i<bar->GetNumChildren();++i) if(auto* button=bar->GetChild(i)) {
-            button->SetProperty("width","48dp");
-            button->SetProperty("font-size","12dp");
-            button->SetProperty("min-height","44dp");
-            button->SetProperty("line-height","20dp");
+            button->SetProperty("width",std::to_string(tab_width)+"dp");
         }
     }
-    property("section-tools","min-height",section_==BottomSection::World?104:56);
-    property("section-tools","max-height",std::max(104.f,std::min(160.f,h*.3f)));
-    property("preview-caption","right",24);
-    property("preview-caption","max-width",grid(std::max(128.f,w-(narrow?48:432))));
-    if(auto* map=document_->GetElementById("map-controls")) {
-        map->SetProperty("left","auto");map->SetProperty("right","24dp");
-        map->SetProperty("width","264dp");
-    }
-    update_map_selection();
+    // The six-pixel join faces occupy a genuine gap in the panel top ring.
+    // Neither a later panel draw nor alpha overdraw may close the tab necks.
+    document_->GetElementById("bottom-bar-frame")->SetProperty("decorator","pixel-rim(#072d58d0 #010c20ff #010b20d0 6dp 3dp 2dp 8dp "+std::to_string(tab_width*8.f)+"dp)");
+    property("section-tools","min-height",section_==BottomSection::World?124:64);
+    property("section-tools","max-height",std::max(124.f,std::min(192.f,h*.4f)));
+    property("preview-caption","left",16);property("preview-caption","max-width",w-32.f);
+
 }
 void Ui::update_creation_scale() {
     const auto metres=[](std::int64_t mm){std::string value=std::to_string(mm/1000);auto fraction=std::to_string(1000+mm%1000).substr(1);while(!fraction.empty()&&fraction.back()=='0')fraction.pop_back();return fraction.empty()?value:value+"."+fraction;};
     const auto distance=[&](std::int64_t mm){return mm>=1000000?metres(mm/1000)+" km":metres(mm)+" m";};
     label(document_,"creation-scale",distance(static_cast<std::int64_t>(view_.creation.width)*view_.creation.cell_mm)+" × "+distance(static_cast<std::int64_t>(view_.creation.height)*view_.creation.cell_mm)+" · "+text("fine-surface"));
 }
-void Ui::update_map_selection() {
-    if(!document_) return;
-    const auto& selection=view_.creation;
-    const bool visible=view_.screen==Screen::Creation && selection.mode==CreationMode::Earth && !selection.preview_ready && selection.selection_visible;
-    show(document_,"earth-selection",visible);
-    if(!visible) return;
-    auto* element=document_->GetElementById("earth-selection");
-    const auto coordinate=[](double v){return std::isfinite(v)?std::clamp(v,0.0,1.0):0.0;};
-    const double left=coordinate(std::min(selection.selection_left,selection.selection_right)),right=coordinate(std::max(selection.selection_left,selection.selection_right));
-    const double top=coordinate(std::min(selection.selection_top,selection.selection_bottom)),bottom=coordinate(std::max(selection.selection_top,selection.selection_bottom));
-    const auto percent=[element](const char* key,double value){element->SetProperty(key,std::to_string(value*100)+"%");};
-    percent("left",left);percent("top",top);percent("width",right-left);percent("height",bottom-top);
-}
 void Ui::update() {
     if(!context_) return;
     context_->Update();
     // RmlUi has no automatic browser-style title tooltip. Render the real
     // localised full name on actual pointer hover, without emitting an intent.
-    Rml::Element* hovered=!blocks_world_input()?context_->GetHoverElement():nullptr;
+    Rml::Element* hovered=context_->GetHoverElement();
+    if(blocks_world_input()) {
+        const char* active=!view_.error_key.empty() || !local_error_.empty()?"error-panel":settings_open_?"settings-panel":world_open_?"world-panel":help_open_?"help-panel":"creation-controls";
+        auto* owner=hovered;
+        while(owner && owner!=document_ && owner->GetId()!=active) owner=owner->GetParentNode();
+        if(!owner || owner==document_) hovered=nullptr;
+    }
     while(hovered && hovered!=document_ && hovered->GetTagName()!="button") hovered=hovered->GetParentNode();
     const std::string tooltip_key=hovered && hovered!=document_?hovered->GetAttribute<Rml::String>("data-tooltip-key",""):"";
     const bool tooltip_was_visible=document_->GetElementById("tool-tooltip")->GetComputedValues().display()!=Rml::Style::Display::None;
@@ -356,7 +355,11 @@ void Ui::update() {
         context_->Update();
     }
     if(!pending_focus_.empty()) {
-        if(auto* el=document_->GetElementById(pending_focus_)) el->Focus();
+        if(auto* el=document_->GetElementById(pending_focus_)) {
+            el->Focus();
+            el->ScrollIntoView(false);
+            context_->Update();
+        }
         pending_focus_.clear();
     }
 }
@@ -368,9 +371,9 @@ Viewport Ui::viewport() const {
     const float density=context_->GetDensityIndependentPixelRatio();
     if(view_.screen==Screen::Creation) {
         auto* el=document_->GetElementById("scene-viewport"); const auto offset=el->GetAbsoluteOffset(Rml::Box::BORDER),size=el->GetBox().GetSize(Rml::Box::BORDER);
-        return {offset.x/density,offset.y/density,size.x/density,size.y/density,view_.creation.mode==CreationMode::Earth && !view_.creation.preview_ready};
+        return {offset.x/density,offset.y/density,size.x/density,size.y/density};
     }
-    const auto size=context_->GetDimensions(); return {0,0,size.x/density,size.y/density,false};
+    const auto size=context_->GetDimensions(); return {0,0,size.x/density,size.y/density};
 }
 bool Ui::captures_pointer(int x,int y) const {
     if(!context_) return false;
@@ -384,10 +387,10 @@ bool Ui::captures_pointer(int x,int y) const {
     return false;
 }
 bool Ui::text_input_focused() const { if(!context_) return false; const auto* focus=context_->GetFocusElement(); return focus && (focus->GetTagName()=="input" || focus->GetTagName()=="textarea"); }
-bool Ui::blocks_world_input() const { return settings_open_ || world_open_ || help_open_ || !view_.error_key.empty() || !local_error_.empty(); }
+bool Ui::blocks_world_input() const { return (view_.screen==Screen::Creation && (controls_open_ || !view_.creation.preview_ready)) || settings_open_ || world_open_ || help_open_ || !view_.error_key.empty() || !local_error_.empty(); }
 void Ui::emit(ActionKind kind,const std::string& value,double a,double b,double c,double d) {
     Action action; action.kind=kind; action.text=value; action.a=a; action.b=b; action.c=c; action.d=d;
-    const bool creation=kind==ActionKind::SetCreationMode || kind==ActionKind::SetBlankBase || kind==ActionKind::SetCreationSize || kind==ActionKind::SetCreationName || kind==ActionKind::SetCreationTheme || kind==ActionKind::SetEarthBounds || kind==ActionKind::MapZoom || kind==ActionKind::MapPan || kind==ActionKind::RequestPreview || kind==ActionKind::CreateWorld || kind==ActionKind::CancelCreation;
+    const bool creation=kind==ActionKind::SetBlankBase || kind==ActionKind::SetCreationSize || kind==ActionKind::SetCreationName || kind==ActionKind::SetCreationTheme || kind==ActionKind::RequestPreview || kind==ActionKind::CreateWorld || kind==ActionKind::CancelCreation;
     action.generation=creation?view_.creation.generation:view_.world.session;
     if(kind==ActionKind::CreateWorld) action.token=view_.creation.preview_token;
     if(kind==ActionKind::CommitWorldName) action.token=view_.world.rename_preview_token;
@@ -403,21 +406,17 @@ void Ui::activate(const std::string& id) {
     else if(id=="exit") emit(ActionKind::Exit);
     else if(id=="return-menu") emit(ActionKind::ReturnMenu);
     else if(id=="back-load") emit(ActionKind::CancelLoad);
-    else if(id=="settings-main" || id=="tab-settings") { settings_open_=true; pending_focus_="locale-zh"; emit(ActionKind::OpenSettings); }
+    else if(id=="settings-main" || id=="settings-open") { settings_open_=true; pending_focus_="locale-zh"; emit(ActionKind::OpenSettings); }
     else if(id=="settings-close" || id=="settings-dismiss") { settings_open_=false; pending_focus_=view_.screen==Screen::MainMenu?"settings-main":"tab-settings"; emit(ActionKind::CloseSettings); }
     else if(id=="cancel-create" || id=="creation-close") emit(ActionKind::CancelCreation);
-    else if(id=="creation-options") controls_open_=!controls_open_;
-    else if(id=="blank-mode") emit(ActionKind::SetCreationMode,"blank",static_cast<double>(CreationMode::Blank));
-    else if(id=="earth-mode") emit(ActionKind::SetCreationMode,"earth",static_cast<double>(CreationMode::Earth));
+    else if(id=="creation-options") { controls_open_=!controls_open_;pending_focus_=controls_open_?"creation-name":"create";document_->GetElementById("creation-controls")->SetScrollTop(0); }
     else if(id=="blank-soil") emit(ActionKind::SetBlankBase,"soil",static_cast<double>(BlankBase::Soil));
     else if(id=="blank-ocean") emit(ActionKind::SetBlankBase,"ocean",static_cast<double>(BlankBase::Ocean));
     else if(id.rfind("size-",0)==0) {
-        for(int size:{256,512,1024,2048,4096}) if(id=="size-"+std::to_string(size)) emit(ActionKind::SetCreationSize,"",size,view_.creation.mode==CreationMode::Earth?view_.creation.height:size);
+        for(int size:{256,512,1024,2048,4096}) if(id=="size-"+std::to_string(size)) emit(ActionKind::SetCreationSize,"",size,size);
     }
     else if(id=="preview") { if(!valid_creation_inputs()) { local_error_="error-input"; pending_focus_="error-dismiss"; } else emit(ActionKind::RequestPreview); }
     else if(id=="create") { if(!valid_creation_inputs()) { local_error_="error-input"; pending_focus_="error-dismiss"; } else emit(ActionKind::CreateWorld); }
-    else if(id=="map-in" || id=="map-out") emit(ActionKind::MapZoom,"",id=="map-in"?1:-1);
-    else if(id=="map-left" || id=="map-right" || id=="map-up" || id=="map-down") emit(ActionKind::MapPan,"",id=="map-left"?-1:id=="map-right"?1:0,id=="map-up"?1:id=="map-down"?-1:0);
     else if(id=="locale-zh" || id=="locale-en" || id=="locale-de") emit(ActionKind::SetLocale,id=="locale-zh"?"zh-CN":id=="locale-en"?"en":"de");
     else if(id=="fullscreen" || id=="windowed") emit(ActionKind::SetFullscreen,"",id=="fullscreen"?1:0);
     else if(id=="motion-normal" || id=="motion-reduced") emit(ActionKind::SetReducedMotion,"",id=="motion-reduced"?1:0);
@@ -437,22 +436,20 @@ void Ui::activate(const std::string& id) {
     else if(id=="rename-commit") emit(ActionKind::CommitWorldName,rename_name_);
     else if(id=="rename-cancel") { rename_name_=view_.world.name; emit(ActionKind::CancelWorldName); }
     else if(id=="error-details") error_details_open_=!error_details_open_;
-    else if(id=="error-dismiss") { local_error_.clear(); error_details_open_=false; pending_focus_=view_.screen==Screen::Creation?"creation-width":view_.screen==Screen::World?"tab-observe":"new-world"; if(!view_.error_key.empty()) emit(ActionKind::DismissError); }
+    else if(id=="error-dismiss") { local_error_.clear(); error_details_open_=false; focus_underlying_controls(); if(!view_.error_key.empty()) emit(ActionKind::DismissError); }
     else if(id=="load-selected") emit(ActionKind::LoadSelected,view_.selected_save);
     else if(id.rfind("save-entry-",0)==0) {
         try { const auto index=std::stoul(id.substr(11)); if(index<view_.saves.size()) emit(ActionKind::SelectSave,view_.saves[index].id); } catch(const std::exception&) {}
     }
-    else if(id=="tab-observe" || id=="tab-world") { section_=id=="tab-observe"?BottomSection::Observe:BottomSection::World; emit(ActionKind::SelectBottomSection,"",static_cast<int>(section_)); }
+    else if(id.rfind("tab-",0)==0) {
+        const std::array<const char*,8> tabs={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
+        for(std::size_t i=0;i<tabs.size();++i) if(id==tabs[i]) { section_=static_cast<BottomSection>(i); emit(ActionKind::SelectBottomSection,"",static_cast<int>(section_)); }
+    }
     refresh(); layout();
 }
 bool Ui::valid_creation_inputs() const {
     double width=0,height=0;
     if(!parse_number(input_text(document_,"creation-width"),width) || !parse_number(input_text(document_,"creation-height"),height) || width<=0 || height<=0 || width!=std::floor(width) || height!=std::floor(height) || width>std::numeric_limits<std::int32_t>::max() || height>std::numeric_limits<std::int32_t>::max()) return false;
-    if(view_.creation.mode==CreationMode::Earth) {
-        double west=0,south=0,east=0,north=0;
-        if(!parse_number(input_text(document_,"earth-west"),west) || !parse_number(input_text(document_,"earth-south"),south) || !parse_number(input_text(document_,"earth-east"),east) || !parse_number(input_text(document_,"earth-north"),north)) return false;
-        if(west < -180 || west>180 || east<=west || east-west>360 || south < -90 || north>90 || south>=north) return false;
-    }
     return true;
 }
 void Ui::input_changed(const std::string& id,const std::string& value) {
@@ -462,9 +459,6 @@ void Ui::input_changed(const std::string& id,const std::string& value) {
     if(id=="creation-width" || id=="creation-height") {
         double width=0,height=0;
         if(parse_number(input_text(document_,"creation-width"),width) && parse_number(input_text(document_,"creation-height"),height) && width==std::floor(width) && height==std::floor(height) && width>0 && height>0 && width<=std::numeric_limits<std::int32_t>::max() && height<=std::numeric_limits<std::int32_t>::max()) emit(ActionKind::SetCreationSize,"",width,height);
-    } else if(id.rfind("earth-",0)==0) {
-        double west=0,south=0,east=0,north=0;
-        if(parse_number(input_text(document_,"earth-west"),west) && parse_number(input_text(document_,"earth-south"),south) && parse_number(input_text(document_,"earth-east"),east) && parse_number(input_text(document_,"earth-north"),north)) emit(ActionKind::SetEarthBounds,"",west,south,east,north);
     } else if(id=="audio-volume") { double volume=0; if(parse_number(value,volume) && volume>=0 && volume<=100) emit(ActionKind::SetAudioVolume,"",std::round(volume)); }
 }
 void Ui::ProcessEvent(Rml::Event& event) {
@@ -472,10 +466,11 @@ void Ui::ProcessEvent(Rml::Event& event) {
     if(event.GetType()=="change" || event.GetType()=="input") { if(target && !syncing_controls_) input_changed(target->GetId(),input_text(document_,target->GetId().c_str())); return; }
     if(event.GetType()=="keydown") {
         const int key=event.GetParameter<int>("key_identifier",0);
-        const char* modal=!view_.error_key.empty() || !local_error_.empty()?"error-panel":settings_open_?"settings-panel":world_open_?"world-panel":help_open_?"help-panel":nullptr;
+        const char* modal=!view_.error_key.empty() || !local_error_.empty()?"error-panel":settings_open_?"settings-panel":world_open_?"world-panel":help_open_?"help-panel":(view_.screen==Screen::Creation && controls_open_)?"creation-controls":nullptr;
         if(key==Rml::Input::KI_TAB && modal) {
             std::vector<Rml::Element*> controls;
             const auto collect=[&controls](auto&& self,Rml::Element* el)->void {
+                if(el->GetComputedValues().display()==Rml::Style::Display::None) return;
                 const auto tag=el->GetTagName();
                 if((tag=="button" || tag=="input" || tag=="select") && !el->IsPseudoClassSet("disabled")) controls.push_back(el);
                 for(int i=0;i<el->GetNumChildren();++i) self(self,el->GetChild(i));
@@ -490,7 +485,7 @@ void Ui::ProcessEvent(Rml::Event& event) {
             event.StopImmediatePropagation(); return;
         }
         if(key==Rml::Input::KI_ESCAPE) {
-            if(!view_.error_key.empty() || !local_error_.empty()) { local_error_.clear(); pending_focus_=view_.screen==Screen::Creation?"creation-width":view_.screen==Screen::World?"tab-observe":"new-world"; if(!view_.error_key.empty()) emit(ActionKind::DismissError); }
+            if(!view_.error_key.empty() || !local_error_.empty()) { local_error_.clear(); focus_underlying_controls(); if(!view_.error_key.empty()) emit(ActionKind::DismissError); }
             else if(settings_open_) { settings_open_=false; pending_focus_=view_.screen==Screen::MainMenu?"settings-main":"tab-settings"; emit(ActionKind::CloseSettings); }
             else if(world_open_) { world_open_=false; pending_focus_="world-info"; emit(ActionKind::CloseWorldInspector); }
             else if(help_open_) { help_open_=false; pending_focus_="camera-help"; emit(ActionKind::CloseHelp); }

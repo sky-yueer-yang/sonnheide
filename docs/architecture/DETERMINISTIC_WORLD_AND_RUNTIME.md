@@ -1,3 +1,5 @@
+> ADR0022当前产品创建仅空白平土/全海，创建窗口居中，生产启动/runtime/包无世界地图或GSHHG加载。以下Earth生成算法只作为历史来源/核心几何回归说明；不表示仍有Earth入口。现有存档仍严格绑定版本包，不以UI修改偷偷忽略hash。
+
 # 固定地形、确定性世界与运行合同
 
 2026-10-10，v0.9 / [ADR0021](../decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md)。S00/S01已有原生切片；本批2m管理格/31.25mm独立微地表、大世界和深色半透明像素窗口待统一验收。坡道、导航、生物、经济及完整运行阶段仍为设计，不称完整游戏或Steam已发行。本文件与[runtime_foundation_v1.json](../../data/contracts/runtime_foundation_v1.json)配对；人物随身保护按ADR0017，生理与经济内容来源保持既有合同。旧[250mm批次证据](../planning/ARCADE_V2_DELIVERY.md)只为历史。
@@ -31,7 +33,7 @@ ADR0021新世界采用2m管理格和64²独立微表面（31.25mm），默认102
 
 wet/nav缓存不入必需存档，正在推进的拓扑工作只存输入revision、排序前沿和依赖坐标。无法证明旧水路时撤证/等待，即时身体碰撞和落水危险同步结算。湖中岛/岛中湖仍按源嵌套初始化，只是不产生自然身份。
 
-## 3. Blank与Earth的冻结生成算法
+## 3. 空白创建与历史Earth几何参考
 
 `CoreRect`是用户实际选区；外加8格不可编辑的深水guard形成`AuthorityRect`。Core以外guard全部deep_ocean −20m，Authority以外只有表现海面，没有Actor、导航、产权或资源。初始Blank平陆Core全部soil 0m，Blank全海Core全部close_ocean −8m。边缘不降高；矩形陆块与guard之间可以出现真实竖壁。人车船完整身体和扫掠须留在Authority中；路线终点越界拒绝，既有移动者在真实可制动距离内停止，不瞬移/删船/隐形撞墙。外域命令不夹回边格。相机可看外海，允许看到矩形地貌。
 

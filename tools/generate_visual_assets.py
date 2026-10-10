@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Original compact sandbox tool sprites and category silhouettes; stdlib Python3.9+."""
+"""Original heavy arcade sprites, exact 32-cell pixels; stdlib Python3.9+."""
 import hashlib
 import json
 import math
@@ -29,7 +29,7 @@ SHAPES={
 'load':([poly((19,43),(56,43),(65,55),(109,55),(104,101),(20,101)),rect(58,24,9,41),poly((44,51),(63,72),(83,51))],[rect(32,83,60,5)]),
 'back':([poly((58,27),(22,63),(58,100),(64,93),(42,70),(108,70),(108,57),(42,57),(64,34))],[]),
 'close':([poly((30,21),(107,98),(98,107),(21,30)),poly((98,21),(107,30),(30,107),(21,98))],[]),
-'create':([rect(59,23,10,82),rect(23,59,82,10)],[]),
+'create':([rect(54,23,20,82),rect(23,54,82,20)],[]),
 'check':([poly((20,65),(45,91),(108,35),(100,27),(46,77),(28,57))],[]),
 'audio':([rect(24,51,22,27),poly((45,51),(74,28),(74,101),(45,78)),poly((84,44),(92,37),(104,50),(109,64),(104,78),(92,91),(84,84),(94,73),(98,64),(94,55))],[]),
 'help':([circle(64,64,43)],[circle(64,90,5),poly((45,43),(54,34),(73,34),(85,45),(85,56),(70,69),(70,77),(60,77),(60,65),(75,53),(75,47),(68,43),(59,43),(53,50))]),
@@ -55,9 +55,11 @@ SHAPES['arrow-down']=([poly(*[(y,128-x) for x,y in SHAPES['back'][0][0][1]])],[]
 CATEGORY_ICONS=('camera','terrain','people','laws','buildings','economy','world','settings')
 for name in CATEGORY_ICONS:SHAPES['tab-'+name]=SHAPES[name]
 
-# Original materials use explicit base/shade/white-tint recipes.
-BASE_COLORS={'blue':(57,125,222),'red':(227,75,63),'white':(255,255,255),'yellow':(255,170,0),'green':(105,173,81),'stone':(149,156,135),'soil':(166,115,64)}
-PALETTE_ID='original_sandbox_materials'
+# Four deep saturated pigments are shared by every tool and category. Each
+# symbol has a uniform white contour and dark navy exterior; there is no bright
+# directional bevel. Body depth uses only darker pigments, never white tints.
+BASE_COLORS={'blue':(22,98,184),'red':(222,64,45),'white':(255,255,255),'yellow':(255,170,0)}
+PALETTE_ID='original_heavy_arcade_primaries'
 PIGMENT_RECIPES={}
 def pigment(family,shade=1.0,tint=0.0):
     if family not in BASE_COLORS or not 0<=shade<=1 or not 0<=tint<=1:
@@ -69,44 +71,45 @@ def blue(shade=1.0,tint=0.0):return pigment('blue',shade,tint)
 def red(shade=1.0,tint=0.0):return pigment('red',shade,tint)
 def gold(shade=1.0,tint=0.0):return pigment('yellow',shade,tint)
 def white():return pigment('white')
-BLUES=(blue(tint=.5),blue(),blue(.7),blue(.32))
-REDS=(red(tint=.5),red(),red(.65),red(.32))
-WHITES=(white(),blue(tint=.88),blue(tint=.65),blue(.32))
-GREENS=(pigment('green',tint=.4),pigment('green'),pigment('green',.65),blue(.32))
-STONES=(pigment('stone',tint=.4),pigment('stone'),pigment('stone',.65),blue(.32))
-GOLDS=(gold(),gold(.8),gold(.6),blue(.32))
+BLUES=(blue(),blue(),blue(),blue(.18))
+REDS=(red(),red(),red(),blue(.18))
+WHITES=(white(),white(),white(),blue(.18))
+GOLDS=(gold(),gold(),gold(),blue(.18))
 PIGMENTS={
-'world':BLUES,'earth':BLUES,'camera':STONES,'blank':WHITES,
-'people':WHITES,'buildings':WHITES,'terrain':STONES,
+'world':BLUES,'earth':BLUES,'camera':BLUES,'blank':BLUES,
+'people':WHITES,'buildings':BLUES,'terrain':BLUES,
 'economy':GOLDS,'laws':GOLDS,'settings':BLUES,'pause':GOLDS,
-'play':GREENS,'save':BLUES,'load':GOLDS,'back':BLUES,'close':REDS,
-'create':GREENS,'check':GREENS,'audio':BLUES,'help':BLUES,
+'play':GOLDS,'save':BLUES,'load':GOLDS,'back':BLUES,'close':REDS,
+'create':REDS,'check':GOLDS,'audio':BLUES,'help':BLUES,
 'tools':BLUES,'star':GOLDS,'sun':GOLDS,'moon':WHITES,'exit':REDS,
 'cycle':GOLDS,'hand':GOLDS,'zoom-in':WHITES,'zoom-out':WHITES,
 'arrow-left':GOLDS,'arrow-right':GOLDS,'arrow-up':GOLDS,'arrow-down':GOLDS,
 }
-for name in CATEGORY_ICONS:PIGMENTS['tab-'+name]=(white(),white(),white(),white())
+for name in CATEGORY_ICONS:PIGMENTS['tab-'+name]=PIGMENTS[name]
 DETAILS={
-'world':[(poly((34,36),(51,29),(66,38),(61,51),(45,56),(43,75),(31,63)),pigment('green')),(poly((72,56),(99,62),(89,85),(78,97),(68,80)),blue(tint=.8))],
-'earth':[(poly((29,39),(50,29),(71,37),(63,53),(44,58),(38,78),(27,64)),pigment('green')),(poly((73,56),(101,60),(94,84),(79,98),(68,80)),blue(tint=.8))],
-'camera':[(rect(32,48,63,5),red()),(circle(64,69,21),blue(.32)),(circle(64,69,16),white()),(circle(64,69,9),blue()),(rect(59,60,7,6),white()),(rect(86,50,7,5),gold())],
-'blank':[(rect(41,60,48,5),blue()),(rect(41,74,42,5),blue()),(rect(41,88,29,5),red()),(poly((80,23),(80,42),(98,42)),blue(tint=.5))],
+'world':[(poly((34,36),(51,29),(66,38),(61,51),(45,56),(43,75),(31,63)),gold()),(poly((72,56),(99,62),(89,85),(78,97),(68,80)),white())],
+'earth':[(poly((29,39),(50,29),(71,37),(63,53),(44,58),(38,78),(27,64)),gold()),(poly((73,56),(101,60),(94,84),(79,98),(68,80)),white())],
+'camera':[(rect(32,48,63,5),red()),(circle(64,69,21),blue(.32)),(circle(64,69,16),white()),(circle(64,69,9),blue()),(rect(86,50,7,5),gold())],
+'blank':[(rect(41,60,48,5),white()),(rect(41,74,42,5),white()),(rect(41,88,29,5),red()),(poly((80,23),(80,42),(98,42)),blue(.65))],
 'people':[(rect(26,66,31,31),blue()),(rect(60,70,33,30),red()),(rect(31,26,31,11),blue(.55)),(rect(75,36,23,8),red(.65)),(rect(39,42,4,4),blue(.32)),(rect(53,42,4,4),blue(.32)),(rect(37,71,8,7),white()),(rect(78,77,7,6),gold())],
-'buildings':[(poly((22,61),(64,26),(106,61)),red()),(poly((32,58),(63,35),(96,58)),red(tint=.4)),(rect(39,67,9,13),blue()),(rect(81,67,9,13),blue()),(rect(56,75,16,28),blue(.55)),(rect(58,75,3,28),blue(tint=.5)),(rect(66,87,4,4),gold())],
-'terrain':[(rect(14,90,99,14),pigment('green')),(poly((36,54),(47,28),(61,52),(49,45)),white()),(poly((69,80),(91,43),(109,85)),blue(tint=.5)),(poly((76,68),(91,43),(100,66),(90,61)),white()),(rect(14,99,99,5),blue(.55))],
-'economy':[(rect(25,44,78,6),gold(tint=.2)),(rect(58,53,13,28),gold()),(rect(62,62,5,8),blue(.32)),(rect(26,91,75,5),red(.65))],
-'laws':[(rect(60,29,7,68),gold(tint=.2)),(rect(22,78,19,7),white()),(rect(88,78,19,7),white()),(rect(36,98,55,7),blue())],
-'settings':[(circle(64,64,16),blue(.32)),(circle(64,64,10),white()),(rect(58,53,5,4),blue(tint=.5))],
-'save':[(rect(43,25,38,27),white()),(rect(68,25,8,19),red()),(rect(41,69,49,35),blue(tint=.88)),(rect(46,77,36,5),blue(.7)),(rect(46,88,36,5),blue(.7))],
+'buildings':[(poly((22,61),(64,26),(106,61)),red()),(poly((32,58),(63,35),(96,58)),red(.86)),(rect(39,67,9,13),white()),(rect(81,67,9,13),white()),(rect(56,75,16,28),blue(.55)),(rect(58,75,3,28),blue(.72)),(rect(66,87,4,4),gold())],
+'terrain':[(rect(14,90,99,14),gold()),(poly((36,54),(47,28),(61,52),(49,45)),white()),(poly((69,80),(91,43),(109,85)),blue(.75)),(poly((76,68),(91,43),(100,66),(90,61)),white()),(rect(14,99,99,5),red(.65))],
+'economy':[(rect(25,44,78,6),gold(.76)),(rect(58,53,13,28),gold()),(rect(62,62,5,8),blue(.32)),(rect(26,91,75,5),red(.65))],
+'laws':[(rect(60,29,7,68),gold()),(rect(22,78,19,7),white()),(rect(88,78,19,7),white()),(rect(36,98,55,7),blue())],
+'settings':[(circle(64,64,16),blue(.32)),(circle(64,64,10),white())],
+'save':[(rect(43,25,38,27),white()),(rect(68,25,8,19),red()),(rect(41,69,49,35),blue(.72)),(rect(46,77,36,5),white()),(rect(46,88,36,5),white())],
 'load':[(rect(58,24,9,41),white()),(poly((44,51),(63,72),(83,51)),white()),(rect(24,80,79,17),gold(.8))],
 'help':[(circle(64,90,5),red()),(poly((45,43),(54,34),(73,34),(85,45),(85,56),(70,69),(70,77),(60,77),(60,65),(75,53),(75,47),(68,43),(59,43),(53,50)),white())],
 'exit':[(rect(39,35,28,59),blue(.32)),(rect(65,57,38,11),white()),(poly((91,39),(111,63),(91,86)),white()),(rect(61,67,4,5),gold())],
 'zoom-in':[(circle(54,53,21),blue(.32)),(rect(38,49,32,8),white()),(rect(50,37,8,32),white())],
 'zoom-out':[(circle(54,53,21),blue(.32)),(rect(38,49,32,8),white())],
-'hand':[(rect(56,74,36,22),gold(tint=.3)),(rect(59,84,5,4),gold(.6))],
+'hand':[(rect(56,74,36,22),gold(.84)),(rect(59,84,5,4),gold(.6))],
 'cycle':[(poly((77,13),(108,20),(94,47)),white()),(poly((50,116),(20,105),(32,80)),white())],
-'tools':[(poly((38,43),(47,34),(106,94),(96,104)),blue(tint=.8)),(poly((19,33),(39,13),(62,36),(42,56)),red()),(poly((24,32),(39,18),(56,36),(42,49)),red(tint=.5)),(rect(26,89,6,6),white())],
+'tools':[(poly((38,43),(47,34),(106,94),(96,104)),blue()),(poly((19,33),(39,13),(62,36),(42,56)),red()),(poly((24,32),(39,18),(56,36),(42,49)),red(.72)),(rect(26,89,6,6),white())],
 }
+for name in CATEGORY_ICONS:DETAILS['tab-'+name]=DETAILS.get(name,[])
+OUTLINE=blue(.18)
+CONTOUR=white()
 
 def rgb(value):return tuple(int(value[i:i+2],16) for i in (1,3,5))
 
@@ -133,21 +136,29 @@ def cells(name,solids,holes):
         for x in range(GRID):
             px,py=(x+.5)*128/GRID,(y+.5)*128/GRID
             filled=any(inside(shape,px,py) for shape in solids)
-            if name=='moon' or name=='cycle' or name.startswith('tab-'):filled=filled and not any(inside(shape,px,py) for shape in holes)
+            if name=='moon' or name=='cycle':filled=filled and not any(inside(shape,px,py) for shape in holes)
             row.append(filled)
         mask.append(row)
+    def filled(x,y):return 0<=x<GRID and 0<=y<GRID and mask[y][x]
     result=[]
     for y in range(GRID):
         row=[]
         for x in range(GRID):
-            if not mask[y][x]:row.append((0,0,0,0));continue
+            if not mask[y][x]:
+                # A genuine one-cell outward outline expands the silhouette;
+                # it does not draw a generic rectangular frame around the icon.
+                outlined=any(filled(x+dx,y+dy) for dy in (-1,0,1) for dx in (-1,0,1))
+                row.append((*rgb(OUTLINE),255) if outlined else (0,0,0,0))
+                continue
             px,py=(x+.5)*128/GRID,(y+.5)*128/GRID
-            edge=any(not(0<=xx<GRID and 0<=yy<GRID) or not mask[yy][xx] for xx,yy in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)))
-            colour=palette[3] if edge else palette[0 if y<12 else 1 if y<22 else 2]
-            if not edge:
-                if name!='moon' and any(inside(shape,px,py) for shape in holes):colour=palette[3]
-                for shape,value in DETAILS.get(name,[]):
-                    if inside(shape,px,py):colour=rgb(value)
+            colour=palette[1]
+            if name!='moon' and name!='cycle' and any(inside(shape,px,py) for shape in holes):colour=palette[3]
+            for shape,value in DETAILS.get(name,[]):
+                if inside(shape,px,py):colour=rgb(value)
+            # This is a uniform contour: every exposed side gets exactly the
+            # same white pixel, independent of direction or lighting. Dark
+            # exterior pixels provide separation without a white sloped bevel.
+            if any(not filled(xx,yy) for xx,yy in ((x-1,y),(x+1,y),(x,y-1),(x,y+1))):colour=rgb(CONTOUR)
             row.append((*colour,255))
         result.append(row)
     return result
@@ -187,16 +198,17 @@ def generate():
     for path in OUT.iterdir():
         if path.is_file() and path.suffix in ('.svg','.png') and path.name not in expected:path.unlink()
     manifest={
-        'format':'SonnOriginalIcons5','author':'Sonnheide project',
+        'format':'SonnOriginalIcons7','author':'Sonnheide project',
         'license':'Original project artwork; no public license granted',
         'recipe':'tools/generate_visual_assets.py','recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'stroke':True,'external_frame':False,'logical_grid':GRID,'scaling':'nearest_integer','alpha':'binary',
+        'edge_recipe':{'outer_dark_cells':1,'white_contour_cells':1,'neighborhood':'8-connected dark exterior,4-connected white contour','outer_color':OUTLINE,'contour_color':CONTOUR,'directional_bevel':False,'body_shading':'uniform base with dark details only'},
         'palette':PALETTE_ID,'primary_colors':{name:'#'+''.join('%02x'%c for c in colour) for name,colour in BASE_COLORS.items()},
         'pigment_recipe':'base_times_shade_then_linear_white_tint_round_half_up',
         'pigment_derivatives':dict(sorted(PIGMENT_RECIPES.items())),
         'yellow_base':'#ffaa00','yellow_recipe':'shade_then_linear_white_tint_round_half_up',
         'yellow_derivatives':{value:{'shade':recipe['shade'],'tint':recipe['white_tint']} for value,recipe in sorted(PIGMENT_RECIPES.items()) if recipe['base']=='yellow'},
-        'themes':[],'category_silhouettes':['tab-'+name for name in CATEGORY_ICONS],'outputs':outputs,
+        'themes':[],'category_icons':['tab-'+name for name in CATEGORY_ICONS],'category_style':'full_color_with_heavy_contour','outputs':outputs,
     }
     write_changed(ROOT/'assets/manifests/original_ui_icons.json',(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
     print('Original pixel icon outputs:',len(outputs))

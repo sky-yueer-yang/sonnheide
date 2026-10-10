@@ -5,6 +5,8 @@
 #include <RmlUi/Core/Element.h>
 #include <RmlUi/Core/Factory.h>
 #include <RmlUi/Core/Geometry.h>
+#include <RmlUi/Core/FontEffect.h>
+#include <RmlUi/Core/FontEffectInstancer.h>
 #include <RmlUi/Core/PropertyDefinition.h>
 #include <algorithm>
 #include <cmath>
@@ -72,40 +74,73 @@ public:
 private:
     Rml::PropertyId fill_,step_,shadow_,shade_;
 };
-class FrameDecorator final:public Rml::Decorator {
+class RimDecorator final:public Rml::Decorator {
 public:
-    FrameDecorator(Rml::Colourb fill,Rml::Colourb light,Rml::Colourb dark,Rml::Property edge,Rml::Property corner):fill_(fill),light_(light),dark_(dark),edge_(std::move(edge)),corner_(std::move(corner)) {}
+    RimDecorator(Rml::Colourb fill,Rml::Colourb outline,Rml::Colourb shade,Rml::Property edge,Rml::Property corner,Rml::Property depth,Rml::Property gap_start,Rml::Property gap_width,bool tab):fill_(fill),outline_(outline),shade_(shade),edge_(std::move(edge)),corner_(std::move(corner)),depth_(std::move(depth)),gap_start_(std::move(gap_start)),gap_width_(std::move(gap_width)),tab_(tab) {}
     Rml::DecoratorDataHandle GenerateElementData(Rml::Element* element) const override {
         const auto size=element->GetBox().GetSize(Rml::Box::PADDING);
-        auto fill=fill_,light=light_,dark=dark_;
-        const auto opacity=element->GetComputedValues().opacity();
-        for(auto* colour:{&fill,&light,&dark}) colour->alpha=static_cast<Rml::byte>(colour->alpha*opacity);
-        auto mesh=pixel_frame_mesh(std::round(size.x),std::round(size.y),element->ResolveNumericProperty(&edge_,0),element->ResolveNumericProperty(&corner_,0),fill,light,dark);
-        auto* geometry=new Rml::Geometry(element);
-        geometry->GetVertices()=std::move(mesh.vertices);geometry->GetIndices()=std::move(mesh.indices);
+        auto fill=fill_,outline=outline_,shade=shade_;
+        for(auto* color:{&fill,&outline,&shade}) color->alpha=static_cast<Rml::byte>(color->alpha*element->GetComputedValues().opacity());
+        const auto value=[&](const Rml::Property& property){return element->ResolveNumericProperty(&property,0);};
+        auto mesh=tab_?pixel_tab_mesh(std::round(size.x),std::round(size.y),value(edge_),value(corner_),value(depth_),fill,outline,shade):pixel_rim_mesh(std::round(size.x),std::round(size.y),value(edge_),value(corner_),value(depth_),fill,outline,shade,value(gap_start_),value(gap_width_));
+        auto* geometry=new Rml::Geometry(element);geometry->GetVertices()=std::move(mesh.vertices);geometry->GetIndices()=std::move(mesh.indices);
         return reinterpret_cast<Rml::DecoratorDataHandle>(geometry);
     }
     void ReleaseElementData(Rml::DecoratorDataHandle data) const override { delete reinterpret_cast<Rml::Geometry*>(data); }
-    void RenderElement(Rml::Element* element,Rml::DecoratorDataHandle data) const override {
-        if(auto* geometry=reinterpret_cast<Rml::Geometry*>(data)) geometry->Render(element->GetAbsoluteOffset(Rml::Box::PADDING).Round());
-    }
+    void RenderElement(Rml::Element* element,Rml::DecoratorDataHandle data) const override { if(auto* geometry=reinterpret_cast<Rml::Geometry*>(data)) geometry->Render(element->GetAbsoluteOffset(Rml::Box::PADDING).Round()); }
 private:
-    Rml::Colourb fill_,light_,dark_; Rml::Property edge_,corner_;
+    Rml::Colourb fill_,outline_,shade_;Rml::Property edge_,corner_,depth_,gap_start_,gap_width_;bool tab_;
 };
-class FrameInstancer final:public Rml::DecoratorInstancer {
+class RimInstancer final:public Rml::DecoratorInstancer {
 public:
-    FrameInstancer() {
-        fill_=RegisterProperty("fill","#082c3bcc").AddParser("color").GetId();
-        light_=RegisterProperty("light","#3b6276b8").AddParser("color").GetId();
-        dark_=RegisterProperty("dark","#031a26d0").AddParser("color").GetId();
-        edge_=RegisterProperty("edge","2dp").AddParser("length").GetId();
-        corner_=RegisterProperty("corner","2dp").AddParser("length").GetId();
-        RegisterShorthand("decorator","fill, light, dark, edge, corner",Rml::ShorthandType::FallThrough);
+    RimInstancer() {
+        fill_=RegisterProperty("fill","#042537cc").AddParser("color").GetId();
+        outline_=RegisterProperty("outline","#010c20ff").AddParser("color").GetId();
+        shade_=RegisterProperty("shade","#01091cff").AddParser("color").GetId();
+        edge_=RegisterProperty("edge","4dp").AddParser("length").GetId();
+        corner_=RegisterProperty("corner","3dp").AddParser("length").GetId();
+        depth_=RegisterProperty("depth","2dp").AddParser("length").GetId();
+        gap_start_=RegisterProperty("gap-start","0dp").AddParser("length").GetId();
+        gap_width_=RegisterProperty("gap-width","0dp").AddParser("length").GetId();
+        RegisterShorthand("decorator","fill, outline, shade, edge, corner, depth, gap-start, gap-width",Rml::ShorthandType::FallThrough);
     }
-    Rml::SharedPtr<Rml::Decorator> InstanceDecorator(const Rml::String&,const Rml::PropertyDictionary& properties,const Rml::DecoratorInstancerInterface&) override {
-        return Rml::MakeShared<FrameDecorator>(properties.GetProperty(fill_)->Get<Rml::Colourb>(),properties.GetProperty(light_)->Get<Rml::Colourb>(),properties.GetProperty(dark_)->Get<Rml::Colourb>(),*properties.GetProperty(edge_),*properties.GetProperty(corner_));
+    Rml::SharedPtr<Rml::Decorator> InstanceDecorator(const Rml::String& name,const Rml::PropertyDictionary& properties,const Rml::DecoratorInstancerInterface&) override {
+        return Rml::MakeShared<RimDecorator>(properties.GetProperty(fill_)->Get<Rml::Colourb>(),properties.GetProperty(outline_)->Get<Rml::Colourb>(),properties.GetProperty(shade_)->Get<Rml::Colourb>(),*properties.GetProperty(edge_),*properties.GetProperty(corner_),*properties.GetProperty(depth_),*properties.GetProperty(gap_start_),*properties.GetProperty(gap_width_),name=="pixel-tab");
     }
-private: Rml::PropertyId fill_,light_,dark_,edge_,corner_;
+private:Rml::PropertyId fill_,outline_,shade_,edge_,corner_,depth_,gap_start_,gap_width_;
+};
+
+class PixelOutline final:public Rml::FontEffect {
+public:
+    explicit PixelOutline(int radius,bool pigment=false):radius_(radius),pigment_(pigment) { SetLayer(Layer::Back); }
+    bool HasUniqueTexture() const override { return true; }
+    bool GetGlyphMetrics(Rml::Vector2i& origin,Rml::Vector2i& dimensions,const Rml::FontGlyph&) const override {
+        if(dimensions.x<=0 || dimensions.y<=0) return false;
+        if(pigment_) dimensions.x+=radius_;
+        else { origin.x-=radius_;origin.y-=radius_;dimensions.x+=2*radius_;dimensions.y+=2*radius_; }
+        return true;
+    }
+    void GenerateGlyphTexture(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph) const override {
+        if(pigment_) pixel_glyph_bolden(destination,size,stride,glyph,radius_);
+        else pixel_glyph_dilate(destination,size,stride,glyph,radius_);
+    }
+private: int radius_;bool pigment_;
+};
+class PixelOutlineInstancer final:public Rml::FontEffectInstancer {
+public:
+    PixelOutlineInstancer() {
+        radius_=RegisterProperty("width","1dp",true).AddParser("length").GetId();
+        colour_=RegisterProperty("color","#ffffff",false).AddParser("color").GetId();
+        RegisterShorthand("font-effect","width, color",Rml::ShorthandType::FallThrough);
+    }
+    Rml::SharedPtr<Rml::FontEffect> InstanceFontEffect(const Rml::String& name,const Rml::PropertyDictionary& properties) override {
+        const float width=properties.GetProperty(radius_)->Get<float>();
+        if(!std::isfinite(width) || width<=0 || width>16) return nullptr;
+        auto effect=Rml::MakeShared<PixelOutline>(std::max(1,static_cast<int>(std::round(width))),name=="pixel-bold");
+        effect->SetColour(properties.GetProperty(colour_)->Get<Rml::Colourb>());
+        return effect;
+    }
+private: Rml::PropertyId radius_,colour_;
 };
 
 }
@@ -119,40 +154,103 @@ PixelMesh pixel_mesh(float width,float height,float step,float shadow,Rml::Colou
     shape(mesh,0,0,width,height,s,fill);
     return mesh;
 }
-PixelMesh pixel_frame_mesh(float width,float height,float edge,float corner,Rml::Colourb fill,Rml::Colourb light,Rml::Colourb dark) {
+PixelMesh pixel_rim_mesh(float width,float height,float edge,float corner,float depth,Rml::Colourb fill,Rml::Colourb outline,Rml::Colourb shade,float gap_start,float gap_width) {
     PixelMesh mesh;
     if(!std::isfinite(width)||!std::isfinite(height)||width<=0||height<=0) return mesh;
-    const float e=std::isfinite(edge)?std::clamp(std::round(edge),1.f,std::max(1.f,std::floor(std::min(width,height)/6))):1.f;
-    const float c=std::isfinite(corner)?std::clamp(std::round(corner),0.f,std::floor(std::min(width,height)/8)):0.f;
-    const float inner_corner=std::max(0.f,c-e),inner_height=height-2*e;
-    const auto inset=[](float y,float h,float corner){return y<corner || y>=h-corner?2*corner:y<2*corner || y>=h-2*corner?corner:0.f;};
-    // Partition at every outer/inner stair height. Fill and bevel bands are
-    // disjoint, so a translucent centre is blended exactly once, never over
-    // a second full-size dark shell. The geometry remains whole-pixel.
-    Rml::Vector<float> rows={0,c,2*c,height-2*c,height-c,height,e,e+inner_corner,e+2*inner_corner,height-e-2*inner_corner,height-e-inner_corner,height-e};
-    for(auto& y:rows) y=std::clamp(y,0.f,height);
+    const float e=std::clamp(std::round(edge),1.f,std::max(1.f,std::floor(std::min(width,height)/6)));
+    const float c=std::clamp(std::round(corner),0.f,std::floor(std::min(width,height)/8));
+    const float d=std::clamp(std::round(depth),0.f,std::max(0.f,std::floor(std::min(width,height)/6)));
+    const auto inset=[&](float y){return y<c || y>=height-c?2*c:y<2*c || y>=height-2*c?c:0.f;};
+    Rml::Vector<float> rows={0,c,2*c,height-2*c,height-c,height,e,height-e,height-e-d,c+e,2*c+e,height-c-e,height-2*c-e};
+    for(auto& y:rows)y=std::clamp(y,0.f,height);
     std::sort(rows.begin(),rows.end());rows.erase(std::unique(rows.begin(),rows.end()),rows.end());
+    const float gap_left=std::clamp(std::round(gap_start),0.f,width),gap_right=std::clamp(std::round(gap_start+std::max(0.f,gap_width)),0.f,width);
     for(std::size_t i=1;i<rows.size();++i) {
-        const float top=rows[i-1],h=rows[i]-top,mid=top+h/2;
-        const float outer=inset(mid,height,c),right=width-outer;
-        if(mid<e || mid>=height-e || inner_height<=0 || width<=2*e) {
-            quad(mesh,outer,top,right-outer,h,mid<e?light:dark);
+        const float top=rows[i-1],h=rows[i]-top,mid=top+h/2,outer=inset(mid),right=width-outer;
+        if(mid<e || mid>=height-e) {
+            // A tab neck supplies this top-ring gap. No panel paint beneath it,
+            // so the neck's translucent join face is blended exactly once.
+            if(mid<e && gap_right>gap_left) {quad(mesh,outer,top,std::max(0.f,std::min(right,gap_left)-outer),h,outline);quad(mesh,std::max(outer,gap_right),top,std::max(0.f,right-std::max(outer,gap_right)),h,outline);}
+            else quad(mesh,outer,top,right-outer,h,outline);
             continue;
         }
-        const float inner=std::max(outer,e+inset(mid-e,inner_height,inner_corner)),inner_right=std::min(right,width-e-inset(mid-e,inner_height,inner_corner));
-        quad(mesh,outer,top,inner-outer,h,light);
-        quad(mesh,inner,top,inner_right-inner,h,fill);
-        quad(mesh,inner_right,top,right-inner_right,h,dark);
+        const float inner=std::max(outer,e+std::max(inset(mid-e),inset(mid+e))),inner_right=std::min(right,width-inner);
+        quad(mesh,outer,top,inner-outer,h,outline);quad(mesh,inner_right,top,right-inner_right,h,outline);
+        if(mid>=height-e-d)quad(mesh,inner,top,inner_right-inner,h,shade);
+        else {const float shade_left=std::max(inner,inner_right-d);quad(mesh,inner,top,shade_left-inner,h,fill);quad(mesh,shade_left,top,inner_right-shade_left,h,shade);}
     }
     return mesh;
+}
+PixelMesh pixel_tab_mesh(float width,float height,float edge,float shoulder,float neck,Rml::Colourb fill,Rml::Colourb outline,Rml::Colourb join) {
+    PixelMesh mesh;
+    if(!std::isfinite(width)||!std::isfinite(height)||width<=0||height<=0) return mesh;
+    const float e=std::clamp(std::round(edge),1.f,std::max(1.f,std::floor(std::min(width,height)/6)));
+    const float c=std::clamp(std::round(shoulder),1.f,std::max(1.f,std::floor(std::min(width,height)/8)));
+    const float n=std::clamp(std::round(neck),0.f,std::max(0.f,height-e));
+    const float shoulder_height=height-n;
+    const float s1=std::round(shoulder_height*.3f),s2=std::round(shoulder_height*.6f),s3=std::round(shoulder_height*.9f);
+    // The outline widens throughout almost the complete face, rather than
+    // hiding a square button behind a pair of small cuts at its upper corners.
+    const auto inset=[&](float y){return y<s1?3*c:y<s2?2*c:y<s3?c:0.f;};
+    Rml::Vector<float> rows={0,s1,s2,s3,height,e,s1+e,s2+e,s3+e,height-n};
+    for(auto& y:rows)y=std::clamp(y,0.f,height);
+    std::sort(rows.begin(),rows.end());rows.erase(std::unique(rows.begin(),rows.end()),rows.end());
+    for(std::size_t i=1;i<rows.size();++i) {
+        const float top=rows[i-1],h=rows[i]-top,mid=top+h/2,outer=inset(mid),right=width-outer;
+        if(mid<e){quad(mesh,outer,top,right-outer,h,outline);continue;}
+        const float inner=std::max(outer,e+inset(mid-e)),inner_right=std::min(right,width-inner);
+        quad(mesh,outer,top,inner-outer,h,outline);quad(mesh,inner_right,top,right-inner_right,h,outline);
+        quad(mesh,inner,top,inner_right-inner,h,mid>=height-n?join:fill);
+    }
+    return mesh;
+}
+void pixel_glyph_dilate(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph,int radius) {
+    if(!destination || size.x<=0 || size.y<=0 || stride<size.x*4 || radius<1 || radius>16) return;
+    const bool rgba=glyph.color_format==Rml::ColorFormat::RGBA8;
+    const int channels=rgba?4:1;
+    for(int y=0;y<size.y;++y) for(int x=0;x<size.x;++x) {
+        bool covered=false;
+        if(glyph.bitmap_data) for(int dy=-radius;dy<=radius && !covered;++dy) {
+            const int sy=y-radius+dy;
+            if(sy<0 || sy>=glyph.bitmap_dimensions.y) continue;
+            for(int dx=-radius;dx<=radius;++dx) {
+                const int sx=x-radius+dx;
+                if(sx<0 || sx>=glyph.bitmap_dimensions.x) continue;
+                if(glyph.bitmap_data[(sy*glyph.bitmap_dimensions.x+sx)*channels+(rgba?3:0)]>=128) { covered=true;break; }
+            }
+        }
+        auto* pixel=destination+y*stride+x*4;
+        pixel[0]=pixel[1]=pixel[2]=255;pixel[3]=covered?255:0;
+    }
+}
+void pixel_glyph_bolden(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph,int width) {
+    if(!destination || size.x<=0 || size.y<=0 || stride<size.x*4 || width<1 || width>16) return;
+    // One-sided horizontal emboldening adds genuine pigment to vertical strokes
+    // without closing both sides of narrow CJK counters or widening row gaps.
+    const bool rgba=glyph.color_format==Rml::ColorFormat::RGBA8;
+    const int channels=rgba?4:1;
+    for(int y=0;y<size.y;++y) for(int x=0;x<size.x;++x) {
+        bool covered=false;
+        if(glyph.bitmap_data && y<glyph.bitmap_dimensions.y) for(int dx=0;dx<=width;++dx) {
+            const int sx=x-dx;
+            if(sx<0 || sx>=glyph.bitmap_dimensions.x) continue;
+            if(glyph.bitmap_data[(y*glyph.bitmap_dimensions.x+sx)*channels+(rgba?3:0)]>=128) { covered=true;break; }
+        }
+        auto* pixel=destination+y*stride+x*4;
+        pixel[0]=pixel[1]=pixel[2]=255;pixel[3]=covered?255:0;
+    }
 }
 void register_pixel_decorator() {
     // Factory retains a non-owning pointer; the instancer must outlive contexts.
     static PixelInstancer instancer;
-    static FrameInstancer frame;
+    static PixelOutlineInstancer outline;
+    static RimInstancer rim;
     Rml::Factory::RegisterDecoratorInstancer("pixel",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-down",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-up",&instancer);
-    Rml::Factory::RegisterDecoratorInstancer("pixel-frame",&frame);
+    Rml::Factory::RegisterDecoratorInstancer("pixel-rim",&rim);
+    Rml::Factory::RegisterDecoratorInstancer("pixel-tab",&rim);
+    Rml::Factory::RegisterFontEffectInstancer("pixel-outline",&outline);
+    Rml::Factory::RegisterFontEffectInstancer("pixel-bold",&outline);
 }
 }

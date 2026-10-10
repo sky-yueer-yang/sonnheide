@@ -68,3 +68,7 @@ docs/evidence/s00-s01-arcade/*.png -filter -diff -merge -text
 docs/evidence/arcade-v2/*.png -filter -diff -merge -text
 # Bounded lossless captures of the actual large-world/translucent native batch.
 docs/evidence/large-world-micro/*.png -filter -diff -merge -text
+
+docs/evidence/heavy-arcade/*.png -filter -diff -merge -text
+# Raw tool logs preserve upstream whitespace as recorded evidence.
+docs/evidence/heavy-arcade/*.log -text -whitespace

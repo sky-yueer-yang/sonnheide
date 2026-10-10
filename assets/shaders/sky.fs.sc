@@ -36,7 +36,7 @@ vec3 illustratedSky(vec3 ray){
 vec3 starfield(vec2 coordinate){
  float time=u_menuScene.y;vec2 screen=u_menuScene.zw;vec2 pixel=floor(coordinate*screen);
  float band=floor(coordinate.y*48.0)/48.0;
- vec3 color=mix(vec3(0.012,0.058,0.103),vec3(0.018,0.113,0.170),band);
+ vec3 color=mix(vec3(0.0118,0.0941,0.1647),vec3(0.0235,0.1647,0.2588),band);
  // Fine sparse stars sit on a logical pixel grid, so retina resolution does
  // not inflate them into tiles. Every cell uses a fixed local art seed.
  vec2 cell=floor(pixel/22.0);float seed=artHash(cell+19.0);

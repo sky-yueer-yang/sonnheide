@@ -10,13 +10,12 @@ namespace Rml { class Context; class ElementDocument; class Event; }
 namespace sonnheide::ui {
 enum class Screen { MainMenu, Creation, World, Load };
 enum class Locale { Chinese, English, German };
-enum class CreationMode { Blank, Earth };
 enum class BlankBase { Ocean, Soil };
 enum class BottomSection { Observe, TerrainEcology, Life, Civilization, Construction, Economy, World, Settings };
 enum class ActionKind {
     NewWorld, ContinueWorld, OpenLoad, CancelLoad, SelectSave, LoadSelected, SaveWorld, ReturnMenu, Exit,
-    SetCreationMode, SetBlankBase, SetCreationSize, SetCreationName, SetCreationTheme,
-    SetEarthBounds, MapZoom, MapPan, RequestPreview, CreateWorld, CancelCreation,
+    SetBlankBase, SetCreationSize, SetCreationName, SetCreationTheme,
+    RequestPreview, CreateWorld, CancelCreation,
     OpenSettings, CloseSettings, OpenHelp, CloseHelp, SetLocale, SetFullscreen, SetReducedMotion, SetAudioVolume,
     SelectBottomSection, CameraHome, SetPaused, SetSpeed,
     OpenWorldInspector, CloseWorldInspector, SetWorldNameDraft, PreviewWorldName, CommitWorldName, CancelWorldName,
@@ -34,21 +33,14 @@ struct Action {
 struct SaveEntry { std::string id; std::string name; std::string detail; friend bool operator==(const SaveEntry&,const SaveEntry&)=default; };
 struct CreationView {
     std::uint64_t generation = 0;
-    CreationMode mode = CreationMode::Blank;
     BlankBase base = BlankBase::Soil;
     std::string name;
     std::string theme = "flower_meadow";
     int width = 1024, height = 1024, cell_mm = 2000;
-    double west = -12, south = 35, east = 15, north = 58;
-    bool earth_available = false;
     bool can_select_theme = false;
     bool preview_ready = false;
     bool busy = false;
     std::uint64_t preview_token = 0;
-    std::string package_status;
-    // Screen-space presentation only. The controller owns geographic bounds.
-    bool selection_visible = false;
-    double selection_left = 0, selection_top = 0, selection_right = 0, selection_bottom = 0;
     friend bool operator==(const CreationView&,const CreationView&)=default;
 };
 struct WorldView {
@@ -83,7 +75,7 @@ struct View {
     std::string status_key;
     friend bool operator==(const View&,const View&)=default;
 };
-struct Viewport { float x=0,y=0,width=0,height=0; bool earth_map=false; };
+struct Viewport { float x=0,y=0,width=0,height=0; };
 class Ui final : public Rml::EventListener {
 public:
     explicit Ui(std::filesystem::path resources);
@@ -106,7 +98,7 @@ public:
 private:
     void refresh();
     void layout();
-    void update_map_selection();
+    void focus_underlying_controls();
     void update_creation_scale();
     void emit(ActionKind kind,const std::string& text={},double a=0,double b=0,double c=0,double d=0);
     std::string text(const std::string& key) const;
@@ -124,6 +116,8 @@ private:
     bool settings_open_=false,world_open_=false,help_open_=false,controls_open_=true;
     bool syncing_controls_=false;
     bool error_details_open_=false;
+    float outline_density_=0;
+    bool outline_compact_=false;
     BottomSection section_=BottomSection::Observe;
     std::uint64_t creation_generation_=UINT64_MAX,rename_session_=UINT64_MAX;
     std::string creation_name_,rename_name_;

@@ -24,14 +24,12 @@ namespace ui=sonnheide::ui;
 namespace client=sonnheide::client;
 namespace fs=std::filesystem;
 using Clock=std::chrono::steady_clock;
-static constexpr char GEO_HASH[]="af9215d58ebc525b2d09654a89959829f09e6edc457f3666759cded37be4ecf6";
 static fs::path utf8_file(std::string_view s){return fs::path(std::u8string(reinterpret_cast<const char8_t*>(s.data()),s.size()));}
 static sonn::Uuid new_id(){std::random_device r;sonn::Uuid id{};for(auto& x:id)x=static_cast<std::uint8_t>(r());return id;}
 static sonn::Hash new_seed(){std::random_device r;sonn::Hash s{};for(auto& x:s)x=static_cast<std::uint8_t>(r());return s;}
 static std::string utf8_path(const fs::path& p){auto u=p.u8string();return {reinterpret_cast<const char*>(u.data()),u.size()};}
 static std::string bytes_text(const sonn::Bytes& b){return {reinterpret_cast<const char*>(b.data()),b.size()};}
 struct CandidateJob {sonn::CreationDraft draft; std::shared_ptr<std::atomic_bool> canceled; std::future<sonn::World> result;};
-struct MapResult {int width{},height{};std::uint64_t revision{};std::vector<std::uint8_t> rgba;};
 static sonn::DefinitionPackage admit_runtime(const fs::path& root){
   auto package=sonn::admit_definitions(root/"definitions.json",root);
   const std::vector<std::string> required_definitions={
@@ -48,26 +46,20 @@ class App {
  sonn::DefinitionPackage definitions_;
  sonn::SaveStore saves_;
  sonn::WorldSession session_;
- std::shared_ptr<const sonn::Geography> geography_;
- std::future<std::shared_ptr<const sonn::Geography>> geo_job_;
  std::vector<CandidateJob> jobs_;
  std::optional<sonn::World> preview_;
  std::optional<sonn::CreationDraft> preview_draft_;
  std::optional<sonn::PreparedCommand> rename_;
- std::future<MapResult> map_job_;
- std::uint64_t map_generation_=0,preview_token_=0,command_sequence_=0,map_samples_started_=0,map_uploads_=0,selection_updates_=0,map_motion_events_=0;
- bool map_pending_=false,quit_=false,paused_=false,dragging_selection_=false,inspector_was_paused_=false,inspector_open_=false;
+ std::uint64_t preview_token_=0,command_sequence_=0;
+ bool quit_=false,paused_=false,inspector_was_paused_=false,inspector_open_=false;
  std::vector<ui::Action> platform_actions_;
  ui::Screen load_origin_=ui::Screen::MainMenu;
- int speed_=1;double tick_accumulator_=0,presentation_seconds_=0;double select_start_x_=0,select_start_y_=0;
- ui::Viewport selection_drag_viewport_;sonn::GeoRect selection_drag_rect_;
- sonn::GeoRect map_rect_{-180000000,180000000,-80000000,80000000};
+ int speed_=1;double tick_accumulator_=0,presentation_seconds_=0;
  ui::View view_;
  sonn::Bytes arcade_font_;
  client::Client client_;
  std::unique_ptr<ui::Ui> ui_;
- bool smoke_=false,smoke_coordinates_checked_=false,smoke_map_focus_sent_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0,smoke_selection_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
- std::uint64_t smoke_map_samples_=0,smoke_map_epoch_=0,smoke_selection_updates_=0,smoke_map_motion_events_=0;
+ bool smoke_=false,smoke_creation_captured_=false,smoke_sea_captured_=false,smoke_land_options_open_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
  client::Camera smoke_camera_before_{};
  sonn::Hash smoke_camera_world_{},smoke_large_surface_{};
  fs::path evidence_;
@@ -82,10 +74,9 @@ public:
   ui_=std::make_unique<ui::Ui>(resources_);auto d=client_.dimensions();std::string err;
   if(!ui_->initialize(d.pixel_w,d.pixel_h,d.density,err))throw sonn::Error("UI_DOCUMENT",err);
   view_.creation.can_select_theme=true;view_.creation.cell_mm=sonn::terrain_cell_size_mm;client_.audio_volume(view_.audio_volume/100.f);read_settings();refresh_saves();
-  geo_job_=std::async(std::launch::async,[root=resources_]{return std::make_shared<const sonn::Geography>(root/"geo/gshhs_f.b",sonn::hash_from_hex(GEO_HASH));});
   if(smoke_){fs::create_directories(evidence_);std::error_code ec;fs::remove(evidence_/"native-flow.json",ec);std::ofstream(evidence_/"gpu.json")<<client_.gpu_parameters_json();}
  }
- ~App(){for(auto& j:jobs_)j.canceled->store(true);for(auto& j:jobs_)if(j.result.valid())j.result.wait();if(map_job_.valid())map_job_.wait();if(geo_job_.valid())geo_job_.wait();ui_.reset();Rml::Shutdown();}
+ ~App(){for(auto& j:jobs_)j.canceled->store(true);for(auto& j:jobs_)if(j.result.valid())j.result.wait();ui_.reset();Rml::Shutdown();}
  int run(){
   auto previous=Clock::now();
   while(!quit_){
@@ -100,7 +91,7 @@ public:
     // Bounded work budget carries remainder; no skipped authoritative ticks.
     unsigned n=0;while(tick_accumulator_>=1&&n++<256){session_.active()->advance_tick();tick_accumulator_-=1;}
    }
-   sync_view();refresh_selection_overlay();
+   sync_view();
    // Local animation has no simulation RNG/tick owner. Resume without a time jump.
    if(client_.visible()&&!view_.reduced_motion&&!(session_.active()&&view_.screen==ui::Screen::World&&paused_))presentation_seconds_+=std::clamp(dt,0.0,0.1);
    const sonn::World* w=view_.screen==ui::Screen::World&&session_.active()?&session_.active()->world():preview_?&*preview_:nullptr;
@@ -109,8 +100,8 @@ public:
    if(view_.screen==ui::Screen::Load&&load_origin_==ui::Screen::World&&session_.active())view_.presentation_darkness=session_.active()->world().age.current==sonn::Age::Darkness;
    ui_->set_view(view_);ui_->update();client_.sync_text_input(ui_->context());
    std::optional<client::SurfaceView> surface;if(w)surface=client::surface_view(*w);
-   auto v=ui_->viewport();bool map=view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth&&!preview_;
-   client_.map_overlay(static_cast<int>(v.x),static_cast<int>(v.y),static_cast<int>(v.width),static_cast<int>(v.height),map);
+   auto v=ui_->viewport();
+   client_.set_scene_viewport(static_cast<int>(v.x),static_cast<int>(v.y),static_cast<int>(v.width),static_cast<int>(v.height));
    const auto age=w&&w->age.current==sonn::Age::Darkness?client::Age::Darkness:client::Age::Light;
    client_.begin_frame(surface?&*surface:nullptr,age,presentation_seconds_);
    client_.begin_ui();ui_->render();client_.end_frame();
@@ -144,35 +135,27 @@ private:
   std::error_code ec;fs::rename(tmp,p,ec);if(ec)throw sonn::Error("SETTINGS_WRITE",ec.message());
 #endif
  }
- sonn::CreationDraft draft() const{sonn::CreationDraft d;d.kind=view_.creation.mode==ui::CreationMode::Earth?sonn::CreationKind::Earth:view_.creation.base==ui::BlankBase::Soil?sonn::CreationKind::BlankLand:sonn::CreationKind::BlankSea;d.name=view_.creation.name;constexpr std::array<std::string_view,8> themes{"snowfield","flower_meadow","maple_field","cherry_field","wetland","savanna","sonnheide_sacred","volcanic"};auto ti=std::find(themes.begin(),themes.end(),view_.creation.theme);if(ti==themes.end())throw sonn::Error("INVALID_THEME",view_.creation.theme);d.soil_theme=static_cast<std::uint8_t>(ti-themes.begin());d.core_width=view_.creation.width;d.core_height=view_.creation.height;
-  auto u=[](double x){if(!std::isfinite(x)||x<-360||x>540)throw sonn::Error("EARTH_BOUNDS","Geographic coordinate out of range");return static_cast<std::int32_t>(std::llround(x*1000000));};
-  auto west=u(view_.creation.west),east=u(view_.creation.east);std::int64_t shift=(static_cast<std::int64_t>(west)+180000000)/360000000;if(west< -180000000)shift=(static_cast<std::int64_t>(west)+180000000-359999999)/360000000;west=static_cast<std::int32_t>(west-shift*360000000);east=static_cast<std::int32_t>(east-shift*360000000);d.selection={west,east,u(view_.creation.south),u(view_.creation.north)};d.world_id=new_id();d.seed=new_seed();return d;
+ sonn::CreationDraft draft() const{
+  sonn::CreationDraft d;
+  d.kind=view_.creation.base==ui::BlankBase::Soil?sonn::CreationKind::BlankLand:sonn::CreationKind::BlankSea;
+  d.name=view_.creation.name;
+  constexpr std::array<std::string_view,8> themes{"snowfield","flower_meadow","maple_field","cherry_field","wetland","savanna","sonnheide_sacred","volcanic"};
+  auto ti=std::find(themes.begin(),themes.end(),view_.creation.theme);
+  if(ti==themes.end())throw sonn::Error("INVALID_THEME",view_.creation.theme);
+  d.soil_theme=static_cast<std::uint8_t>(ti-themes.begin());d.core_width=view_.creation.width;d.core_height=view_.creation.height;
+  d.world_id=new_id();d.seed=new_seed();return d;
  }
- void invalidate_preview(){stop_selection_drag();for(auto& j:jobs_)j.canceled->store(true);session_.cancel();preview_.reset();preview_draft_.reset();view_.creation.preview_ready=false;view_.creation.busy=false;view_.creation.generation=++preview_token_;}
+ void invalidate_preview(){for(auto& j:jobs_)j.canceled->store(true);session_.cancel();preview_.reset();preview_draft_.reset();view_.creation.preview_ready=false;view_.creation.busy=false;view_.creation.generation=++preview_token_;}
  void request_preview(){invalidate_preview();auto d=session_.begin(draft());view_.creation.generation=d.draft_generation;view_.creation.busy=true;
-  auto canceled=std::make_shared<std::atomic_bool>(false);auto def=definitions_;auto geo=geography_;
-  if(d.kind==sonn::CreationKind::Earth&&!geo)throw sonn::Error("GEOGRAPHY_LOADING","Geographic source is still being admitted");
-  jobs_.push_back({d,canceled,std::async(std::launch::async,[d,def,geo,canceled]{return sonn::create_candidate(d,def,geo.get(),[canceled]{return canceled->load();});})});
+  auto canceled=std::make_shared<std::atomic_bool>(false);auto def=definitions_;
+  jobs_.push_back({d,canceled,std::async(std::launch::async,[d,def,canceled]{return sonn::create_candidate(d,def,nullptr,[canceled]{return canceled->load();});})});
  }
  void poll_jobs(){
-  if(geo_job_.valid()&&geo_job_.wait_for(std::chrono::milliseconds(0))==std::future_status::ready){try{geography_=geo_job_.get();view_.creation.earth_available=true;map_pending_=true;}catch(const sonn::Error& e){error(e.code,e.what());}}
   for(auto it=jobs_.begin();it!=jobs_.end();){if(it->result.wait_for(std::chrono::milliseconds(0))!=std::future_status::ready){++it;continue;}
    try{auto w=it->result.get();if(!it->canceled->load()&&session_.accepts(it->draft)){
     preview_=std::move(w);preview_draft_=it->draft;view_.creation.preview_ready=true;view_.creation.busy=false;view_.creation.preview_token=++preview_token_;client_.frame_surface(client::surface_view(*preview_));
    }}catch(const sonn::Error& e){if(!it->canceled->load()&&session_.accepts(it->draft)){view_.creation.busy=false;error(e.code,e.what());}}
    it=jobs_.erase(it);
-  }
-  if(map_job_.valid()&&map_job_.wait_for(std::chrono::milliseconds(0))==std::future_status::ready){try{auto m=map_job_.get();if(m.revision==map_generation_){client_.set_map_rgba(m.width,m.height,m.rgba,m.revision);++map_uploads_;}}catch(const std::exception& e){error("MAP_SAMPLE",e.what());}}
-  if(map_pending_&&geography_&&!map_job_.valid()&&view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth){
-   map_pending_=false;auto geo=geography_;auto rect=map_rect_;auto gen=++map_generation_;++map_samples_started_;
-   auto v=ui_->viewport();int w=std::clamp(static_cast<int>(v.width),512,1600);int h=std::clamp(static_cast<int>(v.height),256,1000);
-   map_job_=std::async(std::launch::async,[geo,rect,gen,w,h]{auto values=geo->sample(rect,w,h);MapResult result{w,h,gen,{}};result.rgba.resize(static_cast<std::size_t>(w)*h*4);
-    for(int y=0;y<h;y++)for(int x=0;x<w;x++){
-     // The source runs south-to-north. Selection is a live UI overlay, never part of this expensive source raster.
-     bool land=values[(h-1-y)*w+x]!=0;
-     auto i=static_cast<std::size_t>(y*w+x)*4;std::array<int,3> rgb=land?std::array<int,3>{59,132,106}:std::array<int,3>{35,67,121};
-     for(int k=0;k<3;k++)result.rgba[i+k]=static_cast<std::uint8_t>(rgb[k]);result.rgba[i+3]=255;
-    }return result;});
   }
  }
  void apply_command(const sonn::Command& command){auto* a=session_.active();if(!a)throw sonn::Error("NO_WORLD","No active world");sonn::Envelope e{a->world().id,session_.generation(),a->world().revision,++command_sequence_,"ui-"+std::to_string(command_sequence_)};a->commit(a->prepare(e,command));view_.world.dirty=true;}
@@ -189,14 +172,10 @@ private:
   case A::SaveWorld:if(session_.active()){auto c=saves_.save(session_.active()->world(),definitions_);if(c.status!=sonn::SaveStatus::Committed)throw sonn::Error(c.code,"World checkpoint was not confirmed durable");view_.world.dirty=false;view_.status_key="saved";refresh_saves();}break;
   case A::ReturnMenu:if(session_.active()){auto c=saves_.save(session_.active()->world(),definitions_);if(c.status!=sonn::SaveStatus::Committed)throw sonn::Error(c.code,"Return to menu stopped: save could not be confirmed");}session_.return_to_menu();invalidate_preview();view_.screen=ui::Screen::MainMenu;refresh_saves();break;
   case A::Exit:if(session_.active()){auto c=saves_.save(session_.active()->world(),definitions_);if(c.status!=sonn::SaveStatus::Committed)throw sonn::Error(c.code,"Exit stopped: save could not be confirmed");}quit_=true;break;
-  case A::SetCreationMode:invalidate_preview();view_.creation.mode=a.text=="earth"?ui::CreationMode::Earth:ui::CreationMode::Blank;break;
   case A::SetBlankBase:invalidate_preview();view_.creation.base=a.text=="ocean"?ui::BlankBase::Ocean:ui::BlankBase::Soil;break;
   case A::SetCreationSize:invalidate_preview();view_.creation.width=static_cast<int>(a.a);view_.creation.height=static_cast<int>(a.b);break;
   case A::SetCreationTheme:invalidate_preview();view_.creation.theme=a.text;break;
   case A::SetCreationName:invalidate_preview();view_.creation.name=a.text;break;
-  case A::SetEarthBounds:invalidate_preview();view_.creation.west=a.a;view_.creation.south=a.b;view_.creation.east=a.c;view_.creation.north=a.d;if(!coordinates_representable())throw sonn::Error("EARTH_BOUNDS","Longitude must be within -360…540 and latitude within -90…90 degrees");break;
-  case A::MapZoom:map_zoom(a.a);break;
-  case A::MapPan:map_pan(a.a*.15,a.b*.15);break;
   case A::RequestPreview:request_preview();break;
   case A::CreateWorld:{if(!preview_||!preview_draft_||a.token!=view_.creation.preview_token||a.generation!=view_.creation.generation)throw sonn::Error("PREVIEW_STALE","Create preview is no longer current");sonn::Checkpoint c;if(!session_.publish(*preview_draft_,*preview_,saves_,definitions_,c))throw sonn::Error(c.code,"Initial checkpoint publication failed");preview_.reset();preview_draft_.reset();show_world();refresh_saves();break;}
   case A::CancelCreation:invalidate_preview();view_.screen=session_.active()?ui::Screen::World:ui::Screen::MainMenu;break;
@@ -220,78 +199,16 @@ private:
   }
  }
  void show_world(){if(!session_.active())throw sonn::Error("NO_WORLD","Continue has no compatible world");view_.screen=ui::Screen::World;if(inspector_open_)paused_=inspector_was_paused_;inspector_open_=false;command_sequence_=std::max(command_sequence_,session_.active()->world().input_sequence);tick_accumulator_=0;rename_.reset();client_.frame_surface(client::surface_view(session_.active()->world()));}
- bool coordinates_representable()const{const auto& c=view_.creation;return std::isfinite(c.west)&&std::isfinite(c.east)&&std::isfinite(c.south)&&std::isfinite(c.north)&&c.west>=-360&&c.west<=540&&c.east>=-360&&c.east<=540&&c.south>=-90&&c.south<=90&&c.north>=-90&&c.north<=90;}
- void sync_view(){if(view_.creation.mode==ui::CreationMode::Earth&&coordinates_representable()){const auto micro=[](double value){return static_cast<std::int64_t>(std::llround(value*1000000));};const auto span=micro(view_.creation.east)-micro(view_.creation.west),lat=micro(view_.creation.north)-micro(view_.creation.south);if(span>0&&lat>0&&view_.creation.width>0&&view_.creation.width<=sonn::maximum_core_cells){const auto h=(static_cast<std::int64_t>(view_.creation.width)*lat+span-1)/span;view_.creation.height=static_cast<int>(std::clamp<std::int64_t>(h,1,100000));}}if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id||counted_geometry_revision_!=w.terrain.surface_revision()){counted_world_=w.id;counted_geometry_revision_=w.terrain.surface_revision();const auto d=static_cast<std::uint64_t>(w.terrain.micro_divisions());view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard)*d*d;view_.world.dry_cells=w.terrain.dry_micro_count();}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
- void refresh_selection_overlay(){
-  auto& c=view_.creation;
-  c.selection_visible=view_.screen==ui::Screen::Creation&&c.mode==ui::CreationMode::Earth&&!preview_;
-  const double width=static_cast<double>(map_rect_.east_unwrapped_udeg)-map_rect_.west_udeg;
-  const double height=static_cast<double>(map_rect_.north_udeg)-map_rect_.south_udeg;
-  if(width<=0||height<=0){c.selection_visible=false;return;}
-  const double left=(c.west*1000000-map_rect_.west_udeg)/width;
-  const double right=(c.east*1000000-map_rect_.west_udeg)/width;
-  const double top=(map_rect_.north_udeg-c.north*1000000)/height;
-  const double bottom=(map_rect_.north_udeg-c.south*1000000)/height;
-  c.selection_left=std::clamp(left,0.,1.);c.selection_right=std::clamp(right,0.,1.);
-  c.selection_top=std::clamp(top,0.,1.);c.selection_bottom=std::clamp(bottom,0.,1.);
-  c.selection_visible=c.selection_visible&&right>0&&left<1&&bottom>0&&top<1;
- }
- void stop_selection_drag(){if(dragging_selection_)SDL_CaptureMouse(false);dragging_selection_=false;}
- void update_selection_drag(double px,double py){
-  const auto& v=selection_drag_viewport_;if(v.width<=0||v.height<=0)return;
-  const double ax=std::clamp((select_start_x_-v.x)/v.width,0.,1.),ay=std::clamp((select_start_y_-v.y)/v.height,0.,1.);
-  const double bx=std::clamp((px-v.x)/v.width,0.,1.),by=std::clamp((py-v.y)/v.height,0.,1.);
-  const auto& r=selection_drag_rect_;
-  const double width=(static_cast<double>(r.east_unwrapped_udeg)-r.west_udeg)/1000000.;
-  const double height=(static_cast<double>(r.north_udeg)-r.south_udeg)/1000000.;
-  auto& c=view_.creation;
-  c.west=r.west_udeg/1000000.+std::min(ax,bx)*width;
-  c.east=std::min(r.east_unwrapped_udeg/1000000.,c.west+std::max(.000001,std::abs(ax-bx)*width));
-  c.north=r.north_udeg/1000000.-std::min(ay,by)*height;
-  c.south=std::max(r.south_udeg/1000000.,c.north-std::max(.000001,std::abs(ay-by)*height));
-  ++selection_updates_;refresh_selection_overlay();
- }
- void map_zoom(double amount){stop_selection_drag();double factor=amount>0?.7:1.0/.7;double cx=(static_cast<double>(map_rect_.west_udeg)+map_rect_.east_unwrapped_udeg)/2;double cy=(static_cast<double>(map_rect_.south_udeg)+map_rect_.north_udeg)/2;double w=std::clamp((map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg))*factor,500.,360000000.);double h=std::clamp((map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg))*factor,500.,160000000.);map_rect_={static_cast<int>(cx-w/2),static_cast<int>(cx+w/2),static_cast<int>(std::max(-80000000.,cy-h/2)),static_cast<int>(std::min(80000000.,cy+h/2))};map_pending_=true;++map_generation_;}
- void map_pan(double dx,double dy){stop_selection_drag();double w=map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg),h=map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg);std::int64_t x=static_cast<std::int64_t>(std::clamp(dx,-.5,.5)*w),y=static_cast<std::int64_t>(std::clamp(dy,-.5,.5)*h);std::int64_t west=map_rect_.west_udeg+x;while(west< -180000000)west+=360000000;while(west>=180000000)west-=360000000;map_rect_.west_udeg=static_cast<int>(west);map_rect_.east_unwrapped_udeg=static_cast<int>(west+w);if(map_rect_.south_udeg+y>=-80000000&&map_rect_.north_udeg+y<=80000000){map_rect_.south_udeg+=static_cast<int>(y);map_rect_.north_udeg+=static_cast<int>(y);}map_pending_=true;++map_generation_;}
+ void sync_view(){if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id||counted_geometry_revision_!=w.terrain.surface_revision()){counted_world_=w.id;counted_geometry_revision_=w.terrain.surface_revision();const auto d=static_cast<std::uint64_t>(w.terrain.micro_divisions());view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard)*d*d;view_.world.dry_cells=w.terrain.dry_micro_count();}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
  void event(const SDL_Event& e){if(e.type==SDL_EVENT_QUIT){auto prior=ui_->take_actions();platform_actions_.insert(platform_actions_.end(),prior.begin(),prior.end());platform_actions_.push_back({ui::ActionKind::Exit});return;}
-  if(e.type==SDL_EVENT_WINDOW_FOCUS_LOST)stop_selection_drag();
-  if(e.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED||e.type==SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED){stop_selection_drag();auto d=client_.dimensions();ui_->resize(d.pixel_w,d.pixel_h,d.density);map_pending_=true;}
-  // A map press owns its entire drag, including pointer motion across UI and outside the viewport.
-  // Do not feed the release into a button under the pointer.
-  if(dragging_selection_&&(e.type==SDL_EVENT_MOUSE_MOTION||(e.type==SDL_EVENT_MOUSE_BUTTON_UP&&e.button.button==SDL_BUTTON_LEFT))){
-   const double px=e.type==SDL_EVENT_MOUSE_MOTION?e.motion.x:e.button.x;
-   const double py=e.type==SDL_EVENT_MOUSE_MOTION?e.motion.y:e.button.y;
-   if(e.type==SDL_EVENT_MOUSE_MOTION)++map_motion_events_;
-   update_selection_drag(px,py);
-   if(e.type==SDL_EVENT_MOUSE_BUTTON_UP){stop_selection_drag();invalidate_preview();}
-   return;
-  }
+  if(e.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED||e.type==SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED){auto d=client_.dimensions();ui_->resize(d.pixel_w,d.pixel_h,d.density);}
   bool consumed=client_.process_ui_event(e,ui_->context());
   if(e.type==SDL_EVENT_MOUSE_BUTTON_UP)client_.process_camera_event(e);
-  auto v=ui_->viewport();auto dim=client_.dimensions();float mx=0,my=0;
+  auto dim=client_.dimensions();float mx=0,my=0;
   const bool pointer=e.type==SDL_EVENT_MOUSE_MOTION||e.type==SDL_EVENT_MOUSE_BUTTON_DOWN||e.type==SDL_EVENT_MOUSE_BUTTON_UP||e.type==SDL_EVENT_MOUSE_WHEEL;
   if(e.type==SDL_EVENT_MOUSE_MOTION){mx=e.motion.x;my=e.motion.y;}else if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN||e.type==SDL_EVENT_MOUSE_BUTTON_UP){mx=e.button.x;my=e.button.y;}else if(e.type==SDL_EVENT_MOUSE_WHEEL){mx=e.wheel.mouse_x;my=e.wheel.mouse_y;}else SDL_GetMouseState(&mx,&my);
-  double px=mx,py=my;
-  bool inside=px>=v.x&&px<v.x+v.width&&py>=v.y&&py<v.y+v.height;
   const bool over_ui=pointer&&ui_->captures_pointer(static_cast<int>(mx*dim.density),static_cast<int>(my*dim.density));
-  // The map is deliberately pointer-transparent to RmlUi. Its context root
-  // cannot transfer document focus, so a real map press must release the
-  // previous text control before applying the typing barrier.
-  if(view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth&&!preview_&&inside&&!over_ui&&!ui_->blocks_world_input()&&e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT){
-   if(auto* focused=ui_->context().GetFocusElement())focused->Blur();
-   client_.sync_text_input(ui_->context());
-  }
-  if(ui_->text_input_focused()||ui_->blocks_world_input()||over_ui){if(e.type==SDL_EVENT_MOUSE_BUTTON_UP)stop_selection_drag();return;}
-  if(view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth&&!preview_){
-   if(e.type==SDL_EVENT_MOUSE_WHEEL&&inside){map_zoom(e.wheel.y);return;}
-   if(e.type==SDL_EVENT_MOUSE_MOTION&&inside&&(e.motion.state&SDL_BUTTON_RMASK)){map_pan(-e.motion.xrel/v.width,e.motion.yrel/v.height);return;}
-   if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT&&inside){
-    invalidate_preview();selection_drag_viewport_=v;selection_drag_rect_=map_rect_;
-    select_start_x_=px;select_start_y_=py;dragging_selection_=true;
-    SDL_CaptureMouse(true);
-   }
-   return;
-  }
+  if(ui_->text_input_focused()||ui_->blocks_world_input()||over_ui)return;
   if(!consumed&&(view_.screen==ui::Screen::World||preview_)){if(e.type==SDL_EVENT_KEY_DOWN&&e.key.key==SDLK_SPACE){paused_=!paused_;tick_accumulator_=0;}else client_.process_camera_event(e);}
  }
  bool exercise_native_camera(){
@@ -320,42 +237,35 @@ private:
   default:return true;
   }
  }
- bool exercise_native_selection(){
-  const auto v=ui_->viewport();
-  const auto push=[](SDL_Event e){if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map drag event could not be queued");};
-  const auto button=[&](std::uint32_t type,double x,double y){SDL_Event e{};e.type=type;e.button.button=SDL_BUTTON_LEFT;e.button.x=static_cast<float>(v.x+x*v.width);e.button.y=static_cast<float>(v.y+y*v.height);push(e);};
-  const auto motion=[&](double x,double y){SDL_Event e{};e.type=SDL_EVENT_MOUSE_MOTION;e.motion.state=SDL_BUTTON_LMASK;e.motion.x=static_cast<float>(v.x+x*v.width);e.motion.y=static_cast<float>(v.y+y*v.height);push(e);};
-  const auto check=[&](double right,double bottom){
-   const auto& c=view_.creation;
-   if(!dragging_selection_||!c.selection_visible||std::abs(c.selection_right-right)>.002||std::abs(c.selection_bottom-bottom)>.002||map_samples_started_!=smoke_map_samples_||map_generation_!=smoke_map_epoch_)
-    throw sonn::Error("SMOKE_MAP_CONTINUOUS","Selection did not update continuously without source raster work");
-   auto* el=ui_->context().GetDocument(0)->GetElementById("earth-selection");
-   if(!el)throw sonn::Error("SMOKE_MAP_OVERLAY","Actual native selection element missing");
-   const auto p=el->GetAbsoluteOffset(Rml::Box::BORDER),size=el->GetBox().GetSize(Rml::Box::BORDER);const auto density=client_.dimensions().density;
-   if(std::abs(p.x/density-(v.x+c.selection_left*v.width))>3||std::abs(p.y/density-(v.y+c.selection_top*v.height))>3||std::abs(size.x/density-(c.selection_right-c.selection_left)*v.width)>3||std::abs(size.y/density-(c.selection_bottom-c.selection_top)*v.height)>3)
-    throw sonn::Error("SMOKE_MAP_OVERLAY","Frame-local native rectangle did not follow pointer geometry");
-  };
-  switch(smoke_selection_phase_++){
-  case 0:smoke_map_samples_=map_samples_started_;smoke_map_epoch_=map_generation_;smoke_selection_updates_=selection_updates_;smoke_map_motion_events_=map_motion_events_;button(SDL_EVENT_MOUSE_BUTTON_DOWN,.15,.18);return false;
-  case 1:if(!dragging_selection_)throw sonn::Error("SMOKE_MAP_CAPTURE","Map did not capture native press");motion(.25,.30);return false;
-  case 2:check(.25,.30);client_.request_screenshot(evidence_/"earth-drag-a");motion(.45,.48);return false;
-  case 3:check(.45,.48);client_.request_screenshot(evidence_/"earth-drag-b");motion(.60,.58);return false;
-  case 4:check(.60,.58);motion(.80,.68);return false;
-  case 5:check(.80,.68);button(SDL_EVENT_MOUSE_BUTTON_UP,.80,.68);return false;
-  case 6:{
-   if(dragging_selection_||selection_updates_-smoke_selection_updates_<5||map_samples_started_!=smoke_map_samples_||map_generation_!=smoke_map_epoch_)
-    throw sonn::Error("SMOKE_MAP_RELEASE","Native selection release resampled map or retained capture");
-   std::ofstream report(evidence_/"map-selection.json");
-   report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"path","SDL press/motion/release -> frame-local Rml selection overlay"},{"source_rasters_started_during_drag",0},{"source_epoch_unchanged",true},{"frame_local_geometry_checks",4},{"actual_selection_updates",static_cast<std::int64_t>(selection_updates_-smoke_selection_updates_)},{"actual_motion_events",static_cast<std::int64_t>(map_motion_events_-smoke_map_motion_events_)},{"capture_released",true}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Selection report could not be written");
-   completed_actions_.push_back("earth-continuous-frame-local-selection");act({ui::ActionKind::SetEarthBounds,0,0,"",-6,49,2,55});return true;
-  }
-  default:return true;
-  }
+ void record_creation_dialog(const std::string& screenshot){
+  auto* doc=ui_->context().GetDocument(0);auto* dialog=doc->GetElementById("creation-controls");
+  if(!dialog||doc->GetElementById("earth-mode")||doc->GetElementById("earth-controls")||doc->GetElementById("map-controls"))throw sonn::Error("SMOKE_CREATION_UI","Blank-only centered creation UI required");
+  const auto p=dialog->GetAbsoluteOffset(Rml::Box::BORDER),size=dialog->GetBox().GetSize(Rml::Box::BORDER);const auto dim=client_.dimensions();
+  if(size.x<=0||size.y<=0||std::abs(p.x+size.x/2-dim.pixel_w/2.f)>3||std::abs(p.y+size.y/2-dim.pixel_h/2.f)>3||p.x<0||p.y<0||p.x+size.x>dim.pixel_w+1||p.y+size.y>dim.pixel_h+1)
+   throw sonn::Error("SMOKE_CREATION_CENTER","Actual creation dialog is not centered and bounded");
+  client_.request_screenshot(evidence_/screenshot);
+  std::ofstream report(evidence_/"creation-ui.json");
+  report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"creation_entry","blank_only"},{"world_map_controls_present",false},{"geography_loaded_on_startup",false},{"centered",true},{"viewport_width_px",dim.pixel_w},{"viewport_height_px",dim.pixel_h},{"dialog_left_px",static_cast<std::int64_t>(std::llround(p.x))},{"dialog_top_px",static_cast<std::int64_t>(std::llround(p.y))},{"dialog_width_px",static_cast<std::int64_t>(std::llround(size.x))},{"dialog_height_px",static_cast<std::int64_t>(std::llround(size.y))}}));
+  report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Creation UI report write failed");
+ }
+ void smoke_native_click(const char* id){
+  auto* target=ui_->context().GetDocument(0)->GetElementById(id);
+  if(!target)throw sonn::Error("SMOKE_INPUT","Native pointer target missing");
+  target->ScrollIntoView(false);ui_->update();
+  const auto p=target->GetAbsoluteOffset(Rml::Box::BORDER),size=target->GetBox().GetSize(Rml::Box::BORDER);
+  const Rml::Vector2f centre{p.x+size.x/2,p.y+size.y/2};
+  auto* hit=ui_->context().GetElementAtPoint(centre);
+  while(hit && hit!=target)hit=hit->GetParentNode();
+  if(hit!=target)throw sonn::Error("SMOKE_MODAL_LAYER","Error action is obscured by another native control");
+  const auto dim=client_.dimensions();const float x=centre.x/dim.density,y=centre.y/dim.density;
+  auto push=[](SDL_Event e){if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Native pointer event could not be queued");};
+  SDL_Event motion{};motion.type=SDL_EVENT_MOUSE_MOTION;motion.motion.x=x;motion.motion.y=y;push(motion);
+  for(const auto type:{SDL_EVENT_MOUSE_BUTTON_DOWN,SDL_EVENT_MOUSE_BUTTON_UP}){SDL_Event button{};button.type=type;button.button.button=SDL_BUTTON_LEFT;button.button.x=x;button.button.y=y;push(button);}
  }
  void smoke_step(){
   static int frame_count=0;static auto stage_time=Clock::now();
   if(std::chrono::duration<double>(Clock::now()-smoke_start_).count()>180)throw sonn::Error("SMOKE_TIMEOUT","Native flow did not complete");
-  if(!view_.error_key.empty() && !(smoke_stage_>=43 && smoke_stage_<=46 && view_.error_key=="CREATION_DIMENSIONS") && !(smoke_stage_==20&&view_.error_key=="EARTH_BOUNDS"))throw sonn::Error("SMOKE_ERROR",view_.error_key+": "+view_.error_detail);
+  if(!view_.error_key.empty() && !(smoke_stage_>=43 && smoke_stage_<=46 && view_.error_key=="CREATION_DIMENSIONS"))throw sonn::Error("SMOKE_ERROR",view_.error_key+": "+view_.error_detail);
   if(++frame_count<8||std::chrono::duration<double>(Clock::now()-stage_time).count()<.3)return;
   auto step=[&](std::string name){completed_actions_.push_back(std::move(name));++smoke_stage_;frame_count=0;stage_time=Clock::now();};
   switch(smoke_stage_){
@@ -368,7 +278,9 @@ private:
    // presentation clock frozen until its actual readback has reached disk.
    if(smoke_menu_phase_==4){if(presentation_seconds_!=smoke_menu_frozen_seconds_)throw sonn::Error("SMOKE_PRESENTATION","Clock resumed before frozen GPU readback");if(!fs::is_regular_file(evidence_/"main-menu-frozen-b.tga"))break;act({ui::ActionKind::SetReducedMotion,0,0,"",0});smoke_menu_phase_=5;}
    ui_->activate("new-world");step("menu-new");break;
-  case 1:if(view_.screen==ui::Screen::Creation){act({ui::ActionKind::SetCreationSize,0,0,"",sonn::maximum_core_cells,sonn::maximum_core_cells});ui_->activate("preview");step("largest-blank-preview-request");}break;
+  case 1:if(view_.screen==ui::Screen::Creation){
+   if(!smoke_creation_captured_){record_creation_dialog("creation-centered");smoke_creation_captured_=true;frame_count=0;stage_time=Clock::now();break;}
+   act({ui::ActionKind::SetCreationSize,0,0,"",sonn::maximum_core_cells,sonn::maximum_core_cells});ui_->activate("preview");step("largest-blank-preview-request");}break;
   case 2:if(preview_){client_.request_screenshot(evidence_/"blank-preview");step("blank-preview-gpu");}break;
   case 3:ui_->activate("create");step("blank-create");break;
   case 4:if(session_.active()&&exercise_native_camera()){
@@ -389,24 +301,23 @@ private:
    // a separate evidence file instead of passing it through authority JSON.
    std::ofstream gpu(evidence_/"large-world-gpu.json");gpu<<client_.gpu_parameters_json();gpu.flush();if(!gpu)throw sonn::Error("SMOKE_REPORT","Largest world GPU report write failed");
    auto report=sonn::parse_json(bytes_text(sonn::read_file(evidence_/"large-world.json",65536))).object();report["status"]="pass";report["continue_roundtrip_surface_identical"]=true;report["native_gpu_parameters_file"]="large-world-gpu.json";std::ofstream out(evidence_/"large-world.json");out<<sonn::canonical_json(report);out.flush();if(!out)throw sonn::Error("SMOKE_REPORT","Largest world readback report write failed");
-   ui_->activate("tab-settings");step("settings-open");}break;
+   ui_->activate("tab-settings");ui_->activate("settings-open");step("settings-open");}break;
   case 11:client_.request_screenshot(evidence_/"settings-zh");step("settings-zh-gpu");break;
   case 12:ui_->activate("locale-en");step("english");break;
   case 13:client_.request_screenshot(evidence_/"settings-en");step("settings-en-gpu");break;
   case 14:ui_->activate("locale-de");step("german");break;
   case 15:client_.request_screenshot(evidence_/"settings-de");step("settings-de-gpu");break;
   case 16:ui_->activate("settings-close");ui_->activate("return-menu");step("settings-return");break;
-  case 17:if(view_.screen==ui::Screen::MainMenu){ui_->activate("new-world");step("earth-new");}break;
-  case 18:if(view_.screen==ui::Screen::Creation&&geography_){ui_->activate("earth-mode");act({ui::ActionKind::SetCreationSize,0,0,"",sonn::default_core_cells,sonn::default_core_cells});step("earth-mode");}break;
-  case 19:try{act({ui::ActionKind::SetEarthBounds,0,0,"",1e300,49,2,55});}catch(const sonn::Error& e){error(e.code,e.what());}step("invalid-earth-coordinate");break;
-  case 20:if(!smoke_coordinates_checked_){if(view_.error_key=="EARTH_BOUNDS"){ui_->activate("error-dismiss");act({ui::ActionKind::SetEarthBounds,0,0,"",-6,49,2,55});smoke_coordinates_checked_=true;completed_actions_.push_back("invalid-coordinate-corrected-without-exit");}}else if(view_.error_key.empty()&&!map_pending_&&!map_job_.valid()){
-   if(!exercise_native_selection())break;
-   if(!smoke_map_focus_sent_){auto v=ui_->viewport();SDL_Event e{};e.type=SDL_EVENT_MOUSE_BUTTON_DOWN;e.button.button=SDL_BUTTON_LEFT;e.button.x=v.x+v.width*.5f;e.button.y=v.y+v.height*.5f;if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map mouse event could not be queued");e={};e.type=SDL_EVENT_WINDOW_FOCUS_LOST;if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map focus event could not be queued");e={};e.type=SDL_EVENT_MOUSE_MOTION;e.motion.x=v.x+v.width*.6f;e.motion.y=v.y+v.height*.6f;if(!SDL_PushEvent(&e))throw sonn::Error("SMOKE_INPUT","Map motion could not be queued");smoke_map_focus_sent_=true;break;}
-   if(dragging_selection_||view_.creation.west!=-6||view_.creation.south!=49||view_.creation.east!=2||view_.creation.north!=55)throw sonn::Error("SMOKE_MAP_FOCUS","Lost focus retained Earth selection drag");completed_actions_.push_back("earth-selection-focus-loss-released");client_.request_screenshot(evidence_/"earth-map");step("earth-map-gpu");}break;
-  case 21:ui_->activate("preview");step("earth-preview-request");break;
-  case 22:if(preview_){client_.request_screenshot(evidence_/"earth-preview");step("earth-preview-gpu");}break;
-  case 23:ui_->activate("create");step("earth-create");break;
-  case 24:if(session_.active()&&view_.screen==ui::Screen::World){client_.request_screenshot(evidence_/"earth-world");step("earth-world-gpu");}break;
+  case 17:if(view_.screen==ui::Screen::MainMenu){ui_->activate("new-world");step("blank-sea-new");}break;
+  case 18:if(view_.screen==ui::Screen::Creation){
+   if(!smoke_sea_captured_){record_creation_dialog("creation-options-centered");smoke_sea_captured_=true;frame_count=0;stage_time=Clock::now();break;}
+   act({ui::ActionKind::SetCreationSize,0,0,"",512,256});ui_->activate("blank-ocean");ui_->activate("preview");step("blank-sea-preview-request");}break;
+  case 19:if(preview_){if(preview_->terrain.dry_micro_count()!=0||preview_->terrain.width-2*preview_->terrain.guard!=512||preview_->terrain.height-2*preview_->terrain.guard!=256)throw sonn::Error("SMOKE_SEA","Blank sea preview did not use exact selected dimensions and wet ground");client_.request_screenshot(evidence_/"sea-preview");step("blank-sea-preview-gpu");}break;
+  case 20:if(!smoke_land_options_open_){ui_->activate("creation-options");smoke_land_options_open_=true;frame_count=0;stage_time=Clock::now();break;}ui_->activate("blank-soil");act({ui::ActionKind::SetCreationTheme,0,0,"cherry_field"});ui_->activate("preview");step("blank-land-preview-request");break;
+  case 21:if(preview_){client_.request_screenshot(evidence_/"land-preview");step("blank-land-preview-gpu");}break;
+  case 22:ui_->activate("create");step("blank-land-create");break;
+  case 23:if(session_.active()&&view_.screen==ui::Screen::World){if(session_.active()->world().terrain.dry_micro_count()==0)throw sonn::Error("SMOKE_LAND","Created Blank soil has no dry surface");ui_->activate("tab-world");step("blank-land-world");}break;
+  case 24:client_.request_screenshot(evidence_/"blank-world");step("blank-world-gpu");break;
   case 25:act({ui::ActionKind::SaveWorld});client_.camera().yaw_deg=295;client_.camera().pitch_deg=40;client_.camera().distance_m=12;step("near-material-view");break;
   case 26:client_.request_screenshot(evidence_/"pixel-near-full");step("full-material-gpu");break;
   case 27:client_.material_diagnostic(client::MaterialDiagnostic::MeanBase);step("base-diagnostic");break;
@@ -421,14 +332,16 @@ private:
   case 36:if(view_.world.rename_preview_ready){client_.request_screenshot(evidence_/"world-name-consequences");step("rename-consequences-gpu");}break;
   case 37:ui_->activate("rename-commit");step("rename-commit");break;
   case 38:if(session_.active()->world().name!="新世界 · Ähren")throw sonn::Error("SMOKE_RENAME","Displayed name draft was not committed");ui_->activate("world-close");act({ui::ActionKind::SaveWorld});std::ofstream(evidence_/"gpu-world.json")<<client_.gpu_parameters_json();step("rename-durable");break;
-  case 39:act({ui::ActionKind::NewWorld});act({ui::ActionKind::SetCreationMode,0,0,"blank"});ui_->activate("preview");step("new-candidate-while-world-retained");break;
+  case 39:act({ui::ActionKind::NewWorld});ui_->activate("preview");step("new-candidate-while-world-retained");break;
   case 40:if(preview_){ui_->activate("cancel-create");step("cancel-candidate");}break;
   case 41:if(view_.screen==ui::Screen::World){if(session_.active()->world().name!="新世界 · Ähren"||saves_.continue_world(definitions_)->name!="新世界 · Ähren")throw sonn::Error("SMOKE_CANCEL","Cancel replaced the retained World or Continue");act({ui::ActionKind::NewWorld});act({ui::ActionKind::SetCreationSize,0,0,"",1,1});step("invalid-dimensions");}break;
   case 42:ui_->activate("preview");step("invalid-preview-request");break;
   case 43:if(view_.error_key=="CREATION_DIMENSIONS")step("real-error-ready");break;
   case 44:client_.request_screenshot(evidence_/"creation-error");step("real-error-gpu");break;
-  case 45:ui_->activate("error-dismiss");step("dismiss-error");break;
-  case 46:ui_->activate("cancel-create");step("cancel-invalid-draft");break;
+  case 45:smoke_native_click("error-dismiss");step("dismiss-error-native-pointer");break;
+  case 46:{if(!view_.error_key.empty())throw sonn::Error("SMOKE_MODAL_LAYER","Native pointer did not dismiss the visible error");
+   std::ofstream report(evidence_/"error-layer.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"screen","creation"},{"topmost_action_hit",true},{"native_pointer_acknowledged",true},{"path","SDL_PushEvent -> App routing -> RmlUi pointer hit -> error dismiss"}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Modal layer report write failed");
+   ui_->activate("cancel-create");step("cancel-invalid-draft");break;}
   case 47:if(view_.screen==ui::Screen::World){act({ui::ActionKind::OpenLoad});act({ui::ActionKind::OpenLoad});if(load_origin_!=ui::Screen::World)throw sonn::Error("SMOKE_LOAD_ORIGIN","Duplicate load lost its return destination");step("selected-load-open-twice");}break;
   case 48:if(view_.screen==ui::Screen::Load&&!view_.saves.empty()){ui_->activate("save-entry-0");step("selected-checkpoint");}break;
   case 49:ui_->activate("load-selected");step("selected-load");break;

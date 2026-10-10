@@ -41,13 +41,13 @@
     "windows_gpu_acceptance_required": true,
     "python_tools": "3.9+_standard_library_default",
     "current_runtime_exists": true,
-    "implemented_slice": "S00_S01_with_current_batch_pending_acceptance"
+    "implemented_slice": "S00_S01_blank_creation_native_pixel_foundation_and_arcade_UI",
+    "verification_record": "docs/planning/HEAVY_ARCADE_DELIVERY.md"
   },
   "scope": {
     "world_creation": [
       "blank_ocean",
-      "blank_flat_land",
-      "earth_selection"
+      "blank_flat_land"
     ],
     "procedural_world_template_library": false,
     "steam_workshop": false,
@@ -62,7 +62,8 @@
     "army_layers": 1,
     "new_defensive_walls": "original_premodern_real_material_access_certified",
     "new_infection": "explicit_sources_and_care_no_random_epidemic",
-    "natural_geography_entities_names_lineage": false
+    "natural_geography_entities_names_lineage": false,
+    "world_map_selection": false
   },
   "population": {
     "human_placement_age_years": 18,
@@ -333,5 +334,6 @@
     "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
     "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
     "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
-  }
+  },
+  "latest_frontend_decision": "docs/decisions/0022-blank-world-and-heavy-arcade-ui.md"
 }

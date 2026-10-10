@@ -6,7 +6,6 @@ settings	设置	Settings	Einstellungen
 exit	退出	Quit	Beenden
 back	返回	Back	Zurück
 blank	空白世界	Blank world	Leere Welt
-earth	地球选区	Earth region	Erdgebiet
 world-name	世界名称	World name	Weltname
 surface	初始地表	Initial surface	Anfangsoberfläche
 soil	平土	Flat soil	Flacher Boden
@@ -23,20 +22,9 @@ wetland	湿地	Wetland	Feuchtgebiet
 savanna	荒原	Wasteland	Ödland
 sonnheide_sacred	圣原	Sacred land	Heiliges Land
 volcanic	炎地	Ember land	Glutland
-coordinates	选区经纬度	Region coordinates	Gebietskoordinaten
-west	西	West	Westen
-east	东	East	Osten
-south	南	South	Süden
-north	北	North	Norden
 initial-empty	开局没有人物或建筑。	No people or buildings at creation.	Zu Beginn gibt es keine Menschen oder Gebäude.
 preview	预览地表	Preview surface	Oberfläche ansehen
 create	创建世界	Create world	Welt erstellen
-zoom-out	缩小	Zoom out	Verkleinern
-zoom-in	放大	Zoom in	Vergrößern
-move-west	向西	West	Nach Westen
-move-east	向东	East	Nach Osten
-move-north	向北	North	Nach Norden
-move-south	向南	South	Nach Süden
 preview-camera	中键旋转 · 滚轮缩放	Middle-drag to rotate · Scroll to zoom	Mittlere Taste ziehen zum Drehen · Scrollen zum Zoomen
 camera-home	复位镜头	Reset camera	Kamera zurücksetzen
 save	保存	Save	Speichern
@@ -81,22 +69,20 @@ revision	版本	Revision	Stand
 error-input	请输入有效的数值。	Enter a valid number.	Bitte eine gültige Zahl eingeben.
 error-generic	操作无法完成。	The operation could not complete.	Der Vorgang konnte nicht abgeschlossen werden.
 error-stale	世界或草案已改变，请重新查看后果。	The world or draft has changed. Review the consequences again.	Die Welt oder der Entwurf hat sich geändert. Bitte die Auswirkungen erneut prüfen.
-error-package	地理数据包无法使用，请检查安装文件。	The geography package is unavailable. Check the installed files.	Das Geografiepaket ist nicht verfügbar. Bitte die installierten Dateien prüfen.
 error-save	世界保存失败，请检查可用空间和写入权限。	The world could not be saved. Check free space and write permission.	Die Welt konnte nicht gespeichert werden. Bitte Speicherplatz und Schreibrechte prüfen.
 error-durability	保存结果尚未确定，请保留当前世界并检查存档。	Save durability is uncertain. Keep the current world open and check the saved files.	Die dauerhafte Speicherung ist ungewiss. Bitte die aktuelle Welt geöffnet lassen und die Dateien prüfen.
 error-no-save	没有可继续的世界存档。	There is no saved world to continue.	Es gibt keinen Weltspielstand zum Fortsetzen.
 error-name	名称不能为空，且必须是有效文字。	The name must be nonempty, valid text.	Der Name darf nicht leer sein und muss gültigen Text enthalten.
 error-size	地图尺寸无效或超出可用预算。	The map size is invalid or exceeds the available budget.	Die Kartengröße ist ungültig oder übersteigt das verfügbare Budget.
-error-region	请选择经纬跨度各不超过 60°、纬度在南北 80°以内的矩形区域。	Select a rectangle spanning at most 60° in each direction, within latitudes 80° south to 80° north.	Bitte ein Rechteck mit höchstens 60° Ausdehnung je Richtung zwischen 80° südlicher und 80° nördlicher Breite wählen.
 error-checkpoint	存档无法读取或与当前内容不兼容。	The saved world cannot be read or is incompatible with the installed content.	Der Spielstand kann nicht gelesen werden oder ist mit den installierten Inhalten nicht kompatibel.
 error-preferences	设置无法保存，本次运行中仍然有效。	Preferences could not be saved. They still apply during this session.	Die Einstellungen konnten nicht gespeichert werden. Sie gelten weiterhin in dieser Sitzung.
-world-options	选项	Options	Optionen
+world-options	编辑世界	Edit world	Welt bearbeiten
 name-change	仅更改世界名称	Only the world name changes	Nur der Weltname wird geändert
 camera-help	操作帮助	Camera controls	Kamerasteuerung
 camera-orbit	按住鼠标中键拖动旋转镜头；滚轮缩放。	Hold the middle mouse button and drag to rotate. Scroll to zoom.	Zum Drehen die mittlere Maustaste gedrückt halten und ziehen. Mit dem Mausrad zoomen.
 camera-pan	按住鼠标右键拖动平移，也可以使用方向键或 WASD。	Hold the right mouse button to pan, or use the arrow keys or WASD.	Zum Verschieben die rechte Maustaste gedrückt halten oder Pfeiltasten beziehungsweise WASD verwenden.
 camera-keys	Q / E 转向；+ / - 缩放。	Q / E turn the camera; + / - zoom.	Q / E drehen die Kamera; + / - ändern den Zoom.
-error-dimensions	长宽须在 32–4096 地块之间，每地块 2 米；地球地图的长度由选区比例决定。	Width and length must be 32–4096 plots at 2 metres per plot. Earth map length follows the selected region’s proportions.	Breite und Länge müssen 32–4096 Parzellen betragen, je 2 Meter. Die Länge einer Erdkarte folgt den Proportionen des Gebiets.
+error-dimensions	长宽须在 32–4096 地块之间，每地块 2 米。	Width and length must be 32–4096 plots at 2 metres per plot.	Breite und Länge müssen 32–4096 Parzellen betragen, je 2 Meter.
 technical-details	技术详情	Technical details	Technische Details
 hide-details	收起详情	Hide details	Details ausblenden
 metres-per-cell	m/格	m/cell	m/Zelle

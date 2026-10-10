@@ -1,6 +1,8 @@
 # Sonnheide engineering constraints
 
-最新覆盖：本轮用户取消所有此前前端规范，改为参考WorldBox的紧凑双层工具栏、深色半透明像素窗口、地图创建尺寸选择与连续框选；不再执行旧颜色、边框、图标尺寸、主页位置限制。工程转ADR0021：2m管理/占地格与独立64²微地表（31.25mm）分离，RLE均匀区＋稀疏压缩微片；新soil/sand顶面与统一水面均0m，水深/海床独立，湿干由真实kind/微覆盖决定。五档512m至8.192km、默认2.048km，长宽独立；创建/预算/保存/碰撞/拾取/渲染同源，不能以视觉噪声或缩小贴图代替细几何。部分格填海只补水面微片，保已有陆地完整kind/theme/revision。本批开发机统一验收通过，见docs/planning/LARGE_WORLD_MICRO_SURFACE_DELIVERY.md；Windows GPU/Steam实机仍待验。旧250mm/252m口径仅历史。
+最新覆盖：2026-10-10 / ADR0022。用户移除世界地图/地球选区；新建仅空白平土或全海，创建窗正中有界可滚动。生产启动/runtime/便携包不加载或携带GSHHG，来源与核心历史回归在测试资源保留。所有框深色半透明；UI主色蓝白红黄，偏青深蓝背景，边缘深色表现厚度、饱满平面彩图标；重要红/黄字与图标使用全周均匀纯白描边，禁止白色斜面/定向高光。中文实际方向加粗保字腔。八分区为顶窄底宽、开放底口、搭接栏上沿的低矮阶梯梯形页签，点击后栏内仅该分区工具；未实现工具明确禁用而非假成功。保留ADR0021的2m管理格/31.25mm独立微地表、五档尺寸、共面soil/sand/水面及完整事务/存载不变量。旧Earth创建与旧视觉仅历史，不覆盖本条。见docs/decisions/0022-blank-world-and-heavy-arcade-ui.md；当前批次开发验收已通过，见 docs/planning/HEAVY_ARCADE_DELIVERY.md；Windows GPU/Steam实机仍待验。
+
+历史ADR0021：本轮用户取消所有此前前端规范，改为参考WorldBox的紧凑双层工具栏、深色半透明像素窗口、地图创建尺寸选择与连续框选；不再执行旧颜色、边框、图标尺寸、主页位置限制。工程转ADR0021：2m管理/占地格与独立64²微地表（31.25mm）分离，RLE均匀区＋稀疏压缩微片；新soil/sand顶面与统一水面均0m，水深/海床独立，湿干由真实kind/微覆盖决定。五档512m至8.192km、默认2.048km，长宽独立；创建/预算/保存/碰撞/拾取/渲染同源，不能以视觉噪声或缩小贴图代替细几何。部分格填海只补水面微片，保已有陆地完整kind/theme/revision。本批开发机统一验收通过，见docs/planning/LARGE_WORLD_MICRO_SURFACE_DELIVERY.md；Windows GPU/Steam实机仍待验。旧250mm/252m口径仅历史。
 
 历史视觉记录：2026-10-10 / ADR0020，已被顶端ADR0021覆盖。背景偏青深蓝，信息框深色半透明；按钮尽量无边框，底栏按钮全部无边框。大icon、小字，正文12dp、重要标题用实际字号/投影/明暗，不伪造未加载的粗体。UI与icon以蓝红白黄为主，黄色本色#ffaa00。主页保留闪星和流星，取消柜式外框；Age不锁UI颜色。最新入口docs/decisions/0020-translucent-navy-borderless-ui.md及FRONTEND_ART_DIRECTION，覆盖下方此前视觉要求。旧250mm格与32px/m材质只为历史结果。
 

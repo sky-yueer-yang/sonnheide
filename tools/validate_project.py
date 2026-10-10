@@ -77,8 +77,12 @@ def main():
     check(len(manifest['files'])==23,'Definition packs missing')
     for f in manifest['files']:
         p=runtime/f['path'];check(p.is_file(),'Missing runtime definition '+str(p));check(hashlib.sha256(p.read_bytes()).hexdigest()==f['sha256'],'Definition admission mismatch')
-    for p in ['fonts/fusion-pixel-12px-proportional-zh_hans.otf','geo/gshhs_f.b','ui/application.rml','ui/locales.tsv']:
+    for p in ['fonts/fusion-pixel-12px-proportional-zh_hans.otf','ui/application.rml','ui/locales.tsv']:
         check((runtime/p).is_file(),'Missing runtime resource '+p)
+    check(not (runtime/'geo').exists(),'Removed world-map source must not enter production runtime')
+    check((ROOT/'.build/test-resources/geo/gshhs_f.b').is_file(),'Historical source remains available for geometry regression')
+    ui=(ROOT/'assets/ui/application.rml').read_text(encoding='utf-8')
+    check(all(token not in ui for token in ['earth-mode','earth-controls','earth-selection','map-controls']),'World-map UI must be removed')
     check(not (runtime/'menu/arcade-garden-v2.png').exists(),'Superseded menu illustration must not enter active runtime')
     print('PASS source boundaries, crisp original icons, immutable definitions and runtime resources')
 if __name__=='__main__':

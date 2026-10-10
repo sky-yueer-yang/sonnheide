@@ -4,22 +4,20 @@
   "planned_only": true,
   "production_implemented": false,
   "contract_id": "sonnheide_pixel_world_v0_8",
-  "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+  "decision": "docs/decisions/0022-blank-world-and-heavy-arcade-ui.md",
   "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "detailed_terrain_contract": "data/contracts/terrain_access_v1.json",
   "game_contract": "data/contracts/game_v0_9.json",
   "original_baseline_sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
   "creation": {
     "modes": [
-      "blank",
-      "earth_selection"
+      "blank"
     ],
     "blank_modes": [
       "ocean",
       "flat_land"
     ],
     "procedural_world_template_library": false,
-    "earth_source": "GSHHG_2.3.7_coastline_land_water_not_DEM",
     "uniform_horizontal_scale": true,
     "preview_uses_generated_candidate": true,
     "maximum_preview_resolution": "same_playable_world_surface",
@@ -30,8 +28,9 @@
     "initial_sapient_animals": 0,
     "initial_buildings": 0,
     "irregular_coast_transition": false,
-    "earth_raster_contract": "runtime_foundation_v1.world_creation",
-    "polar_selection": false
+    "world_map_selection": false,
+    "geography_runtime_required": false,
+    "creation_dialog": "centered_bounded_scrollable_modal"
   },
   "grid": {
     "representation": "management_columns_row_RLE_and_sparse_64x64_micro_surface_patches",

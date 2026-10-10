@@ -108,48 +108,25 @@
     "raise_lower_repetition": "once_per_cell_per_stroke"
   },
   "world_creation": {
-    "source": "GSHHG_2.3.7_fixed_original_hash_L1L2L3L4",
-    "projection": "equirectangular_standard_parallel_0_degrees_game_distance_not_real_distance",
-    "coordinates": "integer_microdegrees_with_unwrapped_east",
-    "latitude_bounds_udeg": [
-      -90000000,
-      90000000
-    ],
-    "maximum_longitude_span_udeg": 360000000,
-    "maximum_latitude_span_udeg": 180000000,
-    "date_line": "east_unwrapped_after_west_relative_source_longitude_two_windows_one_candidate",
-    "scale": "same_rational_game_mm_per_microdegree_both_axes",
     "Nx_core_range": [
       32,
       4096
     ],
-    "Ny_core_formula": "ceil(Nx*(north-south)/(eastUnwrapped-west))",
-    "cell_center_udeg": "west+(micro_x+1/2)*W/(Nx*64),south+(micro_z+1/2)*W/(Nx*64)_exact_rational",
-    "cell_center_outside_source_rect": "close_ocean",
-    "source_ring_test": "point_on_segment_inside_first_then_exact_even_odd_half_open_y_crossing",
-    "layer_precedence": "deepest_containing_L1land_L2water_L3land_L4water_same_depth_sourcePolygonId_ASC",
-    "missing_or_invalid_nested_source": "reject_package",
-    "narrow_island": "full_source_scanline_micro_centers_preserve_islands_missed_by_management_centers_only_features_without_a31250um_sample_may_disappear",
     "guard_cells": 8,
     "guard_kind": "deep_ocean",
     "guard_editable": false,
     "authority_axis_max_cells": 4112,
     "max_authority_cells": 16908544,
-    "capacity_claim": "admission_limits_only_not_measured_performance",
     "outside": "render_only_ocean_no_entities_navigation_titles_or_resources",
     "actor_boundary": "complete_body_and_sweep_in_authority_real_braking_before_edge_no_wall_no_teleport",
     "out_of_bounds_command": "reject_no_clamp",
-    "rectangular_cut_visible_allowed": true,
     "irregular_edge_transition": false,
     "candidate_hash": "canonical_generated_effective_surface_shared_by_preview_create_save_readback",
-    "source_profile_read_only": true,
-    "source_ring_unwrap": "follow_edges_min_delta_in_half_open_minus180_to180_then_whole360degree_copies_and_exact_dateline_clip_not_independent_vertex_clamp",
     "default_core_cells": [
       1024,
       1024
     ],
     "actual_core_extent_formula": "Nx_management_count_times2000mm_Ny_management_count_times2000mm",
-    "earth_scale_mode": "stylized_uniform_not_1_to_1",
     "geometry_resident_budget_bytes": 134217728,
     "presets_management_cells": [
       256,
@@ -157,7 +134,23 @@
       1024,
       2048,
       4096
-    ]
+    ],
+    "entries": [
+      "blank_flat_land",
+      "blank_ocean"
+    ],
+    "independent_height_core_range": [
+      32,
+      4096
+    ],
+    "world_map_selection": false,
+    "geography_runtime_required": false,
+    "soil_top_mm": 0,
+    "water_level_mm": 0,
+    "ocean_kind": "close_ocean",
+    "initial_humans": 0,
+    "initial_buildings": 0,
+    "candidate_publication": "first_durable_save_readback_before_session_publish"
   },
   "natural_objects": {
     "persistent_natural_entities": false,
@@ -2454,5 +2447,60 @@
     "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
     "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
     "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  },
+  "legacy_earth_geometry_reference": {
+    "status": "historical_source_and_core_regression_only_not_production_entry",
+    "specification": {
+      "source": "GSHHG_2.3.7_fixed_original_hash_L1L2L3L4",
+      "projection": "equirectangular_standard_parallel_0_degrees_game_distance_not_real_distance",
+      "coordinates": "integer_microdegrees_with_unwrapped_east",
+      "latitude_bounds_udeg": [
+        -90000000,
+        90000000
+      ],
+      "maximum_longitude_span_udeg": 360000000,
+      "maximum_latitude_span_udeg": 180000000,
+      "date_line": "east_unwrapped_after_west_relative_source_longitude_two_windows_one_candidate",
+      "scale": "same_rational_game_mm_per_microdegree_both_axes",
+      "Nx_core_range": [
+        32,
+        4096
+      ],
+      "Ny_core_formula": "ceil(Nx*(north-south)/(eastUnwrapped-west))",
+      "cell_center_udeg": "west+(micro_x+1/2)*W/(Nx*64),south+(micro_z+1/2)*W/(Nx*64)_exact_rational",
+      "cell_center_outside_source_rect": "close_ocean",
+      "source_ring_test": "point_on_segment_inside_first_then_exact_even_odd_half_open_y_crossing",
+      "layer_precedence": "deepest_containing_L1land_L2water_L3land_L4water_same_depth_sourcePolygonId_ASC",
+      "missing_or_invalid_nested_source": "reject_package",
+      "narrow_island": "full_source_scanline_micro_centers_preserve_islands_missed_by_management_centers_only_features_without_a31250um_sample_may_disappear",
+      "guard_cells": 8,
+      "guard_kind": "deep_ocean",
+      "guard_editable": false,
+      "authority_axis_max_cells": 4112,
+      "max_authority_cells": 16908544,
+      "capacity_claim": "admission_limits_only_not_measured_performance",
+      "outside": "render_only_ocean_no_entities_navigation_titles_or_resources",
+      "actor_boundary": "complete_body_and_sweep_in_authority_real_braking_before_edge_no_wall_no_teleport",
+      "out_of_bounds_command": "reject_no_clamp",
+      "rectangular_cut_visible_allowed": true,
+      "irregular_edge_transition": false,
+      "candidate_hash": "canonical_generated_effective_surface_shared_by_preview_create_save_readback",
+      "source_profile_read_only": true,
+      "source_ring_unwrap": "follow_edges_min_delta_in_half_open_minus180_to180_then_whole360degree_copies_and_exact_dateline_clip_not_independent_vertex_clamp",
+      "default_core_cells": [
+        1024,
+        1024
+      ],
+      "actual_core_extent_formula": "Nx_management_count_times2000mm_Ny_management_count_times2000mm",
+      "earth_scale_mode": "stylized_uniform_not_1_to_1",
+      "geometry_resident_budget_bytes": 134217728,
+      "presets_management_cells": [
+        256,
+        512,
+        1024,
+        2048,
+        4096
+      ]
+    }
   }
 }

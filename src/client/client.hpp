@@ -70,9 +70,8 @@ public:
     void end_frame();
     void request_screenshot(const std::filesystem::path& basename);
     void material_diagnostic(MaterialDiagnostic);
-    void set_map_rgba(int width,int height,std::span<const std::uint8_t> rgba,std::uint64_t revision);
-    // Sets the scene viewport in SDL logical coordinates, for both 3D and map.
-    void map_overlay(int logical_x,int logical_y,int logical_width,int logical_height,bool visible);
+    // Rendering and picking share the same SDL logical viewport.
+    void set_scene_viewport(int logical_x,int logical_y,int logical_width,int logical_height);
     std::string renderer_name() const;
     std::string gpu_parameters_json() const;
     Rml::RenderInterface* render_interface();

@@ -1,74 +1,70 @@
 {
-  "format": "SonnOriginalIcons5",
+  "format": "SonnOriginalIcons7",
   "author": "Sonnheide project",
   "license": "Original project artwork; no public license granted",
   "recipe": "tools/generate_visual_assets.py",
-  "recipe_sha256": "13dabddadfcae4f81aed423e87211333ca9fad777d58c37bd4c9d08298134860",
+  "recipe_sha256": "886a3815ed886b6398ba4d9c6f2dabdd8e186f087621e7ca1f47dcbd8b33ef10",
   "stroke": true,
   "external_frame": false,
   "logical_grid": 32,
   "scaling": "nearest_integer",
   "alpha": "binary",
-  "palette": "original_sandbox_materials",
+  "edge_recipe": {
+    "outer_dark_cells": 1,
+    "white_contour_cells": 1,
+    "neighborhood": "8-connected dark exterior,4-connected white contour",
+    "outer_color": "#041221",
+    "contour_color": "#ffffff",
+    "directional_bevel": false,
+    "body_shading": "uniform base with dark details only"
+  },
+  "palette": "original_heavy_arcade_primaries",
   "primary_colors": {
-    "blue": "#397dde",
-    "red": "#e34b3f",
+    "blue": "#1662b8",
+    "red": "#de402d",
     "white": "#ffffff",
-    "yellow": "#ffaa00",
-    "green": "#69ad51",
-    "stone": "#959c87",
-    "soil": "#a67340"
+    "yellow": "#ffaa00"
   },
   "pigment_recipe": "base_times_shade_then_linear_white_tint_round_half_up",
   "pigment_derivatives": {
-    "#122847": {
+    "#041221": {
+      "base": "blue",
+      "shade": 0.18,
+      "white_tint": 0.0
+    },
+    "#071f3b": {
       "base": "blue",
       "shade": 0.32,
       "white_tint": 0.0
     },
-    "#1f457a": {
+    "#0c3665": {
       "base": "blue",
       "shade": 0.55,
       "white_tint": 0.0
     },
-    "#28589b": {
+    "#0e4078": {
       "base": "blue",
-      "shade": 0.7,
+      "shade": 0.65,
       "white_tint": 0.0
     },
-    "#397dde": {
+    "#104784": {
+      "base": "blue",
+      "shade": 0.72,
+      "white_tint": 0.0
+    },
+    "#114a8a": {
+      "base": "blue",
+      "shade": 0.75,
+      "white_tint": 0.0
+    },
+    "#1662b8": {
       "base": "blue",
       "shade": 1.0,
       "white_tint": 0.0
     },
-    "#447035": {
-      "base": "green",
-      "shade": 0.65,
-      "white_tint": 0.0
-    },
-    "#491814": {
-      "base": "red",
-      "shade": 0.32,
-      "white_tint": 0.0
-    },
-    "#616558": {
-      "base": "stone",
-      "shade": 0.65,
-      "white_tint": 0.0
-    },
-    "#69ad51": {
-      "base": "green",
-      "shade": 1.0,
-      "white_tint": 0.0
-    },
-    "#943129": {
+    "#902a1d": {
       "base": "red",
       "shade": 0.65,
-      "white_tint": 0.0
-    },
-    "#959c87": {
-      "base": "stone",
-      "shade": 1.0,
       "white_tint": 0.0
     },
     "#996600": {
@@ -76,70 +72,40 @@
       "shade": 0.6,
       "white_tint": 0.0
     },
-    "#9cbeef": {
-      "base": "blue",
-      "shade": 1.0,
-      "white_tint": 0.5
+    "#a02e20": {
+      "base": "red",
+      "shade": 0.72,
+      "white_tint": 0.0
     },
-    "#a5ce97": {
-      "base": "green",
-      "shade": 1.0,
-      "white_tint": 0.4
+    "#bf3727": {
+      "base": "red",
+      "shade": 0.86,
+      "white_tint": 0.0
     },
-    "#bad2f3": {
-      "base": "blue",
-      "shade": 1.0,
-      "white_tint": 0.65
-    },
-    "#bfc4b7": {
-      "base": "stone",
-      "shade": 1.0,
-      "white_tint": 0.4
+    "#c28100": {
+      "base": "yellow",
+      "shade": 0.76,
+      "white_tint": 0.0
     },
     "#cc8800": {
       "base": "yellow",
       "shade": 0.8,
       "white_tint": 0.0
     },
-    "#d7e5f8": {
-      "base": "blue",
-      "shade": 1.0,
-      "white_tint": 0.8
+    "#d68f00": {
+      "base": "yellow",
+      "shade": 0.84,
+      "white_tint": 0.0
     },
-    "#e34b3f": {
+    "#de402d": {
       "base": "red",
       "shade": 1.0,
       "white_tint": 0.0
-    },
-    "#e7effb": {
-      "base": "blue",
-      "shade": 1.0,
-      "white_tint": 0.88
-    },
-    "#ee938c": {
-      "base": "red",
-      "shade": 1.0,
-      "white_tint": 0.4
-    },
-    "#f1a59f": {
-      "base": "red",
-      "shade": 1.0,
-      "white_tint": 0.5
     },
     "#ffaa00": {
       "base": "yellow",
       "shade": 1.0,
       "white_tint": 0.0
-    },
-    "#ffbb33": {
-      "base": "yellow",
-      "shade": 1.0,
-      "white_tint": 0.2
-    },
-    "#ffc44d": {
-      "base": "yellow",
-      "shade": 1.0,
-      "white_tint": 0.3
     },
     "#ffffff": {
       "base": "white",
@@ -154,25 +120,25 @@
       "shade": 0.6,
       "tint": 0.0
     },
+    "#c28100": {
+      "shade": 0.76,
+      "tint": 0.0
+    },
     "#cc8800": {
       "shade": 0.8,
+      "tint": 0.0
+    },
+    "#d68f00": {
+      "shade": 0.84,
       "tint": 0.0
     },
     "#ffaa00": {
       "shade": 1.0,
       "tint": 0.0
-    },
-    "#ffbb33": {
-      "shade": 1.0,
-      "tint": 0.2
-    },
-    "#ffc44d": {
-      "shade": 1.0,
-      "tint": 0.3
     }
   },
   "themes": [],
-  "category_silhouettes": [
+  "category_icons": [
     "tab-camera",
     "tab-terrain",
     "tab-people",
@@ -182,825 +148,826 @@
     "tab-world",
     "tab-settings"
   ],
+  "category_style": "full_color_with_heavy_contour",
   "outputs": [
     {
       "path": "assets/generated/ui/icons/world.svg",
-      "sha256": "c5cfd3b7f590f66fee018dd3bbaed95cc9e1a5e792eacba63234741b1f8fdcd2",
-      "palette": "original_sandbox_materials",
+      "sha256": "d81a6e1053c412a27b5c62311d3b4d246a1298119fd1592a08bf882181f0817e",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/world-96.png",
-      "sha256": "c96d303d666b6b6642c2559b4414b5ecbab9253b2d22d30ccd2c7ceb4728c176",
+      "sha256": "d146ea6b795faab11d6c7447753cae8b1fe439cce0c2c73dc143b8384475bc61",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/world-192.png",
-      "sha256": "79bb0b236a8f307da519b5fb7b57fac06ed615cdc1058d46eddebd29e354e380",
+      "sha256": "f1975a4ea677ef35ce866126af81a0bb811affa0b3303a6b000e4508704002f0",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/earth.svg",
-      "sha256": "cb6d4c79e51e8f76aa15e9fd79bf01df8154ecfa5e56a5c1eb7e5d25aa0bb1a3",
-      "palette": "original_sandbox_materials",
+      "sha256": "e8a60cb8a694b76eb4a48a4a867dd2e0b38269013272b0675b4a17c6199c2494",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/earth-96.png",
-      "sha256": "2a65029bd596f4476145294d1bd74f19cc247e98cf6c10f0f1deb8ef8bf03fbe",
+      "sha256": "c6cb465a2be8336a86047125fb5fab52c9ce7cedbdb16ead50bd5dee53f36b1f",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/earth-192.png",
-      "sha256": "492e2c57e1de7528bf12ceba25fdfe0b13dbcb336d97ceb82b4e5f3e3cef8e82",
+      "sha256": "48f94d9266df6accd89c7eb01786a8ad2277a30db88d85742bdfcc3b171be85d",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/camera.svg",
-      "sha256": "f17517cc94c7483dacd7e4dff63a10bddd7c35b43ad584b1e5445336b48c174e",
-      "palette": "original_sandbox_materials",
+      "sha256": "b4f9ea02efd3c0670be4a2aaa8d0b50c4516eac7aa8d1aebb0e0df6b7e513325",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/camera-96.png",
-      "sha256": "de2404b3ffbb2ea63b7faf1328726a7a46bc2c2f25d04d09fa6948a42590ad09",
+      "sha256": "800a5300cc7fd08ea18eac1fa6513a364231db597f74731ba474d748bcc841f7",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/camera-192.png",
-      "sha256": "31d1111b53939713066fc70ec453acd8933ec7cb1036f34ca6bc987294b6f04e",
+      "sha256": "3ce008174be85ef79cf71365ba0c703dabd206448ac3ae499e48ee2487964376",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/blank.svg",
-      "sha256": "e37c24d8eb93198e9be4491e893d9d046a867a0e76daa0b68d146dd7bfc3dc2d",
-      "palette": "original_sandbox_materials",
+      "sha256": "6e878eda3f30b744173b68aab8407e973c34f3ff862c38563612fe69a455cb82",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/blank-96.png",
-      "sha256": "7bcb26a6159379be8ef305325bc5079ecf118b57508467c223977b921afd933d",
+      "sha256": "e45a4003db5299057747e8b4e11e1adc1293f79ff32139a808348e09ccac9d79",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/blank-192.png",
-      "sha256": "c475e4bb12c9fadd7391d0b400761cc04c6f7efe72a5a12884673ef9ab7953b1",
+      "sha256": "b61c068b2410153bcad21c4b6f64160fa26ddc1c40f494611a1e494f9960126e",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/people.svg",
-      "sha256": "027111a448511fecdbb0e507d45f8238b1146e46ca2e3420bfd6880bdfb7183f",
-      "palette": "original_sandbox_materials",
+      "sha256": "d3e6caa9554c733eaf18c85363808124b2c6c6672f1d1d4125f7749c975f0119",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/people-96.png",
-      "sha256": "0322906b203aea1a0d64fc957c8623d315675009740d490a621c666c70d7bbdb",
+      "sha256": "b42dce5bb72b0c5875d19e358b9c5d3bce943b1e81ed039251bdff931facf1ec",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/people-192.png",
-      "sha256": "c251b923ceca3dcb1c6883aad1133353ba6030f1b24563dad7cbeb99f43faf35",
+      "sha256": "6aa8fd1a3d69b72c3ae61c0958e1158af3dbef85ad2d5901e44a468999721737",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/buildings.svg",
-      "sha256": "4eb8baa49fc54067f07120c871a7a3e8292899ca969ff09631c6a419bfa925ba",
-      "palette": "original_sandbox_materials",
+      "sha256": "881d67fcecbd84f92446d198290df3925500d7cf13a46c3148a15b6a6cba8503",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/buildings-96.png",
-      "sha256": "f5ee72f51909e9e0226bd466a4b2954b662b4c25cbb2c952aabb1258ed8092ca",
+      "sha256": "f775531a6960426a3b0100b5cccdfb052e75341f184828e849a804918c4e9a3a",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/buildings-192.png",
-      "sha256": "cb9cc9eefb0747894fa1157688ae90e7eda128d117497779abc670af622472b4",
+      "sha256": "d3724018d0e6abed9cc6d64fcf6add27c66efc1d9723879cd9f79834994f648c",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/terrain.svg",
-      "sha256": "75ca91cac6d79028ab6b02ce12b19f78d2234d08162770dde5e4dc81a6fbbb54",
-      "palette": "original_sandbox_materials",
+      "sha256": "b38da169eb231c6478c43182bdbedf4449816fd6a561061337d35502b90c0768",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/terrain-96.png",
-      "sha256": "e7d36219ff897527c6bb8dc2ad7fa6288040ec84519f66604d61a92cf0e63835",
+      "sha256": "cee2345e564e4d6d70d493e6eae1550d88f30a5b6c756cfefe1287c6fba3db3a",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/terrain-192.png",
-      "sha256": "5e533f834b02162d033e2d074c7b65563a6124edd7e4033941366bdd9e112601",
+      "sha256": "bdfbebfb6b2afa4607f01c0eddd9ee8c070b8929e2d0fae53e8a85f08bf45aba",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/economy.svg",
-      "sha256": "5c2b935ed3fe991fb86e7daec73f82782d27830860b97f2371731c78525ff796",
-      "palette": "original_sandbox_materials",
+      "sha256": "67f5a49950d44c4985462dae80ff5b6ca8ca321c7b0ed6f5d45c2cbe2a077603",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/economy-96.png",
-      "sha256": "3caeecde43e41ec4e65232c92a3a3d88018090335e97a1300bbd77db26c6fa49",
+      "sha256": "befb6cd12773c7a938829c49254340801c716f28a52e24f97b9d907b1f543860",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/economy-192.png",
-      "sha256": "eb4d94b36f8d6af7326b64d3b852952da75dd487598b87652f2a00b8f7ce7087",
+      "sha256": "e61c9c077daf58051d94a089fb7441c9df06ac11fcf7a45c74e74d693de5f076",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/laws.svg",
-      "sha256": "a8085c8488c640a277e1fe2d29ee403ada477050e8e3f1b1a64d2e7aa90546ae",
-      "palette": "original_sandbox_materials",
+      "sha256": "f8f1e69cf0abba0bf9eec061e9556f7a876d805148a236d9f2c24c4592e2088b",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/laws-96.png",
-      "sha256": "47185ff7af0c31b217625c44bc4c7fee018cf65343084a496a4c6610c67a094e",
+      "sha256": "ce62b3cfac86a1403ddbed83ab289711a789ce45c942b2b734189c8889de45a7",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/laws-192.png",
-      "sha256": "7198258f60923b8783e287ece9efd8b89733d7b18506d414421dc728584700ac",
+      "sha256": "ffb46e8d2b429175e44a7d3b3f016dfb1c281a7cb8568097609e6057d6ee69e6",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/settings.svg",
-      "sha256": "58f9c567bd2f5c5ec1ad5fe818696f5b3507ee689cf1d6a57a7fcee6a6723a05",
-      "palette": "original_sandbox_materials",
+      "sha256": "3721f6e5330d5ced05ba1e46fa7143977eee56a07c688c54c497c39beafa7556",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/settings-96.png",
-      "sha256": "cb3bef05c192d9459e5bc765c958207cedcbb2c312f013e3a4e0bcadbcc082e6",
+      "sha256": "2524c13cf63f90f42e2f4586514d969aa846aa50cf81d34ab3482d7245b24338",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/settings-192.png",
-      "sha256": "db4f75b4e379f5b1f700347d0f0737582e2f51a8cadaef4ef6fa8ef4a6b7d296",
+      "sha256": "9c4e6deaf218bc79a439d3ae4a51b57fe755007d94a9c40a1439a7abaa3fa00b",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/pause.svg",
-      "sha256": "bdf5ffdfa4310ee6b3cca7cf4b78d03630ee545d7a41a25fe5c090c303d5136a",
-      "palette": "original_sandbox_materials",
+      "sha256": "e3d89baebe2b278d9389033607ba364a68dbbf55807389165e01d907f2275596",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/pause-96.png",
-      "sha256": "d17a160f6e436046efff70d3033652749166b6ba0b0cd7466c7ead2e18361bcd",
+      "sha256": "3cd5c67b4717d0f38c733216039fefdf7bb8529e24b17fd5104c1a5c61d3f9ea",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/pause-192.png",
-      "sha256": "58a94294944a58fed29593ed83241c5ab8d8d1b710918b5f3d27588137e5a99c",
+      "sha256": "cfdd59f7b3cf58115b74cc3c36acfba17fc7b35a7b1be512d91ce3ff65444cc8",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/play.svg",
-      "sha256": "f88bbd419d8de14f8812d87d804c256f06593575eaf4b86ecceaa32ba4281be3",
-      "palette": "original_sandbox_materials",
+      "sha256": "d5fbc25d719528e550dd70d37ddcb16debe19143c05cac49e300767ab1eded7b",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/play-96.png",
-      "sha256": "fc8e8d3bcdeff58b46318ec357dbe7ed5bdbb1fd1482ae9d1f9ed00ac7529be6",
+      "sha256": "1cf883a5790858fcbb5a8f73d397f00e164952f3dffece151363bae089cfd2a8",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/play-192.png",
-      "sha256": "eff92085de5e618c13f82b634ce42c941584aa12ccd8490a07df86e309059bdf",
+      "sha256": "cd29d47cf3cc796df419520af8a5584aa065440ed30fdf368573987b97aae315",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/save.svg",
-      "sha256": "a1ca2545162f87a1b98af333c40bda5d86b4b8775fd0832b1725814dd6bab226",
-      "palette": "original_sandbox_materials",
+      "sha256": "4c14f6d8924fb7c893a90039ffaa54d84ffbe6c6c96a87e4767016bdbd427493",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/save-96.png",
-      "sha256": "1038a0c9f29efa50d52485562fa88083ca2e8adf67ec56316bb4eedaef2cb01f",
+      "sha256": "d34e811327dd408150c532ec68a69a811a600a45156c156cd40c7df000ac7686",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/save-192.png",
-      "sha256": "06c6bcc21232759f8145a0e2ec945a04c49105a4ef10e2d428889ebdd618a15c",
+      "sha256": "8b1e45e641ad78da699a19a3a7b468bd3b5387a57cc53aa49fe5fab9bffd7440",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/load.svg",
-      "sha256": "2b9313e627bf47d330722c045e05cc44cf729d829f18fc4b168456c83e3360f9",
-      "palette": "original_sandbox_materials",
+      "sha256": "449c25dbe4b4f6f4abd6a47bf7ce64167e9ad6e76e2591c1feb0792295a81c2d",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/load-96.png",
-      "sha256": "cf6d4e3d2d89407d8517ab5b4fbdb465a0bb8f7f86a9bd329da31813696f066f",
+      "sha256": "4b065686a1f3a217aaa2a2f082be9f0c394321d8301b7871063d92346dd1477a",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/load-192.png",
-      "sha256": "b97f4287c287b187ecae1b297806db801dc71aa02cc07dfffe1d7a64b07057f6",
+      "sha256": "aac212d339cd52680f2e4570727822af8a135bebd083347f7990fdcaface43a2",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/back.svg",
-      "sha256": "7f1abb12baca0aa5f012b38fdff361f6c96ae87b4006cd720e3a00f904d8c42e",
-      "palette": "original_sandbox_materials",
+      "sha256": "804f7f5bfc912b07bde3d5c5a3d3f788e3088127ce5a92565bc0611d27627d85",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/back-96.png",
-      "sha256": "4590969362e379f52d4b9ad29cbcc915b71ea84773737448fbc86ed40ce6db88",
+      "sha256": "804ee5a384cc6b050d95694165d63ba82a37d742a429695e31bac51585565d5e",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/back-192.png",
-      "sha256": "19922adafcc520dfda0c14e8c8fddab897e67083cde2d505ba2ab975cab5d99b",
+      "sha256": "115bfc0290a6c92bb3bfd66b0a23bb8d7288e3009c03a30ca88ab37eae724ce0",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/close.svg",
-      "sha256": "b03fecaa40bd172a4debc0a7aa32aee9680a6e445ebf4b800f6ab0d2ebc0e2a2",
-      "palette": "original_sandbox_materials",
+      "sha256": "95e92d63173b09ebe524e014b2f0436d49c48d410074a4c01c7aec9415def007",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/close-96.png",
-      "sha256": "5480ae58a2b664748499aa765711d7ad732eb5cf7308591293125333d1b62700",
+      "sha256": "fea4edae7c239ce7f76c2a6a4a46b07784b6ed9a766a469fee4d5dcaa52202a8",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/close-192.png",
-      "sha256": "72d9b099f0fb7797cc0062469e4bdfab7f8f229fe708491acabd5635270e2525",
+      "sha256": "0c38af8049e7e2c3673c668b412b6b54c457e39d4e86564397f9c2ce11c64230",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/create.svg",
-      "sha256": "6b69a25849e98fc093d7a4b5ce691d9d679b1c303b274700071f95be7296f7eb",
-      "palette": "original_sandbox_materials",
+      "sha256": "4ecb663ee5e116c75d07f2b4d2b6df9eaf5ecbc4043dce0864ca7837fb674bb7",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/create-96.png",
-      "sha256": "f52775b6e6206da378700f02f4b54b0a66b496a123ece3d8e1df5376625cf6dc",
+      "sha256": "997d2b6ac1773071fb5dc556424ef0a4714dd317a02e8d1364b236c3b00bf482",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/create-192.png",
-      "sha256": "e465dfb1a32c4c123901ec20350612b487af1f0cdfb413b5a26376e0c761dcb1",
+      "sha256": "359e10f866672d8bab75f494d868672a8608e9a3ff16a3f6b59b3102ec4ee9cc",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/check.svg",
-      "sha256": "971119c587357aea9c991c25485301b2c7c97a865a696a985c37d831a1e9d732",
-      "palette": "original_sandbox_materials",
+      "sha256": "5ce662e90088707f65c5a5b01545d99310dea8f14eb1c30c739ca2f300755d09",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/check-96.png",
-      "sha256": "1bcd301429cd49b19ac695ee059b568016fe5cde4b377ffadcc5572ebc46269c",
+      "sha256": "5f8e5e7a1bc8305158ce660b1c548ac51d3d3846e5cedea315e09c0968f61dd5",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/check-192.png",
-      "sha256": "49590ca798b46b83435c0123e5e24c304ace8481aadadcd303ce564e72a01447",
+      "sha256": "a66a5a54b107546b345bd57321be46650f6cf6808298e752cd6760df64bd7c23",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/audio.svg",
-      "sha256": "d72fa554cb994ed59c52dc934c35ec127c771936e3e10872916c753119a5abc4",
-      "palette": "original_sandbox_materials",
+      "sha256": "e1677036bf07d09a778fada37420f4c780a142fd2ed5c0eea4bcbbcbdabac126",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/audio-96.png",
-      "sha256": "faf962224fb10c5a59dac82c27dce5f7479e6e701c21c904405b97be3df9e549",
+      "sha256": "60bdccde325e10b2d291fd655e94b108bacc9ea9ca45b68a4e32deaa3f940dd7",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/audio-192.png",
-      "sha256": "9edf6c7a6bb63ec81156e94dfc36ab0c344869fb5618f1e12fc396cb1c3ca927",
+      "sha256": "783dff1a7758c9f7965759f1af6e6c8dbbc53454961c86b9a98382228918811e",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/help.svg",
-      "sha256": "7469ac89759abf69d9514290f222d98bd7397aeb946a67d2a7841473c66e12fb",
-      "palette": "original_sandbox_materials",
+      "sha256": "9c556ca04dda7e6c1877bfa6b1f356a3803412370330a436bffd4910b597ab96",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/help-96.png",
-      "sha256": "c2ddcae487690e43f3bb70ffa7531fda534a967b5d8936c8ab7811e51d49de6c",
+      "sha256": "5d9c054aadfd6c05dd1cb340527ef3ee3d44de8d5561f9a82847dc634ecaf670",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/help-192.png",
-      "sha256": "2db3eaa58c4511028e92547c01b1d2ee373fb1782c0dd235adb2753d1c76519d",
+      "sha256": "0fbd9bec6a65401f11dd28ab3b99ca87d85581a5a33e17f1af36bdd65ee186f2",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tools.svg",
-      "sha256": "ba75fc1c28f4d921c33e74723dba7c78d35d033a82ff1e092ad5976ced7f33b9",
-      "palette": "original_sandbox_materials",
+      "sha256": "5174a5f0e0fcc7b9071b45c7a2deba52f4fd4eebb6ad7a89c8e416f14570873f",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tools-96.png",
-      "sha256": "ef9664b77f6e06a3a88658bee3eac3b03fcb834b0a0c6de174fe5c79fbeb9373",
+      "sha256": "0a8ac5161ef9665f3208b4e396f51a7997546fc34663d6d30ea974270aee93d9",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tools-192.png",
-      "sha256": "b45d3233f22670f92aa7d856bddfd2386eb9080e10c7bb794debff73fef92301",
+      "sha256": "0200a728754cfed04503152302d3aebb51f5782da5b2bd44ba9ad92540d7fba0",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/star.svg",
-      "sha256": "aaff6338d655ba89e7104b8987e4c46e8649b528461263dae9210a2cf94aac2a",
-      "palette": "original_sandbox_materials",
+      "sha256": "5f7410bb18951a779dc86610048546c5f69316341628ebd25395850b83375c22",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/star-96.png",
-      "sha256": "3a7fc4b4ff7d9c8c46ae4ab6ffb1b5b1fe37297ad4617c534b771ec85092bf64",
+      "sha256": "c7a761533268c7808ff16266958c25ad29a92dd75c2817d3a13db0275649538d",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/star-192.png",
-      "sha256": "cd28a4759e2216c91942e13aa2d7cf038eb1dfd80bb6fda69f06e95f95b5eec1",
+      "sha256": "3464f715771e66c71405a581aef3fec7db06bab7b74333ff60fdbf0245290f64",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/sun.svg",
-      "sha256": "2a435e7c75cedaa9127c7c8641912dcdc9e22306df4db254df10c66cd236aa5d",
-      "palette": "original_sandbox_materials",
+      "sha256": "dd741f00396af49e995d74a65782b8c84760c097f0e7dc954ac8ad4d58d4b63c",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/sun-96.png",
-      "sha256": "5acf68754100b5a270efa6d798d481992861fb52a46c5676c12d18b009e1511f",
+      "sha256": "c67477e3935c45d3e35371a60328370aebb140bee2ce6cca39180834427799ac",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/sun-192.png",
-      "sha256": "157b4fac0dceb180616e7c30e2a88ef4c8292b2740fb9bb3ba650c5ea0d439e3",
+      "sha256": "48f3f82c38841ac8e010c932d9700c50c6d1faa0e8f76ca439b7a32192d2a370",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/moon.svg",
-      "sha256": "be866de1eccb5eb8235b18a916618316d5a810358a79cff8e816fd4c2d8588a6",
-      "palette": "original_sandbox_materials",
+      "sha256": "1303439801da991428f7f643736fe831a6073620390398eb6d935b50f3469725",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/moon-96.png",
-      "sha256": "66faee3437a511460b4c400a72879f90daf66fe93dbdf97b13159763ebe6f55f",
+      "sha256": "d4898f52df8a19cb82e932742eb065404d53433a95b8c6b409f23e13f32422be",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/moon-192.png",
-      "sha256": "7fec0eb1bbf4c4bde08b622126bef849cd7971b67085f20b962bb976cc9d8f2b",
+      "sha256": "16c741ec956fcf0846bed55d616e983d1f2c54a32d0fc6d312321c0e1158fbe4",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/exit.svg",
-      "sha256": "649f81b43f25c5dbe78ef9bba39199b90833172a26b5e75cfb9fb7c7a0c0b9e4",
-      "palette": "original_sandbox_materials",
+      "sha256": "fba2bbd75b17cdb5a3ea70040f7a4de6d3b4f5321bb687996bc9a86ff28fb3f5",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/exit-96.png",
-      "sha256": "6ebf939cafe43d69ecc1c6e64a59e0d385e714b0a01a8a98d4d97b3d7ddae66a",
+      "sha256": "f55f78cabdd9ff4d7ebbb386422e96aed178d5b3fbb07d7bf44ba26b49324038",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/exit-192.png",
-      "sha256": "2cdb898dde57e62fbcd60c5f6962f7b9912fcfa93e8a4080245121be19aceb00",
+      "sha256": "355c48a80980d0f830b23d298c7685d4366bfcedcf68d0459f6ea3e9e36da872",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/cycle.svg",
-      "sha256": "ac4a50643d97e8e2d897304072790dd5dd4c51b6d705546cbd186509cc1f4f44",
-      "palette": "original_sandbox_materials",
+      "sha256": "c2dc13f3ddc8d9fdb497ba4a4c5aba9e1ad63122ce6ec94ea7cf2ea8d980ae67",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/cycle-96.png",
-      "sha256": "7767d670dda074cedc1a061f51b58ec50d7014e1db55b323a4c669dea0700ad2",
+      "sha256": "8544209965648c82af941793cffa1cac2172ebe6d68b321c51289a95c1446d6b",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/cycle-192.png",
-      "sha256": "6c2efcc609b91fec314dc0bfbc6425a2957999ab85b492e9aee202733ffdcaeb",
+      "sha256": "50963cd76c08c1219e080d9dd61c0acd707c093fde9e28a74b6d3a69ff90d209",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/hand.svg",
-      "sha256": "2da7739d6fa6acb82c416e7d14b0e7323f9806100ab39da1e7d56bf96a02f873",
-      "palette": "original_sandbox_materials",
+      "sha256": "2b3a00a476b78d61a927687e02c8337dad5cfc54f643fb088988dd4bbb1f4862",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/hand-96.png",
-      "sha256": "71f2967be75aec2a727ef82e3256eb19beca4eec8b3978f415358426a5a3046a",
+      "sha256": "064650fc8b222e3d2edb057203a02aa6de8e177e81d0ed4b6776b23cd494acd5",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/hand-192.png",
-      "sha256": "098a17154ea525804cba67396bfedcae436113803d25200efc5d22a83b9bb5b5",
+      "sha256": "1fba548b9cf008ef0f728ea98b0b183d80c1e86fe389d71b46d04c497705590a",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/zoom-in.svg",
-      "sha256": "52079cba7808d4dba2e222e19793662a542616846ab75e8e6731cf4840add03c",
-      "palette": "original_sandbox_materials",
+      "sha256": "29baa835a7c5c6b9420484154fa05498ebfd333b4a6b60fa325fbe986d8ac312",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/zoom-in-96.png",
-      "sha256": "35fbf81b5f57399065a74fd8c4b9c3058b089663ecaa11080c3d4465ac1fdde6",
+      "sha256": "d8f08f9c5a7cda21d3a52fa1ffab01eae617909ac46f9964cbc1af553ba8c29b",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/zoom-in-192.png",
-      "sha256": "4416594c6237299d70a3074c1bd8320eba0d419396caeba8ef070f7bc165228b",
+      "sha256": "b30f34cee2d19618fff0c675c0a131885bc26def30bb8c8c8fc88ed66e9c01dd",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/zoom-out.svg",
-      "sha256": "350910d2519a9769a83d08eec5aed9d0516208563a3c8369164c713af36e47c5",
-      "palette": "original_sandbox_materials",
+      "sha256": "f33fc1f722516763c20671ae605eb4871c1b6abc4e58e924b5acbadff71a05ea",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/zoom-out-96.png",
-      "sha256": "2d13c7cab660ede5df501c34b6ed4e45fa4b11c8c76937f7ff319e929104eed8",
+      "sha256": "78eafda696bada0c2e4067654ecc141bcaa916f03cab6ed4a1942ae3c1e17d91",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/zoom-out-192.png",
-      "sha256": "988d0f0c2875447f88cf932b0f838d6cc874a423673f2795b09cc462ff5d558a",
+      "sha256": "9822257fa53ece497577443dad2340bbd7fa7ed2c12ef6fbb1658836990afa02",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-left.svg",
-      "sha256": "e366661ae5c8b625570365380ab713f464384358e9aaa2491a1b6d76488cd9b8",
-      "palette": "original_sandbox_materials",
+      "sha256": "b75f91fac18a67dbc36e0de771b3125e4c71f7b2397eb576d6b6d17f8011ed71",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/arrow-left-96.png",
-      "sha256": "47391de5e584a6de6cc583ea5e7cd4b93ec76d6e578aba2715ad821b3f802c2a",
+      "sha256": "a117b2125fc7be802313ed8a9edf20ef23cb88c2a6e0329e1a4ff53fa6e3697a",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-left-192.png",
-      "sha256": "266badaafcbad902bf63c4fa3167d3a2cabb61ca38c55452120a577f042e05cd",
+      "sha256": "af87a551c0236ac26dd4da452e222081c04465a9bec3626e2fafd449f37a3125",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-right.svg",
-      "sha256": "295b2506e1f2b5145d1291130d36d621cedb8f9c7f1ceca0ae37ef1a22182b72",
-      "palette": "original_sandbox_materials",
+      "sha256": "0449855ef2f6375c62a2308e92126865a1ac165c64ede6b6a5e025237cba0e8e",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/arrow-right-96.png",
-      "sha256": "3512d2787fd075f2d3a057e2204afa6f747cfc168520c93eab00e28173756f78",
+      "sha256": "db8bf7e032ca65674ad8b252df4f3fb42968d2166a7845b40cbc7c3b6a484d01",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-right-192.png",
-      "sha256": "ca38208d33d7c41b620d672c3febda3532667ec3c6853cf1952e28f40478097f",
+      "sha256": "97d30dcd0715dc8df399b4e61bdfe87cefcc2ad6da5f60850fa8ac8c5fbd5528",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-up.svg",
-      "sha256": "e6df162fd50d169d1539a84523734300634bfd049bbab9c869b6a8333ad10348",
-      "palette": "original_sandbox_materials",
+      "sha256": "a290ffa94d4b41b178e80cc7fa90c6fa26c5672bdd027b46f880631ab8bce541",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/arrow-up-96.png",
-      "sha256": "11ff2dd00514eb9786905e5543702d150be381ef82a46661b358d3d6292bf883",
+      "sha256": "8896d92ea6e24541d9a6c9c73fef564cac7c45bb0bfef2fef8aff1eaf4fa9602",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-up-192.png",
-      "sha256": "592912c581ba6de2a22cfa6b746a0e09bdaf6e6b083d5d77775d10bea0bc493d",
+      "sha256": "62afd7b84932ffc4d2d5ad7f67ba6a66f98fbff16ec748c670054d7a5635c391",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-down.svg",
-      "sha256": "23738ed1254aad990d8b865679397dbd0c79c34eb896675b8c247f69c1727c5e",
-      "palette": "original_sandbox_materials",
+      "sha256": "78e3f3016f0b4bd79df2ef9fb340207334a2f7e899a0ad256779b63b8e797b8d",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/arrow-down-96.png",
-      "sha256": "bf5faba090ee401bd5b802d78016d00bf523deaeed51522279924eba3e6c1c44",
+      "sha256": "c7e0314d148a553bb8132c7d67b21aaa940c5713296a2538047442a95277fa3d",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/arrow-down-192.png",
-      "sha256": "d08f7ec602893ccf66876b93088aaf8dd1d98443a8088fff2cf7ae51ddf75e6e",
+      "sha256": "fce4dcb5744e3024045b991222bb10d7e6921b3bb12fd7d8ff6579ce70ce339d",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-camera.svg",
-      "sha256": "57212ba2020460b3cd1698d757860141c8e7e0512bc41ce382745ec1db27c412",
-      "palette": "original_sandbox_materials",
+      "sha256": "b4f9ea02efd3c0670be4a2aaa8d0b50c4516eac7aa8d1aebb0e0df6b7e513325",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-camera-96.png",
-      "sha256": "64a56d0069839acdc8c26cd59f161a95c48dacc45bf40b873a8f0fc913f1b2bf",
+      "sha256": "800a5300cc7fd08ea18eac1fa6513a364231db597f74731ba474d748bcc841f7",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-camera-192.png",
-      "sha256": "5d50472dc3a62a23249a00cf63843d181667c2eade31d133dd52e5028e51dbf9",
+      "sha256": "3ce008174be85ef79cf71365ba0c703dabd206448ac3ae499e48ee2487964376",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-terrain.svg",
-      "sha256": "59cf3a61e2b4ed3b2c89faf45fab5f63460faba4b0eff197384b2236d233b63b",
-      "palette": "original_sandbox_materials",
+      "sha256": "b38da169eb231c6478c43182bdbedf4449816fd6a561061337d35502b90c0768",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-terrain-96.png",
-      "sha256": "7e4904dcedcce2e61943050c482652adc2902c9a6f8fe51c287f09ba24e5c6ba",
+      "sha256": "cee2345e564e4d6d70d493e6eae1550d88f30a5b6c756cfefe1287c6fba3db3a",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-terrain-192.png",
-      "sha256": "997828fa3776bc1a7ff2fbd8242914bd2779828ec6c0b5f9ce947def74902fe6",
+      "sha256": "bdfbebfb6b2afa4607f01c0eddd9ee8c070b8929e2d0fae53e8a85f08bf45aba",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-people.svg",
-      "sha256": "f55991520ab12229fc8d457db275fa9d1dbdac498c7cb534dd6cf3a63a619ab6",
-      "palette": "original_sandbox_materials",
+      "sha256": "d3e6caa9554c733eaf18c85363808124b2c6c6672f1d1d4125f7749c975f0119",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-people-96.png",
-      "sha256": "8227641cd28c11c990c9a6a419b14e33f8fa9267f20ee4822deed9d636bdf22d",
+      "sha256": "b42dce5bb72b0c5875d19e358b9c5d3bce943b1e81ed039251bdff931facf1ec",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-people-192.png",
-      "sha256": "7cad96d4136f46079136a59fa81096587aeb9d4c316d438d8fcd846544b9dcf4",
+      "sha256": "6aa8fd1a3d69b72c3ae61c0958e1158af3dbef85ad2d5901e44a468999721737",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-laws.svg",
-      "sha256": "e09af51f8f8b44833d77224fb321d1c33479242ebc2391fd644311afa2f1b5d7",
-      "palette": "original_sandbox_materials",
+      "sha256": "f8f1e69cf0abba0bf9eec061e9556f7a876d805148a236d9f2c24c4592e2088b",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-laws-96.png",
-      "sha256": "81afcedf90537379e41fd86e634112ef42719c9efbfedf11eaee8e3bf999b66c",
+      "sha256": "ce62b3cfac86a1403ddbed83ab289711a789ce45c942b2b734189c8889de45a7",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-laws-192.png",
-      "sha256": "7024fc012ace029db852f88509576cf32570b897020eede4d44c10137313675d",
+      "sha256": "ffb46e8d2b429175e44a7d3b3f016dfb1c281a7cb8568097609e6057d6ee69e6",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-buildings.svg",
-      "sha256": "3a8e7c63a3fb9fa9d9d60db88edaf5d95cfa7f4558fca16a3819034c694f6d48",
-      "palette": "original_sandbox_materials",
+      "sha256": "881d67fcecbd84f92446d198290df3925500d7cf13a46c3148a15b6a6cba8503",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-buildings-96.png",
-      "sha256": "131b77ae3efafddbfd44e34704e749a4de5ea211032f0dc9c3495340301a9d48",
+      "sha256": "f775531a6960426a3b0100b5cccdfb052e75341f184828e849a804918c4e9a3a",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-buildings-192.png",
-      "sha256": "d8705bcd7a0bc4c269cc3d7399f1849b93ffcbba767fb705ea014cd82cbcd600",
+      "sha256": "d3724018d0e6abed9cc6d64fcf6add27c66efc1d9723879cd9f79834994f648c",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-economy.svg",
-      "sha256": "687961e5f124736b134eceb9950e4299c7a5d8f0b89da183f741373dce67773f",
-      "palette": "original_sandbox_materials",
+      "sha256": "67f5a49950d44c4985462dae80ff5b6ca8ca321c7b0ed6f5d45c2cbe2a077603",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-economy-96.png",
-      "sha256": "de626982dc4640dc02b3cf21a6e2191562dbbfa90142ce4ff1ae398faf9c88e3",
+      "sha256": "befb6cd12773c7a938829c49254340801c716f28a52e24f97b9d907b1f543860",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-economy-192.png",
-      "sha256": "a4876907735ddbfa7598a9a3582f7e323f894397db48de7a35b23cb3b638392f",
+      "sha256": "e61c9c077daf58051d94a089fb7441c9df06ac11fcf7a45c74e74d693de5f076",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-world.svg",
-      "sha256": "90fe7479d968578853270940ac692326adb3ef6790efdf4114c4e60c29de3a8d",
-      "palette": "original_sandbox_materials",
+      "sha256": "d81a6e1053c412a27b5c62311d3b4d246a1298119fd1592a08bf882181f0817e",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-world-96.png",
-      "sha256": "2c65cb5256e0f5f79bd58d09af2e4f0a49d627816b99d945242eeb3047ef62d9",
+      "sha256": "d146ea6b795faab11d6c7447753cae8b1fe439cce0c2c73dc143b8384475bc61",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-world-192.png",
-      "sha256": "b5fc7d690496283ac755751a990d1b5d1da102c860b696e211ab105741654e7a",
+      "sha256": "f1975a4ea677ef35ce866126af81a0bb811affa0b3303a6b000e4508704002f0",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-settings.svg",
-      "sha256": "4798fbaf7471d11198119ba1584d6daf5752c7cb952145cddb9ab36d546fae5e",
-      "palette": "original_sandbox_materials",
+      "sha256": "3721f6e5330d5ced05ba1e46fa7143977eee56a07c688c54c497c39beafa7556",
+      "palette": "original_heavy_arcade_primaries",
       "format": "svg"
     },
     {
       "path": "assets/generated/ui/icons/tab-settings-96.png",
-      "sha256": "5dc85205bac52058fb5b212d162bbc4376b1209503f0db8ca2f472dd6ea147b0",
+      "sha256": "2524c13cf63f90f42e2f4586514d969aa846aa50cf81d34ab3482d7245b24338",
       "pixels": 96,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     },
     {
       "path": "assets/generated/ui/icons/tab-settings-192.png",
-      "sha256": "e8adf4e0d697117236f230a0addbcb95ff384d98edb120ada4cc56a9b52993a4",
+      "sha256": "9c4e6deaf218bc79a439d3ae4a51b57fe755007d94a9c40a1439a7abaa3fa00b",
       "pixels": 192,
-      "palette": "original_sandbox_materials",
+      "palette": "original_heavy_arcade_primaries",
       "format": "png"
     }
   ]

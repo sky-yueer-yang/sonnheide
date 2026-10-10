@@ -101,7 +101,13 @@ def prepare():
         unpack_tar(locked_file(s, HIST / 'native-archives'), BUILD / 'toolchain' / 'cmake')
     runtime = BUILD / 'runtime'
     geo = json.loads((ROOT / 'data/geo/gshhg_sources.lock.json').read_text(encoding="utf-8"))
-    print('GSHHG lock members:', [x.get('path', x.get('filename')) for x in geo['members']])
+    # Immutable Earth sources support historical geometry regression only.
+    # They never enter or load in the Blank-only production application.
+    test_resources = BUILD / 'test-resources'
+    if (runtime/'geo').exists() and not (test_resources/'geo').exists():
+        test_resources.mkdir(parents=True,exist_ok=True)
+        (runtime/'geo').rename(test_resources/'geo')
+    print('Historical GSHHG test resources:', [x.get('path', x.get('filename')) for x in geo['members']])
     for m in geo['members']:
         name = m.get('path', m.get('filename', m.get('archive_path', '')))
         name = Path(name).name
@@ -113,7 +119,8 @@ def prepare():
                 member = next(x for x in z.namelist() if Path(x).name == name)
                 src.parent.mkdir(parents=True, exist_ok=True)
                 with z.open(member) as f, src.open('wb') as dst: shutil.copyfileobj(f, dst)
-        copy_verified(src, runtime / 'geo' / name, m['sha256'])
+        copy_verified(src, test_resources / 'geo' / name, m['sha256'])
+    shutil.rmtree(runtime/'geo',ignore_errors=True)
     # Historical serif source and notices remain untouched. They are no longer
     # runtime dependencies of the complete retro arcade presentation.
     for old in ['NotoSerifCJKsc-Regular.otf','Cinzel.ttf']:

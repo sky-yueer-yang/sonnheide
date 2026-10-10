@@ -2,7 +2,7 @@
 
 本文件仅说明实际进入本仓库的第三方内容；原创部分继续适用[OWNERSHIP](OWNERSHIP.md)，不因托管而获得开放许可。
 
-2026-10-10新像素原生程序实际使用SDL3/bgfx/RmlUi/FreeType、Unicode、GSHHG和以下Fusion Pixel字体。旧PBR/海洋/MakeHuman/serif记录保留为历史来源，不能视为新运行依赖。
+2026-10-10新像素原生程序实际使用SDL3/bgfx/RmlUi/FreeType、Unicode和以下Fusion Pixel字体。GSHHG现仅历史来源与核心几何测试，不进入生产runtime/便携包。旧PBR/海洋/MakeHuman/serif记录保留为历史来源，不能视为新运行依赖。
 
 ## Fusion Pixel 街机像素字体
 
@@ -61,4 +61,4 @@ Noto Serif CJK SC Regular Version2.003来自固定notofonts/noto-cjk提交，原
 
 ## GSHHG 2.3.7 全球海陆/岸线
 
-官方来源 Paul Wessel / Walter H. F. Smith 的 [GSHHG](https://www.soest.hawaii.edu/pwessel/gshhg/)。完整官方binary ZIP与五LOD成员准确大小/SHA及原始许可证、README见[来源锁](data/geo/gshhg_sources.lock.json)。数据适用LGPL-3.0-or-later，保留原版[LICENSE](data/geo/sources/gshhg/LICENSE.TXT)、[LGPL全文](data/geo/sources/gshhg/COPYING.LESSERv3)、原ZIP缺少的[GNU GPL主许可证补本](data/geo/sources/gshhg/COPYINGv3)及[README](data/geo/sources/gshhg/README.TXT)。原字节不改；本项目 `geography-sources-v1` Release提供完整原ZIP与这些notices，发行包携带notice。源较旧，full指未简化岸线，不宣称现实米级精度；不导入真实高程。地表是明确版本化的游戏派生，与原始数据分开。
+官方来源 Paul Wessel / Walter H. F. Smith 的 [GSHHG](https://www.soest.hawaii.edu/pwessel/gshhg/)。完整官方binary ZIP与五LOD成员准确大小/SHA及原始许可证、README见[来源锁](data/geo/gshhg_sources.lock.json)。数据适用LGPL-3.0-or-later，保留原版[LICENSE](data/geo/sources/gshhg/LICENSE.TXT)、[LGPL全文](data/geo/sources/gshhg/COPYING.LESSERv3)、原ZIP缺少的[GNU GPL主许可证补本](data/geo/sources/gshhg/COPYINGv3)及[README](data/geo/sources/gshhg/README.TXT)。原字节不改；本项目 `geography-sources-v1` Release提供完整原ZIP与这些notices。ADR0022已移除世界地图：数据只在测试资源供历史几何回归，当前生产包不携带它。源较旧，full指未简化岸线，不宣称现实米级精度；不导入真实高程。地表是明确版本化的游戏派生，与原始数据分开。
