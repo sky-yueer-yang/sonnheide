@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract_id": "sonnheide_terrain_access_v1",
-  "design_version": "0.8",
+  "design_version": "0.9",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -23,7 +23,11 @@
     "riding_or_horse_vehicle_profile": false,
     "dense_global_xyz_voxels": false,
     "terrain_caves_or_floating_islands": false,
-    "camera_affects_simulation": false
+    "camera_affects_simulation": false,
+    "persistent_natural_entities": false,
+    "natural_object_names": false,
+    "free_height_paint": false,
+    "natural_coast_height_transition": false
   },
   "world_creation": {
     "modes": [
@@ -34,7 +38,7 @@
       "ocean",
       "flat_land"
     ],
-    "earth_source": "GSHHG_coastline_quantized_land_water",
+    "earth_source": "GSHHG_2.3.7_exact_center_even_odd_L1L2L3L4",
     "earth_dem": false,
     "initial_human_population": 0,
     "initial_buildings": 0,
@@ -52,7 +56,15 @@
     ],
     "cancel_failure_or_late_result_preserves_current_world_and_continue_pointer": true,
     "generated_human_population_or_buildings": false,
-    "initial_wild_animals": "life_ecology_contract_controls_actual_animals_no_generated_citizens"
+    "initial_wild_animals": "life_ecology_contract_controls_actual_animals_no_generated_citizens",
+    "raster_contract": "data/contracts/runtime_foundation_v1.json.world_creation",
+    "edge": "rectangular_cut_deep_ocean_guard_no_slope_or_irregular_transition",
+    "projection": "equirectangular_standard_parallel_0_game_units_no_polar_selection",
+    "initial_flat_heights_mm": {
+      "land": 2000,
+      "water": -8000,
+      "ocean_guard": -20000
+    }
   },
   "sample_profile": {
     "status": "engineering_calibration_example_not_real_geography_or_measured_capacity",
@@ -60,8 +72,8 @@
     "cell_size_mm": 2000,
     "height_quantum_mm": 500,
     "chunk_side_cells": 64,
-    "minimum_height_q": -256,
-    "maximum_height_q": 512,
+    "minimum_height_q": -40,
+    "maximum_height_q": 192,
     "still_water_level_mm": 0,
     "high_peak_start_mm": 80000,
     "height_band_classification": "actual_surface_height_at_query_point",
@@ -117,8 +129,24 @@
     "actor_flight_ceiling_mm": 256000,
     "ramp_height_quantum_mm": 125,
     "ramp_quantum_base_divisor": 4,
-    "minimum_ramp_height_r": -1024,
-    "maximum_ramp_height_r": 2048
+    "minimum_ramp_height_r": -160,
+    "maximum_ramp_height_r": 768,
+    "flat_height_by_kind_mm": {
+      "deep_ocean": -20000,
+      "close_ocean": -8000,
+      "shallow_water": -2000,
+      "sand": 1000,
+      "soil": 2000,
+      "hill": 16000,
+      "mountain": 48000,
+      "high_peak": 96000
+    },
+    "flat_height_membership_required": true,
+    "flat_kind_is_authority": true,
+    "arbitrary_flat_height": false,
+    "terrain_height_band_applies_to": "ramp_actual_continuous_surface_only_flat_uses_one_fixed_kind",
+    "clock_profile": "data/contracts/runtime_foundation_v1.json.clock",
+    "rounding": "nearest_ties_to_even_checked_rational"
   },
   "brush_presets": [
     {
@@ -129,7 +157,8 @@
         "de": "Flachwasser"
       },
       "default_target_height_mm": -2000,
-      "changes": "actual_bed_height"
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": -2000
     },
     {
       "id": "close_ocean",
@@ -139,7 +168,8 @@
         "de": "Küstenmeer"
       },
       "default_target_height_mm": -8000,
-      "changes": "actual_bed_height"
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": -8000
     },
     {
       "id": "deep_ocean",
@@ -148,8 +178,9 @@
         "en": "Deep Ocean",
         "de": "Tiefsee"
       },
-      "default_target_height_mm": -24000,
-      "changes": "actual_bed_height"
+      "default_target_height_mm": -20000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": -20000
     },
     {
       "id": "sand",
@@ -158,8 +189,8 @@
         "en": "Sand",
         "de": "Sand"
       },
-      "default_target_height_mm": null,
-      "changes": "top_material_preserve_height",
+      "default_target_height_mm": 1000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
       "explicit_creation_target_height_mm": 1000
     },
     {
@@ -169,9 +200,9 @@
         "en": "Soil",
         "de": "Boden"
       },
-      "default_target_height_mm": null,
-      "changes": "top_material_preserve_height",
-      "explicit_creation_target_height_mm": 1000
+      "default_target_height_mm": 2000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 2000
     },
     {
       "id": "hill",
@@ -180,8 +211,9 @@
         "en": "Hill",
         "de": "Hügel"
       },
-      "default_target_height_mm": 12000,
-      "changes": "explicit_quantized_landform_profile"
+      "default_target_height_mm": 16000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 16000
     },
     {
       "id": "mountain",
@@ -191,7 +223,8 @@
         "de": "Berg"
       },
       "default_target_height_mm": 48000,
-      "changes": "explicit_quantized_landform_profile"
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 48000
     },
     {
       "id": "high_peak",
@@ -201,7 +234,8 @@
         "de": "Hochgebirge"
       },
       "default_target_height_mm": 96000,
-      "changes": "explicit_quantized_landform_profile"
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 96000
     }
   ],
   "authoritative_surface": {
@@ -212,7 +246,7 @@
       "ramp_patch"
     ],
     "flat_fields": [
-      "flatHeightQ"
+      "terrainKind"
     ],
     "ramp_fields": [
       "cornerHeightR",
@@ -256,10 +290,14 @@
     "bridge_surface_is_ramp_patch": false,
     "legacy_wet_cell_predicate_valid_only_for_flat": true,
     "ramp_corner_encoding": "cornerHeightR_times_frozen_rampHeightQuantumMm",
-    "flat_encoding": "flatHeightQ_times_frozen_heightQuantumMm",
+    "flat_encoding": "terrainKind_enum_unique_height_no_arbitrary_heightQ",
     "ramp_targets_match_actual_quantized_platforms": true,
     "minimum_ramp_rise_per_two_metre_edge_mm": 125,
-    "coarse_base_only_car_ramp_is_mathematically_impossible": true
+    "coarse_base_only_car_ramp_is_mathematically_impossible": true,
+    "flat_height_query": "runtime_foundation.fixed_terrain.ordered_flat_heights_mm[terrainKind]",
+    "ramp_height_exclusive_authoring": "CreateRamp_owned_geometry",
+    "continuous_height_elsewhere": false,
+    "fixed_height_membership": true
   },
   "ramp_records": {
     "stable_ref": "RampRef",
@@ -290,7 +328,7 @@
     "overlap_policy": "one_combined_current_surface_not_two_floating_meshes",
     "geometry_before_image_fields": [
       "surfaceShape",
-      "flatHeightQ_if_flat",
+      "terrainKind_if_flat",
       "cornerHeightR_if_ramp",
       "priorRampRef_if_owned",
       "priorGeometryHash"
@@ -320,7 +358,7 @@
       "vehicle",
       "explicit_species_profile"
     ],
-    "canonical_sampling": "frozen_world_space_polyline_arclength_width_and_corner_quantization",
+    "canonical_sampling": "runtime_foundation_v1.ramp_solver",
     "frame_count_affects_patch": false,
     "yaw_or_lod_affects_patch": false,
     "necessary_length_formula": "horizontal_arclength_mm >= abs(rise_mm) / maximum_longitudinal_grade",
@@ -343,10 +381,18 @@
     "car_traversal_implied_by_pedestrian_traversal": false,
     "implicit_road_rights_or_structure_or_free_resources": false,
     "necessary_length_can_be_increased_by_corner_quantization": true,
-    "sample_walk_rise_mm": 12000,
-    "sample_walk_straight_feasible_length_mm": 40000,
-    "sample_vehicle_rise_mm": 12000,
-    "sample_vehicle_straight_feasible_length_mm": 96000
+    "sample_walk_rise_mm": 14000,
+    "sample_walk_straight_feasible_length_mm": 48000,
+    "sample_vehicle_rise_mm": 14000,
+    "sample_vehicle_straight_feasible_length_mm": 112000,
+    "max_control_points": 16,
+    "max_segments": 32,
+    "max_candidates": 64,
+    "self_intersection": "nonadjacent_positive_area_overlap_reject",
+    "natural_shoulder_blend": false,
+    "arbitrary_target_height": false,
+    "endpoints": "fixed_actual_dry_flat_kind_landing_no_high_peak",
+    "candidate_solver_contract": "data/contracts/runtime_foundation_v1.json.ramp_solver"
   },
   "movement_sample_profiles": [
     {
@@ -433,7 +479,7 @@
   "water": {
     "still_water_level_mm": 0,
     "sea_lake_shared_still_level": true,
-    "flat_wet_predicate": "flatHeightQ * heightQuantumMm < 0",
+    "flat_wet_predicate": "fixedHeightByKindMm[terrainKind]<0",
     "ramp_wet_predicate": "query_triangle_height_mm < 0",
     "ramp_wet_shape": "exact_triangle_clip_at_zero",
     "dry_at_exact_zero": true,
@@ -454,7 +500,12 @@
       "outside_is_render_only_ocean": true,
       "out_of_bounds_clamp": false,
       "ordinary_chunk_edge_is_coast": false,
-      "visual_rectangular_world_wall": false
+      "visual_rectangular_world_wall": false,
+      "guard_cells": 8,
+      "protected_ocean_guard_kind": "deep_ocean",
+      "rectangular_land_cut_visible_allowed": true,
+      "irregular_transition": false,
+      "actor_stop": "real_braking_and_full_body_domain_admission_no_invisible_wall_or_teleport"
     },
     "local_wet_region_ref": "LocalWetRegionRef",
     "maximum_local_wet_regions_per_cell": 2,
@@ -463,7 +514,6 @@
       "localWetRegionId"
     ],
     "intra_cell_join": "positive_length_shared_wet_interval_between_fixed_triangles",
-    "query_kind_and_WaterBodyRef": "point_specific_local_wet_region_not_one_kind_for_entire_cell",
     "portal_identity_fields": [
       "localWetRegionRef",
       "shared_edge_wet_interval",
@@ -476,7 +526,11 @@
       "minimumTriangleIndex"
     ],
     "local_region_is_permanent_lake_identity": false,
-    "persistent_water_identity": "stable_WaterBodyRef_identityAnchor_and_split_merge_history_no_identity_reuse"
+    "persistent_water_identity": false,
+    "WaterBodyRef": false,
+    "temporary_component_identity": "current_minimum_local_node_at_inputTerrainRevision_rebuildable_not_saved_or_named",
+    "persistent_split_merge_lineage": false,
+    "query_kind_and_temporary_component": "point_specific_wet_region_and_temporary_nav_component_not_entity"
   },
   "removal": {
     "target": "existing_RampRef",
@@ -559,7 +613,24 @@
       "excavation_requires_real_labor_transport_disposal": true,
       "ordinary_excavated_terrain_becomes_commodity_or_mined_stock": false
     },
-    "canonical_type_change_wipe": "all_God_geography_operators_and_ramp_restore_crossing_actual_kind_apply_ADR0015"
+    "canonical_type_change_wipe": "all_God_geography_operators_and_ramp_restore_crossing_actual_kind_apply_ADR0015",
+    "flat_height_free_edit": false,
+    "allowed_operators": [
+      "PaintPreset",
+      "RaiseOneTier",
+      "LowerOneTier",
+      "FlattenToPreset",
+      "CopyFlatTerrain",
+      "CreateRamp",
+      "RemoveRamp",
+      "PaintEcologyTheme"
+    ],
+    "removed_operators": [
+      "Smooth",
+      "SetArbitraryTargetHeight",
+      "StrengthAsContinuousHeightDelta"
+    ],
+    "type_wipe": "ADR0017_exact_actual_changed_geography_ground_closure_minus_living_actor_actual_portable_subtree"
   },
   "transactions": {
     "writer": "single",
@@ -957,7 +1028,10 @@
       "fatigue_recovery": "fatigue_recovery",
       "other_supported_traits": "same_named_versioned_PhenotypeCapacities_export"
     },
-    "consumer_reads_alleles_or_shared_profile_to_recalculate": false
+    "consumer_reads_alleles_or_shared_profile_to_recalculate": false,
+    "authoritative_life_profile": "data/content/life_profiles_v1.json",
+    "hazard_profile": "data/content/life_profiles_v1.json.hazard_physics",
+    "clock": "runtime_foundation_v1.clock_12000_ticks_per_day"
   },
   "persistence": {
     "save_fields": [
@@ -975,7 +1049,7 @@
       "next_due_ticks",
       "topology_logical_frontier_and_consumed_work",
       "generation_and_source_revision",
-      "WaterBodyRef_registry_identity_anchors_and_split_merge_lineage",
+      "inputTerrainRevision_sorted_wet_nav_frontier_coordinate_portals_no_natural_identity",
       "GroundResourceRef_absolute_quantity_quality_capacity_and_actual_clipped_support_footprint",
       "GroundResource_productionRemainder_lastIntegratedTick_and_current_state",
       "GroundResource_reservations_revision_origin_and_damage_loss_receipts"
@@ -987,7 +1061,10 @@
     "known_forced_hazard_actor_in_peak_prism": "preserve_hazard_identity_and_due_tasks_not_convert_to_legal_standing",
     "previous_implementation_tests_are_new_evidence": false,
     "energy_total_load_policy": "derive_from_saved_source_accounts_never_reconstruct_from_percentage_or_duplicate_total",
-    "geometry_before_images_restore_ground_resources": false
+    "geometry_before_images_restore_ground_resources": false,
+    "wire_contract": "data/contracts/runtime_foundation_v1.json.save_wire",
+    "natural_entities_saved": false,
+    "derived_water_component_rebuildable": true
   },
   "performance": {
     "uniform_and_base_plus_patch_chunks": true,
@@ -996,7 +1073,7 @@
       "cell_to_support",
       "cell_to_actual_body_occupancy_and_clearance",
       "cell_to_protected_access_corridor",
-      "water_component_to_ports_and_routes",
+      "wet_portal_coordinate_and_revision_to_ports_and_routes",
       "cell_to_actual_ground_resource_support_and_habitat_footprint",
       "GroundResourceRef_to_grazing_and_collection_reservations_and_tasks"
     ],
@@ -1079,18 +1156,18 @@
     },
     {
       "id": "T02",
-      "case": "twelve_metre_hill_thirty_six_then_forty_metre_walk_ramp_with_125mm_corners",
-      "expected": "average_grade_bound_not_sufficient_per_face_rejection_for_bad_36m_quantization_40m_legal_height_distribution_subject_to_clearance"
+      "case": "soil2m_to_hill16m_forty_two_then_forty_eight_metre_walk_ramp_125mm",
+      "expected": "42m_quantization_can_exceed_per_face_grade_48m_actual125mm_distribution_legal_subject_to_clearance"
     },
     {
       "id": "T03",
-      "case": "twelve_metre_rise_forty_eight_metre_vehicle_ramp",
+      "case": "fourteen_metre_rise_forty_eight_metre_vehicle_ramp",
       "expected": "vehicle_grade_rejected_despite_pedestrian_success"
     },
     {
       "id": "T04",
-      "case": "twelve_metre_rise_ninety_six_metre_vehicle_route",
-      "expected": "full_turn_sweep_access_and_real_delivery_qualify"
+      "case": "fourteen_metre_rise_112_metre_vehicle_route",
+      "expected": "actual_each2m_rise250mm_full_turn_sweep_access_and_real_delivery_qualify"
     },
     {
       "id": "T05",
@@ -1104,13 +1181,13 @@
     },
     {
       "id": "T07",
-      "case": "peak_painted_soil_then_ramp_then_explicitly_lowered",
-      "expected": "only_real_lowering_below_frozen_threshold_removes_peak"
+      "case": "high_peak96m_painted_soil2m",
+      "expected": "fixed_preset_actual_lowering_removes_peak_exact_kind_wipe_ground_keep_living_portable_items"
     },
     {
       "id": "T08",
       "case": "ramp_zero_crossing_dry_NW_SE_wet_NE_SW_point_only_edge_NE_sea_SW_lake_save_reload",
-      "expected": "two_wet_regions_distinct_NE_SEA_SW_LAKE_identity_history_preserved_positive_length_four_connectivity_no_chunk_coast"
+      "expected": "two_wet_regions_distinct_NE_SEA_SW_LAKE_rebuildable_point_specific_components_no_natural_identity_or_history_positive_length_four_connectivity"
     },
     {
       "id": "T09",
@@ -1139,8 +1216,8 @@
     },
     {
       "id": "T14",
-      "case": "same_actor_at_zero_twelve_forty_eight_metres",
-      "expected": "sample_air_temperatures_24000_21000_12000_mC"
+      "case": "same_actor_at_soil2_hill16_mountain48_metres",
+      "expected": "sample_air_temperatures_23500_20000_12000_mC"
     },
     {
       "id": "T15",
@@ -1253,7 +1330,28 @@
     "mutation": "data/contracts/god_control_v1.json",
     "settlement": "data/contracts/settlement_lifecycle_v1.json",
     "movement": "data/contracts/natural_action_v1.json",
-    "generator": "data/contracts/vegetation_generator_v1.json"
+    "generator": "data/contracts/vegetation_generator_v1.json",
+    "runtime_foundation": "data/contracts/runtime_foundation_v1.json",
+    "fixed_height_semantics": "fixed8_v0.9_only_owned_ramp_continuous",
+    "natural_objects": "none_wet_nav_components_only"
   },
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "runtime_foundation": "data/contracts/runtime_foundation_v1.json",
+  "fixed_height_cases": [
+    {
+      "case_id": "FH01",
+      "scenario": "sand_to_soil",
+      "expected": "height1000_to2000_typewipe_ground_preserve_living_portable_subtree"
+    },
+    {
+      "case_id": "FH02",
+      "scenario": "paint_hill_at_world_edge",
+      "expected": "height16000_all_hit_core_cells_no_transition_guard_unchanged"
+    },
+    {
+      "case_id": "FH03",
+      "scenario": "split_or_join_water",
+      "expected": "rebuild_nav_components_no_WaterBodyRef_or_natural_names"
+    }
+  ]
 }

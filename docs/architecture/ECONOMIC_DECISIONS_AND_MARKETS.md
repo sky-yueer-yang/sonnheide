@@ -1,6 +1,6 @@
 # 经济决策、有限市场与真实履约算法
 
-设计版本v0.8；算法补充ADR0016，2026-10-09。`planned_only=true`，`production_implemented=false`。本文规定待实现算法、状态、不变量与验收；没有游戏经济运行或生产性能证据。机器合同：[economic_decisions_v1.json](../../data/contracts/economic_decisions_v1.json)。有限模型只验证明确列出的抽象账，不代替人口、寻路、衣物、美术或Steam运行。
+设计版本v0.9；算法收口ADR0018，2026-10-09（承接ADR0016经济决策）。`planned_only=true`，`production_implemented=false`。本文规定待实现算法、状态、不变量与验收；没有游戏经济运行或生产性能证据。机器合同：[economic_decisions_v1.json](../../data/contracts/economic_decisions_v1.json)。有限模型只验证明确列出的抽象账，不代替人口、寻路、衣物、美术或Steam运行。
 
 ## 1. 需要真正攻克的五个断点
 
@@ -20,7 +20,7 @@ Belief只记录本角色实际获得并获准使用的观察：`ObservedFactId,s
 
 ## 3. 量纲与调度
 
-全部权威deadline、报价到期、薪期、损耗、计划due使用SimTick；现冻结样例20tick/运动秒、1200tick/游戏日、30日/月、360日/年。路径时间是tick，工资价格是最小货币单位，实物是商品规定的整数数量或克，能量是life合同的整数能量，工作是冻结recipe的work_units，技能/人格是定点Q。不同维度不直接相加。某配方的1work_unit含明确劳动动作/技能/设备映射，并保存integer remainder；不把tick同时解释为运动秒和日。
+全部权威deadline、报价到期、薪期、损耗、计划due使用SimTick；现冻结样例20tick/运动秒、12000tick/游戏日、30日/月、360日/年。路径时间是tick，工资价格是最小货币单位，实物是商品规定的整数数量或克，能量是life合同的整数能量，工作是冻结recipe的work_units，技能/人格是定点Q。不同维度不直接相加。某配方的1work_unit含明确劳动动作/技能/设备映射，并保存integer remainder；不把tick同时解释为运动秒和日。
 
 生理、移动、交付和危险按实际tick积分。公共需求与家庭购买按日或库存阈值触发；已在途不能等次日才受损。企业经营每日滚动，工资按合同日/薪期记，税和长期投资按月，战略创业默认月。所有频率是冻结profile，不是后台线程有空就多决策。
 
@@ -284,3 +284,11 @@ sample逻辑预算：每Household一轮≤24需求候选/每商品≤16报价/�
 [有限模型](../research/models/economic_decision_reference_model.py)只验证整数货/款、资金floor、原子抢购、在途损失/取消不回源、部分交付付款、receipt重放、工作区间排他/薪资余数、有限融资池和项目quota。它不实现完整消费者选择、价格、农业、银行/税全系统、寻路/动画、实际AI或Steam。
 
 合同附EC01–EC72共72个未来生产验收场景，须覆盖观察权限、人格反事实、不同身体、基础预算/正装、公共起步、工时/军役、多人最后一份抢购、易腐/税费/固定运费、生产WIP/产线、Quota冲突、贷款/清算、改地/城市失地、保存与逻辑预算。`passed`有限模型只表示这些抽象检查，不把72场景记为生产已通过。
+
+## 28. v0.9可执行内容与起步衔接
+
+商品、配方、设施功能、13行业及408项有效科技使用[运行内容和启动账](EXECUTABLE_CONTENT_AND_BOOTSTRAP.md)及两份data/content定义。原424源目录逐字保留，马系4family和12slot不参与运行。每technology效果须落真实target和typed参数，每实验须付实际工时/材料/样本并执行具体acceptance predicate；研究进度仍唯社会ResearchProject所有，经济不另积一次。研究不赠机器、弹药或熟练工。
+
+首样冻结12000tick/游戏日、500tick/日历时、20tick/运动秒。life实际劳动/负重移动/基代是唯一能源扣账，经济WorkReceipt提供实际工作证据；不能把配方40energy/WU再扣第二次。四名玩家18岁人、有限成熟果木/散石/纤维和真实可达水源构成一个明确成功fixture，光秃地/幼果0/不可达/工料不足明确失败，无自动移民、免费补货或常驻保障生意。
+
+首次货币化冻结发行总量、固定劳动权益换算、居民等额/公共/未结劳动分配和issuer对账。工资或已领口粮不重复兑换；scope唯一初始化receipt与paidRightIds绝对保存，迟来居民、读档及第二个并发初始化不能再发行。衣物绝对损伤/余数及三次有限修补会产生持续真实更换需求；正装缺失仍工作领薪，购买优先不得突破基本生存预算。新增有限模型尚须由整批核验运行，其完成度不等于C++商品/设施/科研/Steam生产实现。

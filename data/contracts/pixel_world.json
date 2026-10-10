@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "design_version": "0.8",
+  "design_version": "0.9",
   "planned_only": true,
   "production_implemented": false,
   "contract_id": "sonnheide_pixel_world_v0_8",
-  "decision": "docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md",
-  "design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md",
+  "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "detailed_terrain_contract": "data/contracts/terrain_access_v1.json",
   "game_contract": "data/contracts/game_v0_8.json",
   "original_baseline_sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
@@ -23,12 +23,15 @@
     "uniform_horizontal_scale": true,
     "preview_uses_generated_candidate": true,
     "maximum_preview_resolution": "same_playable_world_surface",
-    "boundary": "irregular_coast_transition_then_visual_outer_ocean",
+    "boundary": "exact_rectangular_cut_then8cell_fixed_deep_ocean_guard_then_render_only_outer_ocean",
     "natural_source_provenance_read_only": true,
     "effective_terrain_editable": true,
     "initial_humans": 0,
     "initial_sapient_animals": 0,
-    "initial_buildings": 0
+    "initial_buildings": 0,
+    "irregular_coast_transition": false,
+    "earth_raster_contract": "runtime_foundation_v1.world_creation",
+    "polar_selection": false
   },
   "grid": {
     "representation": "single_surface_columns_with_flat_or_continuous_ramp_patch",
@@ -41,7 +44,20 @@
     ],
     "final_capacity_promise": false,
     "profile_freezes_on_create": true,
-    "natural_caves_or_floating_ground": false
+    "natural_caves_or_floating_ground": false,
+    "fixed_flat_heights_mm": {
+      "deep_ocean": -20000,
+      "close_ocean": -8000,
+      "shallow_water": -2000,
+      "sand": 1000,
+      "soil": 2000,
+      "hill": 16000,
+      "mountain": 48000,
+      "high_peak": 96000
+    },
+    "arbitrary_flat_heights": false,
+    "continuous_exception": "owned_ramp_patch_only",
+    "natural_edge_height_transition": false
   },
   "water": {
     "sea_level_m": 0,
@@ -49,7 +65,9 @@
     "sea_connectivity": "positive_length_shared_wet_edge_4_neighbor_local_wet_regions_to_external_sea_source",
     "depth": "derived_from_actual_triangular_surface",
     "ordinary_chunk_edge_is_coast": false,
-    "high_altitude_lakes": false
+    "high_altitude_lakes": false,
+    "persistent_natural_objects": false,
+    "water_identity": "none_current_revision_navigation_component_only"
   },
   "preset_ids": [
     "shallow_water",
@@ -89,5 +107,23 @@
   "tools_contract": "data/contracts/tool_registry_v1.json",
   "algorithm_decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
   "god_control_contract": "data/contracts/god_control_v1.json",
-  "algorithm_revision": "ADR0017-2026-10-09"
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "runtime_foundation": "data/contracts/runtime_foundation_v1.json",
+  "allowed_operators": [
+    "PaintPreset",
+    "RaiseOneTier",
+    "LowerOneTier",
+    "FlattenToPreset",
+    "CopyFlatTerrain",
+    "CreateRamp",
+    "RemoveRamp",
+    "PaintEcologyTheme"
+  ],
+  "removed_operators": [
+    "Smooth",
+    "SetArbitraryTargetHeight",
+    "StrengthAsContinuousHeightDelta"
+  ],
+  "clock_contract": "runtime_foundation_v1.clock",
+  "save_wire_contract": "runtime_foundation_v1.save_wire"
 }

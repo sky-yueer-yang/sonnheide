@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "contract_id": "political_decisions_v1",
-  "design_version": "0.8",
-  "algorithm_revision": "ADR0017-2026-10-09",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
   "sources": {
-    "authoritative_design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+    "authoritative_design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
     "algorithm_document": "docs/architecture/POLICY_AND_POLITICAL_DECISIONS.md",
     "original_source_preserved": "docs/design/Sonnheide_Complete_Design_v0.6.md",
     "primary_research": [
@@ -99,7 +99,7 @@
   "units": {
     "SimTick": "authoritative_integer",
     "ticks_per_motion_second": 20,
-    "ticks_per_game_day": 1200,
+    "ticks_per_game_day": 12000,
     "days_per_game_year": 360,
     "money": "accounting_minor_units_integer",
     "rate": "basis_points_0_to_10000_under_lawful_cap",
@@ -2310,5 +2310,17 @@
       "historical_uneditable_natural_terrain_not_reintroduced",
       "succession_geography_damage_temporary_congestion_not_automatic_repeal"
     ]
+  },
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ],
+  "global_tick_cutoff": {
+    "received_tick_predicate": "receivedTick<=closeTick",
+    "freeze_phase": "DELIVER_AND_FREEZE_DUE_phase4",
+    "close_phase": "DUE_EXECUTION_phase8_then_FINAL_LIFECYCLE_phase9",
+    "late_old_sent_tick": "reject",
+    "slow_validation_adds_votes": false
   }
 }

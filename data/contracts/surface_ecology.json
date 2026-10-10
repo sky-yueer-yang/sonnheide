@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "sonnheide_surface_ecology_v0_8",
   "decision": "docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md",
-  "design_base": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "design_base": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "architecture": "docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
   "assets": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
   "planned_only": true,
@@ -847,8 +847,8 @@
     ],
     "volcanic_small_plants": []
   },
-  "design_version": "0.8",
-  "design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "design_version": "0.9",
+  "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "animal_food_interface": {
     "decor_edible": false,
     "real_forage_and_nectar": "GroundResourceRef_ForagePatch_or_real_Tree_bloom_reserve_or_Farm_StockBatch_single_unique_reserve_never_decor",
@@ -864,5 +864,10 @@
   "algorithm_decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
   "generator_contract": "data/contracts/vegetation_generator_v1.json",
   "geography_mutation_contract": "data/contracts/god_control_v1.json",
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract_id": "sonnheide_civic_control_v1",
-  "design_version": "0.8",
+  "design_version": "0.9",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -76,8 +76,9 @@
   "identity": {
     "ref_fields": [
       "world_id",
-      "entity_kind",
-      "stable_id"
+      "kind",
+      "stable_id",
+      "generation"
     ],
     "actor_aliases": [
       "person",
@@ -108,7 +109,28 @@
     "unknown_target": "archive_or_missing_reference_page_never_name_match_new_entity",
     "past_event_immutable": true,
     "camera_changes_simulation": false,
-    "queries_consume_simulation_rng": false
+    "queries_consume_simulation_rng": false,
+    "natural_geography_has_stable_ref": false,
+    "view_aliases_normalized_before_identity_comparison": {
+      "person": "actor",
+      "animal": "actor",
+      "empire": "state",
+      "port": "building",
+      "city": "settlement",
+      "ship": "vehicle",
+      "equipment": "item",
+      "thermal_exposure": "actor",
+      "skill": "actor"
+    },
+    "same_settlement_view": [
+      "settlement",
+      "city"
+    ],
+    "same_vehicle_view": [
+      "vehicle",
+      "ship"
+    ],
+    "skill_view": "canonical ActorRef plus registered skill_id subselector, no SkillRef entity; training payload actor/skill_id must equal the selected view"
   },
   "culture_origin": {
     "genesis_eligible_species": "human",
@@ -440,7 +462,8 @@
       "create_army_guard_equipment_or_goods": false,
       "automatic_public_private_ownership_transfer": false
     },
-    "state_archival": "explicit_no_effective_living_community_and_no_valid_continuation_with_real_asset_and_territory_wind_down_not_ruler_death"
+    "state_archival": "explicit_no_effective_living_community_and_no_valid_continuation_with_real_asset_and_territory_wind_down_not_ruler_death",
+    "ballot_cutoff": "receivedTick<=closeTick_with_phase4_frozen_legality_no_late_votes"
   },
   "estate": {
     "entity_kind": "estate",
@@ -1741,65 +1764,72 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/0/schema"
           },
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/1/schema"
           },
           {
             "field": "personality_axes_via_life_contract",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "contract_path": "data/contracts/life_genetics_v1.json",
-            "command": "SetCurrentPersonalityAxes"
+            "command": "SetCurrentPersonalityAxes",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/2/schema"
           },
           {
             "field": "individual_genome_via_life_contract",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/3/schema"
           },
           {
             "field": "ai_planner_category_flags",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/4/schema"
           },
           {
             "field": "legal_civic_requests",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/5/schema"
           },
           {
             "field": "god_found_state_here_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "preview_command": "PreviewGodStateFoundation",
-            "command": "GodFoundStateFromActor"
+            "command": "GodFoundStateFromActor",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/6/schema"
           },
           {
             "field": "god_local_or_target_membership_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
@@ -1811,7 +1841,8 @@
             "preview_command_alternatives": [
               "PreviewLocalMembershipStroke",
               "PreviewCivicMembershipBatch"
-            ]
+            ],
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/0/editable_fields/7/schema"
           }
         ],
         "algorithm_record_contract": "data/contracts/natural_action_v1.json",
@@ -1928,34 +1959,38 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/1/editable_fields/0/schema"
           },
           {
             "field": "budget_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/1/editable_fields/1/schema"
           },
           {
             "field": "residence_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/1/editable_fields/2/schema"
           },
           {
             "field": "membership_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/1/editable_fields/3/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -2039,37 +2074,41 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/2/editable_fields/0/schema"
           },
           {
             "field": "service_boundary_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/2/editable_fields/1/schema"
           },
           {
             "field": "found_state_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/2/editable_fields/2/schema"
           },
           {
             "field": "actual_reestablish_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "request_type": "ReestablishSameCommunity_TaskPlan_request",
             "algorithm_contract": "data/contracts/settlement_lifecycle_v1.json",
-            "creates_physical_assets_or_goods_immediately": false
+            "creates_physical_assets_or_goods_immediately": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/2/editable_fields/3/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
@@ -2188,61 +2227,68 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/0/schema"
           },
           {
             "field": "service_boundary_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/1/schema"
           },
           {
             "field": "public_budget_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/2/schema"
           },
           {
             "field": "public_project_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/3/schema"
           },
           {
             "field": "god_assign_city_to_state_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "preview_command": "PreviewCityStateAssignment",
-            "command": "GodTransferCityToState"
+            "command": "GodTransferCityToState",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/4/schema"
           },
           {
             "field": "god_city_independence_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "command": "GodSeparateCityAsState"
+            "command": "GodSeparateCityAsState",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/5/schema"
           },
           {
             "field": "actual_anchor_reestablish_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "request_type": "ReestablishSameCommunity_TaskPlan_request",
             "algorithm_contract": "data/contracts/settlement_lifecycle_v1.json",
-            "creates_physical_assets_or_goods_immediately": false
+            "creates_physical_assets_or_goods_immediately": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/3/editable_fields/6/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
@@ -2396,59 +2442,66 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/0/schema"
           },
           {
             "field": "flag_and_theme",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/1/schema"
           },
           {
             "field": "constitution_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/2/schema"
           },
           {
             "field": "religious_status_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/3/schema"
           },
           {
             "field": "official_religion_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/4/schema"
           },
           {
             "field": "law_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/5/schema"
           },
           {
             "field": "territorial_transition_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/6/schema"
           },
           {
             "field": "god_capital_or_crown_assignment_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
@@ -2456,7 +2509,8 @@
               "GodSetStateCapital",
               "GodAppointCrownIncumbent"
             ],
-            "discriminant": "capital_anchor_vs_crown_office"
+            "discriminant": "capital_anchor_vs_crown_office",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/4/editable_fields/7/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
@@ -2485,7 +2539,14 @@
         "identity_domain": "state",
         "default_major_fact_limit": 4,
         "editable_fields": [
-          "same_state_fields",
+          "display_name",
+          "flag_and_theme",
+          "constitution_draft",
+          "religious_status_draft",
+          "official_religion_request",
+          "law_draft",
+          "territorial_transition_request",
+          "god_capital_or_crown_assignment_request",
           "charter_amendment_request",
           "empire_petition_request"
         ],
@@ -2553,25 +2614,84 @@
         "unavailable_edit": "show_reason_and_legal_path",
         "editable_field_bindings": [
           {
-            "field": "same_state_fields",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "field": "display_name",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/0/schema"
+          },
+          {
+            "field": "flag_and_theme",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/1/schema"
+          },
+          {
+            "field": "constitution_draft",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/2/schema"
+          },
+          {
+            "field": "religious_status_draft",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/3/schema"
+          },
+          {
+            "field": "official_religion_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/4/schema"
+          },
+          {
+            "field": "law_draft",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/5/schema"
+          },
+          {
+            "field": "territorial_transition_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/6/schema"
+          },
+          {
+            "field": "god_capital_or_crown_assignment_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/7/schema"
           },
           {
             "field": "charter_amendment_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/8/schema"
           },
           {
             "field": "empire_petition_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/5/editable_fields/9/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
@@ -2651,27 +2771,30 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/6/editable_fields/0/schema"
           },
           {
             "field": "lawful_charter_amendment_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/6/editable_fields/1/schema"
           },
           {
             "field": "actual_member_treaty_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/6/editable_fields/2/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
@@ -2752,34 +2875,38 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/7/editable_fields/0/schema"
           },
           {
             "field": "bounded_practice_policy",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/7/editable_fields/1/schema"
           },
           {
             "field": "education_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/7/editable_fields/2/schema"
           },
           {
             "field": "naming_practice_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/7/editable_fields/3/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -2858,20 +2985,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/8/editable_fields/0/schema"
           },
           {
             "field": "bounded_learning_or_naming_practice_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/8/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -2944,20 +3073,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/9/editable_fields/0/schema"
           },
           {
             "field": "root_allowed_doctrine_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/9/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -3024,20 +3155,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/10/editable_fields/0/schema"
           },
           {
             "field": "root_bounded_doctrine_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/10/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -3130,27 +3263,30 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/11/editable_fields/0/schema"
           },
           {
             "field": "budget_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/11/editable_fields/1/schema"
           },
           {
             "field": "legal_asset_contract_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/11/editable_fields/2/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
@@ -3243,34 +3379,38 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/12/editable_fields/0/schema"
           },
           {
             "field": "employment_or_project_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/12/editable_fields/1/schema"
           },
           {
             "field": "production_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/12/editable_fields/2/schema"
           },
           {
             "field": "legal_ownership_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/12/editable_fields/3/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -3362,27 +3502,30 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/13/editable_fields/0/schema"
           },
           {
             "field": "unlocked_compatible_visual_style",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/13/editable_fields/1/schema"
           },
           {
             "field": "actual_upgrade_or_demolition_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/13/editable_fields/2/schema"
           }
         ]
       },
@@ -3404,7 +3547,9 @@
         "identity_domain": "building",
         "default_major_fact_limit": 4,
         "editable_fields": [
-          "same_building_fields",
+          "display_name",
+          "unlocked_compatible_visual_style",
+          "actual_upgrade_or_demolition_request",
           "lawful_shipping_service_policy"
         ],
         "read_only_fields": [
@@ -3459,18 +3604,36 @@
         "unavailable_edit": "show_reason_and_legal_path",
         "editable_field_bindings": [
           {
-            "field": "same_building_fields",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "field": "display_name",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/14/editable_fields/0/schema"
+          },
+          {
+            "field": "unlocked_compatible_visual_style",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/14/editable_fields/1/schema"
+          },
+          {
+            "field": "actual_upgrade_or_demolition_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/14/editable_fields/2/schema"
           },
           {
             "field": "lawful_shipping_service_policy",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/14/editable_fields/3/schema"
           }
         ]
       },
@@ -3569,41 +3732,46 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/15/editable_fields/0/schema"
           },
           {
             "field": "orders",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/15/editable_fields/1/schema"
           },
           {
             "field": "formation_parameters",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/15/editable_fields/2/schema"
           },
           {
             "field": "engagement_policy",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/15/editable_fields/3/schema"
           },
           {
             "field": "supply_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/15/editable_fields/4/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/warfare_decisions_v1.json"
@@ -3682,20 +3850,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/16/editable_fields/0/schema"
           },
           {
             "field": "actual_route_repair_or_transport_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/16/editable_fields/1/schema"
           }
         ]
       },
@@ -3768,27 +3938,30 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/17/editable_fields/0/schema"
           },
           {
             "field": "compatible_unlocked_style_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/17/editable_fields/1/schema"
           },
           {
             "field": "actual_equip_repair_or_transfer_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/17/editable_fields/2/schema"
           }
         ]
       },
@@ -3902,19 +4075,21 @@
         "editable_field_bindings": [
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/18/editable_fields/0/schema"
           },
           {
             "field": "actual_transfer_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/18/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -3998,10 +4173,11 @@
         "editable_field_bindings": [
           {
             "field": "unexecuted_typed_draft_or_lawful_amendment_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/19/editable_fields/0/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -4081,27 +4257,30 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/20/editable_fields/0/schema"
           },
           {
             "field": "uncommitted_project_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/20/editable_fields/1/schema"
           },
           {
             "field": "lawful_cancel_or_schedule_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/20/editable_fields/2/schema"
           }
         ]
       },
@@ -4167,20 +4346,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/21/editable_fields/0/schema"
           },
           {
             "field": "actual_adoption_or_licence_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/21/editable_fields/1/schema"
           }
         ]
       },
@@ -4258,20 +4439,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/22/editable_fields/0/schema"
           },
           {
             "field": "actual_copy_publication_or_reading_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/22/editable_fields/1/schema"
           }
         ]
       },
@@ -4345,20 +4528,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/23/editable_fields/0/schema"
           },
           {
             "field": "actual_plant_pick_or_fell_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/23/editable_fields/1/schema"
           }
         ]
       },
@@ -4424,17 +4609,19 @@
         "editable_field_bindings": [
           {
             "field": "finite_source_edit_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/24/editable_fields/0/schema"
           },
           {
             "field": "actual_extraction_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/24/editable_fields/1/schema"
           }
         ]
       },
@@ -4499,11 +4686,12 @@
         "editable_field_bindings": [
           {
             "field": "actual_road_construction_or_clear_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/terrain_access_v1.json"
+            "contract_path": "data/contracts/terrain_access_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/25/editable_fields/0/schema"
           }
         ]
       },
@@ -4600,29 +4788,32 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/26/editable_fields/0/schema"
           },
           {
             "field": "description",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/26/editable_fields/1/schema"
           },
           {
             "field": "world_rule_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/26/editable_fields/2/schema"
           }
         ]
       },
@@ -4696,35 +4887,39 @@
         "editable_field_bindings": [
           {
             "field": "title",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/27/editable_fields/0/schema"
           },
           {
             "field": "position_inside_authority",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/27/editable_fields/1/schema"
           },
           {
             "field": "color",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/27/editable_fields/2/schema"
           },
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/27/editable_fields/3/schema"
           }
         ]
       },
@@ -4802,19 +4997,21 @@
         "editable_field_bindings": [
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/28/editable_fields/0/schema"
           },
           {
             "field": "actual_payment_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/28/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -4886,10 +5083,11 @@
         "editable_field_bindings": [
           {
             "field": "lawful_reservation_cancel_or_amend_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/29/editable_fields/0/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -4985,10 +5183,11 @@
         "editable_field_bindings": [
           {
             "field": "actual_alternative_route_or_contract_exit_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/30/editable_fields/0/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -5068,27 +5267,30 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/31/editable_fields/0/schema"
           },
           {
             "field": "unlocked_real_setup_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/31/editable_fields/1/schema"
           },
           {
             "field": "future_production_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/31/editable_fields/2/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -5111,7 +5313,9 @@
         "identity_domain": "facility",
         "default_major_fact_limit": 4,
         "editable_fields": [
-          "same_building_fields",
+          "display_name",
+          "unlocked_compatible_visual_style",
+          "actual_upgrade_or_demolition_request",
           "actual_capacity_project_request"
         ],
         "read_only_fields": [
@@ -5154,18 +5358,36 @@
         "unavailable_edit": "show_reason_and_legal_path",
         "editable_field_bindings": [
           {
-            "field": "same_building_fields",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "field": "display_name",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/32/editable_fields/0/schema"
+          },
+          {
+            "field": "unlocked_compatible_visual_style",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/32/editable_fields/1/schema"
+          },
+          {
+            "field": "actual_upgrade_or_demolition_request",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "value_type": "concrete_registered_field_schema",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/32/editable_fields/2/schema"
           },
           {
             "field": "actual_capacity_project_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/32/editable_fields/3/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/economic_decisions_v1.json"
@@ -5231,10 +5453,11 @@
         "editable_field_bindings": [
           {
             "field": "lawful_issue_amend_or_revoke_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/33/editable_fields/0/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -5307,20 +5530,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/34/editable_fields/0/schema"
           },
           {
             "field": "real_budget_priority_or_goal_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/34/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -5393,20 +5618,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/35/editable_fields/0/schema"
           },
           {
             "field": "actual_war_order_or_peace_proposal",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/35/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/warfare_decisions_v1.json"
@@ -5478,10 +5705,11 @@
         "editable_field_bindings": [
           {
             "field": "unapproved_typed_draft_or_lawful_amendment_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/36/editable_fields/0/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
@@ -5830,44 +6058,49 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/40/editable_fields/0/schema"
           },
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/40/editable_fields/1/schema"
           },
           {
             "field": "genome_via_life_contract",
-            "value_type": "typed_owning_domain_draft_or_request",
-            "arbitrary_json": false,
-            "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
-          },
-          {
-            "field": "ai_planner_category_flags",
-            "value_type": "typed_owning_domain_draft_or_request",
-            "arbitrary_json": false,
-            "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
-          },
-          {
-            "field": "uplift_request_via_life_contract",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/life_genetics_v1.json"
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/40/editable_fields/2/schema"
+          },
+          {
+            "field": "ai_planner_category_flags",
+            "value_type": "concrete_registered_field_schema",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/40/editable_fields/3/schema"
+          },
+          {
+            "field": "uplift_request_via_life_contract",
+            "value_type": "concrete_registered_field_schema",
+            "arbitrary_json": false,
+            "submit": "owning_domain_command_with_revision_and_consequence_validation",
+            "access": "show_legal_denial_reason_if_unavailable",
+            "contract_path": "data/contracts/life_genetics_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/40/editable_fields/4/schema"
           }
         ],
         "algorithm_record_contract": "data/contracts/natural_action_v1.json",
@@ -6019,30 +6252,33 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/42/editable_fields/0/schema"
           },
           {
             "field": "bounded_traits_via_life_contract",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/life_genetics_v1.json"
+            "contract_path": "data/contracts/life_genetics_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/42/editable_fields/1/schema"
           },
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/42/editable_fields/2/schema"
           }
         ]
       },
@@ -6114,11 +6350,12 @@
         "editable_field_bindings": [
           {
             "field": "bounded_gene_edit_via_life_contract",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/life_genetics_v1.json"
+            "contract_path": "data/contracts/life_genetics_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/43/editable_fields/0/schema"
           }
         ]
       },
@@ -6194,43 +6431,48 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/44/editable_fields/0/schema"
           },
           {
             "field": "color",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/44/editable_fields/1/schema"
           },
           {
             "field": "emblem",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/44/editable_fields/2/schema"
           },
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
-            "historical_record_overwrite": false
+            "historical_record_overwrite": false,
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/44/editable_fields/3/schema"
           },
           {
             "field": "separate_legal_adoption_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/44/editable_fields/4/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/social_decisions_v1.json"
@@ -6314,55 +6556,62 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/0/schema"
           },
           {
             "field": "color",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/1/schema"
           },
           {
             "field": "emblem",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/2/schema"
           },
           {
             "field": "membership_policy",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/3/schema"
           },
           {
             "field": "education_policy",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/4/schema"
           },
           {
             "field": "service_obligations",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/5/schema"
           },
           {
             "field": "succession_charter_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/45/editable_fields/6/schema"
           }
         ]
       },
@@ -6446,10 +6695,11 @@
         "editable_field_bindings": [
           {
             "field": "lawful_settlement_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/46/editable_fields/0/schema"
           }
         ]
       },
@@ -6536,24 +6786,27 @@
         "editable_field_bindings": [
           {
             "field": "lawful_succession_policy_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/47/editable_fields/0/schema"
           },
           {
             "field": "lawful_abdication_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/47/editable_fields/1/schema"
           },
           {
             "field": "regent_designation_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/47/editable_fields/2/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
@@ -6638,17 +6891,19 @@
         "editable_field_bindings": [
           {
             "field": "lawful_nomination",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/48/editable_fields/0/schema"
           },
           {
             "field": "seat_authorized_vote",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/48/editable_fields/1/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json"
@@ -6714,10 +6969,11 @@
         "editable_field_bindings": [
           {
             "field": "lawful_limited_delegation_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/49/editable_fields/0/schema"
           }
         ]
       },
@@ -6821,34 +7077,38 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/50/editable_fields/0/schema"
           },
           {
             "field": "lawful_proposal",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/50/editable_fields/1/schema"
           },
           {
             "field": "future_plan_priority",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/50/editable_fields/2/schema"
           },
           {
             "field": "cancel_unexecuted_preparation",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/50/editable_fields/3/schema"
           }
         ],
         "decision_algorithm_contract": "data/contracts/political_decisions_v1.json",
@@ -6908,11 +7168,12 @@
         "editable_field_bindings": [
           {
             "field": "validated_rule_value",
-            "value_type": "selected_rule_declared_type",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "command": "SetWorldRule"
+            "command": "SetWorldRule",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/51/editable_fields/0/schema"
           }
         ]
       },
@@ -6973,27 +7234,30 @@
         "editable_field_bindings": [
           {
             "field": "previewed_god_ramp_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/terrain_access_v1.json"
+            "contract_path": "data/contracts/terrain_access_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/52/editable_fields/0/schema"
           },
           {
             "field": "civil_ramp_project_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/terrain_access_v1.json"
+            "contract_path": "data/contracts/terrain_access_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/52/editable_fields/1/schema"
           },
           {
             "field": "remove_ramp_preview",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "contract_path": "data/contracts/terrain_access_v1.json"
+            "contract_path": "data/contracts/terrain_access_v1.json",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/52/editable_fields/2/schema"
           }
         ]
       },
@@ -7192,10 +7456,11 @@
         "editable_field_bindings": [
           {
             "field": "actual_training_or_learning_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/55/editable_fields/0/schema"
           }
         ]
       },
@@ -7285,17 +7550,19 @@
         "editable_field_bindings": [
           {
             "field": "public_service_budget_preferences",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/56/editable_fields/0/schema"
           },
           {
             "field": "real_expansion_project_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/56/editable_fields/1/schema"
           }
         ]
       },
@@ -7385,20 +7652,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/57/editable_fields/0/schema"
           },
           {
             "field": "actual_navigation_or_transport_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/57/editable_fields/1/schema"
           }
         ]
       },
@@ -7631,20 +7900,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/60/editable_fields/0/schema"
           },
           {
             "field": "actual_honey_harvest_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/60/editable_fields/1/schema"
           }
         ]
       },
@@ -7789,24 +8060,27 @@
         "editable_field_bindings": [
           {
             "field": "unapproved_draft",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/62/editable_fields/0/schema"
           },
           {
             "field": "resubmit_current_petition_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/62/editable_fields/1/schema"
           },
           {
             "field": "withdraw_unapproved_petition_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/62/editable_fields/2/schema"
           }
         ]
       },
@@ -7974,32 +8248,35 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
             "command": "RenameEntity",
-            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity"
+            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/64/editable_fields/0/schema"
           },
           {
             "field": "stable_member_refs",
-            "value_type": "stable_ref_set",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity"
+            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/64/editable_fields/1/schema"
           },
           {
             "field": "observation_note",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
             "historical_record_overwrite": false,
-            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity"
+            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/64/editable_fields/2/schema"
           }
         ]
       },
@@ -8167,20 +8444,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/66/editable_fields/0/schema"
           },
           {
             "field": "actual_transfer_or_storage_policy_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/66/editable_fields/1/schema"
           }
         ]
       },
@@ -8265,20 +8544,22 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
-            "command": "RenameEntity"
+            "command": "RenameEntity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/67/editable_fields/0/schema"
           },
           {
             "field": "actual_equip_unequip_repair_transfer_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
-            "access": "show_legal_denial_reason_if_unavailable"
+            "access": "show_legal_denial_reason_if_unavailable",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/67/editable_fields/1/schema"
           }
         ]
       },
@@ -8424,32 +8705,35 @@
         "editable_field_bindings": [
           {
             "field": "display_name",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 128,
             "historical_record_overwrite": false,
             "command": "RenameEntity",
-            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity"
+            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/69/editable_fields/0/schema"
           },
           {
             "field": "description",
-            "value_type": "unicode_string",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
             "unicode_scalar_limit": 4096,
             "historical_record_overwrite": false,
-            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity"
+            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/69/editable_fields/1/schema"
           },
           {
             "field": "local_save_load_export_delete_request",
-            "value_type": "typed_owning_domain_draft_or_request",
+            "value_type": "concrete_registered_field_schema",
             "arbitrary_json": false,
             "submit": "owning_domain_command_with_revision_and_consequence_validation",
             "access": "show_legal_denial_reason_if_unavailable",
-            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity"
+            "storage_scope": "player_local_profile_or_validated_save_metadata_not_actor_identity",
+            "schema_lookup": "data/contracts/interaction_runtime_v1.json#/pages/69/editable_fields/2/schema"
           }
         ]
       }
@@ -8498,7 +8782,10 @@
     "names_and_boundaries_independent": true,
     "favorite_only_highlight": true,
     "far_density_proxy_changes_actor_count": false,
-    "algorithm_subrecords": "stable_TaskPlan_and_ActionEpisode_refs_show_in_existing_person_or_animal_activity_panels_and_project_details_no_new_task_or_Brain_page_no_duplicate_population"
+    "algorithm_subrecords": "stable_TaskPlan_and_ActionEpisode_refs_show_in_existing_person_or_animal_activity_panels_and_project_details_no_new_task_or_Brain_page_no_duplicate_population",
+    "typed_form_schema_contract": "data/contracts/interaction_runtime_v1.json",
+    "natural_geography_page_or_rename": false,
+    "expanded_editable_field_count": 173
   },
   "statistics": {
     "measure_fields": [
@@ -10394,14 +10681,21 @@
       "PossessActor": "ACTOR_POSSESSION",
       "ReleasePossession": "ACTOR_POSSESSION"
     },
-    "reuse_between_modes": "explicit_release_then_acquire_or_separate_authorized_mode_transition_with_new_lease_revision_no_implicit_reuse"
+    "reuse_between_modes": "explicit_release_then_acquire_or_separate_authorized_mode_transition_with_new_lease_revision_no_implicit_reuse",
+    "typed_wire": "EnterMetaControl/EnterMetaSpectate scope selection only; AcquireControlLease new grant no prior lease revision. Existing lease actions carry expected_lease_revision checked decimal int64; IssueArmyOrder legal_role or player_lease discriminated authority; ExitMetaControl lists exact leases and revisions, stale set rejects. Trusted session lifecycle cleanup may release without client revision; UI never fabricates this authority."
   },
   "settlement_lifecycle_contract": "data/contracts/settlement_lifecycle_v1.json",
   "god_control_contract": "data/contracts/god_control_v1.json",
   "command_count": 78,
-  "algorithm_revision": "ADR0017-2026-10-09",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "decision_core_contract": "data/contracts/decision_core_v1.json",
   "political_decision_contract": "data/contracts/political_decisions_v1.json",
   "economic_decision_contract": "data/contracts/economic_decisions_v1.json",
-  "warfare_decision_contract": "data/contracts/warfare_decisions_v1.json"
+  "warfare_decision_contract": "data/contracts/warfare_decisions_v1.json",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ],
+  "global_tick_contract": "data/contracts/runtime_foundation_v1.json"
 }

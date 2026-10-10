@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "contract_id": "economic_decisions_v1",
-  "design_version": "0.8",
-  "algorithm_revision": "ADR0017-2026-10-09",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -24,7 +24,12 @@
     "geography_wipe": "data/contracts/god_control_v1.json",
     "surface": "data/contracts/surface_ecology.json",
     "vegetation_generator": "data/contracts/vegetation_generator_v1.json",
-    "social_decisions": "data/contracts/social_decisions_v1.json"
+    "social_decisions": "data/contracts/social_decisions_v1.json",
+    "executable_economic_content": "data/content/economy_content_v1.json",
+    "technology_runtime": "data/content/technology_runtime_v1.json",
+    "life_runtime_profile": "data/content/life_profiles_v1.json",
+    "combat_runtime_profile": "data/content/combat_profiles_v1.json",
+    "runtime_tick_save": "data/contracts/runtime_foundation_v1.json"
   },
   "research_sources": [
     {
@@ -170,7 +175,7 @@
   "units": {
     "time": "SimTick",
     "motion_second_ticks": 20,
-    "calendar_day_ticks": 1200,
+    "calendar_day_ticks": 12000,
     "days_per_month": 30,
     "days_per_year": 360,
     "money": "integer_smallest_monetary_unit",
@@ -179,7 +184,8 @@
     "labor": "recipe_version_work_units_and_saved_integer_remainder",
     "q": "dimensionless_integer_0_to_10000",
     "dimensions_added_without_conversion": false,
-    "rates_frozen_in_world_profile": true
+    "rates_frozen_in_world_profile": true,
+    "calendar_hour_ticks": 500
   },
   "scheduling": {
     "household": "calendar_day_or_need_threshold_event",
@@ -1349,5 +1355,25 @@
       "production_performance_or_Steam"
     ]
   },
-  "invariant_count": 24
+  "invariant_count": 24,
+  "executable_content_admission": {
+    "document": "docs/architecture/EXECUTABLE_CONTENT_AND_BOOTSTRAP.md",
+    "reference_model": "docs/research/models/content_bootstrap_reference_model.py",
+    "source_424_readonly": true,
+    "active_408": true,
+    "source_horse_families_retired": [
+      "F0701",
+      "F0702",
+      "F0703",
+      "F1306"
+    ],
+    "all_effects_actual_typed_target_parameter": "technology_runtime_v1.nodes.effects -> economy_content_v1.operational_targets + consumer_operations",
+    "all_research_real_experiment": "node.research.experiment_rule_ref -> economy_content_v1.experiment_rules; real work/material/sample/elapsed and predicates required",
+    "research_progress_owner": "social_decisions_v1 actualResearchProject only; economy supplies/funds/adopts no second progress",
+    "initialization_currency_owner": "one NO_CURRENCY scope to fixed bounded issue balanced TxId; no observed price or load joining remint",
+    "bootstrap_no_free_stock_or_workers": true,
+    "unit_energy_owner": "life actual productive/maintenance ledger only; economy receipts do not charge work twice",
+    "planned_only": true,
+    "production_implemented": false
+  }
 }

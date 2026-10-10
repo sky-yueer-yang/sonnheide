@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract_id": "natural_action_v1",
-  "design_version": "0.8",
+  "design_version": "0.9",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -225,7 +225,7 @@
   "time": {
     "authority": "SimTick",
     "sample_motion_second_ticks": 20,
-    "sample_calendar_day_ticks": 1200,
+    "sample_calendar_day_ticks": 12000,
     "calendar_days_per_month": 30,
     "calendar_months_per_year": 12,
     "rates_frozen_in_world_profile": true,
@@ -1402,5 +1402,10 @@
   ],
   "acceptance_scenario_count": 42,
   "invariant_count": 20,
-  "algorithm_revision": "ADR0017-2026-10-09"
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
 }

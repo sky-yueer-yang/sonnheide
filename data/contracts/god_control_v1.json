@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "contract_id": "sonnheide_god_control_v1",
-  "design_version": "0.8",
-  "algorithm_revision": "ADR0017-2026-10-09",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -71,7 +71,7 @@
       "actual_top_material"
     ],
     "classifier_unit": "typed_XY_positive_area_regions_per_actual_surface_triangle_not_one_cell_label",
-    "water_body_SEA_LAKE": "separate_topology_not_new_geography_type",
+    "water_body_SEA_LAKE": "derived_rebuildable_connectivity_attribute_no_ObjectRef_name_or_lineage",
     "changedCanonicalGeographyCells": "broad_phase_index_cells_containing_positive_area_changed_type",
     "ChangedGeographyFootprint": "exact_positive_area_XY_regions_where_before_and_after_canonical_type_differ",
     "geography_label_color_LOD_controls_wipe": false,
@@ -88,7 +88,11 @@
       "existing_access_consequences"
     ],
     "ramp_crosses_type_threshold": "wipe_only_exact_changed_type_regions",
-    "repeated_identical_geography": "no_op_no_new_loss_or_reward"
+    "repeated_identical_geography": "no_op_no_new_loss_or_reward",
+    "ordinary_cell_classifier": "exact_registered_fixed_preset_and_height",
+    "ramp_exception": "verified_owned_ramp_actual_triangular_height",
+    "free_ordinary_height_change_allowed": false,
+    "fixed_geometry_contract": "data/contracts/runtime_foundation_v1.json"
   },
   "geography_type_wipe": {
     "mandatory_after_actual_type_change": true,
@@ -235,7 +239,8 @@
       "incubation_conditions",
       "real_burden_loss_no_auto_birth_or_replacement"
     ],
-    "surviving_absolute_state_restored_on_edit": false
+    "surviving_absolute_state_restored_on_edit": false,
+    "quantitative_hazard_profile": "data/content/life_profiles_v1.json"
   },
   "geography_transaction": {
     "read_sets": [
@@ -1545,5 +1550,10 @@
       "override": "theme_only_preserves_tree_stock_geography_type_wipe_deletes_hit_tree_plant_stock_GodVegetationSource_independent"
     }
   ],
-  "portable_companion_reference_model": "docs/research/models/carried_goods_reference_model.py"
+  "portable_companion_reference_model": "docs/research/models/carried_goods_reference_model.py",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
 }

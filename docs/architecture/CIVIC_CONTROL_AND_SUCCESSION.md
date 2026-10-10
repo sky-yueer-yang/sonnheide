@@ -1,3 +1,5 @@
+> 现行v0.9/ADR0018：普通地形八档固定高度，无岸边/选区过渡和自然地理实体身份；坡道是连续几何例外。时钟20tick/运动秒、12000tick/游戏日。具体计算以runtime_foundation、life/combat/economy/technology内容包和emergence/interaction合同为准；原生生产仍未开始。
+
 # 文明、元控制、继任与集中信息空间
 
 日期：2026-10-09。状态：**新版设计决定；生产代码未实现**。本文与 `data/contracts/civic_control_v1.json` 配套，不恢复清空的旧程序。政治八轴、爵位、帝国神授、文化/语言独立及真实产权继承来自逐字保留的[原始 v0.6](../design/Sonnheide_Complete_Design_v0.6.md)；具体首次选君、长子序、摄政、票数及界面合同是本轮补全的首版默认，可以通过合法程序调整，不声称旧稿已规定。

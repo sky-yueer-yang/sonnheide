@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract_id": "sonnheide_life_genetics_v1",
-  "design_version": "0.8",
+  "design_version": "0.9",
   "architecture": "docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
   "planned_only": true,
   "production_implemented": false,
@@ -3597,11 +3597,12 @@
       },
       "gestation_direction": "larger duration coefficient lengthens actual required conception-snapshotted work; UI states direction explicitly rather than always calling larger better",
       "sleep_direction": "larger sleep_requirement means more required actual rest; not a generic positive buff",
-      "illness_direction": "higher immune/toxin/parasite capacity improves clearance within finite species caps, not an immune-all flag"
+      "illness_direction": "higher immune/toxin/parasite capacity improves clearance within finite species caps, not an immune-all flag",
+      "integer_authority": "life_profiles_v1.gene_arithmetic overrides float example; no runtime float expression"
     },
     "inheritance": {
       "each_trait": "sample_one_of_two_alleles_from_each_recorded_biological_parent",
-      "recombination": "saved_linkage_group_crossover_not_independent_display_randomness",
+      "recombination": "fixed trait_groups + original within-group order; one homolog/parent/group draw then crossover_q2000 each adjacent trait; saved conception counter exact order; life_profiles gene_arithmetic",
       "conception_snapshots_parent_genomes": true,
       "editing_parent_after_conception_changes_embryo": false,
       "mutation": "rare_bounded_allele_delta_at_conception_only_using_saved_counter",
@@ -3636,7 +3637,7 @@
       "profile_edit_requires_exact_affected_actor_set_and_effects": true,
       "profile_cannot_change_species_or_sapience": true,
       "new_subspecies_creates_life": false,
-      "automatic_split": "bounded_persistent_gene_cluster_with_parent_subspecies_refs_not_birth_count_reward",
+      "automatic_split": "emergence_algorithms_v1.subspecies full 12trait inherited-distance/prototype/reproduction graph/evidence persistence/hysteresis algorithm",
       "automatic_split_initial_profile": "copy_existing_expression_profile_so_classification_does_not_grant_capacities",
       "membership_changes_preserve": "origin_age_genome_civil_links_absolute_states_and_stocks",
       "extinction": "zero_living_members_archived_ref_not_species_definition_deletion",
@@ -3660,7 +3661,8 @@
         "precedence": "current_live_members_plus_reserved_birth_slots_must_fit_all_applicable_actor_species_subspecies_caps_for_new_entry",
         "existing_birth_reservations_preserved": true,
         "existing_members_and_awakenings_not_removed_or_blocked": true
-      }
+      },
+      "definition_only_reclassification_capacity_change": false
     },
     "individual_edits": {
       "gene_editor_and_trait_brush": "same_typed_command_with_explicit_actor_ids_and_per_trait_effect_preview",
@@ -3733,11 +3735,18 @@
       "sleep_requirement",
       "rest_recovery_efficiency",
       "agility",
-      "fatigue_recovery"
+      "fatigue_recovery",
+      "maximum_load_g",
+      "body_displacement_ml",
+      "safe_landing_speed_mm_per_motion_second",
+      "sleep_requirement_tick",
+      "fatigue_capacity",
+      "movement_speed_mm_per_motion_second",
+      "body_collision_height_mm"
     ],
     "can_bypass_high_peak": false,
     "task_requires_actual_equipment_and_route": true,
-    "functional_development": "fixed species age-stage coefficients may reduce actual movement work reproductive and care capacity before maturity while adult body geometry stays unchanged; genes do not move fixed adulthood threshold",
+    "functional_development": "life_profiles age_stages actual age_fraction_to_fixed_species_maturity; movement/work/care coefficients; no body geometry scale; no minor productive labor",
     "trait_to_export": {
       "strength": "maximum_supported_load",
       "agility": "agility",
@@ -3749,7 +3758,17 @@
       "fatigue_recovery": "species_baseline_fatigue_debt_units_per_SimTick_multiplier"
     },
     "capacity_consumption_policy": "all consumers read versioned PhenotypeCapacities exports; never re-express alleles or shared-profile formulas in TerrainNavigation ThermalExposure TaskEligibility or NeedsAndHealth",
-    "fatigue_recovery_is_actual_state_recovery": "export is bounded potential recovery rate; actual debt reduction requires actual safe rest SimTick and available real metabolic energy, does not reset debt on edit"
+    "fatigue_recovery_is_actual_state_recovery": "export is bounded potential recovery rate; actual debt reduction requires actual safe rest SimTick and available real metabolic energy, does not reset debt on edit",
+    "all_trait_consumer_contract": "data/content/life_profiles_v1.json.trait_consumers all61 rows; appearance/predisposition finite authored export, other actual readers use capacity once",
+    "typed_numeric_exports": {
+      "maximum_load_g": "canonical integer g; maximum_supported_load legacy gamekg display is exact rational g/1000 only, no second expression",
+      "body_displacement_ml": "integer mL fixed species base*buoyancy ratio, missing swimming capability cannot grant swim but actual flotation physics still uses fixed body displacement",
+      "safe_landing_speed_mm_per_motion_second": "fixed species safe speed, actual injury/fatigue may lower; no gene raises envelope",
+      "sleep_requirement_tick": "integer actual rawtick/gameDay compiled absolute species sleep envelope hours*500",
+      "fatigue_capacity": "integer fatigue_milli limit",
+      "movement_speed_mm_per_motion_second": "fixed allowed medium output once",
+      "body_collision_height_mm": "read-only fixed species body height; actor age does not scale geometry"
+    }
   },
   "physiology": {
     "saved_absolute_fields": [
@@ -3768,7 +3787,18 @@
       "pain_signal_from_actual_injuries",
       "rest_episode_work_and_last_tick",
       "body_wetness",
-      "next_physiology_tick"
+      "next_physiology_tick",
+      "oxygen_debt_tick",
+      "productive_dry_matter_g",
+      "wound_region_records",
+      "bleeding_rate_and_remainders",
+      "digestion_energy_and_dry_matter_remainders",
+      "physiology_per_rate_remainders",
+      "unique_InjuryImpulse_receipts",
+      "movement_energy_numerator_remainder",
+      "fatigue_distance_mm_remainder",
+      "sleep_accrual_remainder",
+      "sleep_recovery_remainder"
     ],
     "fixed_tick_order": [
       "food_absorption",
@@ -3793,7 +3823,7 @@
     "work_without_sufficient_real_energy": "slow_or_pause_no_free_output_when_hunger_damage_rule_off",
     "missing_clothes_direct_death": false,
     "appearance_or_camera_changes_state": false,
-    "state_unit_policy": "absolute fixed-point game units with species profile conversion coefficients locked by world content version",
+    "state_unit_policy": "life_profiles.units and state_field_bindings exact; game energy_milli/health_milli not unspecified genericunits",
     "energy_sources": {
       "maintenance_nonrecoverable": "finite initial or supported safety energy; may pay maintenance thermal movement and bounded direct foraging needed to obtain existing real food; cannot convert into gestation new biomass milk wool egg meat or transferable feed reserve",
       "productive_real_food": "absorbed from uniquely consumed real food batch; may fund supported work gestation stored biomass or product conversion with finite yields and losses",
@@ -3864,7 +3894,7 @@
       }
     ],
     "health_load_formula": {
-      "step": "bounded_increment_from_actual_dose_minus_species_and_genetic_clearance; damage only above versioned threshold with per_tick_maximum",
+      "step": "life_profiles.physiology_functions.infection unique actual dose integral/clearance/threshold/capped damage",
       "sim_randomness": "if needed saved contact-domain counter never render_rng",
       "transmission_requires": [
         "existing_infected_source_ref",
@@ -3885,7 +3915,7 @@
       "maturation": "fixed_species_age_threshold independent_of_aging_damage_switch",
       "biological_aging_work": "saved accumulation when aging consequence enabled; off never rolls age backward",
       "lifespan_capacity": "species-bounded potential setting threshold and decline rates not an age overwrite or immortal flag",
-      "death": "bounded health decline plus saved aging-domain hazard after profile threshold, one actor death commit no abrupt replay for off interval",
+      "death": "deterministic life_profiles.aging current enabled delta damage only; no hidden random aging hazard; death once health0 after simultaneous injury aggregation",
       "edit": "recompute future threshold rates but preserve actual age work injuries and health"
     },
     "pain_and_sleep": {
@@ -3896,7 +3926,8 @@
       "insufficient_sleep": "bounded attention reaction work and learning penalties no free skipped labour or sudden scripted death",
       "episode_state": "saved actual start due work and last_tick; hidden screen menu paused shader and wall_clock do not create rest",
       "low_pain_tradeoff": "fewer subjective alarms may allow unsafe decisions but actual damaged limb body load and task limits still apply",
-      "higher_rest_efficiency_tradeoff": "requires actual restorative time and adequate productive energy, has finite species ceiling"
+      "higher_rest_efficiency_tradeoff": "requires actual restorative time and adequate productive energy, has finite species ceiling",
+      "formula_authority": "life_profiles.physiology_functions.sleep/fatigue and injury; separate debts/real paid rest"
     },
     "bootstrap_foraging": "initial maintenance can reach and directly consume existing legal food reserve; may not synthesize harvestable animal biomass or offspring reserve",
     "fat_storage_interpretation": "fat_and_carbohydrate_storage_are_nonduplicated_subcompartments_of_productive_energy_from_real_food_total_not_an_extra_source; energy_storage_capacity_only_bounds_existing_real_energy",
@@ -3940,7 +3971,7 @@
     "pollination": "bounded_visit_to_real_bloom_capacity_changes_future_real_fruit_or_crop_work_not_instant_stock",
     "livestock_ownership": "ordinary_non_sapient_legal_animal_title_separate_custodian_and_location_no_mount_asset",
     "animal_death": "keep_identity_and_cause_transfer_only_saved_recoverable_reserves_to_carcass_once",
-    "carcass": "finite_decay_and_resource_batches_actual_butchery_path_tools_work_and_rights",
+    "carcass": "only saved real recovered biomass reserves, species converter caps plusactual tools/right/work/path; body_mass not harvested content; sapient civil estate excludes slaughter",
     "sapient_body": "civil_death_and_estate_rules_no_automatic_livestock_processing",
     "colony_birth_exception": "bee_species_uses_fixed_queen_role_and_recorded_parentage_under_same_energy_capacity_and_rule_gates_no_spontaneous_members",
     "bee_reproductive_role_changes_by_gene_editor": false,
@@ -3953,7 +3984,8 @@
     "bee_each_role_has_same_species": "genetics and breeding role are separate immutable supported reproductive-role fields; no extra species per role",
     "species_death_or_spawn_fills_resources": false,
     "predation_rule": "animal_predation gates new ordinary-animal hunt initiation only; no retroactive prey restoration or biomass refund, sapient violence follows civil/war rules",
-    "vegetation_rule": "wild_vegetation_recovery gates new wild sapling candidates; existing tree bloom fruit and agriculture remain actual finite production"
+    "vegetation_rule": "wild_vegetation_recovery gates new wild sapling candidates; existing tree bloom fruit and agriculture remain actual finite production",
+    "product_conversion": "life_profiles species converters shared paid productive nutrition and dry matter pool; no independently doubled output"
   },
   "breeding": {
     "human_adulthood_years": 18,
@@ -4004,7 +4036,8 @@
     "human_biological_birth_and_legal_family_roles_separate": true,
     "gestation_clock_bound": "conception snapshots species/profile duration and work rate version; later parent/subspecies edits may affect maternal support but cannot reset pregnancy to free full progress or rewrite due clock",
     "existing_reserved_birth_after_population_limit_reduction": "honor existing birth reservation with explicit over_limit state; new conception blocked",
-    "newborn_care": "actual existing caregiver time warmth and consumed suitable real food; no caregiver or milk inventory created at birth"
+    "newborn_care": "actual existing caregiver time warmth and consumed suitable real food; no caregiver or milk inventory created at birth",
+    "full_functions": "data/content/life_profiles_v1.json.breeding_functions exact snapshot/energy/material/progress/birth/role guards"
   },
   "civilization_light": {
     "id": "civilization_light",
@@ -4175,7 +4208,14 @@
       "sound_proxy"
     ],
     "load_restock_reset_health_or_generate_members": false,
-    "decision_personality": "baseline_current_explicit_edit_experience_sliding_receipts_and_remainders"
+    "decision_personality": "baseline_current_explicit_edit_experience_sliding_receipts_and_remainders",
+    "content_profile_hashes": [
+      "life_profiles",
+      "combat_profiles",
+      "emergence_algorithms",
+      "economy_content",
+      "technology_runtime"
+    ]
   },
   "acceptance_scenarios": [
     {
@@ -4311,9 +4351,12 @@
   "interfaces": {
     "terrain": "data/contracts/terrain_access_v1.json",
     "civic": "data/contracts/civic_control_v1.json",
-    "surface": "data/contracts/surface_ecology.json"
+    "surface": "data/contracts/surface_ecology.json",
+    "life_profiles": "data/content/life_profiles_v1.json",
+    "emergence": "data/contracts/emergence_algorithms_v1.json",
+    "combat_profiles": "data/content/combat_profiles_v1.json"
   },
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "personality_state": {
     "author": "life",
     "contract": "data/contracts/decision_core_v1.json",
@@ -4344,5 +4387,35 @@
       "SocialPlanner"
     ],
     "ordinary_animal_civic_or_religion_capability_granted_by_axis": false
+  },
+  "units_and_clock": {
+    "health": "health_milli integer 0..100000",
+    "energy": "energy_milli integer game metabolic quantity",
+    "mass": "g",
+    "distance": "mm",
+    "velocity": "mm_per_motion_second",
+    "temperature": "mC",
+    "fatigue": "fatigue_milli",
+    "thermal_deficit": "unpaid_energy_milli per cold/heat separately",
+    "infection": "load_milli",
+    "oxygen": "oxygen_debt_tick",
+    "sleep": "sleep_debt_tick",
+    "Q": 10000
+  },
+  "time_profile": {
+    "ticks_per_motion_second": 20,
+    "ticks_per_game_day": 12000,
+    "ticks_per_calendar_hour": 500,
+    "days_per_year": 360,
+    "physiology_step_max_tick": 20,
+    "integration": "rate*dt+saved remainder divided by denominator; dt raw SimTick, never wall clock; split at actual effect boundaries"
+  },
+  "runtime_profile_authority": {
+    "absolute_species_baselines": "data/content/life_profiles_v1.json.species_profiles",
+    "61_consumers": "data/content/life_profiles_v1.json.trait_consumers",
+    "physics_hazards": "data/content/life_profiles_v1.json.hazard_physics",
+    "injury_unique_writer": "LifeApplyInjury fromlife_profiles.injury",
+    "compiled_capacities": "fixed species capability gate first; absolute species envelope overrides trait ratio for strength/ground_speed/lifespan/sleep where provided; convert m->mm,kg->g,years->360day,hours->500tick, abstractindex->Q10000; all other ratio baselines from species profile/trait consumer explicit constant. Preserve absolute health/debt/elapsed/inventory. Never infer missing body functions from positive gene.",
+    "movement_consumers": "only PhenotypeCapacities; hazard consumers actual swept facts plus versioned capacity, not rawgenes"
   }
 }

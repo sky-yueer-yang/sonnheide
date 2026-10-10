@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "design_version": "0.8",
+  "design_version": "0.9",
   "planned_only": true,
   "production_implemented": false,
-  "contract_id": "sonnheide_game_v0_8",
+  "contract_id": "sonnheide_game_v0_9",
   "date": "2026-10-09",
-  "design": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+  "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "authoritative_contracts": [
     "data/contracts/pixel_world.json",
     "data/contracts/surface_ecology.json",
@@ -21,7 +21,10 @@
     "data/contracts/political_decisions_v1.json",
     "data/contracts/economic_decisions_v1.json",
     "data/contracts/warfare_decisions_v1.json",
-    "data/contracts/social_decisions_v1.json"
+    "data/contracts/social_decisions_v1.json",
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
   ],
   "original_source": {
     "path": "docs/design/Sonnheide_Complete_Design_v0.6.md",
@@ -57,7 +60,8 @@
     "free_resurrection_or_population_cloning": false,
     "army_layers": 1,
     "new_defensive_walls": "original_premodern_real_material_access_certified",
-    "new_infection": "explicit_sources_and_care_no_random_epidemic"
+    "new_infection": "explicit_sources_and_care_no_random_epidemic",
+    "natural_geography_entities_names_lineage": false
   },
   "population": {
     "human_placement_age_years": 18,
@@ -169,11 +173,12 @@
       "F1306-S3"
     ],
     "technology_source_active_view_total": 408,
-    "current_new_game_all_technology_translations_complete": false,
+    "current_new_game_all_technology_translations_complete": true,
     "law_catalogue_count": 35,
     "business_catalogue_count": 13,
     "new_animal_clothing_ramp_wall_definitions": "explicit_new_versioned_definitions_implemented_in_relevant_stages",
-    "source_law_succession_generic_summary_overridden_by": "civic_control_v1.json.crown_succession"
+    "source_law_succession_generic_summary_overridden_by": "civic_control_v1.json.crown_succession",
+    "runtime_translations_definition_only": "408 labels are current zh-CN/en/de data; actual UI production is unimplemented and batch verifies exact coverage"
   },
   "save": {
     "local_slots": true,
@@ -199,18 +204,20 @@
   "time_contract": {
     "canonical_authority": "integer_SimTick",
     "sample_tick_hz_at_speed_1": 20,
-    "sample_ticks_per_game_day": 1200,
+    "sample_ticks_per_game_day": 12000,
     "days_per_month": 30,
     "months_per_year": 12,
     "days_per_year": 360,
     "frozen_in_world_profile": true,
     "motion_sim_second_ticks": 20,
-    "calendar_day_ticks": 1200,
+    "calendar_day_ticks": 12000,
     "motion_vs_calendar_rates_separate_named_conversions": true,
     "motion_m_per_sim_second_is_not_calendar_second": true,
     "biological_hours_food_sleep_pregnancy_wages_aging": "calendar_units_to_SimTick_via_frozen_profile",
     "speed_multiplier_changes_wall_time_only": true,
-    "calibration_required": "real_route_labor_food_combat_and_fast_forward_before_capacity_claim"
+    "calibration_required": "real_route_labor_food_combat_and_fast_forward_before_capacity_claim",
+    "calendar_hour_ticks": 500,
+    "motion_seconds_per_calendar_day": 600
   },
   "algorithm_amendment": {
     "decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
@@ -234,7 +241,7 @@
     "owner_or_culture_or_language_changed_by_flag": false,
     "source": "data/contracts/god_control_v1.json"
   },
-  "algorithm_revision": "ADR0017-2026-10-09",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "decision_algorithms": {
     "decision": "docs/decisions/0016-contextual-decisions-policy-economy-and-war.md",
     "core_contract": "data/contracts/decision_core_v1.json",
@@ -252,7 +259,52 @@
     "ordinary_AI_requires_player_approval_every_episode": false,
     "decisions_or_animations_create_free_goods_people_or_knowledge": false
   },
-  "latest_geography_decision": "docs/decisions/0017-preserve-living-actor-carried-items-on-geography-change.md",
-  "historical_only": true,
-  "superseded_by": "data/contracts/game_v0_9.json"
+  "latest_geography_decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md",
+  "runtime_definition_packs": [
+    "data/content/life_profiles_v1.json",
+    "data/content/combat_profiles_v1.json",
+    "data/content/economy_content_v1.json",
+    "data/content/technology_runtime_v1.json"
+  ],
+  "terrain_policy": {
+    "fixed_heights_mm": {
+      "deep_ocean": -20000,
+      "close_ocean": -8000,
+      "shallow_water": -2000,
+      "sand": 1000,
+      "soil": 2000,
+      "hill": 16000,
+      "mountain": 48000,
+      "high_peak": 96000
+    },
+    "arbitrary_height": false,
+    "height_noise": false,
+    "shore_or_selection_edge_transition": false,
+    "smooth_brush": false,
+    "ramp_only_continuous_exception": true,
+    "copy_ramp": false
+  },
+  "military_progression": {
+    "starting_era": "cold_weapons",
+    "starting_firearms_unlocked": false,
+    "starting_guns_powder_cannons_granted": false,
+    "later_flintlock": "knowledge_research_real_manufacture_fit_training_and_equipment_required",
+    "role_registry_is_all_eras_not_starting_units": true
+  },
+  "executable_specification": {
+    "life_writer": "life_profiles_v1",
+    "research_writer": "social_domain",
+    "geography_writer": "terrain_domain",
+    "tick_pipeline": "runtime_foundation_v1",
+    "page_drafts": "interaction_runtime_v1",
+    "definition_runtime_implemented": false,
+    "reference_proof_scope": "finite_models_not_full_game"
+  },
+  "interaction_coverage": {
+    "pages": 70,
+    "expanded_editable_fields": 173,
+    "core_civic_commands": 78,
+    "supplementary_typed_commands": 13,
+    "bottom_tools": 100
+  }
 }

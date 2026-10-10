@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract_id": "sonnheide_vegetation_generator_v1",
-  "design_version": "0.8",
+  "design_version": "0.9",
   "planned_only": true,
   "production_implemented": false,
   "source": "docs/architecture/VEGETATION_GENERATOR_AND_DENSITY.md",
@@ -558,5 +558,10 @@
     }
   ],
   "evidence_boundary": "sampling_reference_model_and_contract_audit_are_not_production_ecology_navigation_GPU_or_fruit_acceptance",
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
 }

@@ -1,6 +1,6 @@
 # 重置后自研程序结构与共享机制
 
-状态：设计，未创建这些生产目录/目标，旧程序不恢复；ADR0015补充城市/动作/神意/植被算法。总规则见[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)。
+状态：设计，未创建这些生产目录/目标，旧程序不恢复；ADR0015/0016/0017保留，ADR0018/v0.9冻结固定八档地形、全域tick和存档。总规则见[v0.9](../design/Sonnheide_Design_v0.9_Executable_Rules.md)。
 
 ## 1. 真正需要先突破的边界
 
@@ -22,7 +22,7 @@
 src/
   foundation/       IDs、整数时间/账额、Result、确定性RNG、量纲
   world/            单写者World、事务、事件、版本、实体寿命
-  terrain/          column/ramp_patch、材质、海湖拓扑、边界海岸
+  terrain/          固定8档column/ramp_patch、材质、无身份湿导航拓扑、矩形边界
   spatial/          body/collider、容器、通路/支承证书、步行/车/水/飞行
   life/             species、subspecies、genome、physiology、reproduction
   animals/          行为、觅食/捕食、照料/畜产、启智转换
@@ -44,7 +44,7 @@ tools/              3.9+离线导入/烘焙/校验/统一构建（施工后创�
 tests/              真实不变量、贯穿场景、故障注入与性能（随功能创建）
 ```
 
-核心只依赖foundation与不可变定义，不能include平台/窗口/GPU/UI头。query只读已完成revision；application不直接改Actor、钱或height。renderer/spatial都消费同一表面事实，空间派生不能反写terrain。工具离线烘焙可用独立开源库，任何额外依赖必须记录架构理由/官方来源/版本/许可/hash/可分发原件；过去SDL3/bgfx/RmlUi/FreeType锁文件仅历史证据，新实现先核验再锁。
+核心只依赖foundation与不可变定义，不能include平台/窗口/GPU/UI头。query只读已完成revision；application不直接改Actor、钱或height。renderer/spatial都消费同一表面事实，空间派生不能反写terrain。工具离线烘焙可用独立开源库，任何额外依赖必须记录架构理由/官方来源/版本/许可/hash/可分发原件；ADR0018已重新读取官方固定commit许可证并决定复用原锁SDL3.2.28/bgfx/RmlUi5.1/FreeType2.13.3和wrapper/bx/bimg的七项版本/hash；只复用独立库和原件，不恢复旧程序。新生产链接/Windows GPU仍未验证。
 
 ## 3. ID、身体与空间
 
@@ -72,7 +72,7 @@ AccessCertificate记录端点/用途/运动profile、表面/占用/路权版本�
 
 高频运动/接触、较低频体温/能量/行为、每日实际生产/腐坏、周期工资税/项目、低频文化场/语言分化分别调度，但由同一整数tick最终提交。必须记录当期任务和积累余数：量化不能通过频繁载入或暂停多获果/乳/薪资。到期队列使用公平工作配额，落后有可解释积压而不假称全部完成。
 
-首样时间明确分单位：20 SimTick为1个运动SimSecond，1200 tick为1游戏日，30日/月、12月/年（360日）。两者是固定profile转换，移动m/SimSecond不是m/日历秒；生理小时、食物、睡眠、孕期、工资与年龄按日历单位转tick，禁止消费者混用。倍率只改墙上时间推进，不改一天需要多少食物或一米多少劳动。路径距离/劳动/食物与战斗重装时长必须联测后校准此首样，保存不变，改profile须明确迁移。
+首样时间明确分单位：20 SimTick为1个运动SimSecond，12000 tick为1游戏日，500tick为1日历小时，30日/月、12月/年（360日）。两者是固定profile转换，移动m/SimSecond不是m/日历秒；生理小时、食物、睡眠、孕期、工资与年龄按日历单位转tick，禁止消费者混用。倍率只改墙上时间推进，不改一天需要多少食物或一米多少劳动。路径距离/劳动/食物与战斗重装时长必须联测后校准此首样，保存不变，改profile须明确迁移。
 
 动物觅食/捕食用局部空间索引与限频决策；高频移动也按真实通路推进。蜂群授粉按群/服务区有界事件；寒冷检测用活跃Actor批次，不每帧为每棵decor采气象。人类GenesisNode有限聚落级，智慧动物参与接触但不当创生发起计数；没有每格×每文化矩阵。账本不逐tick复制，历史采样单独低频且可标缺口。
 
@@ -84,7 +84,7 @@ query按ObjectKind产生支持三语的字段metadata、关系Ref、允许编辑
 
 ## 8. 存档和发布
 
-保存权威实体/绝对批次与账/亲代意识来源/峰水坡面/规则/草案以外任务/继任/随机与到期余量；mesh、LOD、装饰cache可重建。当前save schema与definition/asset hash分开，加载固定包与species版本，未经迁移不可静默改包络。checkpoint写临时→flush→原子替换→读回核验→发布pointer，失败不覆盖旧有效存档。
+保存权威实体/绝对批次与账/亲代意识来源/峰水坡面/规则/草案以外任务/继任/随机与到期余量；mesh、LOD、装饰cache可重建。新SonnSave1的120byte header/64byte段表、规范JSON整数payload、段hash与definition/asset hash分开，加载固定包与species版本，未经迁移不可静默改包络。checkpoint写临时→flush→原子替换→读回核验→发布pointer，失败不覆盖旧有效存档。
 
 本地多槽/自动滚动档/安全导出包；不做Workshop/Cloud、任何远程账号或隐式上传。新档和旧源码时代档不同，不承诺旧游戏运行档自动兼容。本机缓存/个人档/凭证不入Git。已发布Git历史不重写/强推。
 
@@ -100,7 +100,7 @@ query按ObjectKind产生支持三语的字段metadata、关系Ref、允许编辑
 
 Steam唯一发行；Windows GPU/Steam安装、控制器/键鼠/DPI/音频/存档实机证据独立，Metal仅开发验证。全程序/必需可分发资产托管GitHub；许可证原件与版本/hash锁定，不用CI/NullRenderer替代实机三维试玩。
 
-## 12. ADR0015跨域算法边界
+## 12. ADR0015跨域算法边界（ADR0018固定类型覆盖旧自由高度）
 
 政府模块的NormalizeSettlement读取候选最终几何/活成员/实际服务，输出双轴状态、有效域、行政权限与State/职位后果；不另作人口删除器。City是同Settlement的CITY章程资格。TerritorialTitle与effective dry index分离，CitySquareAccount没有物理设施时容量0。growth/newcity/Reestablish使用真实TaskPlan/FoundingParty与经济预约，动作执行器推进实际路程和劳动。
 
@@ -115,3 +115,11 @@ application只产生God typed proposals；地理换类先冻结活Actor真实穿
 新增decision模块随真实行为功能落地：纯提案读取角色可知BeliefSnapshot/PersonalitySnapshot，不能持有World私密全图接口；政治/经济/军事/社会保独立reasoner，输出typed CandidatePlan与真实claims。world事务只做实际守恒/寿命/权限核验，不替人物免费侦察未来；受限失败结果与合法接触证据严格分开。公共ActorAvailability/库存资金预约跨所有domain，query的God真视图不注入AI。
 
 life唯一写CurrentPersonality和长期经历额度，genome潜在倾向与当前人格分离；事件/消息给实际知情者，政府议事与Army命令各有真实传递和执行时间。DecisionEpisode/Commitment/OutcomeAttribution保存逻辑工作与证据/一次effect，不用worker墙钟或UI选择决定World。实现合同见[共享核心](DECISION_CORE_PERSONALITY_AND_INFORMATION.md)及四领域文档，不先创建空decision框架。
+
+## 14. ADR0018可执行规则边界
+
+flat terrainKind对应唯一−20/−8/−2/+1/+2/+16/+48/+96m，sand/soil互转真实wipe；仅CreateRamp拥有连续四角面。升降只相邻档、平整指定档、复制仅flat；无自由高度、smooth、自然边缘降高/不规则海岸。Blank/Earth用同候选，Earth冻结等距圆柱/微度/日期线/中心even-odd层级，8格deep-ocean guard之外纯表现；矩形裁切可见，不暗补坡岸。没有山海湖自然对象/命名/WaterBodyRef，水网仅当前revision可重建索引，不入实体存档。
+
+World root按统一FREEZE→旧生理工作一次积分→due死亡标记→边界命令→真实消息/截止冻结→同snapshot运动攻击→同瞬间接触聚合→真实交接→到期执行→唯一死亡遗产/最终城市国家王冠→一次publish。暂停编辑只同tick boundaryOrdinal递增，不赠休息/劳动；inputSequence由可信dispatcher分配，worker速度不抢顺序。完整规则与实际wire字段见[确定性世界](DETERMINISTIC_WORLD_AND_RUNTIME.md)和[runtime基础合同](../../data/contracts/runtime_foundation_v1.json)。life_profiles唯一伤势函数，runtime/spatial只供HazardContactFacts/InjuryImpulse；同一健康/死亡不能两模块写。
+
+本轮只有文档、机器定义与有限Python3.9模型，不创建空src或虚假试玩。所有本批修改结束由统一审计验算；生产阶段仍全部未开始。

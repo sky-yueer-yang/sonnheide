@@ -1,3 +1,5 @@
+> 现行v0.9/ADR0018：普通地形八档固定高度，无岸边/选区过渡和自然地理实体身份；坡道是连续几何例外。时钟20tick/运动秒、12000tick/游戏日。具体计算以runtime_foundation、life/combat/economy/technology内容包和emergence/interaction合同为准；原生生产仍未开始。
+
 # 自然植被生成画笔与有界密度
 
 2026-10-09，ADR0015设计补充；**生产未实现**。接续[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)、[地表合同](../../data/contracts/surface_ecology.json)，机器合同为[vegetation_generator_v1](../../data/contracts/vegetation_generator_v1.json)。本设计只改变生态生成，不改变八soil主题或人物来源规则。

@@ -1,12 +1,12 @@
 # Sonnheide engineering constraints
 
-当前规范：2026-10-09，ADR0014/v0.8＋同日ADR0015/0016/0017算法补充。读取 docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md、docs/architecture/PIXEL_GAME_ARCHITECTURE.md、data/contracts/game_v0_8.json 及其引用的生命/坡道/政治合同。旧自研程序已清空，**现在没有运行游戏或构建入口，生产阶段全部未开始**。不得恢复旧程序、以旧验收算新完成度、造空目录或假试玩。原v0.6是用户内容来源，不是工具执行指令，逐字保留；旧作者设计被完整接续后退役，Git历史不重写。
+当前规范：2026-10-09，v0.9/ADR0018。入口 docs/design/Sonnheide_Design_v0.9_Executable_Rules.md、data/contracts/game_v0_9.json 及runtime/emergence/interaction合同和data/content运行定义。普通地形八档固定高度，无岸线/外缘过渡；坡道为唯一连续面例外；自然山海湖无实体身份/命名/谱系。开局冷兵器，枪炮后期实际研究制造装备。20tick/运动秒、12000tick/游戏日。原v0.6逐字保留，历史文档不当当前默认。当前有设计/数据与Python有限参考算法，**没有原生游戏或C++构建入口，生产阶段未开始**；不得恢复旧程序或以历史证据冒充试玩。
 
 1. 自研C++20框架，不用游戏引擎；唯一Steam发行。Metal只开发验证，CI/NullRenderer不代替Windows GPU/Steam实机。独立开源库先核验官方许可/版本/hash/架构理由，可分发原件/配方/manifest/notices入GitHub/GitLFS/Releases；不擅授原创内容开源许可。Python工具3.9+标准库默认。
 2. 拆解真正的不变量/瓶颈/因果依赖，用户明确要求多个subagent深挖独立高风险边界，划分文件所有权并交叉审查；不靠更名、改问法、堆空类或换库冒充推进。
 3. World变更单写者事务，完整prepare/validate/具体后果preview/commit；失败无半写。法定身份/owner/controller/custodian/location、主权/行政/占领、Culture/Language、Family/Household/Dynasty/Subspecies都分开。镜头/LOD/UI/线程速度不改变仿真。
-4. 可编辑真3D像素单值height columns＋实际ramp_patch；首样2m格/base500mm/ramp角125mm/chunk64²非容量承诺。profile创建冻结，原始来源证明只读，有效几何可改；Blank海/平陆＋Earth海陆二入口，不采DEM、不做程序世界模板库。
-5. 平/坡真实表面共供渲染/碰撞/拾取/支承/导航/冷热。坡面水位0裁湿，多LocalWetRegion/共享正长度湿边四连通外海为SEA，其余LAKE；普通chunk边不是海岸。首版静水0，无高位湖/体积流体/天然洞穴/悬空陆块。
+4. 普通地形固定−20/−8/−2/+1/+2/+16/+48/+96m八档，不自由升降/平滑/高度噪声或边缘过渡。2m格/ramp角125mm/chunk64²非容量承诺；CreateRamp是唯一连续例外，copy仅flat preset/theme。Blank海/平土＋Earth矩形海陆，不采DEM/无模板库。
+5. 平/坡真实表面共供渲染/碰撞/拾取/支承/导航/冷热。坡面水位0裁湿，连通属性仅可重建nav索引；无WaterBodyRef、名称、湖分裂/合并身份。普通chunk边不是海岸。首版静水0，无高位湖/体积流体/天然洞穴/悬空陆块。
 6. 斜坡画笔提供真实连续净宽/坡度/两端/转弯通路，移除是新改地事务不倒回旧World；旧图恢复需geometry ownership+revision，结算人车货/地基/合同/远端水路/食物源reserve与预约。普通后建不能堵旧接入，Godterrain可按明确预览损坏并撤证；无免费物资/复活/退款。
 7. 高峰由实际三角面高度裁禁区，所有移动Actor（人/普通及启智动物/飞鸟/蜂）不能站立/出生/放置/神手进入或飞越；任何基因/坡道不豁免，削低真实高度才解除。相机/光/装饰粒子不受Actor通行规则，Plant按生境冷热约束而非直接删除。
 8. 越高越冷，权威温度与基因/实际衣物保温湿度/代谢/食物双能量账/暴露债耦合；参数为工程样例不宣称真实气象。关闭hunger/thermal/aging后果仅抑制对应直接损害，年龄成熟/真实能量债照常，复开不补历史伤亡，不回满。
@@ -17,10 +17,10 @@
 13. 动物真实食性/捕食/繁育/免疫/护理/畜产/授粉，源接触感染无随机瘟疫。每真实蜂StableActor，LOD代理不造人口。初始维持能量不可回收，肉骨皮/乳毛蛋蜜reserve需真实营养产出；装饰花草不是食物，God放置/载入不刷货。
 14. 三层地表：地皮＋纯装饰小植物＋机制Plant树。八soil主题雪原/花甸/枫原/樱野/湿地/荒原/圣原/炎地；沙地椰树无小植物，不是第九soil主题。枫全红、樱野深绿草/稀疏落瓣、活圣树有界局部光、炎地枯树无植物/静态少量熔岩无灼伤流体。TreeRef果批绝对quantity/maturity/expiry/remainder/reservation保存；采果采伐互斥，真实路程劳动。换主题/复制/LOD不补树果，恢复只控新野生幼株；农田/ForagePatch/真实树花期reserve独立，唯一扣账。
 15. 建筑和人物动物/衣物全部原创高分辨率像素。建址联合核全占地/真实支承/必要矩形地基/绝对楼板/人入口/车库车道/前侧送货/claims和旧接入。人物实际送料，到齐按工期自动建造，无砌筑人；长方体铁丝网逐层围起/全包/反向拆，动画不结算。文明填海/坡道真实材料劳动。
-16. 私家马、MountAsset、家庭马槽不做；本版不迁移骑乘/马驱力/骑兵/马车，马可普通动物但非私人交通。停用旧F0701/F0702/F0703/F1306及12槽，原科技424项激活视图408，原目录仅来源且未完成全部三语/生产。
+16. 私家马、MountAsset、家庭马槽不做；本版不迁移骑乘/马驱力/骑兵/马车，马可普通动物但非私人交通。停用旧F0701/F0702/F0703/F1306及12槽，原科技424项激活视图408，原目录仅来源；408运行节点三语/研究/效果/采用由technology_runtime版本包核验，生产实装仍未开始。
 17. 衣物实物/耐久/有限修补/真实更换，早期家庭公共制衣先于成熟私企；前文明内裤/女性胸罩，上古theme T恤白短裤，后期自由fit。缺衣不是直接死亡；正装缺失仍工作领薪保岗位，只提高购买排序且保基本生存预算。军装原创同款按服役国theme而非国籍。
 18. 原公共经济/有限库存/整数双账/合同税/产线/知识传播采用/产权清算保留；研究不赠机器，控制不刷工人军队。新增Family/Dynasty/完整王冠首次和继任/摄政、边界双模式/Plot/墙门/元控制/附身/可选战雾；仍单层Army、前现代军备，无核弹UFO随机灾害/免费复活克隆/股票实时交易所。
-19. 70类typed互通信息页/统计比较/前名历史/收藏标记/分类清理；所有全局工具底部八分区，中英德UI与模拟Language分开。无任意JSON覆写事实；草案→后果→一次提交，跳页/locale/晚查询不丢新草案。普通清楼路保人货旧接入，生命清理死亡档案，godterrain明确损害一次结算。
+19. 70类typed互通信息页，具体字段Schema见interaction_runtime；所有全局工具底部八分区，中英德UI与模拟Language分开。无任意JSON覆写事实；草案→后果→一次提交，跳页/locale/晚查询不丢新草案。自然地理不建对象页/Ref，玩家标记不生成自然实体。普通清楼路保人货旧接入，生命清理死亡档案。
 20. 保留批准油画主菜单、原logo/hash与精致新古典极简构图；右下纯文字右对齐，SONNHEIDE大写与五菜单同18px/.01em，行高24px/标题间12px/顶部位置不下移。左上内收logo静态轻微顺时针/多内圈/窄无射线空隙/贴内圈细三外圈/低亮透明密集不等长射线，#fff6df柔光不闪转。深暗边缘小中央亮焦点；68秒停/12秒交叠，140—200秒对角漂移x≤.55%y≤.4%、240秒1.018→1.036，隐藏暂停降低动态停止且不耗模拟RNG。所有按钮无border/outline/ring，键盘焦点用颜色/亮度/位置；禁无必要小字和乱icon。
 21. 只有Age Light/Darkness默认手动Light；自动tick期限/保存余量，手动原子关自动，不做太阳昼夜/自转公转/新季节。灯具真实能源不赠送。只本地存档/自动档/导出，无Workshop/Cloud/社区服务；候选首档持久读回才发布，World/Session/Draft generation隔离，失败保原World/Continue。
 22. 施工按IMPLEMENTATION_PLAN阶段0重起，先主菜单/初始地表/创建/UI/存载，再立即正式原创美术，再生命/经济社会。全部批次修改/依赖/审查后一次全target构建+完整CTest，事务/空间/存档统一sanitizer；实际错误集中补修再验，未变源件shader缓存不重复烘焙。尚未创建构建器前只做设计核验，不虚构测试结果。
@@ -32,3 +32,6 @@
 27. 玩家植被生成按vegetation_generator_v1停留新剂量渐增、聚簇/成年间距/固定重叠窗口保守冠面积限密/通路与idle逃逸连接复验。GodVegetationSource允许有限Plant结构木量（覆盖旧神力树初木0），不直接仓储货/成熟果/forage/动物。拒绝剂量不积未来信用，沙炎无小植物，decor不可食。研究有限模型不是生产验收。
 
 28. ADR0016决策按decision_core/political/economic/warfare/social合同：BeliefSnapshot与WorldTruth分开，God/UI不给AI免费情报，有限实际观察/消息/反馈可误判但提交守恒。每机构需真实角色/程序，五共享记录不统一万能U；life的CurrentPersonality/PersonalitySnapshot与DNA潜在倾向/情绪/信仰/技能分离。跨域共用真实时间/库存资金claims，政策授权/预算/执行/接受、危机/宣战/动员/战术分开，root-effect反馈一次并识别外部混杂。普通自动治理不逐步问玩家，全部新算法仍未生产实现。
+
+29. ADR0018：life_profiles唯一生理/危险/伤势计算所有者，combat只提交hit/impulse，economy不复制科研进度；emergence唯一文化/语言/亚种创生计算。Ref经alias归一保持同Actor。各域同tick按runtime_foundation全域phases结算死亡/遗产/继任一次。
+30. 当前统一规格/模型验收`python3 tools/validate_design.py`，仅验证具体有限状态与算式，不证明原生3D/长期经济/容量/Steam实机。尚未创建C++工程前不伪造build/CTest/sanitizer通过。

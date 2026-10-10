@@ -1,6 +1,6 @@
 # 战争因果、真实动员与分层战术决策
 
-2026-10-09，ADR0016，设计版本0.8。**待实现规范；本文件与有限参考模型不代表战争、渲染或运行游戏已经完成。** 配套[warfare_decisions_v1.json](../../data/contracts/warfare_decisions_v1.json)，共享接口由[决策核心](DECISION_CORE_PERSONALITY_AND_INFORMATION.md)定义。接续[v0.8 D19](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19)、[政治合同](../../data/contracts/civic_control_v1.json)、[自然动作](NATURAL_BEHAVIOR_AND_LOCOMOTION.md)、[城市生命周期](SETTLEMENT_LIFECYCLE_AND_EXPANSION.md)、[地理和元控制](GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md)、[生命](GENETICS_ANIMALS_AND_UPLIFT.md)与实际坡道。旧v0.6军备章节仅作来源；本版已有坡地、可建真实墙门，骑乘/骑兵/马车停用，不能照搬来源的平陆/无墙/八兵种描述。
+2026-10-09，ADR0016＋ADR0018，设计版本0.9。**待实现规范；本文件与有限参考模型不代表战争、渲染或运行游戏已经完成。** 配套[warfare_decisions_v1.json](../../data/contracts/warfare_decisions_v1.json)，共享接口由[决策核心](DECISION_CORE_PERSONALITY_AND_INFORMATION.md)定义。接续[v0.8 D19](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D19)、[政治合同](../../data/contracts/civic_control_v1.json)、[自然动作](NATURAL_BEHAVIOR_AND_LOCOMOTION.md)、[城市生命周期](SETTLEMENT_LIFECYCLE_AND_EXPANSION.md)、[地理和元控制](GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md)、[生命](GENETICS_ANIMALS_AND_UPLIFT.md)与实际坡道。旧v0.6军备章节仅作来源；本版已有坡地、可建真实墙门，骑乘/骑兵/马车停用，不能照搬来源的平陆/无墙/八兵种描述。
 
 ## 1. 实质难点与研究边界
 
@@ -18,7 +18,7 @@
 
 每次决策使用共享`DecisionEpisode/BeliefSnapshot/CandidatePlan/Commitment/OutcomeAttribution`；StateEpisode负责者是现行法定角色，ArmyEpisode是军官，SoldierEpisode是个人。行为预设不替换六轴、技能、身体和历史。
 
-首样20tick/运动秒、1200tick/游戏日、360日/年。物理、接触和生理每tick；战术10tick错相复评，作战120tick、危机1游戏日低频与事件复评。全为冻结WorldProfile的工程样例。紧急碰撞/死亡/危险进入必算队列，不随镜头、帧率或worker先完成改变结果。
+首样20tick/运动秒、12000tick/游戏日、360日/年。物理、接触和生理每tick；战术10tick错相复评，作战120tick、危机1游戏日低频与事件复评。全为冻结WorldProfile的工程样例。紧急碰撞/死亡/危险进入必算队列，不随镜头、帧率或worker先完成改变结果。
 
 ## 3. 当前人格、经历与分层评分
 
@@ -277,3 +277,20 @@ A公国收到B国截桥的片面迟报。冒险野心领袖可选威吓/动员�
 |WD70|城市和平|和平保伤欠薪装备返还实际后续。|
 |WD71|城市和平|神意事件不假签约/自动lease或法物理豁免。|
 |WD72|城市和平|镜头UI帧线程完成顺序不改World/RNG。|
+
+
+## 19. ADR0018：装备、实际攻击与唯一生命出口
+
+[combat_profiles_v1.json](../../data/content/combat_profiles_v1.json) 为9种武器、实际弹药、护具／盾、自然身体攻击、建筑受击和士气的数值权威。它收口范围、瞄准／接触／恢复／装填工期、抛射体初速／重力、威力／穿透、部位覆盖、实际穿戴耐久、训练、crew和真正科技 gate。所有参数是抽象游戏值，不提供真实枪炮制造或性能配方，亦不是战斗平衡完成。
+
+原始开局只有真正采集／制作的木棍和石工具，不免费给装备或军人。传统剑／长矛／弓弩必须有 T015 实际知识、F1301—F1305 制造、现有装备适配与真实训练；火绳枪 T028/F1401、燧发枪 T029/F1402、早期炮 T030/F1403—F1404 都是后期实际研究→制造→采用→训练／crew 的关口。炮弹／装药 F1405 是真实商品。无开局枪炮、骑兵、马车、核武或现代军备。
+
+每次攻击从本人 BeliefSnapshot 的已观察目标或显式合法区域出发，真实 aim 工作后在 profile 的接触／发射窗口核 reach／facing／真实 body sweep。瞄准误差由真实训练、握持、疲劳／睡眠和一次保存的 ShotAttempt RNG 产生；视觉弹道和动画不独立伤害。近战每循环最多3个真实接触，按实际接触分功率；抛射体真实重力扫掠到首接触，不靠帧邻域名单。装填从 stock 转一份 charge 到 loaded，开火扣 loaded 一次；空弹、无适配、未训练、工作／crew缺失不进入发射，既有加载和实际工期绝对保存。
+
+耐久统一绝对 `durability_milli`，容量100000，显示points仅除1000。物理设备的实际 InstalledOperationVersion 单独覆盖对应未来参数：最低训练rawtick按基础1WU／实际工作tick、装填rawtick、单次wear_milli、misfire baseQ；没有实际版本才用 profile baseline，不能基线＋版本各执行一次。活动 reload 周期冻结版本／work target／已付进度，安装新工艺只影响下一周期，不凭空已装弹、回血、修复或补训练。
+
+火器 misfire 为 `clamp(baseQ+min(2000,actualWetQ//5)+(10000-conditionQ)//5,0,6000)`；每个实际准入 ShotAttemptId 用 Runtime RNGv1 uniform10000 一次。失败也损失同一份已装真实 charge，生成 dud／损失而无 projectile／命中，之后要30实际付费清障worktick才可重新装填。重试、换靶、读档都不能重抽同一事件，预览无未来射击抽样。
+
+护具只在真实部位／方向／覆盖交叉时减伤，已坏保护按实际 remaining/capacity，盾须真实举起并交叉迎击。先从同瞬间护具快照算保护与穿透，`transmittedPower=power×(10000−absorbedQ)//10000`，无穿透时 `finalSeverity=transmittedPower//5` 且实际kind=blunt；穿透时finalSeverity=transmittedPower按cut／pierce。只把finalSeverity传唯一 LifeApplyInjury，再由生命按部位／鲁棒转一次健康／伤口；挡住的残余不能再作为完整穿透伤出血。所有同瞬间接触从同快照算护具与wear，之后聚合一次；同瞬间真实已合法射出的弹不因射手死亡取消，之后尚未发生的发射失效。
+
+建筑受击使用木／砌体／金属门真实 integrity／实际支承闭包；结构损坏不是减城市人口，活人和随身实物由生命与 Godterrain 统一出口承接。士气只以实际获知死伤／补给／逃生／命令事件更新恐惧和带迟滞的选择，不乘HP／基础威力。统一时钟12000tick／日、20tick／运动秒；军训、护理、送料、工作和生理共时间／能量账。有限参考模型及 CP01—CP06 是未来核验算术案例，根统一运行后才报告其有限结果，仍不代表生产仿真或 Steam 实机验收。

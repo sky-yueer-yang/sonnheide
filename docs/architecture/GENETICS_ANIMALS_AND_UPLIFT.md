@@ -1,6 +1,6 @@
 # Sonnheide 生命、全面遗传、动物与文明之光
 
-日期：2026-10-09。状态：v0.8 新设计规范，**生产实现尚不存在**。本规范由本轮用户明确要求启动，取代旧设计中“无动物、无基因、马仅交通资产”的范围决定；原始 v0.6 仅作历史来源。新版总入口：[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)。配套机器合同：[life_genetics_v1.json](../../data/contracts/life_genetics_v1.json)。温度与通行由 [地形、坡道与暴露规范](ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md) 及 [terrain_access_v1.json](../../data/contracts/terrain_access_v1.json) 收口；法律、成年与统治资格由 [政治与元控制规范](CIVIC_CONTROL_AND_SUCCESSION.md) 及 [civic_control_v1.json](../../data/contracts/civic_control_v1.json) 收口。
+日期：2026-10-09。状态：v0.9 / ADR0018 新设计规范，**生产实现尚不存在**。本规范由本轮用户明确要求启动，取代旧设计中“无动物、无基因、马仅交通资产”的范围决定；原始 v0.6 仅作历史来源。新版总入口：[当前总设计](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)。配套机器合同：[life_genetics_v1.json](../../data/contracts/life_genetics_v1.json)。温度与通行由 [地形、坡道与暴露规范](ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md) 及 [terrain_access_v1.json](../../data/contracts/terrain_access_v1.json) 收口；法律、成年与统治资格由 [政治与元控制规范](CIVIC_CONTROL_AND_SUCCESSION.md) 及 [civic_control_v1.json](../../data/contracts/civic_control_v1.json) 收口。
 
 ## 1. 新要求与明确设计选择
 
@@ -15,7 +15,7 @@
 - 马可保留为真实动物物种，但新工程范围一并停用骑乘、骑兵、马驱动力车辆和私家马槽，避免残留交通资产模型。用户直接要求删除的是私家马；额外停用项目是本轮一致性设计。
 - 野生动物来源为创建时明确选择的有界初始生态、玩家放置或合法繁育。灭绝、人口变少、地图重新可见、载入存档不会自动补动物。
 
-这些选择都在合同中有单独来源字段。尚未确定的最终产量、温度系数、孕期、寿命和移动速度不作为科学事实或已平衡数值；首样参数只为验证工程不变量。
+这些选择都在合同中有单独来源字段。ADR0018 的首样产量、温度系数、孕期、寿命和速度已在 life_profiles_v1 冻结为可计算基线，仍不是科学事实或最终平衡数值。
 
 ## 2. 真正需要突破的五个边界
 
@@ -304,3 +304,24 @@ capacity        = species.min + effectiveScore * (species.max - species.min)
 本规范适配比较表 F023–F071、F073、F126、F132、F136–F137、F152、F240–F243、F246 的生命与族群缺口。世界规则、元控制、宗族和 UI 的最终入口分别由新总设计及政治／元控制规范给出，不将 WorldBox 的 Species、Subspecies、Genes、Trait、Family 和 Clan 混作一种功能。
 
 [完整研究对照](../research/WORLDBOX_FULL_COMPARISON_2026-10-09.md) 以官方公告核验已发布功能族；[Monolith 官方公告](https://store.steampowered.com/news/app/1206560/view/523093274068519300)、[Genes/Subspecies 官方预告](https://store.steampowered.com/news/app/1206560/view/4372517795037234444) 支持功能参考。WorldBox 完整内部遗传、耐寒、热力学和生物产出公式没有得到证明；本规范的全部数值、公式和因果规则是 Sonnheide 自己的设计，不能说它们来自原版实现。
+
+
+## 14. ADR0018：绝对量、61 个入口与生产生命函数
+
+本节及 [life_profiles_v1.json](../../data/content/life_profiles_v1.json) 收口旧文中只有方向的生理、繁育、生态与伤害描述。19 个物种均有健康、身体质量／排水量／水线、代谢／储能、运动与劳动成本、冷热／缺氧／伤病速率、成熟／孕期／间隔、出生营养成本、畜产和尸体可收储备的显式基线。表中游戏量均为自定校准量。生产实现仍未开始，不能将内容表称作生命系统已完成。
+
+统一时钟为 20 tick／运动秒、12000 tick／游戏日、500 tick／历法小时、360 日／年。运动距离用实际 mm，劳动用实际工作单位，健康统一 `health_milli`，能量统一 `energy_milli`。日速率按 `divmod(rate × dt + remainder,12000)` 积分并保存余数；日长不是物理秒，10 分钟墙钟一个游戏日是 1x 运行映射，快进只多执行相同 tick。生理与工作在全域 [tick 管线](../../data/contracts/runtime_foundation_v1.json) 对齐到同一边界，再处理同瞬间接触伤害、实际出生与最终死亡／遗产，不让两个子域各扣一天。
+
+基因仍保原始整数等位值 0…1000：`alleleQ=(A+B)×5`、`sharedQ=SubspeciesRaw×10`、`effectiveQ=(7000×alleleQ+3000×sharedQ)//10000`。中性 A=B=共享500得到 Q5000，倍率恰为10000。先固定 species 能力门，再以绝对包络或显式 baseline 编译 61 项容量。睡眠读真正的 `sleep_requirement_tick`；视觉、听觉、嗅觉、暗视、爬越、飞泳、学习和止血各有独立消费口，不能留“以后接入”滑块。身体／衣物原件缺适配元数据只拒任务或资产准入，不从基因创造手或变小身体。外观三项仅选美术确认的有限槽，素材不属于算法验收。
+
+运动耗能按实际距离、实载与实际介质累计分子，保存模100000000000余数，不能每75mm运动步都向上取整。疲劳距离保存模100mm余数；跑／泳／飞的实际额外努力与安全休息同样用余数。睡眠债按编译要求积累，只有实际安全、代谢付费的睡眠减少；改基因不清旧债。缺食、寒热各债分开；关闭其后果只抑制对应当前损害，不免营养支出、不补历史损害、不回血。感染只来自实际接触／食批剂量，既有病程不会因禁止传播而停；衰老损害是固定寿命基线与当前实际已活天数的确定函数，不藏随机死亡概率。
+
+人类中性基线基础代谢120000能量／日，平走100能量／实际米、基础劳动40能量／WU。来自真实食物的 productive 能量与不可转商品的初始 maintenance 分账；真实食物干物质量另记。产品、孕体与肉骨皮储备共同竞争同一 productive 能量和干物质；每个转换器不各用一次整份食物。出生／放置的成人外形不是可收肉，启智主体不得作为普通牲畜屠宰。果实250能量／g、消化Q8000时，真正吃500g获得100000，材料仍按原食批 dryMatterQ 单独扣。没有重复营养、免费初始畜产或照光刷新储备。
+
+`InjuryImpulse` 是落地、压埋、攻击和实际事故到生命唯一入口，含主体、唯一sourceEvent、真实接触时间、部位、种类和 severity_milli。先按实际身体鲁棒／部位转换损伤一次，之后实际切／刺开放伤口可出血；护具挡住的 blunt residue 不产生穿透出血。伤口恢复要求安全、真实已吃营养、实际护理工具／物资和工作；绝对伤勢不因最大健康改变重标或回满。
+
+水面不是固体落地点。重力9810mm／运动秒²、终速50000mm／运动秒，实际水深排水与实际递归携重决定浮力。signed division 统一向0截断；每轴阻力为 `-sign(v)×min(20000,abs(v)×submersionQ×speciesDragQ//100000000)`，每固定物理tick冻系数后精确有理积分，碰撞／入水真实边界分段。真正撞固体时才以超过 species 安全落地速度的平方生成 blunt 冲量，水没有一键免伤。压埋 severityQ 按实际最大身体穿入深度／固定身体高度确定，实际当前持续时间结算压伤；头部遮埋另计缺氧。所有支持水暂为对固定水呼吸 species 可呼吸水，不凭空引入盐度／污染隐藏门槛。
+
+活 Actor 在 Godterrain 后保原 pose、伤物／随身递归物和孕体，但真实危险照常；救援必须真正可达、有适配工具／真实救助者／承载能力、实际移动。落海、断坡、船楼祖先删除都不瞬移安全点。最高峰在任何感知、飞泳、照护或救援前核真实身体禁入体积；削低地形才解除。
+
+自然亚种的12维继承原型、真实繁育图、持久双阈值、混血归属与首分支无能力奖励见 [文化、语言与谱系算法](EMERGENT_CULTURE_LANGUAGE_AND_LINEAGES.md)。基因重组、变异、受孕、实际语言和战斗统一读 Runtime RNGv1 SHA256／定长小端编码／拒绝采样；查询、草稿、镜头及重试不得重抽。有限模型 [emergence_life_combat_reference_model.py](../research/models/emergence_life_combat_reference_model.py) 验证实际算术和因果样例，最终由根统一运行，仍不验证生产空间、生态总体或 Windows GPU。

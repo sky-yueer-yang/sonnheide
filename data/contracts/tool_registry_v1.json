@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "design_version": "0.8",
+  "design_version": "0.9",
   "planned_only": true,
   "production_implemented": false,
   "contract_id": "sonnheide_bottom_tools_v1",
-  "source": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md#D21",
+  "source": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md#D21",
   "locale_is_simulation_language": false,
   "section_count": 8,
   "sections": [
@@ -73,7 +73,7 @@
       }
     }
   ],
-  "tool_count": 101,
+  "tool_count": 100,
   "tools": [
     {
       "id": "inspect",
@@ -96,7 +96,8 @@
         "action_id": "inspect",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -120,7 +121,8 @@
         "action_id": "directory",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -144,7 +146,8 @@
         "action_id": "layers",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -168,7 +171,8 @@
         "action_id": "stats",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -192,7 +196,8 @@
         "action_id": "compare",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -216,7 +221,8 @@
         "action_id": "history",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -240,7 +246,8 @@
         "action_id": "favorites",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -266,7 +273,8 @@
         "action_id": "markers",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -290,7 +298,8 @@
         "action_id": "follow",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -314,7 +323,8 @@
         "action_id": "control_groups",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -338,7 +348,8 @@
         "action_id": "interesting",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -362,7 +373,8 @@
         "action_id": "fog_view",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -392,7 +404,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "shallow_water",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -423,7 +436,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "close_ocean",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -454,7 +468,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "deep_ocean",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -485,7 +500,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "sand",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -516,7 +532,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "soil",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -547,7 +564,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "hill",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -578,7 +596,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "mountain",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -609,7 +628,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "high_peak",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -617,9 +637,9 @@
       "id": "raise_lower",
       "section": "terrain_ecology",
       "label": {
-        "zh-CN": "升降",
-        "en": "Raise and lower",
-        "de": "Anheben und Absenken"
+        "zh-CN": "升降地形档",
+        "en": "Raise/lower tier",
+        "de": "Geländestufe ändern"
       },
       "authority": "world_preview_commit",
       "global_entry": "bottom_toolbar",
@@ -639,8 +659,9 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
-        "operator_id": "raise_lower",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "operator_id": "RaiseOneTier_or_LowerOneTier",
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -648,9 +669,9 @@
       "id": "level",
       "section": "terrain_ecology",
       "label": {
-        "zh-CN": "平整",
-        "en": "Level",
-        "de": "Einebnen"
+        "zh-CN": "统一地形档",
+        "en": "Flatten to tier",
+        "de": "Auf Stufe ebnen"
       },
       "authority": "world_preview_commit",
       "global_entry": "bottom_toolbar",
@@ -670,8 +691,9 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
-        "operator_id": "level",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "operator_id": "FlattenToPreset",
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -702,7 +724,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "ramp",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -733,38 +756,8 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "remove_ramp",
-        "god_control_validator": "data/contracts/god_control_v1.json"
-      },
-      "geography_type_change_wipe": true
-    },
-    {
-      "id": "smooth",
-      "section": "terrain_ecology",
-      "label": {
-        "zh-CN": "局部平滑",
-        "en": "Smooth area",
-        "de": "Bereich glätten"
-      },
-      "authority": "world_preview_commit",
-      "global_entry": "bottom_toolbar",
-      "required_icon": false,
-      "planned_only": true,
-      "world_mutation_policy": "typed_draft_preview_atomic_commit",
-      "primary_page": "world",
-      "route": {
-        "kind": "current_civic_commands",
-        "commands": [
-          "PreviewGeographyMutation",
-          "CommitGeographyMutation"
-        ],
-        "domain": "terrain_ecology",
-        "action_id": "smooth",
-        "requires_real_handler_before_acceptance": true,
-        "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true,
-        "registry": "data/contracts/civic_control_v1.json",
-        "operator_id": "smooth",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -795,7 +788,9 @@
         "all_mutations_use_shared_transaction_dispatcher": true,
         "registry": "data/contracts/civic_control_v1.json",
         "operator_id": "copy_surface",
-        "god_control_validator": "data/contracts/god_control_v1.json"
+        "god_control_validator": "data/contracts/god_control_v1.json",
+        "copy_ramp": false,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       },
       "geography_type_change_wipe": true
     },
@@ -820,7 +815,8 @@
         "action_id": "biome",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -844,7 +840,8 @@
         "action_id": "plant_seed",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -868,7 +865,8 @@
         "action_id": "clear_decor",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -892,7 +890,8 @@
         "action_id": "soil_moisture",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -916,7 +915,8 @@
         "action_id": "place_human",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -940,7 +940,8 @@
         "action_id": "place_animal",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -964,7 +965,8 @@
         "action_id": "civilization_light",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -988,7 +990,8 @@
         "action_id": "gene_editor",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1012,7 +1015,8 @@
         "action_id": "trait_brush",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1036,7 +1040,8 @@
         "action_id": "divine_hand",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1065,7 +1070,8 @@
         "action_id": "possess",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1091,7 +1097,8 @@
         "action_id": "behavior",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1115,7 +1122,8 @@
         "action_id": "family",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1139,7 +1147,8 @@
         "action_id": "care",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1169,7 +1178,8 @@
         "action_id": "meta_control",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1196,7 +1206,8 @@
         "action_id": "city_border",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1223,7 +1234,8 @@
         "action_id": "border_bucket",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1250,7 +1262,8 @@
         "action_id": "border_split_merge",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1276,7 +1289,8 @@
         "action_id": "sovereignty",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1303,7 +1317,8 @@
         "action_id": "state_laws",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1331,7 +1346,8 @@
         "action_id": "succession",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1355,7 +1371,8 @@
         "action_id": "flag",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1379,7 +1396,8 @@
         "action_id": "culture",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1403,7 +1421,8 @@
         "action_id": "language",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1427,7 +1446,8 @@
         "action_id": "religion",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1455,7 +1475,8 @@
         "action_id": "diplomacy",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1483,7 +1504,8 @@
         "action_id": "plots",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1509,7 +1531,8 @@
         "action_id": "army",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1533,7 +1556,8 @@
         "action_id": "build",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1557,7 +1581,8 @@
         "action_id": "road_bridge",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1581,7 +1606,8 @@
         "action_id": "civil_ramp",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1605,7 +1631,8 @@
         "action_id": "foundation",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1629,7 +1656,8 @@
         "action_id": "reclaim",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1656,7 +1684,8 @@
         "action_id": "wall_gate",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1680,7 +1709,8 @@
         "action_id": "site_access",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1704,7 +1734,8 @@
         "action_id": "resources",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1728,7 +1759,8 @@
         "action_id": "farming",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1752,7 +1784,8 @@
         "action_id": "animal_husbandry",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1778,7 +1811,8 @@
         "action_id": "clear_structures",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1802,7 +1836,8 @@
         "action_id": "stock",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1826,7 +1861,8 @@
         "action_id": "clothing",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1850,7 +1886,8 @@
         "action_id": "enterprises",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1874,7 +1911,8 @@
         "action_id": "production",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1898,7 +1936,8 @@
         "action_id": "research",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1922,7 +1961,8 @@
         "action_id": "contracts",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1946,7 +1986,8 @@
         "action_id": "shipments",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1970,7 +2011,8 @@
         "action_id": "budgets",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -1994,7 +2036,8 @@
         "action_id": "time",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2018,7 +2061,8 @@
         "action_id": "ages",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2045,7 +2089,8 @@
         "action_id": "world_laws",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2071,7 +2116,8 @@
         "action_id": "clear",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2097,7 +2143,8 @@
         "action_id": "save",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2123,7 +2170,8 @@
         "action_id": "load",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2150,7 +2198,8 @@
         "action_id": "export_import",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2174,7 +2223,8 @@
         "action_id": "exit_menu",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2198,7 +2248,8 @@
         "action_id": "preferences",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2222,7 +2273,8 @@
         "action_id": "keybinds",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2246,7 +2298,8 @@
         "action_id": "interface_scale",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2270,7 +2323,8 @@
         "action_id": "audio",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2294,7 +2348,8 @@
         "action_id": "graphics",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2318,7 +2373,8 @@
         "action_id": "history_recording",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2342,7 +2398,8 @@
         "action_id": "help",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2366,7 +2423,8 @@
         "action_id": "encyclopedia",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2390,7 +2448,8 @@
         "action_id": "milestones",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2414,7 +2473,8 @@
         "action_id": "changelog",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2438,7 +2498,8 @@
         "action_id": "hide_ui",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2466,7 +2527,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "join_local_polity"
+        "action_id": "join_local_polity",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2494,7 +2556,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "found_state_here"
+        "action_id": "found_state_here",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2522,7 +2585,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "assign_city_to_state"
+        "action_id": "assign_city_to_state",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2550,7 +2614,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "set_civic_membership"
+        "action_id": "set_civic_membership",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2577,7 +2642,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "separate_city_as_state"
+        "action_id": "separate_city_as_state",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2604,7 +2670,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "appoint_city_representative"
+        "action_id": "appoint_city_representative",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2631,7 +2698,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "appoint_crown_incumbent"
+        "action_id": "appoint_crown_incumbent",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2658,7 +2726,8 @@
         "implemented": false,
         "all_mutations_use_shared_transaction_dispatcher": true,
         "domain": "civilisation",
-        "action_id": "set_state_capital"
+        "action_id": "set_state_capital",
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     },
     {
@@ -2686,7 +2755,8 @@
         "registry": "data/contracts/civic_control_v1.json",
         "requires_real_handler_before_acceptance": true,
         "implemented": false,
-        "all_mutations_use_shared_transaction_dispatcher": true
+        "all_mutations_use_shared_transaction_dispatcher": true,
+        "typed_interaction_contract": "data/contracts/interaction_runtime_v1.json"
       }
     }
   ],
@@ -2707,13 +2777,21 @@
     "clone_population",
     "free_resurrection",
     "free_loot_rain",
-    "mass_destruction_bombs"
+    "mass_destruction_bombs",
+    "free_height",
+    "terrain_smoothing",
+    "natural_geography_identity_names"
   ],
   "page_registry": "data/contracts/civic_control_v1.json#/ui/pages",
   "civic_command_registry": "data/contracts/civic_control_v1.json#/commands",
-  "handler_state": "planned_domain_routes_only_no_production_handlers_exist",
+  "handler_state": "typed_specs_complete_production_handlers_not_implemented",
   "algorithm_command_registry": "data/contracts/god_control_v1.json",
   "generator_contract": "data/contracts/vegetation_generator_v1.json",
   "geography_clear_semantics": "ADR0017_ground_nonlife_wipe_live_Actor_Gestation_and_actual_recursive_portable_items_preserved_real_hazards_and_legal_records",
-  "algorithm_revision": "ADR0017-2026-10-09"
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
 }

@@ -1,3 +1,5 @@
+> 现行v0.9/ADR0018：普通地形八档固定高度，无岸边/选区过渡和自然地理实体身份；坡道是连续几何例外。时钟20tick/运动秒、12000tick/游戏日。具体计算以runtime_foundation、life/combat/economy/technology内容包和emergence/interaction合同为准；原生生产仍未开始。
+
 # 决策核心、人格、知情与结果学习
 
 2026-10-09，ADR0016，design_version仍为0.8；生产未实现。机器合同见[decision_core_v1](../../data/contracts/decision_core_v1.json)。本文件补足[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)和[自然动作](NATURAL_BEHAVIOR_AND_LOCOMOTION.md)中尚未展开的决策层；不恢复旧代码，不安装AI引擎，不调用云模型。

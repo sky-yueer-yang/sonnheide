@@ -1,3 +1,5 @@
+> 现行v0.9/ADR0018：普通地形八档固定高度，无岸边/选区过渡和自然地理实体身份；坡道是连续几何例外。时钟20tick/运动秒、12000tick/游戏日。具体计算以runtime_foundation、life/combat/economy/technology内容包和emergence/interaction合同为准；原生生产仍未开始。
+
 # 自然行为、真实移动与原创像素动作算法
 
 2026-10-09。状态：**算法设计，尚无生产实现、测量或运行验收**。对应 [natural_action_v1.json](../../data/contracts/natural_action_v1.json)。前置规范为 [v0.8设计](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)、[生命合同](GENETICS_ANIMALS_AND_UPLIFT.md)、[真实坡道](ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md)及[控制租约](CIVIC_CONTROL_AND_SUCCESSION.md)。此文落实用户要求的自然、灵动、非机器人动作；用户要求的“平时不能一直站着”不解释成所有人永不休息、无目的地来回绕圈。
@@ -44,7 +46,7 @@ WorldBox官方更新记录说明其曾修复区域连接、不可达殖民、冻
 
 ## 4. 固定时间、确定性与随机流
 
-继承当前冻结profile：20 SimTick/运动SimSecond，1200tick/游戏日，30日/月、12月/年。米/运动秒只进入运动；睡眠小时、饥饿、日常作息按日历→tick命名换算。不能把8日历小时睡眠直接当8运动小时；首样加速日历本身仍需实际路线/任务/睡眠联测校准，不宣称已真实。
+继承当前冻结profile：20 SimTick/运动SimSecond，12000tick/游戏日，30日/月、12月/年。米/运动秒只进入运动；睡眠小时、饥饿、日常作息按日历→tick命名换算。不能把8日历小时睡眠直接当8运动小时；首样加速日历本身仍需实际路线/任务/睡眠联测校准，不宣称已真实。
 
 运动与近碰撞每tick更新，需求与行为以保存的到期队列错相更新，事件可使其提前到期。队列key为 `(dueTick ASC, overdueWaitAge DESC, ActorId ASC)`，统一有界逻辑工作配额；worker只计算同一快照的提案，单写者按冻结顺序发布。不得以谁先算完、GPU是否可见、wall-clock截止选择路径或行为。预算耗尽保存明确积压；不得静默跳过危险、生理账或已到期不可分割交互。
 

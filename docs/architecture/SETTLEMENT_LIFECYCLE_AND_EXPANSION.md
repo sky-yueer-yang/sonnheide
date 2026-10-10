@@ -1,3 +1,5 @@
+> 现行v0.9/ADR0018：普通地形八档固定高度，无岸边/选区过渡和自然地理实体身份；坡道是连续几何例外。时钟20tick/运动秒、12000tick/游戏日。具体计算以runtime_foundation、life/combat/economy/technology内容包和emergence/interaction合同为准；原生生产仍未开始。
+
 # 城市连续性、扩张、新城与地形灾损算法
 
 状态：2026-10-09设计补全；未实现生产程序。本文件和[机器合同](../../data/contracts/settlement_lifecycle_v1.json)专门接续[v0.8](../design/Sonnheide_Design_v0.8_Living_Pixel_World.md)城市缺口；算法修订号`ADR0015-2026-10-09`，design_version仍为0.8。具体新规则覆盖旧稿中尚不充分的城市灾损/创城描述。原始v0.6不改。身体运动见后续动作合同；地理换类的完整对象清除、神意成员/城市转国见同批神意合同。这里不把调查闭源行为等同拥有WorldBox源算法。
@@ -244,7 +246,7 @@ DirtyGrid→reverse spatial/support/container→affected nav edges/regions→rev
 
 ## 17. 参数与性能证据边界
 
-样例：二维格2m、普通500mm/ramp125mm按冻结profile；20tick/运动秒、1200tick/游戏日、30日/月360日/年；日评估、3次确认、20%改善、90日forecast、180运动秒catchment、30日失地降权/无人弃城、16项目/64选址候选。保存实际参数hash。时间加速/暂停/存载不能使累计3次或30日变成渲染帧；locale/相机不影响方案排序。所有样例需在真实粮/衣/劳动/路程/寒冷/生产对齐后联测调整，不在旧World静默换profile。
+样例：二维格2m、普通500mm/ramp125mm按冻结profile；20tick/运动秒、12000tick/游戏日、30日/月360日/年；日评估、3次确认、20%改善、90日forecast、180运动秒catchment、30日失地降权/无人弃城、16项目/64选址候选。保存实际参数hash。时间加速/暂停/存载不能使累计3次或30日变成渲染帧；locale/相机不影响方案排序。所有样例需在真实粮/衣/劳动/路程/寒冷/生产对齐后联测调整，不在旧World静默换profile。
 
 ## 18. 必须贯穿的反例
 

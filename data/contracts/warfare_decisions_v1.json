@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "contract_id": "warfare_decisions_v1",
-  "design_version": "0.8",
-  "algorithm_revision": "ADR0017-2026-10-09",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -122,13 +122,13 @@
     "speed": "mm_per_motion_SimSecond",
     "time": "authoritative_SimTick",
     "mass": "integer_gram",
-    "energy": "life_contract_integer_energy_unit",
+    "energy": "life energy_milli",
     "currency": "integer_currency_minimal_unit",
     "work": "integer_work_units_lastIntegratedTick_and_remainder",
     "probability_preference": "q_0_to_10000",
-    "losses": "actual_actor_count_or_real_health_ledger_not_score",
+    "losses": "life health_milli / actualpersoncount",
     "sample_motion_second_ticks": 20,
-    "sample_game_day_ticks": 1200,
+    "sample_game_day_ticks": 12000,
     "sample_game_year_days": 360,
     "engineering_sample_not_real_weapon_timing": true
   },
@@ -590,8 +590,8 @@
     ],
     "collision": "complete_swept_actual_body_structure_time_then_stable_ref",
     "RNG": "saved_combat_domain_per_ShotId",
-    "armor": "actual_body_region_direction_coverage_material_durability",
-    "melee": "authority_contact_window_actual_reach_orientation_weapon_sweep_capability_not_animation_notify",
+    "armor": "combat_profiles hit_resolution finalSeverityMilli/blockedkindblunt then unique LifeApplyInjury; same snapshot allcontacts, no double residue/bleeding",
+    "melee": "combat_profiles aim_and_cycle actual body-relative maxreach/sweep/contactwindow/facing/response/loadedstate/uniquecontact",
     "simultaneous": "same_snapshot_legal_fire_actual_hit_time_same_instant_aggregate_then_unique_death",
     "death_or_ceasefire_cancels_fired_projectile": false,
     "new_actions_after_death": "cancel_unfired_preserve_fired_projectile",
@@ -599,7 +599,14 @@
     "pause_load_new_target_refills_reload": false,
     "real_weapon_recipe_parameters": false,
     "aim": "actual_own_weapon_pose_and_actor_ObservedFact_or_authorized_area_no_commit_autoaim_hidden_current_enemy_pose",
-    "same_instant_armor": "coverage_durability_snapshot_all_contacts_then_unique_aggregated_wear_and_injury_not_ID_first_armor_break_advantage"
+    "same_instant_armor": "coverage_durability_snapshot_all_contacts_then_unique_aggregated_wear_and_injury_not_ID_first_armor_break_advantage",
+    "profile_authority": "data/content/combat_profiles_v1.json",
+    "injury_authority": "data/content/life_profiles_v1.json.injury",
+    "game_weapon_recipe_parameters": true,
+    "weapon_stage_gate": "woodclub from actual primitive task only; swords/pike/bow/crossbow T015 actual adoption+goods+training, firearms T028/29,cannonT030 late actual adoption+goods+training+crew; no starting gun/cannon",
+    "headless_numeric_kernel_defined": true,
+    "operation_parameter_authority": "combat_profiles.operation_parameter_authority selected actual equipment installed version; basefallback, futureonly, canonicalmilli once",
+    "misfire": "combat_profiles.misfire actual loaded charge lost once at admitted ShotAttemptId, future paidclear/reload only"
   },
   "morale": {
     "individual_fields": [
@@ -626,7 +633,8 @@
     "loss_memory": "witnessed_or_received_event_once_not_global_deaths",
     "recovery": "real_safe_ticks_rest_food_care_trusted_orders_not_aura",
     "no_exit": "real_cover_or_surrender_not_teleport_infinite_wall_loop",
-    "care": "existing_actual_labor_resources_body_load_no_new_hospital_or_heal"
+    "care": "existing_actual_labor_resources_body_load_no_new_hospital_or_heal",
+    "numeric_transitions": "combat_profiles morale_transitions fear actual known pulse/decay and threshold hysteresis, nohealth buff"
   },
   "occupation_captivity": {
     "siege": "real_routes_gates_food_consumption_no_abstract_population_delete",
@@ -1414,5 +1422,15 @@
       "contribution"
     ],
     "near_optimal_random": "decision_core_v1_saved_episode_counter_once_not_each_tick"
+  },
+  "physics_profile": "data/content/life_profiles_v1.json.hazard_physics",
+  "weapon_profile": "data/content/combat_profiles_v1.json",
+  "technology_profile": "data/content/technology_runtime_v1.json",
+  "source_boundaries": {
+    "military_initial": "no start gun cannon gear or soldiers; existing actual population only",
+    "traditional": "actual T015 knowledge/adoption and manufactured weapon plus real training, no source capability copy grantsstock",
+    "late_firearm": "T028/T029/T030 actual staged late knowledge/prototypes/production/training; premodern ceiling only",
+    "MountAsset_private_horse_cavalry": false,
+    "combat_not_real_performance": "allgame power/motion timing fields abstract; no real firearm manufacture instructions"
   }
 }

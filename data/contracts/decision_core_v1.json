@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "contract_id": "sonnheide_decision_core_v1",
-  "design_version": "0.8",
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
   "planned_only": true,
   "production_implemented": false,
   "document": "docs/architecture/DECISION_CORE_PERSONALITY_AND_INFORMATION.md",
@@ -240,7 +240,8 @@
       "decisionCounter",
       "definitionHash"
     ],
-    "counter_increment": "once_first_episode_candidate_freeze_not_queries_worker_slices_retries_or_load"
+    "counter_increment": "once_successful_published_EventFreezeReceipt_for_first_episode_candidate_freeze_not_queries_worker_slices_failed_candidates_retries_or_load",
+    "random_bit_protocol": "data/contracts/runtime_foundation_v1.json#/counter_rng"
   },
   "commitment": {
     "states": [
@@ -309,7 +310,7 @@
   "time": {
     "canonical": "SimTick",
     "motion_second_ticks_sample": 20,
-    "game_day_ticks_sample": 1200,
+    "game_day_ticks_sample": 12000,
     "game_year_days": 360,
     "wall_clock_render_camera_affects_choice": false,
     "physical_dangers_wait_for_high_level_planner": false,
@@ -644,5 +645,10 @@
       "status": "future_production_acceptance_not_executed"
     }
   ],
-  "acceptance_case_count": 48
+  "acceptance_case_count": 48,
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
 }
