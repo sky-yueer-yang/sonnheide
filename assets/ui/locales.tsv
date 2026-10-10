@@ -11,7 +11,7 @@ world-name	世界名称	World name	Weltname
 surface	初始地表	Initial surface	Anfangsoberfläche
 soil	平土	Flat soil	Flacher Boden
 ocean	海洋	Ocean	Ozean
-size	地图格数	Map cells	Kartenfelder
+size	分辨率 · 0.25 米 / 格	Resolution · 0.25 m / cell	Auflösung · 0,25 m / Feld
 width	宽	Width	Breite
 height	高	Height	Höhe
 theme	地表主题	Surface theme	Oberflächenthema
@@ -46,12 +46,12 @@ age-light	光明时代	Age of Light	Zeitalter des Lichts
 age-darkness	黑暗时代	Age of Darkness	Zeitalter der Dunkelheit
 age-auto	自动交替	Automatic alternation	Automatischer Wechsel
 age-manual	手动切换	Manual switching	Manueller Wechsel
-tab-observe	观察	View	Ansicht
+tab-observe	观察	View	Sicht
 tab-terrain	地表	Terrain	Gelände
 tab-life	生命	Life	Leben
-tab-civilization	文明	Civilization	Zivilisation
+tab-civilization	文明	Culture	Kultur
 tab-construction	建设	Build	Bauen
-tab-economy	经济	Economy	Wirtschaft
+tab-economy	经济	Economy	Handel
 tab-world	世界	World	Welt
 tab-settings	设置	Settings	Optionen
 no-saves	暂无世界存档。	No saved worlds.	Keine Weltspielstände vorhanden.
@@ -99,3 +99,20 @@ camera-keys	Q / E 转向；+ / - 缩放。	Q / E turn the camera; + / - zoom.	Q 
 error-dimensions	地图宽高须在 32–1008 格之间；地球地图的高度由选区比例决定。	Map width and height must be 32–1008 cells. Earth map height follows the selected region’s proportions.	Kartenbreite und -höhe müssen 32–1008 Felder betragen. Bei Erdkarten ergibt sich die Höhe aus den Proportionen des gewählten Gebiets.
 technical-details	技术详情	Technical details	Technische Details
 hide-details	收起详情	Hide details	Details ausblenden
+metres-per-cell	m/格	m/cell	m/Zelle
+tab-observe-full	世界观察与镜头	World view and camera	Weltansicht und Kamera
+tab-terrain-full	地形与生态	Terrain and ecology	Gelände und Ökologie
+tab-life-full	人物与动物	People and animals	Menschen und Tiere
+tab-civilization-full	文明与制度	Civilization and institutions	Zivilisation und Institutionen
+tab-construction-full	建设与资源	Construction and resources	Bau und Ressourcen
+tab-economy-full	经济与物品	Economy and goods	Wirtschaft und Güter
+tab-world-full	世界、存档与时间	World, saves and time	Welt, Spielstände und Zeit
+tab-settings-full	游戏设置	Game settings	Spieleinstellungen
+tool-camera-home	复位	Reset	Zurück
+tool-camera-help	帮助	Help	Hilfe
+tool-main-menu	主菜单	Menu	Menü
+tool-age-light	光明	Light	Licht
+tool-age-darkness	黑暗	Dark	Dunkel
+tool-age-auto	自动	Auto	Auto
+tool-age-manual	手动	Manual	Manuell
+not-available	尚未开放	Not yet available	Noch nicht verfügbar

@@ -1,13 +1,17 @@
 # Sonnheide engineering constraints
 
+最新视觉覆盖：2026-10-10 / ADR0020。背景偏青深蓝，信息框深色半透明；按钮尽量无边框，底栏按钮全部无边框。大icon、小字，正文12dp、重要标题用实际字号/投影/明暗，不伪造未加载的粗体。UI与icon以蓝红白黄为主，黄色本色#ffaa00。主页保留闪星和流星，取消柜式外框；Age不锁UI颜色。最新入口docs/decisions/0020-translucent-navy-borderless-ui.md及FRONTEND_ART_DIRECTION，覆盖下方此前视觉要求。250mm真实格和32px/m材质继续有效。
+
+最新覆盖：2026-10-10 / ADR0019。所有前端重做为色彩丰富、高分辨率、细像素复古街机；取消旧主题色、禁绿紫、禁描边与主页纯文字等全部视觉限制。黄色本色统一#ffaa00，允许从它派生明暗渐变。主页仅深蓝星空、闪烁细星、流星，不用图片、油画或菜单假World。新世界真实250mm格，32px/m原创材质，默认512²=128×128m、最大1008²=252×252m（当前边界而非最终容量承诺）；计划坡角量子1mm，旧2m/125mm文字仅历史。geometry revision是变更序号，保存显式格距。各查询/生成/最高预览/网格/拾取/水深/存载同源。Age不是强制UI主题；本地动画在隐藏/降低动态/世界暂停时冻结，不消费仿真RNG。以下旧视觉20/24/25及2m样例被本条覆盖，见docs/decisions/0019-fine-terrain-and-colorful-arcade.md与FRONTEND_ART_DIRECTION。
+
 当前规范：2026-10-09，v0.9/ADR0018。入口 docs/design/Sonnheide_Design_v0.9_Executable_Rules.md、data/contracts/game_v0_9.json 及runtime/emergence/interaction合同和data/content运行定义。普通地形八档固定高度，无岸线/外缘过渡；坡道为唯一连续面例外；自然山海湖无实体身份/命名/谱系。开局冷兵器，枪炮后期实际研究制造装备。20tick/运动秒、12000tick/游戏日。原v0.6逐字保留，历史文档不当当前默认。S00/S01新原生实现正在施工，入口tools/build.py；验收结果见本批报告，未测不称通过；不得恢复旧程序或以历史证据冒充试玩。
 
-最新美术要求（2026-10-10）：世界与UI禁止任何颜色描边，使用自然光影；UI不得用绿色/紫色。高分辨率像素及原创代码生成填充图标，主页本批只完成功能按钮，精修后续，其余界面按docs/design/FRONTEND_ART_DIRECTION.md。
+当前美术要求按ADR0020；旧禁止所有颜色/绿紫与网站/柜式菜单均为历史，不作为当前验收条件。世界自然植物配色不受UI四主色约束。
 
 1. 自研C++20框架，不用游戏引擎；唯一Steam发行。Metal只开发验证，CI/NullRenderer不代替Windows GPU/Steam实机。独立开源库先核验官方许可/版本/hash/架构理由，可分发原件/配方/manifest/notices入GitHub/GitLFS/Releases；不擅授原创内容开源许可。Python工具3.9+标准库默认。
 2. 拆解真正的不变量/瓶颈/因果依赖，用户明确要求多个subagent深挖独立高风险边界，划分文件所有权并交叉审查；不靠更名、改问法、堆空类或换库冒充推进。
 3. World变更单写者事务，完整prepare/validate/具体后果preview/commit；失败无半写。法定身份/owner/controller/custodian/location、主权/行政/占领、Culture/Language、Family/Household/Dynasty/Subspecies都分开。镜头/LOD/UI/线程速度不改变仿真。
-4. 普通地形固定−20/−8/−2/+1/+2/+16/+48/+96m八档，不自由升降/平滑/高度噪声或边缘过渡。2m格/ramp角125mm/chunk64²非容量承诺；CreateRamp是唯一连续例外，copy仅flat preset/theme。Blank海/平土＋Earth矩形海陆，不采DEM/无模板库。
+4. 普通地形固定−20/−8/−2/+1/+2/+16/+48/+96m八档，不自由升降/平滑/高度噪声或边缘过渡。新250mm格、chunk64²；计划ramp角量子1mm，非容量承诺；CreateRamp是唯一连续例外，copy仅flat preset/theme。Blank海/平土＋Earth矩形海陆，不采DEM/无模板库。
 5. 平/坡真实表面共供渲染/碰撞/拾取/支承/导航/冷热。坡面水位0裁湿，连通属性仅可重建nav索引；无WaterBodyRef、名称、湖分裂/合并身份。普通chunk边不是海岸。首版静水0，无高位湖/体积流体/天然洞穴/悬空陆块。
 6. 斜坡画笔提供真实连续净宽/坡度/两端/转弯通路，移除是新改地事务不倒回旧World；旧图恢复需geometry ownership+revision，结算人车货/地基/合同/远端水路/食物源reserve与预约。普通后建不能堵旧接入，Godterrain可按明确预览损坏并撤证；无免费物资/复活/退款。
 7. 高峰由实际三角面高度裁禁区，所有移动Actor（人/普通及启智动物/飞鸟/蜂）不能站立/出生/放置/神手进入或飞越；任何基因/坡道不豁免，削低真实高度才解除。相机/光/装饰粒子不受Actor通行规则，Plant按生境冷热约束而非直接删除。
@@ -38,6 +42,6 @@
 29. ADR0018：life_profiles唯一生理/危险/伤势计算所有者，combat只提交hit/impulse，economy不复制科研进度；emergence唯一文化/语言/亚种创生计算。Ref经alias归一保持同Actor。各域同tick按runtime_foundation全域phases结算死亡/遗产/继任一次。
 30. 当前统一规格/模型验收`python3 tools/validate_design.py`，仅验证具体有限状态与算式，不证明原生3D/长期经济/容量/Steam实机。尚未创建C++工程前不伪造build/CTest/sanitizer通过。
 
-24. 最新前端按2026-10-10用户要求：文字除外几乎全部像素风；像素面板/控件/图标必须真阶梯实心几何与整数像素，禁止任何颜色描边、border/outline/ring。Light UI深蓝/白/暖红(微暖金中性)，Darkness黑/白/#ffaa00；由真实World/preview Age驱动，无独立UI时钟，UI禁绿紫。主页只交五项纯文字按钮和流程，美化后续；其余S00/S01要完成高分辨率美感与GPU实证，见FRONTEND_ART_DIRECTION。
+24. 当前所有UI按ADR0020：真实像素字体、无描边填色控件、深色半透明信息框、深青蓝背景与蓝红白黄icon；大icon配12dp短标签，全称tooltip三语保留。键盘focus可见不依赖描边。主页五项紧凑菜单及真实星空/流星；本地表现时间冻结独立于World。
 
-25. 2026-10-10再次明确覆盖旧网站式构图：所有前端彻底复古老式街机像素化，包括主页与三语字，Fusion Pixel 12px整数倍；主页大像素SONNHEIDE/五项实体文字按钮/原创3D方块背景，油画Logo原件保留但旧呈现不覆盖最新要求。世界按Minecraft式原创方块像素tiles/顶侧色簇/简单方向光/硬阴影/蓝像素水/几何方块云，不写实PBR、反光、波法线、柔云或灰雾；不复制Minecraft资源。全屏高分辨率，无任何描边。
+25. 世界保持真实250mm像素地形、32px/m原创顶侧色簇、方向光影、细像素水纹、漂移薄云与稀疏风动装饰；不写实PBR/Fresnel/镜面反射，不复制Minecraft资源。油画Logo历史原件保留，不进入主页。人物、动物、机制树和楼仍待后续生产，纯装饰不产生资源或身份。

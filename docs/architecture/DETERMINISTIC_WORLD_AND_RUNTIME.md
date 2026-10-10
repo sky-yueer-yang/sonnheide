@@ -1,6 +1,6 @@
 # 固定地形、确定性世界与运行合同
 
-2026-10-09，v0.9 / [ADR0018](../decisions/0018-fixed-terrain-and-executable-game-specification.md)。状态：详细设计和有限参考模型，**没有生产程序、构建入口或Steam试玩**。本文件与[runtime_foundation_v1.json](../../data/contracts/runtime_foundation_v1.json)配对；覆盖旧连续自由高程、天然岸坡、不规则选区海岸及自然对象命名/身份。人物随身保护仍按ADR0017。伤势/危险函数唯一来源为[life_profiles_v1.json](../../data/content/life_profiles_v1.json)，经济内容唯一来源为[economy_content_v1.json](../../data/content/economy_content_v1.json)。
+2026-10-10，v0.9 / [ADR0019](../decisions/0019-fine-terrain-and-colorful-arcade.md)。状态：S00/S01原生切片已有构建、250mm地形、GPU、创建存载；坡道、导航、生物、经济及下文完整运行阶段仍为详细设计和有限参考模型，不能称完整生产游戏或Steam已发行。实际证据见[最新报告](../planning/ARCADE_V2_DELIVERY.md)。本文件与[runtime_foundation_v1.json](../../data/contracts/runtime_foundation_v1.json)配对；覆盖旧连续自由高程、天然岸坡、不规则选区海岸及自然对象命名/身份。人物随身保护仍按ADR0017。伤势/危险函数唯一来源为[life_profiles_v1.json](../../data/content/life_profiles_v1.json)，经济内容唯一来源为[economy_content_v1.json](../../data/content/economy_content_v1.json)。
 
 ## 1. 八档高度及唯一例外
 
@@ -17,7 +17,7 @@
 
 每个flat列必须同时满足类型、高度和材质映射，不能保存合法范围内的任意第九高度。sand与soil是不同档，互转确有地理kind变化，因此按ADR0017清地表、保生命和实际随身子树；这不是只换主题。首版水面统一0，不做岸边渐降、地貌噪声、自然侵蚀或半随机海床。普通chunk接边只呈现相邻真实表面，绝不创造岸线。
 
-真实`ramp_patch`是唯一连续高程例外：四角125mm整数，NW-SE固定剖分，面内精确有理数插值。其合法范围仍受profile、两端、身体和峰禁约束。它不是开放自由高度笔刷。清晰可见的块状断岸与矩形选区裁切是本版明确取舍；不能暗加旧不规则边缘来美化。
+ADR0019新世界采用250mm格，默认512²即128×128m；真实`ramp_patch`仍是唯一连续高程例外，计划四角1mm整数，NW-SE固定剖分、精确有理数插值（尚待S02实装）。其合法范围受profile、两端、身体与峰禁约束。不能暗加岸坡或第二套平滑碰撞面；旧2m/125mm场景只保留历史。
 
 准入算子为`PaintPreset`、`RaiseOneTier`、`LowerOneTier`、`FlattenToPreset`、`CopyFlatTerrain`、`CreateRamp`、`RemoveRamp`、`PaintEcologyTheme`。升降沿上表八档移动一档，顶/底返回`AT_TIER_LIMIT`；对含坡道区域先选明确目标类型，不猜平均高度是哪档。平整把命中整格变成同一指定flat档，不取任意平均高度。移除Smooth和自由target-height滑杆。复制只接收flat类型/主题；源含坡道返回`COPY_RAMP_REQUIRES_NEW_PLAN`，不复制RampRef、before image、人口或物资。
 
@@ -51,13 +51,13 @@ Earth使用**游戏用等距圆柱、标准纬线0**：投影x为展开经度、
 
 ## 5. 有限、唯一的坡道求解
 
-输入控制点先按2m列网格中心进行ties-to-even量化；起止点必须在原合法flat落脚区，端高采用原固定档，禁止高峰目标。首版路径为可解释的网格正交折线，控制点顺序保留；非正交段尝试X后Y与Y后X两种折线，不把用户拖动帧变成多个提升。直线斜坡、回头坡可用；UI显示真实折线和转弯平台。
+输入控制点先按实际profile列网格中心进行ties-to-even量化，新世界格距250mm；起止点必须在原合法flat落脚区，端高采用原固定档，禁止高峰目标。首版路径为可解释的网格正交折线，控制点顺序保留；非正交段尝试X后Y与Y后X两种折线，不把用户拖动帧变成多个提升。直线斜坡、回头坡可用；UI显示真实折线和转弯平台。
 
 控制点≤16，路段≤32，中心线长度≤512格，候选≤64。候选枚举按：两种直接拼接；随后对最长不够长度的段尝试左右平行偏移1…8格的一次矩形绕行（轴、方向、距离顺序冻结）。不递归搜索无限蛇形；不够则`RAMP_ROUTE_NO_FEASIBLE_CANDIDATE`，列出实际需延长/缺净空/峰/受保护通路原因。用户可增加控制点，不偷降目标。
 
 步行直段默认净宽4m，车行默认4m但需实际≥3m。折点设真实水平平台：步行4m×4m，车用`ceil_to_cell(2*turnRadius+bodyWidth+2*clearance)`，首样radius6m、width3m、每侧clearance0.25m，故16m×16m；进入/离开平台处直段长度从平台边算。平台本身进行整车转弯扫掠，不用中心线90°假称车可转。不能用空间不足的小平台放宽profile。
 
-剩余直段按实际水平长度L分配总爬升R：累积端高`r_i=r0+round_even(R*prefixLength/totalStraightLength)`，单位125mm；转弯平台高度为相邻段公共端高。直段矩形内corner高按沿轴参数线性计算再round_even，横向同高；平台四角同高。外围坡肩只使用候选矩形和平台的完整命中格，不做自然过渡。所有格角由定义区解析；同角收到不一致端高则拒绝，不last-writer-wins。非相邻直段/平台正面积自交或重叠一律拒绝，邻接只允许相容平台交接。
+剩余直段按实际水平长度L分配总爬升R：累积端高`r_i=r0+round_even(R*prefixLength/totalStraightLength)`，新profile单位1mm；转弯平台高度为相邻段公共端高。直段矩形内corner高按沿轴参数线性计算再round_even，横向同高；平台四角同高。外围坡肩只使用候选矩形和平台的完整命中格，不做自然过渡。所有格角由定义区解析；同角收到不一致端高则拒绝，不last-writer-wins。非相邻直段/平台正面积自交或重叠一律拒绝，邻接只允许相容平台交接。
 
 对每个候选验证所有三角面纵/横坡、接边台阶、完整身体扫掠、峰、宽高、转弯平台、支承及旧必要接入；平均长度够不代表通过。端点精确匹配旧平台。通过者按`(positiveFillVolume+excavationVolume, changedCellCount, centerlineLength, canonicalCornerArray)`升序选择首个，volume精确有理数比较。预览冻结选中的角数组，不在commit再换另一路。fill/excavation分开存；文明工程实际材料劳动来自经济配方，不因净体积0而免费。
 
@@ -135,7 +135,7 @@ Continue是本地pointer，包含WorldUUID/revision/checkpoint相对固定slot-r
 
 官方固定许可：[SDL](https://raw.githubusercontent.com/libsdl-org/SDL/7f3ae3d57459e59943a4ecfefc8f6277ec6bf540/LICENSE.txt)、[RmlUi](https://raw.githubusercontent.com/mikke89/RmlUi/40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9/LICENSE.txt)、[FreeType](https://raw.githubusercontent.com/freetype/freetype/42608f77f20749dd6ddc9e0536788eaad70ea4b5/LICENSE.TXT)、[bgfx](https://raw.githubusercontent.com/bkaradzic/bgfx/cca91681c953d2de9531197b0f580c866ffaa775/LICENSE)、[wrapper](https://raw.githubusercontent.com/bkaradzic/bgfx.cmake/f2ea8fb0438721d754aefa22b14fe161f948a383/LICENSE)、[bx](https://raw.githubusercontent.com/bkaradzic/bx/d86e4ea9d9da6e832a3ff41398587d82b772c69b/LICENSE)、[bimg](https://raw.githubusercontent.com/bkaradzic/bimg/101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1/LICENSE)。完整原声明/模块notices和已有项目Release原始包继续保留；未重新下载/重复烘焙原件。没有声称本批新工程已经链接这些版本。
 
-foundation/world/terrain/life/economy核心不include SDL/bgfx/RmlUi；platform adapter拥有窗口、GPU和本地文件故障出口，renderer消费同revision只读表现。输入窗口坐标到framebuffer只映射一次，按真实DPI更新，不能固定2倍；UI截获pointer时地图不另触发笔刷。World暂停不停止可访问菜单/相机；隐藏/降低动态停止油画视觉，不赠睡眠。Steam唯一发行；新WindowsGPU安装、存档故障、控制器/DPI/三语实机证据仍待施工。
+foundation/world/terrain/life/economy核心不include SDL/bgfx/RmlUi；platform adapter拥有窗口、GPU和本地文件故障出口，renderer消费同revision只读表现。输入窗口坐标到framebuffer只映射一次，按真实DPI更新，不能固定2倍；UI截获pointer时地图不另触发笔刷。World暂停不停止菜单/相机；隐藏/降低动态冻结星空、云、水纹和装饰植物表现时间，恢复不跳时，不赠睡眠。Steam唯一发行；Windows GPU与Steam安装证据独立待实测。
 
 ## 12. 验算边界和生产准入
 

@@ -69,7 +69,7 @@
   "sample_profile": {
     "status": "engineering_calibration_example_not_real_geography_or_measured_capacity",
     "frozen_per_world": true,
-    "cell_size_mm": 2000,
+    "cell_size_mm": 250,
     "height_quantum_mm": 500,
     "chunk_side_cells": 64,
     "minimum_height_q": -40,
@@ -127,7 +127,7 @@
     "arithmetic": "checked_int64_local_cell_mm_and_rational_comparison_with_frozen_rounding",
     "profile_edit_in_existing_world": false,
     "actor_flight_ceiling_mm": 256000,
-    "ramp_height_quantum_mm": 125,
+    "ramp_height_quantum_mm": 1,
     "ramp_quantum_base_divisor": 4,
     "minimum_ramp_height_r": -160,
     "maximum_ramp_height_r": 768,
@@ -292,7 +292,7 @@
     "ramp_corner_encoding": "cornerHeightR_times_frozen_rampHeightQuantumMm",
     "flat_encoding": "terrainKind_enum_unique_height_no_arbitrary_heightQ",
     "ramp_targets_match_actual_quantized_platforms": true,
-    "minimum_ramp_rise_per_two_metre_edge_mm": 125,
+    "minimum_ramp_rise_per_two_metre_edge_mm": 1,
     "coarse_base_only_car_ramp_is_mathematically_impossible": true,
     "flat_height_query": "runtime_foundation.fixed_terrain.ordered_flat_heights_mm[terrainKind]",
     "ramp_height_exclusive_authoring": "CreateRamp_owned_geometry",
@@ -1353,5 +1353,6 @@
       "scenario": "split_or_join_water",
       "expected": "rebuild_nav_components_no_WaterBodyRef_or_natural_names"
     }
-  ]
+  ],
+  "fine_profile_update": "ADR0019_new250mm_grid_ramp_quantum1mm_legacy125mm_examples_are_historical_not_new_profile"
 }

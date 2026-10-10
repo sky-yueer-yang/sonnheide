@@ -1,7 +1,9 @@
 name: Native Windows foundation
 on:
   push:
-    branches: ['codex/**', main]
+    # Open development PRs already test their head; avoid compiling twice on
+    # each push. The published main branch retains its own acceptance run.
+    branches: [main]
     paths: ['src/**', 'apps/**', 'tests/**', 'tools/**', 'assets/**', 'data/**', 'third_party/**', 'cmake/**', 'CMakeLists.txt', '.gitattributes', 'Play_Sonnheide.command', '.github/workflows/native.yml']
   pull_request:
     paths: ['src/**', 'apps/**', 'tests/**', 'tools/**', 'assets/**', 'data/**', 'third_party/**', 'cmake/**', 'CMakeLists.txt', '.gitattributes', 'Play_Sonnheide.command', '.github/workflows/native.yml']

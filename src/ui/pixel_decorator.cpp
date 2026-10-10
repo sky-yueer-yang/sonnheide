@@ -72,6 +72,7 @@ public:
 private:
     Rml::PropertyId fill_,step_,shadow_,shade_;
 };
+
 }
 PixelMesh pixel_mesh(float width,float height,float step,float shadow,Rml::Colourb fill,Rml::Colourb shade) {
     PixelMesh mesh;

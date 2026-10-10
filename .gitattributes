@@ -64,3 +64,5 @@ assets/source/ui/fonts/fusion-pixel/LICENSES/** -text
 # Three bounded native GPU proof images; never a local save or generated cache.
 docs/evidence/s00-s01-arcade/*.png -filter -diff -merge -text
 *.command text eol=lf
+# Bounded actual native visual proof images.
+docs/evidence/arcade-v2/*.png -filter -diff -merge -text

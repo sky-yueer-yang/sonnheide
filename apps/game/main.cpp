@@ -59,13 +59,13 @@ class App {
  bool map_pending_=false,quit_=false,paused_=false,dragging_selection_=false,inspector_was_paused_=false,inspector_open_=false;
  std::vector<ui::Action> platform_actions_;
  ui::Screen load_origin_=ui::Screen::MainMenu;
- int speed_=1;double tick_accumulator_=0;double select_start_x_=0,select_start_y_=0;
+ int speed_=1;double tick_accumulator_=0,presentation_seconds_=0;double select_start_x_=0,select_start_y_=0;
  sonn::GeoRect map_rect_{-180000000,180000000,-80000000,80000000};
  ui::View view_;
  sonn::Bytes arcade_font_;
  client::Client client_;
  std::unique_ptr<ui::Ui> ui_;
- bool smoke_=false,smoke_coordinates_checked_=false,smoke_menu_captured_=false,smoke_map_focus_sent_=false; int smoke_stage_=0,smoke_camera_stage_=0; Clock::time_point smoke_start_=Clock::now();
+ bool smoke_=false,smoke_coordinates_checked_=false,smoke_map_focus_sent_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
  client::Camera smoke_camera_before_{};
  sonn::Hash smoke_camera_world_{};
  fs::path evidence_;
@@ -79,7 +79,7 @@ public:
   if(!Rml::LoadFontFace(arcade_font_.data(),static_cast<int>(arcade_font_.size()),"Sonn Arcade",Rml::Style::FontStyle::Normal,Rml::Style::FontWeight::Normal,true))throw sonn::Error("FONT_LOAD","Locked arcade pixel font could not be loaded");
   ui_=std::make_unique<ui::Ui>(resources_);auto d=client_.dimensions();std::string err;
   if(!ui_->initialize(d.pixel_w,d.pixel_h,d.density,err))throw sonn::Error("UI_DOCUMENT",err);
-  view_.creation.can_select_theme=true;client_.audio_volume(view_.audio_volume/100.f);read_settings();refresh_saves();
+  view_.creation.can_select_theme=true;view_.creation.cell_mm=sonn::terrain_cell_size_mm;client_.audio_volume(view_.audio_volume/100.f);read_settings();refresh_saves();
   geo_job_=std::async(std::launch::async,[root=resources_]{return std::make_shared<const sonn::Geography>(root/"geo/gshhs_f.b",sonn::hash_from_hex(GEO_HASH));});
   if(smoke_){fs::create_directories(evidence_);std::error_code ec;fs::remove(evidence_/"native-flow.json",ec);std::ofstream(evidence_/"gpu.json")<<client_.gpu_parameters_json();}
  }
@@ -99,6 +99,8 @@ public:
     unsigned n=0;while(tick_accumulator_>=1&&n++<256){session_.active()->advance_tick();tick_accumulator_-=1;}
    }
    sync_view();
+   // Local animation has no simulation RNG/tick owner. Resume without a time jump.
+   if(client_.visible()&&!view_.reduced_motion&&!(session_.active()&&view_.screen==ui::Screen::World&&paused_))presentation_seconds_+=std::clamp(dt,0.0,0.1);
    const sonn::World* w=view_.screen==ui::Screen::World&&session_.active()?&session_.active()->world():preview_?&*preview_:nullptr;
    view_.presentation_darkness=w&&w->age.current==sonn::Age::Darkness;
    // A load dialog opened from a world retains that world's presentation Age.
@@ -108,7 +110,7 @@ public:
    auto v=ui_->viewport();bool map=view_.screen==ui::Screen::Creation&&view_.creation.mode==ui::CreationMode::Earth&&!preview_;
    client_.map_overlay(static_cast<int>(v.x),static_cast<int>(v.y),static_cast<int>(v.width),static_cast<int>(v.height),map);
    const auto age=w&&w->age.current==sonn::Age::Darkness?client::Age::Darkness:client::Age::Light;
-   client_.begin_frame(surface?&*surface:nullptr,age,view_.reduced_motion?0:std::chrono::duration<double>(now-smoke_start_).count());
+   client_.begin_frame(surface?&*surface:nullptr,age,presentation_seconds_);
    client_.begin_ui();ui_->render();client_.end_frame();
    if(smoke_)smoke_step();
    std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -166,7 +168,7 @@ private:
     for(int y=0;y<h;y++)for(int x=0;x<w;x++){double lon=rect.west_udeg+(x+.5)*(static_cast<double>(rect.east_unwrapped_udeg)-rect.west_udeg)/w;double lat=rect.north_udeg-(y+.5)*(static_cast<double>(rect.north_udeg)-rect.south_udeg)/h;
      // Sample source rows run south-to-north; display map north-up. Fill-only selected region, no outline.
      bool land=values[(h-1-y)*w+x]!=0;bool selected=lon>=selection.west_udeg&&lon<=selection.east_unwrapped_udeg&&lat>=selection.south_udeg&&lat<=selection.north_udeg;
-     auto i=static_cast<std::size_t>(y*w+x)*4;std::array<int,3> rgb=land?std::array<int,3>{192,178,143}:std::array<int,3>{22,47,67};
+     auto i=static_cast<std::size_t>(y*w+x)*4;std::array<int,3> rgb=land?std::array<int,3>{59,132,106}:std::array<int,3>{35,67,121};
      double shade=selected?1.20:.68;for(int k=0;k<3;k++)result.rgba[i+k]=static_cast<std::uint8_t>(std::clamp(rgb[k]*shade,0.,255.));result.rgba[i+3]=255;
     }return result;});
   }
@@ -216,7 +218,7 @@ private:
   }
  }
  void show_world(){if(!session_.active())throw sonn::Error("NO_WORLD","Continue has no compatible world");view_.screen=ui::Screen::World;if(inspector_open_)paused_=inspector_was_paused_;inspector_open_=false;command_sequence_=std::max(command_sequence_,session_.active()->world().input_sequence);tick_accumulator_=0;rename_.reset();client_.frame_surface(client::surface_view(session_.active()->world()));}
- void sync_view(){if(view_.creation.mode==ui::CreationMode::Earth){double span=view_.creation.east-view_.creation.west,lat=view_.creation.north-view_.creation.south;if(span>0&&lat>0){double h=std::ceil(view_.creation.width*lat/span);view_.creation.height=static_cast<int>(std::clamp(h,1.,100000.));}}if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id){counted_world_=w.id;view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard);view_.world.dry_cells=0;for(int z=w.terrain.guard;z<w.terrain.height-w.terrain.guard;z++)for(int x=w.terrain.guard;x<w.terrain.width-w.terrain.guard;x++)if(sonn::terrain_height_mm[static_cast<unsigned>(w.terrain.at(x,z).kind)]>0)++view_.world.dry_cells;}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
+ void sync_view(){if(view_.creation.mode==ui::CreationMode::Earth){const auto micro=[](double value){return static_cast<std::int64_t>(std::llround(value*1000000));};const auto span=micro(view_.creation.east)-micro(view_.creation.west),lat=micro(view_.creation.north)-micro(view_.creation.south);if(span>0&&lat>0&&view_.creation.width>0&&view_.creation.width<=sonn::maximum_core_cells){const auto h=(static_cast<std::int64_t>(view_.creation.width)*lat+span-1)/span;view_.creation.height=static_cast<int>(std::clamp<std::int64_t>(h,1,100000));}}if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id){counted_world_=w.id;view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard);view_.world.dry_cells=0;for(int z=w.terrain.guard;z<w.terrain.height-w.terrain.guard;z++)for(int x=w.terrain.guard;x<w.terrain.width-w.terrain.guard;x++)if(sonn::terrain_height_mm[static_cast<unsigned>(w.terrain.at(x,z).kind)]>0)++view_.world.dry_cells;}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
  void map_zoom(double amount){double factor=amount>0?.7:1.0/.7;double cx=(static_cast<double>(map_rect_.west_udeg)+map_rect_.east_unwrapped_udeg)/2;double cy=(static_cast<double>(map_rect_.south_udeg)+map_rect_.north_udeg)/2;double w=std::clamp((map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg))*factor,500.,360000000.);double h=std::clamp((map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg))*factor,500.,160000000.);map_rect_={static_cast<int>(cx-w/2),static_cast<int>(cx+w/2),static_cast<int>(std::max(-80000000.,cy-h/2)),static_cast<int>(std::min(80000000.,cy+h/2))};map_pending_=true;++map_generation_;}
  void map_pan(double dx,double dy){double w=map_rect_.east_unwrapped_udeg-static_cast<double>(map_rect_.west_udeg),h=map_rect_.north_udeg-static_cast<double>(map_rect_.south_udeg);std::int64_t x=static_cast<std::int64_t>(std::clamp(dx,-.5,.5)*w),y=static_cast<std::int64_t>(std::clamp(dy,-.5,.5)*h);std::int64_t west=map_rect_.west_udeg+x;while(west< -180000000)west+=360000000;while(west>=180000000)west-=360000000;map_rect_.west_udeg=static_cast<int>(west);map_rect_.east_unwrapped_udeg=static_cast<int>(west+w);if(map_rect_.south_udeg+y>=-80000000&&map_rect_.north_udeg+y<=80000000){map_rect_.south_udeg+=static_cast<int>(y);map_rect_.north_udeg+=static_cast<int>(y);}map_pending_=true;++map_generation_;}
  void event(const SDL_Event& e){if(e.type==SDL_EVENT_QUIT){auto prior=ui_->take_actions();platform_actions_.insert(platform_actions_.end(),prior.begin(),prior.end());platform_actions_.push_back({ui::ActionKind::Exit});return;}
@@ -274,7 +276,12 @@ private:
   if(++frame_count<8||std::chrono::duration<double>(Clock::now()-stage_time).count()<.3)return;
   auto step=[&](std::string name){completed_actions_.push_back(std::move(name));++smoke_stage_;frame_count=0;stage_time=Clock::now();};
   switch(smoke_stage_){
-  case 0:if(!smoke_menu_captured_){client_.request_screenshot(evidence_/"main-menu");smoke_menu_captured_=true;break;}ui_->activate("new-world");step("menu-new");break;
+  case 0:
+   if(smoke_menu_phase_==0){client_.request_screenshot(evidence_/"main-menu");smoke_menu_live_seconds_=presentation_seconds_;smoke_menu_phase_=1;break;}
+   if(smoke_menu_phase_==1){if(presentation_seconds_-smoke_menu_live_seconds_<1.5)break;client_.request_screenshot(evidence_/"main-menu-motion");act({ui::ActionKind::SetReducedMotion,0,0,"",1});smoke_menu_frozen_seconds_=presentation_seconds_;smoke_menu_phase_=2;break;}
+   if(smoke_menu_phase_==2){client_.request_screenshot(evidence_/"main-menu-frozen-a");smoke_menu_phase_=3;frame_count=0;break;}
+   if(smoke_menu_phase_==3){if(presentation_seconds_!=smoke_menu_frozen_seconds_||session_.active()||preview_)throw sonn::Error("SMOKE_PRESENTATION","Reduced motion changed clock or menu created authority");client_.request_screenshot(evidence_/"main-menu-frozen-b");std::ofstream report(evidence_/"presentation-motion.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"local_clock_frozen",true},{"menu_creates_world",false},{"live_advance_ms",static_cast<std::int64_t>((smoke_menu_frozen_seconds_-smoke_menu_live_seconds_)*1000)},{"image_comparison_required",true}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Presentation report write failed");completed_actions_.push_back("menu-live-motion-and-reduced-clock");act({ui::ActionKind::SetReducedMotion,0,0,"",0});smoke_menu_phase_=4;break;}
+   ui_->activate("new-world");step("menu-new");break;
   case 1:if(view_.screen==ui::Screen::Creation){ui_->activate("preview");step("blank-preview-request");}break;
   case 2:if(preview_){client_.request_screenshot(evidence_/"blank-preview");step("blank-preview-gpu");}break;
   case 3:ui_->activate("create");step("blank-create");break;

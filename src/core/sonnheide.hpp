@@ -46,6 +46,8 @@ Hash admit_assets(const std::filesystem::path& manifest,const std::filesystem::p
 
 enum class TerrainKind : std::uint8_t { DeepOcean,CloseOcean,ShallowWater,Sand,Soil,Hill,Mountain,HighPeak };
 inline constexpr std::array<std::int32_t,8> terrain_height_mm{-20000,-8000,-2000,1000,2000,16000,48000,96000};
+inline constexpr std::int32_t terrain_cell_size_mm=250,legacy_terrain_cell_size_mm=2000;
+inline constexpr std::int32_t terrain_guard_cells=8,minimum_core_cells=32,maximum_core_cells=1008,default_core_cells=512;
 std::string_view terrain_name(TerrainKind); TerrainKind parse_terrain(std::string_view);
 struct Cell { TerrainKind kind=TerrainKind::CloseOcean; std::uint8_t theme=0; std::uint64_t revision=1; bool operator==(const Cell&) const=default; };
 struct SurfacePoint { std::int32_t cell_x,cell_z,height_mm; TerrainKind kind; bool editable,wet; };
@@ -54,7 +56,8 @@ struct RayHit { double distance; Vec3 position,normal; std::int32_t cell_x,cell_
 struct MeshVertex { float x,y,z,nx,ny,nz,u,v; std::uint8_t material; };
 struct Mesh { std::vector<MeshVertex> vertices; std::vector<std::uint32_t> indices; };
 struct Terrain {
- std::int32_t width=0,height=0,guard=8,cell_mm=2000; std::vector<Cell> cells;
+ std::int32_t width=0,height=0,guard=terrain_guard_cells,cell_mm=terrain_cell_size_mm; std::vector<Cell> cells;
+ // Mutation/cache revision, not a geometry schema or cell-size version.
  std::uint64_t geometry_revision=1; std::uint64_t surface_revision() const { return geometry_revision; }
  const Cell& at(std::int32_t x,std::int32_t z) const; bool editable(std::int32_t x,std::int32_t z) const;
  std::optional<SurfacePoint> support(std::int64_t x_mm,std::int64_t z_mm) const;
@@ -75,7 +78,7 @@ public:
  const Hash& source_hash() const; std::size_t polygon_count() const;
 };
 enum class CreationKind { BlankSea,BlankLand,Earth };
-struct CreationDraft { std::uint64_t session_generation=1,draft_generation=1,candidate_generation=1; CreationKind kind=CreationKind::BlankLand; std::string name="Sonnheide"; std::int32_t core_width=64,core_height=64; std::uint8_t soil_theme=1; GeoRect selection; Uuid world_id{}; Hash seed{}; std::uint64_t budget_bytes=134217728; };
+struct CreationDraft { std::uint64_t session_generation=1,draft_generation=1,candidate_generation=1; CreationKind kind=CreationKind::BlankLand; std::string name="Sonnheide"; std::int32_t core_width=default_core_cells,core_height=default_core_cells; std::uint8_t soil_theme=1; GeoRect selection; Uuid world_id{}; Hash seed{}; std::uint64_t budget_bytes=134217728; };
 enum class Age { Light,Darkness };
 struct AgeState { Age current=Age::Light; bool automatic=false; std::uint64_t remaining_tick=0,light_duration_tick=12000,dark_duration_tick=12000; bool operator==(const AgeState&) const=default; };
 struct CommandReceipt { std::string command_id; Hash payload_hash{}; std::uint64_t committed_revision=0; Json effects; };

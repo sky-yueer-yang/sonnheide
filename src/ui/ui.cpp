@@ -133,7 +133,7 @@ void Ui::refresh() {
         for(int i=0;i<element->GetNumChildren();++i) self(self,element->GetChild(i));
     };
     translate(translate,document_);
-    label(document_,"main-title","SONNHEIDE");
+    // The static multicolour wordmark is authored RML, not a translated field.
     show(document_,"main-screen",view_.screen==Screen::MainMenu);
     show(document_,"creation-screen",view_.screen==Screen::Creation);
     show(document_,"world-screen",view_.screen==Screen::World);
@@ -165,6 +165,8 @@ void Ui::refresh() {
     input_value(context_,document_,"creation-width",std::to_string(view_.creation.width));
     input_value(context_,document_,"creation-height",std::to_string(view_.creation.height));
     enable(document_,"creation-height",!earth && !view_.creation.busy);
+    const auto metres=[](std::int64_t mm){std::string value=std::to_string(mm/1000);auto fraction=std::to_string(1000+mm%1000).substr(1);while(!fraction.empty()&&fraction.back()=='0')fraction.pop_back();return fraction.empty()?value:value+"."+fraction;};
+    label(document_,"creation-scale",metres(view_.creation.cell_mm)+text("metres-per-cell")+" · "+metres(static_cast<std::int64_t>(view_.creation.width)*view_.creation.cell_mm)+" × "+metres(static_cast<std::int64_t>(view_.creation.height)*view_.creation.cell_mm)+" m");
     input_value(context_,document_,"earth-west",number(view_.creation.west)); input_value(context_,document_,"earth-east",number(view_.creation.east));
     input_value(context_,document_,"earth-south",number(view_.creation.south)); input_value(context_,document_,"earth-north",number(view_.creation.north));
     input_value(context_,document_,"creation-theme",view_.creation.theme);
@@ -182,7 +184,7 @@ void Ui::refresh() {
     input_value(context_,document_,"audio-volume",std::to_string(view_.audio_volume));
     const char* tabs[]={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
     for(int i=0;i<8;++i) { choice(document_,tabs[i],i==static_cast<int>(section_)); enable(document_,tabs[i],i==0 || i==6 || i==7); }
-    show(document_,"observe-tools",section_==BottomSection::Observe); show(document_,"world-tools",section_==BottomSection::World); show(document_,"age-tools",section_==BottomSection::World);
+    show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World); show(document_,"age-tools",section_==BottomSection::World,"flex");
     show(document_,"no-saves",view_.saves.empty());
     std::string signature;
     for(const auto& save:view_.saves) signature+=save.id+'\n'+save.name+'\n'+save.detail+'\n';
@@ -224,7 +226,7 @@ void Ui::refresh() {
                 if(!icon.empty()) element->SetAttribute("data-icon",icon);
             }
             if(!icon.empty()) {
-                const std::string src="../generated/ui/icons/"+icon+(view_.presentation_darkness?"-dark-96.png":"-light-96.png");
+                const std::string src="../generated/ui/icons/"+icon+"-96.png";
                 if(element->GetAttribute<Rml::String>("src","")!=src) element->SetAttribute("src",src);
             }
         }
@@ -240,48 +242,47 @@ void Ui::layout() {
     const auto grid=[](float value){return std::floor(value/8)*8;};
     const bool narrow=w<820;
     document_->SetClass("compact",narrow);
-    const float menu_width=grid(std::min(narrow?w-32:640.f,w-32));
+    const float menu_width=grid(std::min(264.f,w-32));
     property("main-menu","width",menu_width);
-    property("main-menu","left",narrow?grid((w-menu_width)/2):grid(std::max(32.f,w*.10f)));
-    property("main-menu","top",grid(std::max(16.f,(h-(narrow?480.f:400.f))/2)));
+    property("main-menu","left",narrow?grid((w-menu_width)/2):grid(std::max(24.f,w*.12f)));
+    property("main-menu","top",grid(std::max(16.f,(h-320.f)/2)));
     property("main-menu","max-height",std::max(160.f,h-32));
-    property("main-title","font-size",narrow?48:60);
     show(document_,"creation-options",narrow,"inline-block");
     show(document_,"creation-controls",!narrow || controls_open_);
     property("creation-controls","left",narrow?16:24);
-    property("creation-controls","width",grid(std::max(240.f,std::min(narrow?w-32:416.f,416.f))));
-    property("creation-controls","height",grid(std::max(160.f,h-128)));
-    property("scene-viewport","left",narrow?16:464);
-    property("scene-viewport","top",104);
-    property("scene-viewport","width",grid(std::max(8.f,w-(narrow?32:488))));
-    property("scene-viewport","height",grid(std::max(8.f,h-128)));
+    property("creation-controls","width",grid(std::max(240.f,std::min(narrow?w-32:352.f,352.f))));
+    property("creation-controls","height",grid(std::max(160.f,h-88)));
+    property("scene-viewport","left",narrow?16:400);
+    property("scene-viewport","top",68);
+    property("scene-viewport","width",grid(std::max(8.f,w-(narrow?32:424))));
+    property("scene-viewport","height",grid(std::max(8.f,h-88)));
     property("save-panel","left",grid(std::max(16.f,(w-std::min(800.f,w-32))/2)));
     property("save-panel","width",grid(std::min(800.f,w-32)));
-    property("save-panel","top",104);property("save-panel","height",grid(std::max(128.f,h-128)));
+    property("save-panel","top",68);property("save-panel","height",grid(std::max(128.f,h-88)));
     for(const auto* id:{"settings-panel","world-panel","help-panel","error-panel"}) {
         const float width=grid(std::min(704.f,w-32));
         property(id,"left",grid((w-width)/2));property(id,"width",width);
         const float top=grid(std::max(16.f,std::min(64.f,h*.08f)));
         property(id,"top",top);property(id,"max-height",grid(std::max(128.f,h-top-24)));
-        property(id,"padding-left",narrow?24:32);property(id,"padding-right",narrow?24:32);
+        property(id,"padding-left",20);property(id,"padding-right",20);
     }
     if(auto* bar=document_->GetElementById("bottom-bar")) {
         for(int i=0;i<bar->GetNumChildren();++i) if(auto* button=bar->GetChild(i)) {
             button->SetProperty("width",w<760?"25%":"12.5%");
-            button->SetProperty("font-size",w<760?"12dp":"24dp");
-            button->SetProperty("min-height",w<760?"96dp":"112dp");
-            button->SetProperty("line-height",w<760?"24dp":"32dp");
+            button->SetProperty("font-size","12dp");
+            button->SetProperty("min-height","96dp");
+            button->SetProperty("line-height","20dp");
         }
     }
-    property("section-tools","bottom",w<760?200:136);
+    property("section-tools","bottom",w<760?208:112);
     property("section-tools","right",16);
-    property("section-tools","width",grid(std::min(704.f,w-32)));
-    property("section-tools","max-height",grid(std::max(128.f,h-(w<760?328:264))));
+    property("section-tools","width",grid(std::min(section_==BottomSection::World?320.f:224.f,w-32)));
+    property("section-tools","max-height",grid(std::max(128.f,h-(w<760?336:240))));
     property("preview-caption","right",24);
-    property("preview-caption","max-width",grid(std::max(128.f,w-(narrow?48:496))));
+    property("preview-caption","max-width",grid(std::max(128.f,w-(narrow?48:432))));
     if(auto* map=document_->GetElementById("map-controls")) {
         map->SetProperty("left",narrow?"16dp":"auto");map->SetProperty("right","24dp");
-        map->SetProperty("max-width",std::to_string(grid(std::max(128.f,w-(narrow?40:488))))+"dp");
+        map->SetProperty("max-width",std::to_string(grid(std::max(128.f,w-(narrow?40:424))))+"dp");
     }
 }
 void Ui::update() {
@@ -297,6 +298,29 @@ void Ui::update() {
         if(std::abs(tools->ResolveNumericProperty("bottom")/density-bottom)>.1f || std::abs(tools->ResolveNumericProperty("max-height")/density-max_height)>.1f) {
             tools->SetProperty("bottom",std::to_string(bottom)+"dp");tools->SetProperty("max-height",std::to_string(max_height)+"dp");context_->Update();
         }
+    }
+    // RmlUi has no automatic browser-style title tooltip. Render the real
+    // localised full name on actual pointer hover, without emitting an intent.
+    Rml::Element* hovered=view_.screen==Screen::World && !blocks_world_input()?context_->GetHoverElement():nullptr;
+    while(hovered && hovered!=document_ && hovered->GetTagName()!="button") hovered=hovered->GetParentNode();
+    const std::string tooltip_key=hovered && hovered!=document_?hovered->GetAttribute<Rml::String>("data-tooltip-key",""):"";
+    const bool tooltip_was_visible=document_->GetElementById("tool-tooltip")->GetComputedValues().display()!=Rml::Style::Display::None;
+    show(document_,"tool-tooltip",!tooltip_key.empty());
+    if(tooltip_key.empty() && tooltip_was_visible) context_->Update();
+    if(!tooltip_key.empty()) {
+        auto* tooltip=document_->GetElementById("tool-tooltip");
+        label(document_,"tool-tooltip",text(tooltip_key)+(hovered->IsPseudoClassSet("disabled")?" · "+text("not-available"):""));
+        const float density=context_->GetDensityIndependentPixelRatio();
+        const auto dimensions=context_->GetDimensions();
+        const float w=dimensions.x/density,h=dimensions.y/density;
+        const auto offset=hovered->GetAbsoluteOffset(Rml::Box::BORDER),size=hovered->GetBox().GetSize(Rml::Box::BORDER);
+        const float width=std::min(272.f,w-24);
+        tooltip->SetProperty("width",std::to_string(width)+"dp");
+        tooltip->SetProperty("left",std::to_string(std::clamp((offset.x+size.x/2)/density-width/2,12.f,std::max(12.f,w-width-12)))+"dp");
+        context_->Update();
+        const float height=tooltip->GetBox().GetSize(Rml::Box::BORDER).y/density;
+        tooltip->SetProperty("top",std::to_string(std::clamp(offset.y/density-height-8,8.f,std::max(8.f,h-height-8)))+"dp");
+        context_->Update();
     }
     if(!pending_focus_.empty()) {
         if(auto* el=document_->GetElementById(pending_focus_)) el->Focus();

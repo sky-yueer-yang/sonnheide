@@ -38,7 +38,7 @@ struct CreationView {
     BlankBase base = BlankBase::Soil;
     std::string name;
     std::string theme = "flower_meadow";
-    int width = 128, height = 128;
+    int width = 512, height = 512, cell_mm = 250;
     double west = -12, south = 35, east = 15, north = 58;
     bool earth_available = false;
     bool can_select_theme = false;

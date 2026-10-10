@@ -4,10 +4,10 @@
   "planned_only": true,
   "production_implemented": false,
   "contract_id": "sonnheide_pixel_world_v0_8",
-  "decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md",
+  "decision": "docs/decisions/0019-fine-terrain-and-colorful-arcade.md",
   "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
   "detailed_terrain_contract": "data/contracts/terrain_access_v1.json",
-  "game_contract": "data/contracts/game_v0_8.json",
+  "game_contract": "data/contracts/game_v0_9.json",
   "original_baseline_sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
   "creation": {
     "modes": [
@@ -35,9 +35,8 @@
   },
   "grid": {
     "representation": "single_surface_columns_with_flat_or_continuous_ramp_patch",
-    "sample_cell_size_m": 2,
     "sample_base_height_quantum_mm": 500,
-    "sample_ramp_corner_height_quantum_mm": 125,
+    "sample_ramp_corner_height_quantum_mm": 1,
     "sample_chunk_cells": [
       64,
       64
@@ -57,7 +56,18 @@
     },
     "arbitrary_flat_heights": false,
     "continuous_exception": "owned_ramp_patch_only",
-    "natural_edge_height_transition": false
+    "natural_edge_height_transition": false,
+    "sample_cell_size_mm": 250,
+    "legacy_geometry_cell_size_mm": 2000,
+    "new_world_default_core_cells": [
+      512,
+      512
+    ],
+    "current_capacity_limit_core_cells": [
+      1008,
+      1008
+    ],
+    "texture_pixels_per_metre": 32
   },
   "water": {
     "sea_level_m": 0,

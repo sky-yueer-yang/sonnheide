@@ -23,7 +23,7 @@ struct SurfaceView {
     sonn::Uuid identity{};
     std::uint64_t revision{};
     int width{},height{};
-    double origin_x{},origin_z{},cell_m{2};
+    double origin_x{},origin_z{},cell_m{.25};
     std::function<SurfaceCell(int,int)> cell;
     std::function<sonn::Mesh(int,int,int,int)> mesh;
     std::function<std::optional<SurfaceHit>(const Ray&)> raycast;

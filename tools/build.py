@@ -29,6 +29,12 @@ def runtime():
             if p.is_file():copy_changed(p,target/p.relative_to(source))
     for historical in ['branding','paintings']:
         shutil.rmtree(BUILD/'runtime'/historical,ignore_errors=True)
+    # Keep runtime generated assets exact; removed historical Age variants must
+    # not silently survive in a new admitted presentation package.
+    generated=BUILD/'runtime/generated'
+    for p in generated.rglob('*'):
+        if p.is_file() and not (ROOT/'assets/generated'/p.relative_to(generated)).is_file():p.unlink()
+    shutil.rmtree(BUILD/'runtime/menu',ignore_errors=True)
     for p in (ROOT/'assets/shaders').glob('*'):
         if p.is_file():copy_changed(p,BUILD/'runtime/shader-source'/p.name)
     copy_changed(ROOT/'src/client/client.cpp',BUILD/'runtime/recipes/pixel_surfaces.cpp')
@@ -94,10 +100,29 @@ def main():
         if not report.is_file():raise SystemExit('Native GPU flow did not produce a completion report: '+str(evidence))
         flow=json.loads(report.read_text(encoding="utf-8"))
         if flow.get('status')!='pass' or 'exit-durable-readback' not in flow.get('actions',[]):raise SystemExit('Native flow did not prove the final exit checkpoint.')
-        required=['main-menu','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','earth-map','earth-preview','earth-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
+        required=['main-menu','main-menu-motion','main-menu-frozen-a','main-menu-frozen-b','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','earth-map','earth-preview','earth-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
         if any(not (evidence/(name+'.tga')).is_file() for name in required):raise SystemExit('Native screenshot evidence is incomplete: '+str(evidence))
         camera=evidence/'camera-input.json'
         if not camera.is_file() or json.loads(camera.read_text(encoding="utf-8")).get('status')!='pass':raise SystemExit('Actual SDL camera and core pick acceptance missing.')
+        motion=json.loads((evidence/'presentation-motion.json').read_text(encoding='utf-8'))
+        def actual_pixels(name):
+            image=(evidence/(name+'.tga')).read_bytes()
+            if len(image)<18 or image[2]!=2 or image[16]!=32:raise SystemExit('Actual uncompressed GPU pixels required')
+            width=int.from_bytes(image[12:14],'little');height=int.from_bytes(image[14:16],'little')
+            if len(image)!=18+width*height*4:raise SystemExit('Incomplete actual GPU pixel stream')
+            return image[18:]
+        frozen_a=actual_pixels('main-menu-frozen-a');frozen_b=actual_pixels('main-menu-frozen-b')
+        live=actual_pixels('main-menu');later=actual_pixels('main-menu-motion')
+        if len(frozen_a)!=len(frozen_b):raise SystemExit('Frozen frame dimensions changed')
+        # A fixed clock is also asserted in the native controller. UNORM GPU
+        # readback may round the final colour by one byte between swap images;
+        # reject every larger change, rather than mistaking 1/255 for animation.
+        frozen_max=max(abs(a-b) for a,b in zip(frozen_a,frozen_b))
+        if frozen_max>1:raise SystemExit('Reduced motion changed GPU pixels beyond one UNORM rounding step')
+        changed=sum(abs(a-b)>1 for a,b in zip(live,later))
+        if len(live)!=len(later) or changed<1000:raise SystemExit('Live menu did not show actual visual motion')
+        motion.update({'actual_gpu_pixels_frozen_identical':frozen_a==frozen_b,'gpu_rounding_tolerance_lsb':1,'frozen_max_channel_delta':frozen_max,'live_significant_changed_channels':changed,'rgba_bytes':len(live)})
+        (evidence/'presentation-motion.json').write_text(json.dumps(motion,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         (BUILD/'evidence/latest-native.json').write_text(json.dumps({'directory':str(evidence),'status':'pass'},indent=2)+'\n', encoding="utf-8")
         print('Native GPU acceptance completed:',evidence,flush=True)
 if __name__=='__main__':main()

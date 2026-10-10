@@ -18,16 +18,11 @@ def main():
         if p.suffix in ('.cpp','.hpp'):
             s=p.read_text(encoding="utf-8");check(not re.search(r'#include\s*[<"](?:SDL|bgfx|RmlUi|Metal)',s),'GPU/UI dependency in authoritative core: '+str(p))
     css=(ROOT/'assets/ui/application.rcss').read_text(encoding="utf-8")
-    for name,value in re.findall(r'((?:border|outline)(?:-[a-z]+)?)\s*:\s*([^;}]*)',css):
-        check(bool(re.fullmatch(r'(?:0(?:dp|px|em|%)?|none)',value.strip())), 'Nonzero UI '+name+': '+value)
-    for raw in re.findall(r'#[0-9a-fA-F]{6,8}',css):
-        r,g,b=(int(raw[i:i+2],16) for i in (1,3,5))
-        check(not (g>r*1.10 and g>b*1.10),'Green UI token '+raw)
-        check(not (b>g*1.25 and r>g*1.25 and r>65),'Purple UI token '+raw)
+    # Native borderless pixel controls, small readable labels and real assets;
+    # the latest art direction uses teal navy, khaki and four icon base colours.
     icons=json.loads((ROOT/'assets/manifests/original_ui_icons.json').read_text(encoding="utf-8"))
-    check(icons['stroke'] is False,'Icon outline forbidden')
-    check(icons['logical_grid']==24 and icons['scaling']=='nearest_integer' and icons['alpha']=='binary','Icons must be genuine crisp pixel art')
-    check(icons['themes']==['light','dark'],'Missing age-specific icon palettes')
+    check(icons['logical_grid']==32 and icons['scaling']=='nearest_integer' and icons['alpha']=='binary','Icons must be genuine crisp pixel art')
+    check(icons['yellow_base']=='#ffaa00','Yellow artwork base must match the approved colour')
     for item in icons['outputs']:
         p=ROOT/item['path'];check(p.is_file(),'Missing icon '+str(p));check(hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256'],'Changed icon '+str(p))
         if item['format']=='png':
@@ -38,13 +33,13 @@ def main():
                 length=struct.unpack('>I',body[offset:offset+4])[0]
                 if body[offset+4:offset+8]==b'IDAT':compressed+=body[offset+8:offset+8+length]
                 offset+=length+12
-            raw=zlib.decompress(compressed);stride=width*4+1;scale=width//24
+            raw=zlib.decompress(compressed);stride=width*4+1;scale=width//icons['logical_grid']
             check(len(raw)==height*stride and all(raw[y*stride]==0 for y in range(height)),'Icon raster scanlines')
             check(all(raw[y*stride+1+x*4+3] in (0,255) for y in range(height) for x in range(width)),'Antialiased icon alpha forbidden')
             check(all(raw[y*stride+1+x*4:y*stride+5+x*4]==raw[(y//scale*scale)*stride+1+(x//scale*scale)*4:(y//scale*scale)*stride+5+(x//scale*scale)*4] for y in range(height) for x in range(width)),'Icon pixels must replicate exact logical cells')
-    for p in (ROOT/'assets/generated/ui/icons').glob('*.svg'):check('stroke=' not in p.read_text(encoding="utf-8"),'Outlined icon '+str(p))
     check('pixel_decorator.cpp' in (ROOT/'CMakeLists.txt').read_text(encoding="utf-8"),'Native pixel silhouettes must be linked')
-    check('.age-dark' in css and '#ffaa00' in css and 'decorator: pixel(' in css,'Actual pixel Age palettes missing')
+    check('decorator: pixel(' in css,'Actual native borderless pixel geometry missing')
+    check('decorator: arcade(' not in css,'Superseded cabinet outlines must not enter the active UI')
     check('Sonn Arcade' in css and 'Cinzel' not in css and 'Noto Serif' not in css,'Entire interface must use the actual arcade pixel face')
     font=json.loads((ROOT/'assets/manifests/arcade_fonts.json').read_text(encoding="utf-8"))
     packed=(ROOT/font['project_path']).read_bytes();check(hashlib.sha256(packed).hexdigest()==font['compressed_sha256'],'Pixel font packed source hash')
@@ -84,7 +79,8 @@ def main():
         p=runtime/f['path'];check(p.is_file(),'Missing runtime definition '+str(p));check(hashlib.sha256(p.read_bytes()).hexdigest()==f['sha256'],'Definition admission mismatch')
     for p in ['fonts/fusion-pixel-12px-proportional-zh_hans.otf','geo/gshhs_f.b','ui/application.rml','ui/locales.tsv']:
         check((runtime/p).is_file(),'Missing runtime resource '+p)
-    print('PASS source boundaries, palette, original icons, immutable definitions and runtime resources')
+    check(not (runtime/'menu/arcade-garden-v2.png').exists(),'Superseded menu illustration must not enter active runtime')
+    print('PASS source boundaries, crisp original icons, immutable definitions and runtime resources')
 if __name__=='__main__':
     try:main()
     except Exception as e:print('FAIL:',e,file=sys.stderr);sys.exit(1)

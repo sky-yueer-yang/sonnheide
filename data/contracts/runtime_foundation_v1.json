@@ -33,14 +33,15 @@
     "default_earth_land": "soil",
     "default_earth_water": "close_ocean",
     "height_quantum_mm": 500,
-    "ramp_corner_quantum_mm": 125,
+    "ramp_corner_quantum_mm": 1,
     "continuous_height_exception": "CreateRamp_owned_ramp_patch_only",
     "arbitrary_flat_height": false,
     "natural_edge_slope": false,
     "natural_shaping_noise": false,
     "irregular_coast_transition": false,
     "soil_sand_switch_wipes": true,
-    "ramp_kind_at_point": "h<0_depth3m12m;0<=h<8m_top_material_sand_or_soil;8<=h<32hill;32<=h<80mountain;h>=80high_peak"
+    "ramp_kind_at_point": "h<0_depth3m12m;0<=h<8m_top_material_sand_or_soil;8<=h<32hill;32<=h<80mountain;h>=80high_peak",
+    "cell_size_mm": 250
   },
   "operators": {
     "allowed": [
@@ -140,7 +141,13 @@
     "irregular_edge_transition": false,
     "candidate_hash": "canonical_generated_effective_surface_shared_by_preview_create_save_readback",
     "source_profile_read_only": true,
-    "source_ring_unwrap": "follow_edges_min_delta_in_half_open_minus180_to180_then_whole360degree_copies_and_exact_dateline_clip_not_independent_vertex_clamp"
+    "source_ring_unwrap": "follow_edges_min_delta_in_half_open_minus180_to180_then_whole360degree_copies_and_exact_dateline_clip_not_independent_vertex_clamp",
+    "default_core_cells": [
+      512,
+      512
+    ],
+    "actual_core_extent_formula": "Nx_cell_count_times250mm_Ny_cell_count_times250mm",
+    "earth_scale_mode": "stylized_uniform_not_1_to_1"
   },
   "natural_objects": {
     "persistent_natural_entities": false,
@@ -161,7 +168,7 @@
   },
   "ramp_solver": {
     "endpoint": "existing_flat_actual_landing_fixed_kind_height_no_peak",
-    "input_quantize": "2m_cell_centers_ties_to_even",
+    "input_quantize": "profile_cell_centers_ties_to_even_new250mm",
     "path_shape": "ordered_orthogonal_grid_polyline_with_real_flat_turn_landings",
     "nonorthogonal_segment": "enumerate_X_then_Y_and_Y_then_X",
     "max_control_points": 16,
@@ -174,7 +181,7 @@
     "vehicle_width_mm": 4000,
     "vehicle_turn_platform": "ceil_to_cell(2*radius+bodyWidth+2*clearance)sample16000mm",
     "rise_allocation": "r0+round_even(totalRiseR*straight_prefix_length/total_straight_length)",
-    "corner_height": "axis_linear_interpolation_then_round_even_125mm_transverse_constant",
+    "corner_height": "axis_linear_interpolation_then_round_even_1mm_transverse_constant",
     "turn_height": "adjacent_straight_common_endpoint_flat",
     "shoulder": "complete_hit_cells_no_natural_transition",
     "conflicting_corner_assignment": "reject",
@@ -2410,5 +2417,6 @@
       "immutable_definition"
     ]
   },
-  "decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md"
+  "decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md",
+  "fine_profile_update": "ADR0019_geometry250mm_texture32pixels_per_metre_ramp_planned1mm"
 }

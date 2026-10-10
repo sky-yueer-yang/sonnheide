@@ -18,18 +18,20 @@ struct System final:Rml::SystemInterface { double GetElapsedTime() override{retu
 struct Render final:Rml::RenderInterface {
     void RenderGeometry(Rml::Vertex* vertices,int count,int*,int,Rml::TextureHandle texture,const Rml::Vector2f&) override{
         if(texture!=0 && count==4) {
-            bool black=true;
-            for(int i=0;i<count;++i) black=black && vertices[i].colour.red==0 && vertices[i].colour.green==0 && vertices[i].colour.blue==0 && vertices[i].colour.alpha==255;
-            if(black) dark_selection_sprite=true;
+            bool untinted=true;
+            for(int i=0;i<count;++i) untinted=untinted && vertices[i].colour.red==255 && vertices[i].colour.green==255 && vertices[i].colour.blue==255 && vertices[i].colour.alpha==255;
+            if(untinted) full_colour_sprite=true;
         }
-        if(texture!=0 || count<20) return;
+        if(texture!=0 || count<4) return;
         ++pixel_draws;
         for(int i=0;i<count;++i) {
             const auto c=vertices[i].colour;
-            if(c.red==12 && c.green==24 && c.blue==42 && c.alpha==248) light_panel=true;
-            if(c.red==8 && c.green==8 && c.blue==8 && c.alpha==248) dark_panel=true;
-            if(c.red==255 && c.green==170 && c.blue==0 && c.alpha==255) dark_selection=true;
-            if(c.red==255 && c.green==189 && c.blue==64 && c.alpha==255) dark_selection_focus=true;
+            if(c.red==8 && c.green==44 && c.blue==59 && c.alpha==204) translucent_panel=true;
+            if(c.red==6 && c.green==43 && c.blue==57 && c.alpha==200) translucent_dock=true;
+            if(c.red==10 && c.green==40 && c.blue==54 && c.alpha==176) translucent_input=true;
+            if(c.red==23 && c.green==71 && c.blue==87 && c.alpha==168) translucent_tooltip=true;
+            if(c.red==22 && c.green==86 && c.blue==108 && c.alpha==170) selected_fill=true;
+            if(c.red==38 && c.green==115 && c.blue==141 && c.alpha==204) selected_focus=true;
         }
     }
     void EnableScissorRegion(bool) override{}
@@ -38,8 +40,8 @@ struct Render final:Rml::RenderInterface {
     bool GenerateTexture(Rml::TextureHandle& texture,const Rml::byte*,const Rml::Vector2i&) override{texture=++next;return true;}
     Rml::TextureHandle next=0;
     int pixel_draws=0;
-    bool light_panel=false,dark_panel=false,dark_selection=false,dark_selection_focus=false,dark_selection_sprite=false;
-    void reset_draws(){pixel_draws=0;light_panel=dark_panel=dark_selection=dark_selection_focus=dark_selection_sprite=false;}
+    bool translucent_panel=false,translucent_dock=false,translucent_input=false,translucent_tooltip=false,selected_fill=false,selected_focus=false,full_colour_sprite=false;
+    void reset_draws(){pixel_draws=0;translucent_panel=translucent_dock=translucent_input=translucent_tooltip=selected_fill=selected_focus=full_colour_sprite=false;}
 };
 bool covers(const PixelMesh& mesh,float x,float y) {
     const auto cross=[](Rml::Vector2f a,Rml::Vector2f b,Rml::Vector2f p){return(b.x-a.x)*(p.y-a.y)-(b.y-a.y)*(p.x-a.x);};
@@ -59,6 +61,15 @@ void pixel_geometry_contract() {
         for(const auto& vertex:mesh.vertices) require(vertex.position.x==std::round(vertex.position.x) && vertex.position.y==std::round(vertex.position.y),"Pixel silhouette edges must lie on whole raster pixels at every DPI");
         const auto shadow=pixel_mesh(80*density,40*density,4*density,4*density,{12,24,42,248},{0,0,0,128});
         require(covers(shadow,40*density,46*density),"Pixel panel shadow must be a real offset filled shape");
+        const auto panel=pixel_mesh(80*density,40*density,1*density,0,{8,44,59,204},{0,0,0,0});
+        require(covers(panel,40*density,20*density) && !covers(panel,.5f*density,.5f*density),"Translucent panel remains a filled shape with fine whole-pixel corner cuts");
+        for(const auto& vertex:panel.vertices) {
+            // RmlUi 5's non-const Colour::operator== otherwise falls back to
+            // pointer conversions here; compare the actual raster channels.
+            const auto& c=vertex.colour;
+            require(c.red==8 && c.green==44 && c.blue==59 && c.alpha==204,"Unframed panel geometry must preserve its true alpha and single fill without contrasting border strips");
+        }
+
     }
 }
 struct Rect {float x,y,w,h;};
@@ -80,16 +91,22 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
         view.locale=locale;ui.set_view(view);ui.update();
         const auto menu=rect(ui,"main-menu",density),heading=rect(ui,"main-title",density),first=rect(ui,"new-world",density),second=rect(ui,"continue-world",density),last=rect(ui,"exit",density);
-        require(menu.x>=0 && menu.y>=0 && menu.x+menu.w<=width+.1 && menu.y+menu.h<=height+.1,"Arcade cabinet menu must fit all supported language/viewports");
-        require(first.h>=56 && last.h>=56 && first.y>=heading.y+heading.h+16,"Arcade menu needs large filled controls and a separate title band");
-        if(width<820) require(second.y>first.y && std::abs(second.x-first.x)<.15,"Narrow arcade menu must become an accessible single column");
-        else require(std::abs(first.y-second.y)<.15 && second.x>first.x+first.w,"Wide arcade menu must use two button columns rather than the old website list");
+        require(menu.x>=0 && menu.y>=0 && menu.x+menu.w<=width+.1 && menu.y+menu.h<=height+.1,"Compact home operations must fit all supported language/viewports");
+        require(first.h>=40 && last.h>=40 && first.y>=heading.y+heading.h+8,"Compact home keeps accessible controls and a separate title band");
+        require(last.y+last.h<=height+.15,"All five home operations must be immediately visible even at minimum resolution");
+        require(second.y>first.y && std::abs(second.x-first.x)<.15,"Home keeps a compact five-operation column across locales and viewports");
         require(ui.context().GetDocument(0)->GetProperty<Rml::String>("font-family")=="Sonn Arcade","Every language must use the admitted arcade font family");
+        require(ui.context().GetDocument(0)->GetElementById("new-world")->GetComputedValues().font_size()==12*density,"Home actions must use the compact admitted 12dp pixel face");
+        require(ui.context().GetDocument(0)->GetElementById("main-title")->GetComputedValues().font_size()==36*density,"Main hierarchy uses a real three-times pixel font size");
+        require(ui.context().GetDocument(0)->GetElementById("main-title")->GetComputedValues().font_weight()==Rml::Style::FontWeight::Normal,"Important text must not request a nonexistent bold face");
+
     }
     require(!ui.blocks_world_input(),"Ordinary menu/world surface is not a modal input barrier");
     click(ui,"continue-world",density);require(ui.take_actions().empty(),"Unavailable Continue must not issue a fake load");
     click(ui,"new-world",density);single(ui,ActionKind::NewWorld);
     view.screen=Screen::Creation;ui.set_view(view);ui.update();
+    render.reset_draws();ui.render();
+    require(render.translucent_panel && render.translucent_input,"Creation controls must submit their true panel alpha 204 and recessed input alpha 176");
     view.creation.can_select_theme=true;view.creation.theme="maple_field";ui.set_view(view);ui.update();
     require(ui.take_actions().empty(),"Snapshot/theme synchronization must not issue a player action or invalidate its preview");
     auto* theme=dynamic_cast<Rml::ElementFormControlSelect*>(ui.context().GetDocument(0)->GetElementById("creation-theme"));
@@ -137,26 +154,52 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
             require(std::abs(button.y-row.y)<.15,"Bottom sections must use exactly eight columns or four columns per row");
             require(button.x>=bar.x-pixel_tolerance && button.x+button.w<=bar.x+bar.w+pixel_tolerance && button.y+button.h<=height+pixel_tolerance,"Bottom button padding must not overflow the viewport or content row");
             require(std::abs(button.w-bar.w/columns)<pixel_tolerance,"Bottom percentage widths must include padding");
+            auto* element=ui.context().GetDocument(0)->GetElementById(tabs[i]);
+            const auto icon=element->GetChild(0)->GetBox().GetSize(Rml::Box::BORDER);
+            require(std::abs(icon.x/density-64)<.15 && std::abs(icon.y/density-64)<.15,"Every bottom section must display its genuinely enlarged 64dp icon");
+            require(element->GetComputedValues().font_size()==12*density,"Bottom text remains a real compact 12dp pixel font at every DPI");
+            require(!element->GetAttribute<Rml::String>("data-tooltip-key","").empty(),"Short toolbar labels require their complete localized name tooltip");
+
         }
         if(columns==4) require(rect(ui,"tab-construction",density).y>rect(ui,"tab-observe",density).y+.15,"Narrow bottom sections must form exactly two rows");
         require(ui.take_actions().empty(),"Layout/localization queries must not emit commands");
     }
+    const auto observe_panel=rect(ui,"section-tools",density),camera=rect(ui,"camera-home",density),help=rect(ui,"camera-help",density);
+    require(observe_panel.w<=224.15f && std::abs(camera.w-88)<.15f && std::abs(help.w-88)<.15f && std::abs(camera.y-help.y)<.15f,"Observe tools must form two compact fixed-width buttons, not full-width vertical blocks");
+    const auto civil=rect(ui,"tab-civilization",density);
+    ui.context().ProcessMouseMove(static_cast<int>((civil.x+civil.w/2)*density),static_cast<int>((civil.y+civil.h/2)*density),0);
+    ui.update();
+    auto* tooltip=ui.context().GetDocument(0)->GetElementById("tool-tooltip");
+    require(tooltip->GetComputedValues().display()!=Rml::Style::Display::None && tooltip->GetInnerRML().find("Zivilisation und Institutionen")!=std::string::npos,"Short German toolbar label must expose its real full name on native hover");
+    const auto tip=rect(ui,"tool-tooltip",density);
+    require(tip.x>=0 && tip.y>=0 && tip.x+tip.w<=width+.15 && tip.y+tip.h<=height+.15,"Native full-name tooltip must stay inside the viewport");
+    render.reset_draws();ui.render();require(render.translucent_tooltip,"Native full-name tooltip must preserve actual translucent fill alpha 168");
+    require(ui.take_actions().empty(),"Tooltip presentation must never become a World command");
+    ui.context().ProcessMouseMove(0,0,0);ui.update();
+    require(tooltip->GetComputedValues().display()==Rml::Style::Display::None,"Leaving a tool must dismiss its informational tooltip");
     ui.activate("tab-life");require(ui.take_actions().empty(),"Unavailable domain tab must not report success");
-    render.reset_draws();ui.render();require(render.pixel_draws>0 && render.light_panel,"Real RmlUi must render the registered stepped Light panel geometry");
+    render.reset_draws();ui.render();require(render.pixel_draws>0 && render.translucent_panel && render.translucent_dock,"Real RmlUi must submit both navy panel alpha 204 and dock alpha 200, not merely recolour opaque paper");
     view.presentation_darkness=true;ui.set_view(view);ui.update();
-    // Entering World focuses the selected Observe tab. Verify that palette state
-    // separately from the ordinary selected fill; neither focus move is an action.
     ui.context().ProcessMouseMove(0,0,0);
     ui.context().GetDocument(0)->GetElementById("tab-observe")->Focus();
     ui.update();render.reset_draws();ui.render();
-    require(render.dark_panel && render.dark_selection_focus && !render.light_panel,"Dark selected keyboard focus must render its visible amber highlight without retaining Light panels");
+    require(render.translucent_panel && render.selected_focus,"World Age retains translucent navy panels and borderless visible keyboard focus");
     ui.context().GetDocument(0)->GetElementById("camera-home")->Focus();
     ui.update();render.reset_draws();ui.render();
-    require(render.dark_panel && render.dark_selection && !render.light_panel,"Authoritative presentation Age must switch actual native panel and selection geometry palettes");
-    require(render.dark_selection_sprite,"Dark selected tab must submit a black-tinted textured sprite for contrast against amber fill");
-    require(ui.context().GetDocument(0)->GetElementById("camera-home")->GetChild(0)->GetAttribute<Rml::String>("src","").find("-dark-96.png")!=std::string::npos,"Actual UI icons must follow the same authoritative Age");
+    require(render.translucent_panel && render.selected_fill,"Selection remains distinguishable independently of keyboard focus and world Age");
+    require(render.full_colour_sprite,"Native colour sprites must be submitted without monochrome tint");
+    require(ui.context().GetDocument(0)->GetElementById("camera-home")->GetChild(0)->GetAttribute<Rml::String>("src","")=="../generated/ui/icons/camera-96.png","World Age must not replace the individually coloured icon artwork with a global theme");
     require(ui.take_actions().empty(),"Age presentation synchronization must not mutate World or issue commands");
     ui.activate("tab-world");single(ui,ActionKind::SelectBottomSection);
+    for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
+        view.locale=locale;ui.set_view(view);ui.update();
+        const auto world_tools=rect(ui,"section-tools",density),save=rect(ui,"save",density),load=rect(ui,"world-load",density),menu=rect(ui,"return-menu",density);
+        require(world_tools.w<=320.15f && std::abs(save.w-88)<.15f && std::abs(load.w-88)<.15f && std::abs(menu.w-88)<.15f,"World tools must keep fixed 88dp icon controls inside a compact 320dp panel");
+        require(std::abs(save.y-load.y)<.15f && std::abs(save.y-menu.y)<.15f,"Save, load and menu controls must share a native flex row in all three locales");
+        const auto light=rect(ui,"age-light",density),dark=rect(ui,"age-darkness",density);
+        require(std::abs(light.w-88)<.15f && std::abs(dark.w-88)<.15f && std::abs(light.y-dark.y)<.15f,"Age icons must remain a compact pair rather than stretching to the whole panel");
+        require(ui.take_actions().empty(),"Responsive tool layout and locale changes must not produce intents");
+    }
     ui.activate("speed-sixtyfour");require(single(ui,ActionKind::SetSpeed).a==64,"Only approved clock multipliers are exposed");
     ui.activate("age-darkness");require(single(ui,ActionKind::SetAgeDarkness).generation==44,"Age intent belongs to current session");
     ui.activate("world-info");single(ui,ActionKind::OpenWorldInspector);
@@ -185,7 +228,8 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         auto* close=ui.context().GetDocument(0)->GetElementById("settings-close");close->ScrollIntoView(false);ui.update();
         const auto close_rect=rect(ui,"settings-close",density);
         require(close_rect.y>=panel.y-.15 && close_rect.y+close_rect.h<=panel.y+panel.h+.15,"The last control of long localized settings must be reachable through real native scrolling");
-        if(width<820) require(ui.context().GetDocument(0)->GetElementById("settings-panel")->GetScrollTop()>0,"Narrow arcade settings must genuinely scroll, not silently clip their final actions");
+        auto* settings=ui.context().GetDocument(0)->GetElementById("settings-panel");
+        if(settings->GetScrollHeight()>settings->GetClientHeight()+.5f) require(settings->GetScrollTop()>0,"Overflowing localized settings must genuinely scroll to their final action");
     }
     ui.context().ProcessKeyDown(Rml::Input::KI_ESCAPE,0);single(ui,ActionKind::CloseSettings);
     require(!ui.blocks_world_input(),"Escape from settings releases the modal input barrier");
@@ -218,7 +262,7 @@ int main(int argc,char** argv) {
         font_bytes.assign(std::istreambuf_iterator<char>(font),std::istreambuf_iterator<char>());
         require(!font_bytes.empty() && Rml::LoadFontFace(font_bytes.data(),static_cast<int>(font_bytes.size()),"Sonn Arcade",Rml::Style::FontStyle::Normal,Rml::Style::FontWeight::Normal,true),"Arcade font alias registration failed");
         pixel_geometry_contract();
-        for(float density:{1.f,2.f}) {scenario(root,1280,800,density,render);scenario(root,480,640,density,render);}
+        for(float density:{1.f,2.f}) {scenario(root,1280,800,density,render);scenario(root,480,640,density,render);scenario(root,640,480,density,render);}
     } catch(const std::exception& failure) {std::cerr<<failure.what()<<'\n';result=1;}
     // The memory font alias explicitly borrows these bytes until Shutdown.
     Rml::Shutdown();return result;
