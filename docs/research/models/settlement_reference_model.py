@@ -126,9 +126,12 @@ class Model:
     def current_sovereign_dry(self) -> Set[Cell]:
         return set() if self.state.archive or self.state.status == "WINDING_DOWN" else self.state.title & self.dry
 
-    def apply(self, command: Tuple[str, object], command_id: str = "batch") -> None:
+    def apply(self, command: Tuple[str, object], command_id: str = "batch",
+              protected_actor_ids: Optional[Set[int]] = None) -> None:
         kind, value = command
         if kind == "paint":
+            protected = (protected_actor_ids if protected_actor_ids is not None
+                         else {a.actor_id for a in self.actors.values() if a.alive})
             paint = value
             changed = {p for p, new in paint.items() if self.kinds[p] != new}
             for p in changed:
@@ -150,9 +153,9 @@ class Model:
                         self.receipts.add(key)
                     del self.objects[oid]
             for a in self.actors.values():
-                # Nonlife carried/corpse goods are still in the affected pose;
-                # final death ordering cannot exempt their wipe settlement.
-                if a.pos in changed:
+                # ADR0017 protects live carry from the frozen pre-mutation
+                # snapshot; later real death is a separate estate process.
+                if a.pos in changed and a.actor_id not in protected:
                     key = (command_id, "carried", a.actor_id)
                     if key not in self.receipts:
                         self.destroyed_stock += a.goods
@@ -262,8 +265,9 @@ class Model:
 
     def batch(self, commands: List[Tuple[str, object]]) -> None:
         candidate = deepcopy(self)
+        protected = {a.actor_id for a in candidate.actors.values() if a.alive}
         for command in commands:
-            candidate.apply(command)
+            candidate.apply(command, protected_actor_ids=protected)
         candidate.normalize()
         self.__dict__.update(candidate.__dict__)
 
@@ -298,7 +302,8 @@ def run() -> Dict[str, object]:
     m.batch([("paint", {p: "water" for p in GRID})])
     check("all_land_lost_preserve_alive_poses_members", m.city.physical == "LANDLESS" and
           len(m.members()) == 2 and m.actors[1].pos == (0, 0) and m.state.status == "DISPLACED")
-    check("wipe_all_nonlife_not_life", not m.objects and m.actors[1].alive and m.actors[1].goods == 0)
+    check("wipe_ground_objects_preserve_live_actor_carry", not m.objects and
+          m.actors[1].alive and m.actors[1].goods == 3 and m.actors[2].goods == 3)
     before_loss = m.destroyed_stock
     m.batch([("paint", {p: "water" for p in GRID})])
     check("noop_type_repaint_no_extra_loss", m.destroyed_stock == before_loss)
@@ -308,7 +313,8 @@ def run() -> Dict[str, object]:
     m = Model.populated()
     m.batch([("paint", {(1, 1): "hill"})])
     check("one_cell_hit_removes_whole_multicell_building_once", 2 not in m.objects and
-          m.destroyed_stock == 10 and m.actors[2].alive and m.actors[2].pos == (1, 1))
+          m.destroyed_stock == 7 and m.actors[2].goods == 3 and
+          m.actors[2].alive and m.actors[2].pos == (1, 1))
     m = Model.populated()
     m.batch([("paint", {(0, 0): "peak", (1, 1): "peak"})])
     check("peak_wipe_not_lift_to_peak_top_or_navigate", m.actors[1].pos == (0, 0) and

@@ -1,6 +1,6 @@
 # SONNHEIDE
 
-2026-10-09：旧实现已清空，完成重置后的 **v0.8完整设计＋ADR0015/0016算法补充**。自研框架、真正360°三维像素世界、可编辑坡道与高程、全面遗传/动物/文明之光、完整社会制度与集中信息空间；唯一Steam发行。
+2026-10-09：旧实现已清空，完成重置后的 **v0.8完整设计＋ADR0015/0016/0017算法补充**。自研框架、真正360°三维像素世界、可编辑坡道与高程、全面遗传/动物/文明之光、完整社会制度与集中信息空间；唯一Steam发行。
 
 **当前只有设计、机器合同和资源来源，没有可运行游戏、构建入口或试玩；生产阶段全部未开始。** 本轮核验不计作游戏功能完成，旧验收也不继承。
 
@@ -19,7 +19,7 @@
 |[决策算法调查与入口](docs/research/DECISION_ALGORITHMS_AND_EVIDENCE_2026-10-09.md)|政策/经济/战争/社会各域差异、因果边界与证据范围|
 |[政策政治](docs/architecture/POLICY_AND_POLITICAL_DECISIONS.md)、[经济](docs/architecture/ECONOMIC_DECISIONS_AND_MARKETS.md)、[战争战术](docs/architecture/WAR_STRATEGY_AND_TACTICAL_DECISIONS.md)|各域独立候选/门控/判断/执行/止损，不以同一总分决定全部活动|
 |[施工计划](docs/planning/IMPLEMENTATION_PLAN.md)、[验收](docs/planning/VALIDATION.md)|11阶段，基础后立即正式美术，统一批量编译验收|
-|[本批核验记录](docs/planning/DESIGN_AUDIT_ADR0016.json)、[可复核脚本](docs/research/models/audit_adr0016_design.py)|16合同/78命令/来源一致性，四项新有限模型与两项未变模型的原结果；493个合并生产场景仍待执行|
+|[本批核验记录](docs/planning/DESIGN_AUDIT_ADR0017.json)、[可复核脚本](docs/research/models/audit_adr0017_design.py)|生命随身递归保护与地表毁损分离；修改/新增模型统一验算，未改结果复用；497个合并生产场景待执行|
 |[机器合同总入口](data/contracts/game_v0_8.json)|当前权威合同与101个底栏工具登记|
 |[版本接续记录](docs/planning/DESIGN_RETIREMENT.md)|旧作者稿/架构退役范围及27章迁移映射|
 

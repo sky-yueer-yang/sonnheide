@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "economic_decisions_v1",
   "design_version": "0.8",
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -720,13 +720,14 @@
       "ActorDied",
       "ActorUplifted"
     ],
-    "wipe": "upstream_once_nonlife_whole_object_and_inventory_loss_never_refund_or_recreate",
+    "wipe": "ADR0017_only_actual_unprotected_ground_and_container_loss_live_Actor_carried_goods_keep_owner_custody_batch_quantity_absolute_state_no_refund",
     "living_actor_gestation": "identity_protected_actual_hazard_task_replan",
     "same_kind_or_theme": "no_mandatory_typewipe_no_stock_refill",
     "loss_dedup_across_war_contract_insurance": true,
     "lost_city": "legal_debts_households_accounts_continue_square_storage_zero_no_free_refuge_housing",
     "occupation_or_transfer_moves_private_owner": false,
-    "army_supply": "ArmySupplyRequest_candidate_only_then_real_legal_authorization_cash_actual_procurement_or_requisition_availability_claims; civilian_displacement_food_clothing_care_logistics_wages_and_actual_tools_accessability_before_commit"
+    "army_supply": "ArmySupplyRequest_candidate_only_then_real_legal_authorization_cash_actual_procurement_or_requisition_availability_claims; civilian_displacement_food_clothing_care_logistics_wages_and_actual_tools_accessability_before_commit",
+    "destroyed_receiver_does_not_destroy_carried_shipment": true
   },
   "learning": {
     "bounded_observed_history_only": true,
@@ -1294,7 +1295,7 @@
     {
       "id": "EC71",
       "trigger": "地理wipe经济闭包",
-      "expected": "衣工具WIP树车货核销一次，撤qty/time/route claims不退款复活",
+      "expected": "地表WIP树车及非随身仓货核销一次；生命随身衣工具/配送货保Ref产权保管数量绝对状态，只撤失效目标/路线claims，不传回旧仓或双计库存",
       "status": "future_production_acceptance_not_run"
     },
     {

@@ -79,14 +79,15 @@
     "type_change_wipes_nonliving": true,
     "precise_changed_footprint": true,
     "all_live_Actor_and_Gestation_direct_erase": false,
-    "worn_and_carried_nonliving_in_scope": true,
+    "worn_and_carried_nonliving_in_scope": false,
     "same_kind_repeat_wipes": false,
     "soil_theme_only_wipes": false,
-    "lost_goods_restored_by_inverse_geometry": false
+    "lost_goods_restored_by_inverse_geometry": false,
+    "live_actor_portable_subtree_preserved": true
   },
   "ecology_contract": "data/contracts/surface_ecology.json",
   "tools_contract": "data/contracts/tool_registry_v1.json",
   "algorithm_decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
   "god_control_contract": "data/contracts/god_control_v1.json",
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "algorithm_revision": "ADR0017-2026-10-09"
 }

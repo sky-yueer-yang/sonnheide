@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "sonnheide_god_control_v1",
   "design_version": "0.8",
-  "algorithm_revision": "ADR0015-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -113,11 +113,11 @@
       "furniture_equipment",
       "vehicle_boat",
       "external_physical_container",
-      "loose_carried_worn_and_in_transit_nonlife_goods",
+      "loose_and_non_actor_carried_in_transit_nonlife_goods",
       "corpse_physical_object",
       "decor_override"
     ],
-    "container_attachment_closure": "resolve_all_world_poses_before_removal_then_destroy_nonlife_descendants_and_components_no_traversal_skip_at_protected_Actor",
+    "container_attachment_closure": "freeze_actual_live_actor_portable_protection_first_then_subtract_it_from_full_hit_and_destroyed_ancestor_closure_no_upward_protection",
     "live_actor_exception": [
       "ActorId_and_biological_body",
       "absolute_age_genome_injury_energy_debts_disease",
@@ -125,10 +125,10 @@
       "internal_pregnancy",
       "absolute_biological_product_reserve_not_external_commodity"
     ],
-    "hit_actor_worn_and_carried_goods_deleted": true,
-    "destroyed_parent_container_live_actor_worn_and_carried_nonlife_descendants_deleted": true,
+    "hit_actor_worn_and_carried_goods_deleted": false,
+    "destroyed_parent_container_live_actor_worn_and_carried_nonlife_descendants_deleted": false,
     "external_living_gestation": "protected_GestationRef_not_Actor_population_no_direct_erase_actual_support_thermal_water_hazard_applies",
-    "unfertilized_product_egg": "nonlife_commodity_deleted",
+    "unfertilized_product_egg": "nonlife_commodity_deleted_unless_in_actual_live_Actor_portable_protection",
     "far_goods_owned_by_hit_city_or_actor": "not_hit_without_actual_space_or_destroyed_container_dependency",
     "history_and_law_records": "not_physical_objects_not_spatially_erased",
     "retained_source_provenance": "immutable_not_rewritten",
@@ -152,7 +152,41 @@
       "renderer_sparse_tree_auto_regeneration": false,
       "load_or_LOD_missing_tree_replenishment": false,
       "old_generator_candidate_before_wipe": "stale_revision_and_epoch_reject_no_automatic_reseed"
-    }
+    },
+    "portable_companion_preservation": {
+      "source_snapshot": "old_state_integrated_once_to_commit_tick_before_geography_mutation",
+      "roots": "actual_live_Actor_all_human_ordinary_and_uplifted_species_not_owner_or_member_roster",
+      "binding_edges": [
+        "actual_worn",
+        "actual_hand_grip",
+        "actual_backpack",
+        "actual_body_adapted_carried_container_or_load"
+      ],
+      "recursive_contents": true,
+      "preserves": [
+        "Ref",
+        "quantity",
+        "owner",
+        "custodian",
+        "Actor_relative_attachment",
+        "durability",
+        "wetness",
+        "expiry",
+        "equipped_capacity",
+        "weapon_chamber_reload_cooldown_and_random_counters"
+      ],
+      "priority_over_direct_hit_and_destroyed_ancestor": true,
+      "extends_upward_to_building_vehicle_boat": false,
+      "ownership_reservation_or_future_pickup_grants_protection": false,
+      "source_tree_or_source_warehouse_deletion_erases_already_carried_batch": false,
+      "original_actor_gear_can_be_destroyed_by_this_wipe": false,
+      "new_geography_or_load_repairs_restocks_or_refills": false,
+      "actual_binding_changed_after_preview": "invalidate_preview_read_set_recompute_protected_and_loss_sets",
+      "actual_hazard_and_later_wear_spoilage_or_death": "normal_rules_preserve_absolute_state_not_invulnerability",
+      "lost_receiver": "keep_actual_Actor_custody_and_owner_quantity_revoke_only_invalid_destination_claim_then_real_replan_delivery_or_return",
+      "invalid_or_cyclic_binding": "reject_transaction_not_silent_protect_or_delete"
+    },
+    "invariant_disjoint_sets": "protected_portable_refs_intersect_loss_refs_is_empty"
   },
   "life_displacement": {
     "never_direct_erase_live_actor": true,
@@ -1093,7 +1127,7 @@
   "proposed_tool_count": 8,
   "invariants": [
     "canonical_type_changed_positive_area_not_button_name_controls_wipe",
-    "geography_type_wipe_destroys_all_hit_nonlife_objects_and_container_dependents_once",
+    "geography_type_wipe_destroys_hit_ground_nonlife_and_container_dependents_once_except_frozen_live_actor_portable_protection",
     "live_Actor_and_Gestation_identity_protected_not_physical_invulnerability",
     "no_teleport_free_rescue_goods_refund_or_historical_fact_erasure",
     "actual_position_citizenship_registration_service_and_property_are_distinct",
@@ -1112,13 +1146,13 @@
     {
       "id": "G001",
       "scenario": "soil_to_hill_on_house_corner",
-      "expected": "full_house_foundation_contained_nonlife_deleted_exact_loss_all_alive_occupants_preserved_at_world_pose",
+      "expected": "full_house_foundation_unprotected_contents_deleted_live_occupants_and_actual_portable_subtrees_preserved_at_old_world_pose",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
       "id": "G002",
       "scenario": "sand_to_deep_ocean_with_live_people",
-      "expected": "sand_objects_and_worn_carried_goods_deleted_actors_enter_actual_fall_water_hazard_no_teleport",
+      "expected": "sand_ground_objects_deleted_live_actor_worn_held_carried_and_nested_contents_preserved_actual_fall_water_hazard_no_teleport",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
@@ -1172,13 +1206,13 @@
     {
       "id": "G011",
       "scenario": "ship_cargo_people_and_embryo_eggs_inside_deleted_boat",
-      "expected": "boat_all_nonlife_cargo_deleted_live_actor_and_live_gestation_pose_resolved_before_parent_removal",
+      "expected": "boat_unprotected_cargo_deleted_live_actor_portable_subtree_and_live_gestation_pose_resolved_before_parent_removal",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
       "id": "G012",
       "scenario": "person_in_far_room_of_house_whose_corner_changed",
-      "expected": "container_closure_preserves_body_but_deletes_attached_nonlife_goods_if_inside_destroyed_ancestor",
+      "expected": "destroyed_ancestor_container_does_not_delete_live_Actor_worn_held_carried_or_nested_bag_contents",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
@@ -1190,19 +1224,19 @@
     {
       "id": "G014",
       "scenario": "person_tool_and_winter_clothes_hit_by_geography_change",
-      "expected": "absolute_inventory_loss_and_capacity_cold_consequences_visible_no_secret_keep_or_reequip",
+      "expected": "actual_clothes_tool_refs_quantity_durability_wetness_bindings_capacities_preserved_no_wipe_loss_or_reequip_refill_real_hazard_continues",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
       "id": "G015",
       "scenario": "live_pregnant_actor_hit_with_nonlife_food_carried",
-      "expected": "internal_gestation_and_absolute_biology_preserved_food_goods_lost_no_embryo_duplication",
+      "expected": "internal_gestation_absolute_biology_and_actual_carried_food_preserved_no_embryo_or_food_duplication",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
       "id": "G016",
       "scenario": "fertilized_live_egg_and_unfertilized_product_egg_in_same_nest",
-      "expected": "GestationRef_not_erased_but_actual_support_hazard_product_egg_deleted_one_unique_reserve",
+      "expected": "live_GestationRef_protected_nest_food_egg_deleted_but_live_Actor_carried_food_egg_preserved_actual_support_hazard",
       "status": "future_runtime_acceptance_not_executed"
     },
     {
@@ -1444,9 +1478,33 @@
       "scenario": "occupied_control_from_State_then_Family_or_Army_order",
       "expected": "exclusive_Actor_lease_no_preemption_even_same_player_explicit_release_required",
       "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G057",
+      "scenario": "live_animal_carries_bag_nested_box_third_party_medicine",
+      "expected": "all_actual_portable_descendants_preserved_with_original_owner_quantity_and_expiry_no_loss",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G058",
+      "scenario": "carried_harvested_fruit_and_wood_have_destroyed_source_tree",
+      "expected": "tree_unharvested_reserves_deleted_already_detached_carried_batches_preserved_no_source_reference_cascade",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G059",
+      "scenario": "pick_up_drop_or_handoff_changes_after_preview",
+      "expected": "binding_and_container_revisions_reject_stale_preview_no_unpreviewed_preservation_or_loss",
+      "status": "future_runtime_acceptance_not_executed"
+    },
+    {
+      "id": "G060",
+      "scenario": "destroyed_delivery_receiver_and_military_gear_on_live_actor",
+      "expected": "carry_goods_clothes_hand_weapon_chamber_and_reload_state_preserved_only_invalid_route_receiver_claims_replanned_no_double_stock",
+      "status": "future_runtime_acceptance_not_executed"
     }
   ],
-  "acceptance_case_count": 56,
+  "acceptance_case_count": 60,
   "integration_overrides": [
     {
       "contract": "data/contracts/terrain_access_v1.json",
@@ -1486,5 +1544,6 @@
       ],
       "override": "theme_only_preserves_tree_stock_geography_type_wipe_deletes_hit_tree_plant_stock_GodVegetationSource_independent"
     }
-  ]
+  ],
+  "portable_companion_reference_model": "docs/research/models/carried_goods_reference_model.py"
 }

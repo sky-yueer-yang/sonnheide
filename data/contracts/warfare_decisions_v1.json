@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "warfare_decisions_v1",
   "design_version": "0.8",
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -677,7 +677,7 @@
     "forged_third_party_signature": false
   },
   "terrain_civic": {
-    "wipe": "god_control_v1_nonlife_whole_footprint_container_closure_including_hit_military_gear",
+    "wipe": "ADR0017_ground_ArmySupply_boat_unprotected_cargo_loss_live_Actor_uniform_hand_weapon_chamber_and_carried_ammo_preserved",
     "life": "actual_pose_identity_genome_knowledge_Gestation_then_real_hazard",
     "dependencies": [
       "route",
@@ -695,7 +695,8 @@
     ],
     "wipe_refills_military_goods": false,
     "normalization": "final_alive_members_geometry_once_Army_City_State_crown_lease",
-    "last_city_loss_deletes_Army_State": false
+    "last_city_loss_deletes_Army_State": false,
+    "weapon_binding_and_state_not_reset_by_geography_wipe": true
   },
   "transaction_order": [
     "validate_generations_authority_rules_intent",

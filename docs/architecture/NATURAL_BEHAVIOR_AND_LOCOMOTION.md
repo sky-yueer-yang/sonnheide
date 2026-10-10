@@ -87,7 +87,7 @@ U(a) = clamp(needRelief(a) + dutyBenefit(a) + personalPreference(a)
 
 |情况|处理|
 |---|---|
-|即时真实危险/地形换type|当前tick之前合法劳动先结算；中断旧route/contact；未被本笔wipe的存续实物保持custody，被wipe物先唯一loss核销后撤握持，危险支承进入生命hazard。|
+|即时真实危险/地形换type|先结真实已做劳动；生命随身物/递归内容与body-relative grip保留。只中断失效route/接货目标/world anchors，地面物损上游一次核销，失支承进入生命hazard。|
 |短期休息/排队|保留明确剩余工作和可保持的有界预约；停止产出积分，恢复时重新核版本。|
 |取消任务/释放元控制|消耗与完成效果保留；未取货预约释放，已拿货仍由真实Actor保管，按法律规则退送或保管，不瞬移回库。|
 |同一人受两个任务请求|一个主动作episode；兼容纯表现层可以叠加，两个实物操作不能同时各算完整劳动。|
@@ -167,9 +167,9 @@ formation/groupmove只为现有成员生成稳定目的slot与到达窗口，slo
 
 ## 14. 地形抹除与城市损毁的同tick接口
 
-用户新增规则是改`GeographyType`时删除触及的非生命对象；它比普通换生态主题更强。动作消费者按发布事件区分`TerrainGeometryChanged/GeographyWipe/BuildingDestroyed/TreeDestroyed/ContainerDestroyed/CityStatusChanged`，不擅自把主题色变化当同一wipe。
+最新ADR0017规则是改GeographyType时清除受影响地表对象，保护活Actor/Gestation及实际随身递归内容；不等同普通主题画笔。动作按具体发布事件处理，不把主题色变化当wipe。
 
-事件处理顺序：旧状态合法积分至mutationTick → 核销/转移实物由上游事务完成 → 撤route/access/foot/grip/receiver refs → 计算当前生命真实支承/水/净空/hazard → 保存恢复任务/重新规划到期。Actor不能被动作层直接delete。车辆/箱子/床若被wipe删除，里面的活人保持ActorId、真实旧位置和生命状态，解除不存在容器关系；命中的穿戴衣物、携带工具与货也属于非生命实物，由上游wipe loss ledger核销；同屏障撤衣物保温/equipment能力与grip anchors，动作层不能免费吐出被核销货物。体内孕体及真正活胚胎/卵的GestationRef不直接erase，商品食用蛋不冒充生命；窝/保育器被删时保护孕体身份并按真实支承/冷热处理危险。
+事件顺序：旧状态合法积分→冻结实际随身保护集→地表毁损/货损→仅撤失效route、足支承、receiver与world grip anchor→生命危险/重规划。删除车/箱/床/楼不删除里面活Actor及其穿戴/手持/背包和内容；保旧世界pose和body-relative item/grip、装备能力、绝对状态。目标被删撤目标预约，携行货仍原owner/custody，安排真实返运/新配送；不免费吐货、不转回旧仓。活Gestation独立保护，窝/保育器删除结真实危险。
 
 同位置仍有合法支承者进入`GROUNDED_PENDING_REPLAN`；失去支承者`FALLING/IN_WATER/STRANDED/TRAPPED_IN_DAMAGED_CONTAINER`；土体抬高包埋或峰包络覆盖者进入明确`InvalidOccupancyHazard(TERRAIN_ENTRAPPED/PEAK_ENCROACHED)`。这是神力改变世界造成的不合法受困状态，**不是合法站在峰内、导航节点或允许主动入峰**。不把Actor瞬移到新地面/岸边，不让IK重新把双脚钉在新土面；真实可行逃逸/外界救援/再改地才可恢复正常。损伤按有cause/dueTick的有界生命规则，不因重建nav自动死亡、删除、复活。
 

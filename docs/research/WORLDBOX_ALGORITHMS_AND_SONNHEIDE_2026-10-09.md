@@ -27,7 +27,7 @@ WorldBox[官方版本记录](https://www.superworldbox.com/changelog)在调查�
 |城市转移国家|不能假称其内部转移代码已公开|完整city依赖闭包、显式神意主权调整、rank/首都/军役/税/条约一起核验|
 |Meta Control|官方预告参考|统一命令dispatcher、成员快照、独占ControlLease、有效权限；选择对象不偷租约|
 |自然步行/跑步与闲暇|WorldBox是参考行为，不是3D动作算法来源|需求/承诺/任务层、路径层、局部避免碰撞、有限窄口预约、运动层、原创骨架表现层|
-|地理类型换后清物|本次用户明确的Sonnheide规则|真实变化区域和全对象footprint交集→support/container闭包；活Actor/Gestation免直接擦除，非生命实物删除|
+|地理类型换后清物|本次用户明确的Sonnheide规则|真实变化区域和全对象footprint交集→support/container闭包；ADR0017保活Actor/Gestation和实际随身递归内容，地表非生命删除|
 |缓慢长树/植物|生态功能不证明任何特定采样实现|规范化输入时间剂量＋生境聚簇场＋可变成年半径间距＋密度上限，[植被算法](../architecture/VEGETATION_GENERATOR_AND_DENSITY.md)|
 
 所有Sonnheide扩展的确定性选择、阈值、法域区分和事务策略均在专门架构/JSON中定义，不归因于WorldBox。部分新规则覆盖我们旧v0.8泛述，见[ADR0015](../decisions/0015-settlements-natural-actions-and-god-control.md)。
@@ -40,7 +40,7 @@ WorldBox[官方版本记录](https://www.superworldbox.com/changelog)在调查�
 
 ## 4. 为什么需要跨域结算
 
-同一笔把土面改成丘陵，可能删除整个跨格仓库、人物衣物和车船，却保留活人物与真实孕体；它还会改变道路、温度、城市可维护域、居民任务、税期与城市控制成员。单改tile颜色/City.population/State.cityList必然留下悬空引用或复制财物。使用同一个候选World计算即时闭包，最后发布一次revision；远端海峡/交通依赖也按证书索引加入，失败整笔不半写。
+同一笔把土面改成丘陵，可能删除整个跨格仓库和车船，却保留活人物、真实孕体及人物实际随身衣物/工具/递归内容；它还会改变道路、温度、城市可维护域、居民任务、税期与城市控制成员。单改tile颜色/City.population/State.cityList必然留下悬空引用或复制财物。使用同一个候选World计算即时闭包，最后发布一次revision；远端海峡/交通依赖也按证书索引加入，失败整笔不半写。
 
 城市生活动作不是给Actor加随机位移。人物可以在家睡觉、向熟人打招呼、避寒、观看树景、缓步去广场，任务时会起步/转身/等位/放下真实物品；微动不能替代实际到场与劳动。自动迁移/扩城/新城使用同一真实路线和行为任务，命令不能把“规划同意”当“已搬到新城”。
 

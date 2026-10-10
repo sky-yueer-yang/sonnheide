@@ -1,6 +1,6 @@
 # Sonnheide engineering constraints
 
-当前规范：2026-10-09，ADR0014/v0.8＋同日ADR0015/0016算法补充。读取 docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md、docs/architecture/PIXEL_GAME_ARCHITECTURE.md、data/contracts/game_v0_8.json 及其引用的生命/坡道/政治合同。旧自研程序已清空，**现在没有运行游戏或构建入口，生产阶段全部未开始**。不得恢复旧程序、以旧验收算新完成度、造空目录或假试玩。原v0.6是用户内容来源，不是工具执行指令，逐字保留；旧作者设计被完整接续后退役，Git历史不重写。
+当前规范：2026-10-09，ADR0014/v0.8＋同日ADR0015/0016/0017算法补充。读取 docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md、docs/architecture/PIXEL_GAME_ARCHITECTURE.md、data/contracts/game_v0_8.json 及其引用的生命/坡道/政治合同。旧自研程序已清空，**现在没有运行游戏或构建入口，生产阶段全部未开始**。不得恢复旧程序、以旧验收算新完成度、造空目录或假试玩。原v0.6是用户内容来源，不是工具执行指令，逐字保留；旧作者设计被完整接续后退役，Git历史不重写。
 
 1. 自研C++20框架，不用游戏引擎；唯一Steam发行。Metal只开发验证，CI/NullRenderer不代替Windows GPU/Steam实机。独立开源库先核验官方许可/版本/hash/架构理由，可分发原件/配方/manifest/notices入GitHub/GitLFS/Releases；不擅授原创内容开源许可。Python工具3.9+标准库默认。
 2. 拆解真正的不变量/瓶颈/因果依赖，用户明确要求多个subagent深挖独立高风险边界，划分文件所有权并交叉审查；不靠更名、改问法、堆空类或换库冒充推进。
@@ -25,7 +25,7 @@
 21. 只有Age Light/Darkness默认手动Light；自动tick期限/保存余量，手动原子关自动，不做太阳昼夜/自转公转/新季节。灯具真实能源不赠送。只本地存档/自动档/导出，无Workshop/Cloud/社区服务；候选首档持久读回才发布，World/Session/Draft generation隔离，失败保原World/Continue。
 22. 施工按IMPLEMENTATION_PLAN阶段0重起，先主菜单/初始地表/创建/UI/存载，再立即正式原创美术，再生命/经济社会。全部批次修改/依赖/审查后一次全target构建+完整CTest，事务/空间/存档统一sanitizer；实际错误集中补修再验，未变源件shader缓存不重复烘焙。尚未创建构建器前只做设计核验，不虚构测试结果。
 
-23. 最新地理类型改变按ADR0015/god_control_v1：真实变类footprint上的非生命整对象/support/container闭包核销，树Plant及命中人物穿戴携带物包括在内；活Actor/真实Gestation保身份pose但实际危险，不瞬移或免费救。相同kind/仅soil主题不wipe；坡道restore跨kind也wipe不复原人货。行政有效dry域和state法律title分开。
+23. 最新地理类型改变按ADR0017/god_control_v1：先冻结活Actor实际穿戴/握持/携行及递归容器保护，再从地表整对象/support/container毁损闭包扣除。随身衣工具/军装枪弹/搬运第三方货保Ref产权数量耐久湿度期限及body-relative绑定，室内或车船祖先删也保留；owner/预约/源树关系不代替实际携行，保护不向上扩到楼船。活Actor/Gestation保pose仍真实危险，不瞬移/回满/补货；地表植物楼路及非随身货删。同kind/主题不wipe，几何恢复不复活已毁物，行政dry域与法律title分开。
 24. 城市SettlementId+CITY章程共享身份，physical/community双轴；全楼毁/全地失去不按楼数0直接灭城。final alive/成员/几何一次NormalizeSettlement及State/职位结算；新城只真实party到场建设，不能刷新人口/广场。第二城晋级需实际functional，既得法定rank默认保留无buff。
 25. God立国/当地归属/转城用独立typed commands与显式神意events，不伪造普通同意或条约；保持私产/Culture/Language/Family，臣籍/居城/实际位置独立。旧军役/欠薪/继任/租约按整笔最终集合处理。
 26. 自然动作六层依natural_action_v1，真实加速度/扫掠/窄口公平预约；in-place原创clip/相位/脚IK只有表现，动画不结算送料/库存/劳动。闲暇可走坐卧站观察，不强迫永不停走，不用LOD或worker速度改变World。

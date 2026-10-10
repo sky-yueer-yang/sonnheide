@@ -2,7 +2,7 @@
   "schema_version": 1,
   "contract_id": "political_decisions_v1",
   "design_version": "0.8",
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "audit_date": "2026-10-09",
   "planned_only": true,
   "production_implemented": false,
@@ -1440,7 +1440,7 @@
     },
     {
       "id": "POL13",
-      "trigger": "god_terrain_wipes_household_clothes",
+      "trigger": "god_terrain_wipes_stored_household_clothes_not_live_actor_worn_items",
       "must": [
         "god_cause_not_fake_tax_loss",
         "actual_new_relief_failure_can_be_distinct",

@@ -183,7 +183,7 @@ ProjectileRef为权威非生命实物/flight record，不是视觉粒子或移�
 
 和约签署与履行分开：领土复用全主权/行政/职位/税/租约闭包；赔偿整数分期due；有限通行；俘虏实交接运输；解封实际撤令离位。和平保伤势、欠薪、武器损耗、归还任务、旧债务。不读敌绝密财政当底价，不假第三方签署/不存在国/宗教或帝国批准。
 
-地形typewipe按God合同可删军衣/枪/ammo、ArmySupply/船：先唯一loss，再撤weapon/grip/route/slot/射界/support/远水网/预约，生命保pose进入hazard，不下一tick因军装规则补一套。没有高峰救伤/飞行军例外；声明/出击/元控制均不豁免。
+地形typewipe按ADR0017删除命中独立ArmySupply/船、地面军械与非随身货。活Actor实际穿戴军衣、手持枪、膛内弹和携带备弹容器全部保留，保装填/冷却/Shot计数及绝对状态。只对被毁地表对象记loss，并撤失效route/slot/world anchors/support/远水网/目标预约；不能无条件撤仍存在weapon/grip，不能补发装备。生命保pose进真实hazard；高峰规则不变。
 
 军事事务：generation/权限/WorldLaw/intent核验→现有合法work/reload/伤势积到tick一次→真人员/stock/custody/排班/geometry/cap→冻结同瞬间合法动作→唯一消费/loss/hit/damage→统一death/estate/成员/Army/City/State/crown/lease→receipt/events→发布。readset冲突整笔重prepare/拒绝，不先扣粮再征人失败。已劳动/到货/发弹保事实；Army不因主责City归档消失，按真实主体/成员另寻合法承担者，无不存在国继续新招。
 
@@ -199,7 +199,7 @@ dueTick/overdueAge/subjectRef稳定队列，高层候选共用决策核心每tic
 
 A公国收到B国截桥的片面迟报。冒险野心领袖可选威吓/动员，议会可因order偏好要求调查；实际使者发现Godterrain毁桥导致临时封路，则撤索赔。B若确实违已有通行约且拒履行，A经授权/真实首段供给可宣战。相同人格军官也因可达侧路、伤员/短粮不同而选不同方案；士兵有自己伤痛/家属/记忆，可救伤或迟疑，不全军同脑。
 
-玩家把桥头soil刷deep ocean，桥section/命中军衣器械/供给按typewipe毁损，人存续落水；route/slot/水路/城市served域统一重验。实际报告改变作战与和平评估。和平后军人仍是原本人，傷势/家庭/债务/实物归还真实继续。
+玩家把桥头soil刷deep ocean：桥段、地面器械/独立补给毁损；生命与随身军衣、武器、弹药和包内内容保留，按真实落水及身体危险处理。route/slot/水路/城市服务域重验，装备与装填状态不刷新；实际报告才改变战略/和平判断。
 
 以下72项为**未来生产验收**，不是已通过游戏测试。有限参考模型只核验抽象授权、动员守恒、有限情报选方案、装填receipt、同瞬间射击与停火；不验证真3D碰撞、完整投票、物流经济或战术胜负。生产需完整World贯穿验收。
 

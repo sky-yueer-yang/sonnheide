@@ -2714,6 +2714,6 @@
   "handler_state": "planned_domain_routes_only_no_production_handlers_exist",
   "algorithm_command_registry": "data/contracts/god_control_v1.json",
   "generator_contract": "data/contracts/vegetation_generator_v1.json",
-  "geography_clear_semantics": "explicit_nonliving_wipe_with_living_hazards_and_legal_records_preserved",
-  "algorithm_revision": "ADR0015-2026-10-09"
+  "geography_clear_semantics": "ADR0017_ground_nonlife_wipe_live_Actor_Gestation_and_actual_recursive_portable_items_preserved_real_hazards_and_legal_records",
+  "algorithm_revision": "ADR0017-2026-10-09"
 }

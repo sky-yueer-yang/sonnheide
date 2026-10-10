@@ -239,7 +239,7 @@ bounded候选技术≤12，每案列可知前置、未知环节、实验work/材
 
 ## 23. 改地、战争、迁移和组织变更如何中断经济
 
-`GeographyWipe`先由ADR0015核销非生命whole-object/物品闭包：工具衣物树WIP/仓储/载具被毁一次LossEvent，Actor和真实Gestation保留并承实际hazard。经济收到真实损失与权限/route/receiver version变化，撤尚未来预约、只更新真实可用claims，已损失不把qty/refund重放回来。
+`GeographyWipe`按ADR0017先冻结生命随身保护，再核销地表树/WIP/仓储/载具和非随身货；实际毁货才唯一LossEvent。衣物、携带工具和搬运中的第三方配送批保Ref、owner/custodian、quantity、耐久/到期及实际位置。目的仓/接货口被删，只撤失效目标/route claim，保现有货物和不冲突的真实claims，暂停/重议交付或实际返运；不计随身loss、不释放成第二份可用库存、不回原仓。Actor/Gestation保留仍结真实hazard。
 
 同类height改动可以撤support/access/热能力但不强制wipe；soil换theme不补树果/商品。城市逻辑Square在楼毁后仍account但storage capacity0，可保旧债/货损档，不能保幽灵商品。失地city持续成员仍有Household、已赚工资与有址/无址的真实合同状态；不能因城市color变海自动现金清零、删债或刷避难房。
 

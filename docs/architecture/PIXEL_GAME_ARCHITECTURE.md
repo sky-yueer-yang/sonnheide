@@ -106,7 +106,7 @@ Steam唯一发行；Windows GPU/Steam安装、控制器/键鼠/DPI/音频/存档
 
 行为与运动由life/animals/government任务源共同调用natural_action：感知/目标/承诺/任务、分层路径、有限加速度、局部建议、最终3D扫掠和窄口token由权威组件负责；renderer只做原创clip/脚IK/微动，不用Notify发经济提交。BodyProfile/SurfaceRef跨层同源，异步旧foot/grip/path目标在publication barrier失效。
 
-application只产生God typed proposals；地理换类从精确ChangedGeographyFootprint求完整support/container实物擦除闭包，活Actor/Gestation保pose后结hazard，继任/成员/State在最终候选一次规范化。特殊God立国/改籍/转城不伪造普通支持票或资产转让。命令有唯一civic registry和独占lease，selection不是World变更。
+application只产生God typed proposals；地理换类先冻结活Actor真实穿戴/携带递归保护，再从精确ChangedGeographyFootprint的support/container毁损闭包扣除；活Actor/Gestation及随身物保pose/绑定/绝对状态后结真实hazard，继任/成员/State在最终候选一次规范化。特殊God立国/改籍/转城不伪造普通支持票或资产转让。命令有唯一civic registry和独占lease，selection不是World变更。
 
 生态生成使用独立EditorInputClock规范化剂量，不吃模拟RNG；有限GodVegetationSource记录Plant生物量而不写仓库，固定窗口/保守冠多边形/成年包络/idle EscapeConnection防堵。生成器不能按renderer消失树数补种，wipe/清理/采伐的dose epoch失效同写集。细节见[城市](SETTLEMENT_LIFECYCLE_AND_EXPANSION.md)、[动作](NATURAL_BEHAVIOR_AND_LOCOMOTION.md)、[God控制](GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md)、[植被](VEGETATION_GENERATOR_AND_DENSITY.md)。
 

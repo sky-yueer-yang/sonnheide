@@ -686,14 +686,13 @@
       "AccessCertificate",
       "route_segment",
       "foot_anchor",
-      "hand_grip",
       "receiver_interface",
       "target_reservation_if_deleted",
-      "equipment_capacities_if_wiped"
+      "world_grip_anchor_only_if_actual_target_destroyed"
     ],
     "live_actor_delete_by_action_layer": false,
     "actor_survives_vehicle_container_destroyed": "same ActorId old true pose released nonexistent containment plus actual support/hazard check",
-    "worn_carried_nonliving_items": "literal wipe may delete; upstream loss ledger canonical, no action restitution",
+    "worn_carried_nonliving_items": "ADR0017_preserve_actual_live_Actor_portable_recursive_subtree_no_wipe_loss_keep_body_relative_grip_and_equipment_absolute_state",
     "protected_living_gestation": [
       "body_internal_pregnancy",
       "external_actual_living_embryo_or_egg_GestationRef_not_food_item"
@@ -723,7 +722,8 @@
       "PhysicalJurisdictionQuery"
     ],
     "city_destroyed_or_transferred_changes_actor_location": false,
-    "RelocationPlan": "real current location route tasks resource custody budget intake destination approval; no implicit identity change"
+    "RelocationPlan": "real current location route tasks resource custody budget intake destination approval; no implicit identity change",
+    "actual_portable_bindings_survive_ground_or_parent_container_loss": true
   },
   "metacontrol": {
     "control_authority": "existing current exclusive civic_ControlLease",
@@ -1279,12 +1279,13 @@
     },
     {
       "id": "NA32",
-      "trigger": "衣服工具同时wipe",
+      "trigger": "地改命中生命及随身衣工具",
       "setup": "仍活搬运者被literalGeographyWipe命中",
-      "expected": "核销穿戴工具并撤保温/负重/任务grip，新旧energy不回满。",
+      "expected": "保穿戴工具/背包内容及body-relative grip、保暖/负重能力与绝对状态；仅撤失效空间支承/目标，不回满不记随身loss。",
       "evidence_required": [
-        "equipment_revision",
-        "loss_ledger"
+        "portable_binding_revision",
+        "preserved_item_state",
+        "loss_ledger_disjoint"
       ],
       "status": "future_not_executed"
     },
@@ -1401,5 +1402,5 @@
   ],
   "acceptance_scenario_count": 42,
   "invariant_count": 20,
-  "algorithm_revision": "ADR0016-2026-10-09"
+  "algorithm_revision": "ADR0017-2026-10-09"
 }

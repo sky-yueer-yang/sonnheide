@@ -93,13 +93,14 @@
     "all_moving_life_high_peak_exclusion": true,
     "godterrain_creates_inventory": false,
     "uplift_inheritance_snapshot": "at_conception_not_recomputed_by_later_parent_uplift",
-    "geography_type_change": "exact_changed_geography_footprint_wipes_nonliving_with_whole_object_support_container_closure",
+    "geography_type_change": "exact_changed_footprint_ground_nonlife_whole_object_closure_minus_frozen_live_Actor_portable_subtree",
     "live_Actor_or_Gestation_direct_wipe": false,
-    "geography_wipe_includes_hit_actor_worn_and_carried_nonliving": true,
+    "geography_wipe_includes_hit_actor_worn_and_carried_nonliving": false,
     "god_vegetation_creates_bounded_Plant_biomass": true,
     "god_vegetation_direct_inventory_fruit_forage_animals": false,
     "peak_involuntary_intrusion": "InvalidOccupancyHazard_no_legal_entry_no_teleport",
-    "canonical_existing_identity_archives_resurrected": false
+    "canonical_existing_identity_archives_resurrected": false,
+    "live_Actor_portable_protection": "ADR0017_god_control_v1_includes_nested_contents_inside_destroyed_ancestor_keeps_real_state"
   },
   "construction": {
     "building_geometry_and_appearance": "original",
@@ -233,7 +234,7 @@
     "owner_or_culture_or_language_changed_by_flag": false,
     "source": "data/contracts/god_control_v1.json"
   },
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "decision_algorithms": {
     "decision": "docs/decisions/0016-contextual-decisions-policy-economy-and-war.md",
     "core_contract": "data/contracts/decision_core_v1.json",
@@ -250,5 +251,6 @@
     "resource_and_time_claims_shared": true,
     "ordinary_AI_requires_player_approval_every_episode": false,
     "decisions_or_animations_create_free_goods_people_or_knowledge": false
-  }
+  },
+  "latest_geography_decision": "docs/decisions/0017-preserve-living-actor-carried-items-on-geography-change.md"
 }

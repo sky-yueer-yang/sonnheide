@@ -119,13 +119,14 @@
     "live_actors_protected_from_direct_erase": true,
     "live_gestation_including_external_eggs_protected": true,
     "plants_trees_are_protected_live_actors": false,
-    "nonlife_carried_worn_goods_in_hit_actor_wiped": true,
+    "nonlife_carried_worn_goods_in_hit_actor_wiped": false,
     "actual_water_fall_burial_thermal_and_peak_hazards_still_apply": true,
     "peak_overwrite": "retain_pose_mark_InvalidOccupancyHazard_not_legal_nav_peak_entry_no_lift_to_peak_top_no_path_through_peak",
     "ordinary_building_clear": "must_first_preserve_actual_people_goods_old_access_or_reject",
     "forced_wipe_recovery_goods_or_refunds": false,
     "lost_legal_documents_debts_archive_refs_deleted": false,
-    "no_kind_change_support_failure": "actual_structural_spatial_consequences_still_required"
+    "no_kind_change_support_failure": "actual_structural_spatial_consequences_still_required",
+    "live_actor_recursive_portable_protection_survives_destroyed_ancestor": true
   },
   "normalize_pipeline": [
     "freeze_read_revisions_and_typed_target_refs",
@@ -915,6 +916,6 @@
     "inactive_landless_community_identity_is_not_unlimited_operating_authority",
     "all_growth_founding_needs_typed_real_sites_assets_actor_source_and_current_legal_permissions"
   ],
-  "algorithm_revision": "ADR0015-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "reference_model": "../../docs/research/models/settlement_reference_model.py"
 }

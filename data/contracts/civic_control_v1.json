@@ -8577,7 +8577,7 @@
       "dead_archives"
     ],
     "resurrection_or_free_repair_or_copy": false,
-    "geography_wipe_override": "ADR0015_explicit_kind_change_all_hit_nonliving_including_worn_carried_no_refunds",
+    "geography_wipe_override": "ADR0017_kind_change_ground_nonlife_closure_except_frozen_live_Actor_recursive_portable_items_no_refunds",
     "same_theme_or_same_kind_wipe": false
   },
   "local_persistence": {
@@ -10399,7 +10399,7 @@
   "settlement_lifecycle_contract": "data/contracts/settlement_lifecycle_v1.json",
   "god_control_contract": "data/contracts/god_control_v1.json",
   "command_count": 78,
-  "algorithm_revision": "ADR0016-2026-10-09",
+  "algorithm_revision": "ADR0017-2026-10-09",
   "decision_core_contract": "data/contracts/decision_core_v1.json",
   "political_decision_contract": "data/contracts/political_decisions_v1.json",
   "economic_decision_contract": "data/contracts/economic_decisions_v1.json",
