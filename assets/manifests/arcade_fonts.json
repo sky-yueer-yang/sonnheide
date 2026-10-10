@@ -1,0 +1,45 @@
+{
+  "format": "SonnArcadeFont1",
+  "font": "Fusion Pixel 12px Proportional zh-Hans",
+  "runtime_family_alias": "Sonn Arcade",
+  "version": "2026.07.20",
+  "repository": "https://github.com/TakWolf/fusion-pixel-font",
+  "revision": "c29615e1f629c6bb27dac3e6dcaa4556e629d09f",
+  "release_url": "https://github.com/TakWolf/fusion-pixel-font/releases/tag/2026.07.20",
+  "official_archive_url": "https://github.com/TakWolf/fusion-pixel-font/releases/download/2026.07.20/fusion-pixel-font-12px-proportional-otf-v2026.07.20.zip",
+  "official_archive_bytes": 24623136,
+  "official_archive_sha256": "c4d9953664cb6edc8c550da5ecd1c0cf74f95450b2e220790212f08937924d63",
+  "upstream_member": "fusion-pixel-12px-proportional-zh_hans.otf",
+  "project_path": "assets/source/ui/fonts/fusion-pixel/fusion-pixel-12px-proportional-zh_hans.otf.gz",
+  "compression": "gzip; exact unmodified upstream OTF after decompression",
+  "compressed_bytes": 1038533,
+  "compressed_sha256": "fbc4ac26cd39cb1eea8f62baa1368e4f3d11479c2db1e77ba1a6d25f8aaede61",
+  "original_bytes": 4910392,
+  "original_sha256": "9955f9e20abd758316418a2942aa6ee773754060da4a3f9286581fd11312f6c3",
+  "license": "OFL-1.1",
+  "licenses": [
+    {
+      "project_path": "assets/source/ui/fonts/fusion-pixel/LICENSES/ark-pixel/OFL.txt",
+      "sha256": "3ab41567e68e3988ba1ef16dd2644eca95ca5648ea12e7d46e6287fc0bbe5aee",
+      "bytes": 4412
+    },
+    {
+      "project_path": "assets/source/ui/fonts/fusion-pixel/LICENSES/cubic-11/OFL.txt",
+      "sha256": "2b6e5938e5cffa0b9e183bd05f8c363e174e7ebed1a0556e2855fd1707fa2188",
+      "bytes": 5364
+    },
+    {
+      "project_path": "assets/source/ui/fonts/fusion-pixel/LICENSES/galmuri/LICENSE.txt",
+      "sha256": "86a3ee9495f942f0243f18c103da9faca27adb88142613edb8bb852e56c892c1",
+      "bytes": 4360
+    },
+    {
+      "project_path": "assets/source/ui/fonts/fusion-pixel/OFL.txt",
+      "sha256": "bc518cf64b8032c07690f33cc270c35c179255a6ac8efa7c165ebae7e8f76a63",
+      "bytes": 4418
+    }
+  ],
+  "font_modified": false,
+  "logical_pixel_height": 12,
+  "use": "Native retro arcade Chinese/English/German, integer 12px scale; runtime alias only, font names/bytes unmodified"
+}

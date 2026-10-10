@@ -1,0 +1,1276 @@
+{
+  "format": "SonnOriginalIcons2",
+  "author": "Sonnheide project",
+  "license": "Original project artwork; no public license granted",
+  "recipe": "tools/generate_visual_assets.py",
+  "stroke": false,
+  "logical_grid": 24,
+  "scaling": "nearest_integer",
+  "alpha": "binary",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "outputs": [
+    {
+      "path": "assets/generated/ui/icons/world-light.svg",
+      "sha256": "8bf42f9c82d92f555331f7f703df28e2740776752b08ae052f4589146eeaa6bc",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-light-96.png",
+      "sha256": "fbef06b0dbe4aa399a00ac70ee3e48bf9aeabf233efd9156c90a08e5942ca234",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-light-192.png",
+      "sha256": "a37136a0ec9aa261671e17cce0ec589db4248266bae39168046d083a6a0e3c30",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-dark.svg",
+      "sha256": "3723f972aaba12f2f1cb62e5e1014fb030ca4923c0c878cbc895f79b0d280336",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-dark-96.png",
+      "sha256": "0a41771b49eb877ebbc67d8d3a609940295102d448e341b56e8a24e7d8595122",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-dark-192.png",
+      "sha256": "7b7bee1ec5fcd98d5f105fbc792a3697ea45ec3d9ff30e4c37ef476c69d41e7d",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/world.svg",
+      "sha256": "8bf42f9c82d92f555331f7f703df28e2740776752b08ae052f4589146eeaa6bc",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-96.png",
+      "sha256": "fbef06b0dbe4aa399a00ac70ee3e48bf9aeabf233efd9156c90a08e5942ca234",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-192.png",
+      "sha256": "a37136a0ec9aa261671e17cce0ec589db4248266bae39168046d083a6a0e3c30",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-light.svg",
+      "sha256": "df2e94bfd73d32d3f05489d56faeb7c04f11aee220edab62cf941c9891fb736a",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-light-96.png",
+      "sha256": "f1b5b9e9d7f8f0c0468a3de661d37b1e61f837efe1f64850227b48b77da345d2",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-light-192.png",
+      "sha256": "9c505b750cf8aff895af9db89342e5bd6d8acf326eaa2c70fd46bfeeb7d0c259",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-dark.svg",
+      "sha256": "e7ebd0bc6f81ccb82509be1cb601bf82f708e04d5f6dbf2981ecef56a9b83906",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-dark-96.png",
+      "sha256": "f8d800be8de3ddf78a16d53b5b986cb0faad48f130e2bdbe7b8238a56f88467a",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-dark-192.png",
+      "sha256": "ebe8bc73f6a6d1bf148d7f23431940dbc50435fabdbc4c808bb2b301310256b7",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth.svg",
+      "sha256": "df2e94bfd73d32d3f05489d56faeb7c04f11aee220edab62cf941c9891fb736a",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-96.png",
+      "sha256": "f1b5b9e9d7f8f0c0468a3de661d37b1e61f837efe1f64850227b48b77da345d2",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-192.png",
+      "sha256": "9c505b750cf8aff895af9db89342e5bd6d8acf326eaa2c70fd46bfeeb7d0c259",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-light.svg",
+      "sha256": "70f4ab8a391c7511046eb5e28ae9db82c45b8101bb6b141c68c265aecc42b3a0",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-light-96.png",
+      "sha256": "a9487c405ca97a6fcb413d7b3fa129eb5707852c3f2282cd9f950038f2594b0c",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-light-192.png",
+      "sha256": "c3f3611f1285403896713239d1ed083bbb0948047b91c6c1e9b2893c9951e429",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-dark.svg",
+      "sha256": "eb5f16e7e426d7d5868f58993481ada85f59d78a0844faf32253f324020b42a0",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-dark-96.png",
+      "sha256": "80337884561d47a710e0406be6a467252d9720412a8cda551a5e2101480460df",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-dark-192.png",
+      "sha256": "bdb184e3dceafb423f32f7193c9dab3c6f16038929ad8b457f005edd63be7de1",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera.svg",
+      "sha256": "70f4ab8a391c7511046eb5e28ae9db82c45b8101bb6b141c68c265aecc42b3a0",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-96.png",
+      "sha256": "a9487c405ca97a6fcb413d7b3fa129eb5707852c3f2282cd9f950038f2594b0c",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-192.png",
+      "sha256": "c3f3611f1285403896713239d1ed083bbb0948047b91c6c1e9b2893c9951e429",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-light.svg",
+      "sha256": "279f8000b3c1c05fd9b5e2413e885e8e1586409f6a665b41c73d475b6c2d8f39",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-light-96.png",
+      "sha256": "19b61fb9c9c0296a292add51e161aa1e0d4136cf1a2bdeab476b6a9aba1baf42",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-light-192.png",
+      "sha256": "7bbbed1835ee16b7bf63913c61ad98f4193f9c657e93e501357edf70c824f770",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-dark.svg",
+      "sha256": "7437b5474f245fcf60f89949932ae7a96843ef660a8cc6729d884e47657331db",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-dark-96.png",
+      "sha256": "b570a8d97ec444345d7889a31cdf6aff5f58b71344872851badc8880a55e2509",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-dark-192.png",
+      "sha256": "532f5e9ac1fb5facf0ad77578b86319c20254ca0bc0e3536d1c6a6d7a3cca3f6",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank.svg",
+      "sha256": "279f8000b3c1c05fd9b5e2413e885e8e1586409f6a665b41c73d475b6c2d8f39",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-96.png",
+      "sha256": "19b61fb9c9c0296a292add51e161aa1e0d4136cf1a2bdeab476b6a9aba1baf42",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-192.png",
+      "sha256": "7bbbed1835ee16b7bf63913c61ad98f4193f9c657e93e501357edf70c824f770",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-light.svg",
+      "sha256": "5e567b3c150d706094897aa3d572002dbc03f7125ad4fa570db0819090d3f408",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-light-96.png",
+      "sha256": "8e63f4776907960d2f4f0d3ddfe0bf507cd302d48dbdb98333e829284034897e",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-light-192.png",
+      "sha256": "70639f7c73197e2a229136edda6048dfc8f8c7e037c2043cc34c477e85b5abec",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-dark.svg",
+      "sha256": "272ad6e34fd5c2062bd0555e32e4ef3735e96eb95b35ac48df054d173882906a",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-dark-96.png",
+      "sha256": "f1dc49a74b35f1887424fae87a134008b1b42db31037081e0f86ac8d8d3782c1",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-dark-192.png",
+      "sha256": "f87dd55147718f0d4c947b75b937c3c941d0a6379c3e7d982333d4bffd20d8d5",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/people.svg",
+      "sha256": "5e567b3c150d706094897aa3d572002dbc03f7125ad4fa570db0819090d3f408",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-96.png",
+      "sha256": "8e63f4776907960d2f4f0d3ddfe0bf507cd302d48dbdb98333e829284034897e",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-192.png",
+      "sha256": "70639f7c73197e2a229136edda6048dfc8f8c7e037c2043cc34c477e85b5abec",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-light.svg",
+      "sha256": "e6050065703884cbd550edb3f679426b6e23bf42711832d4485313987a87e993",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-light-96.png",
+      "sha256": "b3db79fd165723991a02bcb038aa21529f8002f461fecacb6db253207c932e70",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-light-192.png",
+      "sha256": "ee99a57cd5110cdd96caf57d3c47b16abcc25d5900859c0aac8327201b8046b8",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-dark.svg",
+      "sha256": "b766d0b7b944fb8950f3fb8bd7dad8aa4ef2fde16ffbec6217ad36d1c3fbe7cb",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-dark-96.png",
+      "sha256": "91b7543ebdc7978645e32a0b2da72f1e5c24c69f3e944e660be7f94696e00e15",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-dark-192.png",
+      "sha256": "f55272b85488d58f242a3f6d02e93f592776a5d1498a179458fefea35cd3fd68",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings.svg",
+      "sha256": "e6050065703884cbd550edb3f679426b6e23bf42711832d4485313987a87e993",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-96.png",
+      "sha256": "b3db79fd165723991a02bcb038aa21529f8002f461fecacb6db253207c932e70",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-192.png",
+      "sha256": "ee99a57cd5110cdd96caf57d3c47b16abcc25d5900859c0aac8327201b8046b8",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-light.svg",
+      "sha256": "e0cae150b4daecc650f7ffc0fd7166712564a2838325e1f20d600d27a34d80b2",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-light-96.png",
+      "sha256": "acf5ad6f2c5cf50ff52b97df603a59b1bc43dbcdfaf288bdc1098ac3635228b5",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-light-192.png",
+      "sha256": "1ed149b57a551ab51dc8da40d04767fc0d4ce86d121298b874f64ad19b30b88c",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-dark.svg",
+      "sha256": "f082b18a05274e729cec5c60df86c7554ef4ab1d71cb74bcb80cb038b164214f",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-dark-96.png",
+      "sha256": "b77157951c62e7f25be11de067d09af6b84cd240f11ef850cab0f0bda5e5aacc",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-dark-192.png",
+      "sha256": "1ae3a35655efd33b91f5cc0396bd314d9d5b00589513b4ce83b9685ea217c46a",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain.svg",
+      "sha256": "e0cae150b4daecc650f7ffc0fd7166712564a2838325e1f20d600d27a34d80b2",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-96.png",
+      "sha256": "acf5ad6f2c5cf50ff52b97df603a59b1bc43dbcdfaf288bdc1098ac3635228b5",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-192.png",
+      "sha256": "1ed149b57a551ab51dc8da40d04767fc0d4ce86d121298b874f64ad19b30b88c",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-light.svg",
+      "sha256": "5f5f49020fe1daab94f232194ea5297e8721d06da457c4cd6e4037e186f0ebcf",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-light-96.png",
+      "sha256": "1a19faa96a2151c89b37a19ae472a023a00a4973edf02a617d683836b7c2de7b",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-light-192.png",
+      "sha256": "2af36c537325199a3494a280409b37c398616135df844c63b5a7f2470ee4cbba",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-dark.svg",
+      "sha256": "e62ef1e051ff042653c112acac9875db46c32e90d0bd7a7bd792ce7126afc7dd",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-dark-96.png",
+      "sha256": "602d1365929eb5a6d3c1749bc09d53d6240fc20d4892eeefccf22593f859699c",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-dark-192.png",
+      "sha256": "459273c2c4d1248dbcf7d25d9b6798d0da9711f2969a87d86b673fc3546e7b4b",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy.svg",
+      "sha256": "5f5f49020fe1daab94f232194ea5297e8721d06da457c4cd6e4037e186f0ebcf",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-96.png",
+      "sha256": "1a19faa96a2151c89b37a19ae472a023a00a4973edf02a617d683836b7c2de7b",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-192.png",
+      "sha256": "2af36c537325199a3494a280409b37c398616135df844c63b5a7f2470ee4cbba",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-light.svg",
+      "sha256": "0988f9210edf4aa0a6f6b0efcc8d00172656fe3d4525b069d9fe7b00ed55acf0",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-light-96.png",
+      "sha256": "393569f1af0d988547192eb24ffda432cab95e9fcf36c83c91e773db63775e1a",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-light-192.png",
+      "sha256": "8fe879775db5ff139be3d9cfa8e2c9a08040b8e9273b920c8387fff6bffeac16",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-dark.svg",
+      "sha256": "53801cab8a8b402f3be7509a9914d8b91f290356326a96e8a0610e7d9d5aa2f6",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-dark-96.png",
+      "sha256": "55cd048ed117fe50c4ac41b8e29fecedba54f91f9fe90fc03fc44ce3841b52f5",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-dark-192.png",
+      "sha256": "998f3598c9852fec6403a485d8442b5cce0d8fb754060c87b3af3ec6818beebe",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws.svg",
+      "sha256": "0988f9210edf4aa0a6f6b0efcc8d00172656fe3d4525b069d9fe7b00ed55acf0",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-96.png",
+      "sha256": "393569f1af0d988547192eb24ffda432cab95e9fcf36c83c91e773db63775e1a",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-192.png",
+      "sha256": "8fe879775db5ff139be3d9cfa8e2c9a08040b8e9273b920c8387fff6bffeac16",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-light.svg",
+      "sha256": "1dfbff014228e4eb589aef52db095611a39fc82f853b43b9297704a6b2459967",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-light-96.png",
+      "sha256": "3989c28625d29d4365d21f1a28c45fa7294fdf2b740ca4db77ce5e7a3d1fd82e",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-light-192.png",
+      "sha256": "c37a9393e11edbfd23e37c97163e683f928ba33312473835229a4d4b5673a489",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-dark.svg",
+      "sha256": "9d646e4cbded64b5c2ad7e25d5ccd9bdf9e910e2467790c5b318bd33ded69884",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-dark-96.png",
+      "sha256": "6bd567bfcedf9a5f5b1eddc360a90d323a304fe305826d1fbb9bf041b8c85125",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-dark-192.png",
+      "sha256": "34ea2d839cf1e9b5c7ff4552beaf5dd5509dc0e3bba77774a94a9a26bcf2218b",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings.svg",
+      "sha256": "1dfbff014228e4eb589aef52db095611a39fc82f853b43b9297704a6b2459967",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-96.png",
+      "sha256": "3989c28625d29d4365d21f1a28c45fa7294fdf2b740ca4db77ce5e7a3d1fd82e",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-192.png",
+      "sha256": "c37a9393e11edbfd23e37c97163e683f928ba33312473835229a4d4b5673a489",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-light.svg",
+      "sha256": "ade50b5e1e14428b6075dabb171ff2b4f9cd3d4bb011c19ff9c8268c2f572ecc",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-light-96.png",
+      "sha256": "9f886c920e8329e7767d73c766705728fe6f45f37ba5ec9c00737519caba9827",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-light-192.png",
+      "sha256": "1e0857c9b3d624d61294a4913096082cb25ce82d42a477d890729836bb42ab28",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-dark.svg",
+      "sha256": "30deb8dff95a49c007e68748e055368d0e138c3a650355018879d645bfff31db",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-dark-96.png",
+      "sha256": "8033f5d1680f3334e6a4b0478168948f2ce823db5b0383ca117b7d7fe5ef0959",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-dark-192.png",
+      "sha256": "43a1313b6bd816bc326e97461bfa1328781adba2826efb416f1f982e1d4572b0",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause.svg",
+      "sha256": "ade50b5e1e14428b6075dabb171ff2b4f9cd3d4bb011c19ff9c8268c2f572ecc",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-96.png",
+      "sha256": "9f886c920e8329e7767d73c766705728fe6f45f37ba5ec9c00737519caba9827",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-192.png",
+      "sha256": "1e0857c9b3d624d61294a4913096082cb25ce82d42a477d890729836bb42ab28",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-light.svg",
+      "sha256": "266c83e71323b4ab29015b7c9a708af15f086e2208112bd618a916f3169f82df",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-light-96.png",
+      "sha256": "abeda1392f3ef2c22348f9190785051480361c5fa635aac4b4d6dc59daa702aa",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-light-192.png",
+      "sha256": "c124759aabd985426dbf36b86006901c3c17dea80ec2469feb6fafa28abe56f8",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-dark.svg",
+      "sha256": "cad62f8e929077e0ed6c380b7063b79920e67e2a67d229bd8e6cf39c92c5e6ab",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-dark-96.png",
+      "sha256": "ec7c44f3063572935667dcee12e022f3104dca42e2583222bfd2dfb4b84c5089",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-dark-192.png",
+      "sha256": "ec9880ad8152028050476a084e027718298265ec1e1abd3ee9a4756321f6db1e",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/play.svg",
+      "sha256": "266c83e71323b4ab29015b7c9a708af15f086e2208112bd618a916f3169f82df",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-96.png",
+      "sha256": "abeda1392f3ef2c22348f9190785051480361c5fa635aac4b4d6dc59daa702aa",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-192.png",
+      "sha256": "c124759aabd985426dbf36b86006901c3c17dea80ec2469feb6fafa28abe56f8",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-light.svg",
+      "sha256": "9f5d2b6c999f76639222468a5978c36cdb7bcc76a13500b1345ef9c30f68c9c7",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-light-96.png",
+      "sha256": "21e01740ddf33b56c69047a427e266494376ea69e2221ab5e120e567417543cf",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-light-192.png",
+      "sha256": "232b2ec32b81083be0a994adee8ab6d7830cbf5ef6088d2cf176e9f8d58795e1",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-dark.svg",
+      "sha256": "c4ab4b114a98ce7cf458af2681ca4350afbf947811cc7073a703c0a0e9c2e41a",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-dark-96.png",
+      "sha256": "6d2eebc6e74198434cc3fc8afa2229a9eacdb503687fe8130b5902823fc20977",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-dark-192.png",
+      "sha256": "1ebce91a3b2261bb18a1ab67094946809cafadc262639109ceb669f0a3deaf42",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/save.svg",
+      "sha256": "9f5d2b6c999f76639222468a5978c36cdb7bcc76a13500b1345ef9c30f68c9c7",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-96.png",
+      "sha256": "21e01740ddf33b56c69047a427e266494376ea69e2221ab5e120e567417543cf",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-192.png",
+      "sha256": "232b2ec32b81083be0a994adee8ab6d7830cbf5ef6088d2cf176e9f8d58795e1",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-light.svg",
+      "sha256": "9fb674519d2ac473eed29d18df2ece77f0e0b3f7c801585389915a1b0e218119",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-light-96.png",
+      "sha256": "4cf4608b608a88bd87a2a3b13abf0e28b985f4f9a4442145131f1e59cc110f77",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-light-192.png",
+      "sha256": "ec0bb7d0f79ea0645b446aaf599ffb95a56a1b123f22b2605d0c63275fbfab81",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-dark.svg",
+      "sha256": "75487e4862761126f80b1125dc7453d463931eb7e0c30a96ac0b1a7b60c9e9d7",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-dark-96.png",
+      "sha256": "81b6d0727a14260000108ddea9e60a904942074863ac5987c8d7380f291f53c2",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-dark-192.png",
+      "sha256": "a52e2cc652d4615d34c2cba91f2053a2e2c7049ed170f5041d61ee9a06890677",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/load.svg",
+      "sha256": "9fb674519d2ac473eed29d18df2ece77f0e0b3f7c801585389915a1b0e218119",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-96.png",
+      "sha256": "4cf4608b608a88bd87a2a3b13abf0e28b985f4f9a4442145131f1e59cc110f77",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-192.png",
+      "sha256": "ec0bb7d0f79ea0645b446aaf599ffb95a56a1b123f22b2605d0c63275fbfab81",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-light.svg",
+      "sha256": "1dc635954e3c7257632e6dfd3567ab0e7f1379f08e8d31489432145fb347cbad",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-light-96.png",
+      "sha256": "35d8678635ac60fb8b073a03a3422ca29771e2f8c145946c3d246336bbb5fc3d",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-light-192.png",
+      "sha256": "32e4f1c57fb91e7639d24a1a2a8dc268964fe7b53a9fd3d171ca0b307f807651",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-dark.svg",
+      "sha256": "c1d32eb8d34bff2868a776ae20d98d144e74184ea02431493eb9e5ced0ad86a7",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-dark-96.png",
+      "sha256": "95774d915735ecce82111a9176ecaa07a8b65706692074491c0b50872f492465",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-dark-192.png",
+      "sha256": "c0c38453e1d5642d10640a96bed2f06f1715ca0602360fde8b8998670a2c6dec",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/back.svg",
+      "sha256": "1dc635954e3c7257632e6dfd3567ab0e7f1379f08e8d31489432145fb347cbad",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-96.png",
+      "sha256": "35d8678635ac60fb8b073a03a3422ca29771e2f8c145946c3d246336bbb5fc3d",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-192.png",
+      "sha256": "32e4f1c57fb91e7639d24a1a2a8dc268964fe7b53a9fd3d171ca0b307f807651",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-light.svg",
+      "sha256": "fa847278b93d317b032513740e337c22ee381917b4dd124b570c299548cf8e8e",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-light-96.png",
+      "sha256": "c559719d440ca787495004b10145ebcc9bcbf6dee0e37bc5031603e7a224d5c9",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-light-192.png",
+      "sha256": "c32e8aa736af119a430dc18bf1313e384ddf325fd297d653b3c54e9cb5865475",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-dark.svg",
+      "sha256": "2973d6b5d889348b544f9a1529a6635d5e717332753efd7b387e271ec8526001",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-dark-96.png",
+      "sha256": "78d3a2b13336f931a127c83166e2e6704550fb96c8614566948954169ff14197",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-dark-192.png",
+      "sha256": "7b8aca2a605571bb130b5b500c91350d69e5bc63a4a96ff64b9f28c7cc9d048f",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/close.svg",
+      "sha256": "fa847278b93d317b032513740e337c22ee381917b4dd124b570c299548cf8e8e",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-96.png",
+      "sha256": "c559719d440ca787495004b10145ebcc9bcbf6dee0e37bc5031603e7a224d5c9",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-192.png",
+      "sha256": "c32e8aa736af119a430dc18bf1313e384ddf325fd297d653b3c54e9cb5865475",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-light.svg",
+      "sha256": "8708ae14168e2d18fff11976298bd0dedccec8ea7b2a2f7b436c2eb9359ab223",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-light-96.png",
+      "sha256": "372714df30618d557cf9ef2c9d73334c367204816bdfd0444381a25a3da4d90d",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-light-192.png",
+      "sha256": "ba1f13140d7eb7b0e8f2b17cd042b51f5cf75675a7db774e7a6444c1bb718902",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-dark.svg",
+      "sha256": "1ffccb59a2f024cc6675f1f5344b17e9781216abb6165277c1cdd7d01b9221ac",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-dark-96.png",
+      "sha256": "39a6fcec35e50dcd8517daa34123c518b9aca087ebe95110edf41e40036d63d0",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-dark-192.png",
+      "sha256": "0abbb4fdfde46e02ba3b2abfe572ccc7d4c574d9daa2e96426c1ea4c623ea2c4",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/create.svg",
+      "sha256": "8708ae14168e2d18fff11976298bd0dedccec8ea7b2a2f7b436c2eb9359ab223",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-96.png",
+      "sha256": "372714df30618d557cf9ef2c9d73334c367204816bdfd0444381a25a3da4d90d",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-192.png",
+      "sha256": "ba1f13140d7eb7b0e8f2b17cd042b51f5cf75675a7db774e7a6444c1bb718902",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-light.svg",
+      "sha256": "ee7dbe858ccf8d140c0c6beca336f3736b581ea8d7c2521521d638f5043abeb3",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-light-96.png",
+      "sha256": "30256e8390ad1b3908c37be67a19d59cc8c4b69368f7c83f3970254edef1f09d",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-light-192.png",
+      "sha256": "9a3cc26240c4daa6d7f2472c371e0d2d3af0bc4b8533ff1c34821810b026c0f8",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-dark.svg",
+      "sha256": "678f701e7186db099993ac3fb5607a676f6d5a9b51b5eaa0e7430941e4d00b70",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-dark-96.png",
+      "sha256": "993e5b98b5681b58a313b6d78a89f003bcdc7238222adaa1b15076dee36cf31d",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-dark-192.png",
+      "sha256": "34e7a267833c3a83dfead2233da66743735cfc918d80cbbd38fab1ffbb5a7abd",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/check.svg",
+      "sha256": "ee7dbe858ccf8d140c0c6beca336f3736b581ea8d7c2521521d638f5043abeb3",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-96.png",
+      "sha256": "30256e8390ad1b3908c37be67a19d59cc8c4b69368f7c83f3970254edef1f09d",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-192.png",
+      "sha256": "9a3cc26240c4daa6d7f2472c371e0d2d3af0bc4b8533ff1c34821810b026c0f8",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-light.svg",
+      "sha256": "2ecc1c202bf988cc0a0a0b995b347766d1794fdd3fa512f6b2ee7a8f756d6b47",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-light-96.png",
+      "sha256": "bc71fd8253cab5acf988135a86f689c8ae192f7422c8fb671e6f98c0634ba2fd",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-light-192.png",
+      "sha256": "cfd90bc1451d291aa998c35682253268778d791daa542fc0d32cc75e4ba7bedf",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-dark.svg",
+      "sha256": "b2a3142fe29e9ee90b075e82ca3a6492cbec73dd8a89fa99b51920c0f8c00078",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-dark-96.png",
+      "sha256": "c71b42a1b123ad45b7b5a71f539ceda1ee0b2eca817febc090a797e54150fd86",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-dark-192.png",
+      "sha256": "bb85463f58290f31b1b912a09209f96e89bc7ed30bafac7a2222637160d25f8c",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio.svg",
+      "sha256": "2ecc1c202bf988cc0a0a0b995b347766d1794fdd3fa512f6b2ee7a8f756d6b47",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-96.png",
+      "sha256": "bc71fd8253cab5acf988135a86f689c8ae192f7422c8fb671e6f98c0634ba2fd",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-192.png",
+      "sha256": "cfd90bc1451d291aa998c35682253268778d791daa542fc0d32cc75e4ba7bedf",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-light.svg",
+      "sha256": "f8f33280cf3e1f7a34b640d59b58b8e3a2d0553f002ce49462a830db6f57d9a9",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-light-96.png",
+      "sha256": "bc3d4286d0248eb02aca054ffd2cb5a627a3486cfbd222d8cd9cea5a1d604e64",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-light-192.png",
+      "sha256": "2bf39ea8786c74e540efba54af96de1a6d7cb5b77e69c6a7e91ea950ca6c4a60",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-dark.svg",
+      "sha256": "13d290ed921cbfbd5ecedbaf19f3636e2215fcb6c028b65551fa21a175d0562a",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-dark-96.png",
+      "sha256": "8c37d33459cf2c12af23411267ac6c7eedefc01fd3575939d483e736cf2fe75c",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-dark-192.png",
+      "sha256": "482ddee079bff1fc679294a0b4465a1d80f90ad73401762bf0b7efbaffc6353d",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/help.svg",
+      "sha256": "f8f33280cf3e1f7a34b640d59b58b8e3a2d0553f002ce49462a830db6f57d9a9",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-96.png",
+      "sha256": "bc3d4286d0248eb02aca054ffd2cb5a627a3486cfbd222d8cd9cea5a1d604e64",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-192.png",
+      "sha256": "2bf39ea8786c74e540efba54af96de1a6d7cb5b77e69c6a7e91ea950ca6c4a60",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-light.svg",
+      "sha256": "1dfbff014228e4eb589aef52db095611a39fc82f853b43b9297704a6b2459967",
+      "theme": "light",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-light-96.png",
+      "sha256": "3989c28625d29d4365d21f1a28c45fa7294fdf2b740ca4db77ce5e7a3d1fd82e",
+      "pixels": 96,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-light-192.png",
+      "sha256": "c37a9393e11edbfd23e37c97163e683f928ba33312473835229a4d4b5673a489",
+      "pixels": 192,
+      "theme": "light",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-dark.svg",
+      "sha256": "9d646e4cbded64b5c2ad7e25d5ccd9bdf9e910e2467790c5b318bd33ded69884",
+      "theme": "dark",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-dark-96.png",
+      "sha256": "6bd567bfcedf9a5f5b1eddc360a90d323a304fe305826d1fbb9bf041b8c85125",
+      "pixels": 96,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-dark-192.png",
+      "sha256": "34ea2d839cf1e9b5c7ff4552beaf5dd5509dc0e3bba77774a94a9a26bcf2218b",
+      "pixels": 192,
+      "theme": "dark",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools.svg",
+      "sha256": "1dfbff014228e4eb589aef52db095611a39fc82f853b43b9297704a6b2459967",
+      "theme": "default",
+      "format": "svg"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-96.png",
+      "sha256": "3989c28625d29d4365d21f1a28c45fa7294fdf2b740ca4db77ce5e7a3d1fd82e",
+      "pixels": 96,
+      "theme": "default",
+      "format": "png"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-192.png",
+      "sha256": "c37a9393e11edbfd23e37c97163e683f928ba33312473835229a4d4b5673a489",
+      "pixels": 192,
+      "theme": "default",
+      "format": "png"
+    }
+  ]
+}

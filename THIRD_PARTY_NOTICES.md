@@ -2,6 +2,14 @@
 
 本文件仅说明实际进入本仓库的第三方内容；原创部分继续适用[OWNERSHIP](OWNERSHIP.md)，不因托管而获得开放许可。
 
+2026-10-10新像素原生程序实际使用SDL3/bgfx/RmlUi/FreeType、Unicode、GSHHG和以下Fusion Pixel字体。旧PBR/海洋/MakeHuman/serif记录保留为历史来源，不能视为新运行依赖。
+
+## Fusion Pixel 街机像素字体
+
+官方来源：[TakWolf/fusion-pixel-font](https://github.com/TakWolf/fusion-pixel-font)，固定2026.07.20版、commit `c29615e1f629c6bb27dac3e6dcaa4556e629d09f`。使用未改字节的12px proportional简体中文OTF，覆盖本批中英德UI；运行时别名Sonn Arcade不修改字体文件。原始字节经确定性gzip保存并按原始SHA恢复。
+
+完整OFL-1.1与各贡献字体通知见[Fusion Pixel通知](assets/source/ui/fonts/fusion-pixel/NOTICE.md)，源归档/member/原始及压缩SHA见[字体锁](assets/manifests/arcade_fonts.json)。字体随分发携带许可，不单独出售或授予原创游戏内容开放许可。
+
 ## Hex-Tiling 算法源
 
 - 来源：[mmikk/hextile-demo](https://github.com/mmikk/hextile-demo)，固定 commit `43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3`，Copyright (c) 2022 mmikk。

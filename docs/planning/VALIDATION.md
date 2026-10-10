@@ -1,5 +1,7 @@
 # v0.9验收边界与贯穿场景
 
+2026-10-10补充：新S00/S01原生程序的开发机生产切片已通过统一全目标构建、完整CTest、ASan/UBSan与真实Metal GPU贯穿流程，见[S00/S01本批报告](S00_S01_NATIVE_DELIVERY.md)。以下ADR0018结果保持原来的设计/有限模型口径，不继承为新程序完成度；Windows GPU和Steam仍待独立验证。
+
 当前ADR0018统一入口`python3 tools/validate_design.py`；ADR0015—0017报告是对应历史快照，不能在当前版本运行其历史断言并冒称通过。
 
 本批四个新增模型为world_runtime、emergence_life_combat、content_bootstrap、interaction_schema；结果写DESIGN_AUDIT_ADR0018。历史未改模型核对精确源hash后复用有限旧结果。统一检查权威合同、运行定义、八档固定高度/无自然身份/无过渡、冷兵器起步和枪炮研究制造链、19species/61traits消费者、408科技DAG和效果目标、商品配方/首口粮工具衣屋/货币对手账、全域tick、保存拒绝、页面字段Schema与三语。

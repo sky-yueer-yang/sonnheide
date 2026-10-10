@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""Single native batch: prepare → configure → build ALL → complete CTest (optionally instrumented)."""
+import argparse
+import hashlib
+import uuid
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import prepare_sources
+ROOT=Path(__file__).resolve().parents[1]
+BUILD=ROOT/'.build'
+
+def call(args,log=None):
+    print(' '.join(str(x) for x in args),flush=True)
+    result=subprocess.run([str(x) for x in args],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT if log else None)
+    if result.returncode: raise SystemExit(result.returncode)
+
+def copy_changed(src,dst):
+    dst.parent.mkdir(parents=True,exist_ok=True)
+    if not dst.exists() or src.read_bytes()!=dst.read_bytes():shutil.copy2(src,dst)
+
+def runtime():
+    prepare_sources.prepare()
+    for source,target in [(ROOT/'assets/ui',BUILD/'runtime/ui'),(ROOT/'assets/generated',BUILD/'runtime/generated'),(ROOT/'data/contracts',BUILD/'runtime/data/contracts'),(ROOT/'data/content',BUILD/'runtime/data/content')]:
+        for p in source.rglob('*'):
+            if p.is_file():copy_changed(p,target/p.relative_to(source))
+    for historical in ['branding','paintings']:
+        shutil.rmtree(BUILD/'runtime'/historical,ignore_errors=True)
+    for p in (ROOT/'assets/shaders').glob('*'):
+        if p.is_file():copy_changed(p,BUILD/'runtime/shader-source'/p.name)
+    copy_changed(ROOT/'src/client/client.cpp',BUILD/'runtime/recipes/pixel_surfaces.cpp')
+    # Immutable presentation pack is separate from authoritative definition hash.
+    asset_files=[]
+    for directory in ['ui','generated','fonts','shader-source','recipes']:
+        asset_files.extend(p for p in (BUILD/'runtime'/directory).rglob('*') if p.is_file() and not p.name.endswith('.admitted.json'))
+    asset_manifest={'format':'SonnAssets1','files':[{'path':p.relative_to(BUILD/'runtime').as_posix(),'sha256':prepare_sources.digest(p)} for p in sorted(asset_files,key=lambda x:x.relative_to(BUILD/'runtime').as_posix())]}
+    canonical_assets=json.dumps(asset_manifest,sort_keys=True,separators=(',',':'))
+    (BUILD/'runtime/assets.json').write_text(canonical_assets+'\n', encoding="utf-8")
+    definition_manifest=json.loads((BUILD/'runtime/definitions.json').read_text(encoding="utf-8"))
+    canonical_definitions=json.dumps(definition_manifest,sort_keys=True,separators=(',',':'))
+    admitted='set(SONN_DEFINITION_SHA "'+hashlib.sha256(canonical_definitions.encode()).hexdigest()+'")\nset(SONN_ASSET_SHA "'+hashlib.sha256(canonical_assets.encode()).hexdigest()+'")\n'
+    metadata=BUILD/'runtime/admitted_hashes.cmake'
+    if not metadata.exists() or metadata.read_text(encoding="utf-8")!=admitted:metadata.write_text(admitted, encoding="utf-8")
+    # Historical paintings/branding remain in source control, outside the new arcade runtime.
+
+def bundle():
+    package=BUILD/'package/Sonnheide'
+    if package.exists():shutil.rmtree(package)
+    package.mkdir(parents=True)
+    executable=BUILD/'native'/('RelWithDebInfo/sonnheide.exe' if os.name=='nt' else 'sonnheide')
+    shutil.copy2(executable,package/executable.name)
+    shutil.copytree(BUILD/'runtime',package/'runtime',ignore=shutil.ignore_patterns('*.admitted.json','admitted_hashes.cmake'))
+    shutil.copy2(ROOT/'THIRD_PARTY_NOTICES.md',package/'THIRD_PARTY_NOTICES.md')
+    shutil.copy2(ROOT/'OWNERSHIP.md',package/'OWNERSHIP.md')
+    shutil.copytree(ROOT/'third_party/native',package/'notices/third_party/native')
+    shutil.copytree(ROOT/'third_party/unicode',package/'notices/third_party/unicode')
+    shutil.copytree(ROOT/'data/geo/sources/gshhg',package/'notices/gshhg')
+    shutil.copytree(ROOT/'assets/source/ui/fonts/fusion-pixel',package/'notices/fusion-pixel',ignore=shutil.ignore_patterns('*.gz'))
+    print('Self-contained native package:',package,flush=True)
+
+def main():
+    ap=argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--sanitize',action='store_true',help='Instrument core/app and run the complete suite once')
+    ap.add_argument('--jobs',type=int,default=min(8,os.cpu_count() or 2))
+    ap.add_argument('--native-smoke',action='store_true',help='Run real native GPU flow, requires interactive desktop')
+    ap.add_argument('--bundle',action='store_true',help='Package the executable and admitted resources after acceptance')
+    a=ap.parse_args()
+    runtime()
+    cmake=shutil.which('cmake')
+    if not cmake and sys.platform=='darwin':cmake=str(BUILD/'toolchain/cmake/CMake.app/Contents/bin/cmake')
+    if not cmake:raise SystemExit('Install CMake3.20+ on Windows, then rerun the same entry point.')
+    ctest=Path(cmake).with_name('ctest')
+    modes=['native']
+    for mode in modes:
+        dest=BUILD/mode;dest.mkdir(parents=True,exist_ok=True)
+        call([cmake,'-S',ROOT,'-B',dest,'-DCMAKE_BUILD_TYPE=RelWithDebInfo','-DSONN_SANITIZERS='+('ON' if a.sanitize else 'OFF')])
+        # The all target includes application, complete tests, dependencies and shaders once.
+        log=dest/'build.log'
+        with log.open('w') as f:
+            try:call([cmake,'--build',dest,'--config','RelWithDebInfo','--parallel',str(max(1,a.jobs))],f)
+            except SystemExit:
+                print(log.read_text(errors='replace', encoding="utf-8")[-18000:]);raise
+        print('All native targets built; log:',log,flush=True)
+        call([ctest,'--test-dir',dest,'-C','RelWithDebInfo','--output-on-failure'])
+    if a.bundle:bundle()
+    if a.native_smoke:
+        exe=(BUILD/'package/Sonnheide'/('sonnheide.exe' if os.name=='nt' else 'sonnheide')) if a.bundle else BUILD/'native'/('RelWithDebInfo/sonnheide.exe' if os.name=='nt' else 'sonnheide')
+        evidence=BUILD/'evidence'/('native-'+uuid.uuid4().hex[:12])
+        call([exe,'--smoke-test','--saves',BUILD/'evidence'/('smoke-saves-'+uuid.uuid4().hex[:12]),'--evidence',evidence])
+        report=evidence/'native-flow.json'
+        if not report.is_file():raise SystemExit('Native GPU flow did not produce a completion report: '+str(evidence))
+        flow=json.loads(report.read_text(encoding="utf-8"))
+        if flow.get('status')!='pass' or 'exit-durable-readback' not in flow.get('actions',[]):raise SystemExit('Native flow did not prove the final exit checkpoint.')
+        required=['main-menu','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','earth-map','earth-preview','earth-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
+        if any(not (evidence/(name+'.tga')).is_file() for name in required):raise SystemExit('Native screenshot evidence is incomplete: '+str(evidence))
+        camera=evidence/'camera-input.json'
+        if not camera.is_file() or json.loads(camera.read_text(encoding="utf-8")).get('status')!='pass':raise SystemExit('Actual SDL camera and core pick acceptance missing.')
+        (BUILD/'evidence/latest-native.json').write_text(json.dumps({'directory':str(evidence),'status':'pass'},indent=2)+'\n', encoding="utf-8")
+        print('Native GPU acceptance completed:',evidence,flush=True)
+if __name__=='__main__':main()

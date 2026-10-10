@@ -52,3 +52,15 @@ third_party/hextile/UPSTREAM.json text eol=lf
 
 # Preserve byte-locked original GSHHG license and documentation (including CRLF).
 data/geo/sources/gshhg/** -text
+
+# Bounded original UI icons ship in Git; their author recipe and hashes are tracked.
+assets/generated/ui/icons/*.png -filter -diff -merge -text
+*.tsv text eol=lf
+*.inc text eol=lf
+third_party/unicode/LICENSE.txt -text
+assets/source/ui/fonts/fusion-pixel/*.gz -filter -diff -merge -text
+assets/source/ui/fonts/fusion-pixel/OFL.txt -text
+assets/source/ui/fonts/fusion-pixel/LICENSES/** -text
+# Three bounded native GPU proof images; never a local save or generated cache.
+docs/evidence/s00-s01-arcade/*.png -filter -diff -merge -text
+*.command text eol=lf

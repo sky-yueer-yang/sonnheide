@@ -1,6 +1,8 @@
 # Sonnheide engineering constraints
 
-当前规范：2026-10-09，v0.9/ADR0018。入口 docs/design/Sonnheide_Design_v0.9_Executable_Rules.md、data/contracts/game_v0_9.json 及runtime/emergence/interaction合同和data/content运行定义。普通地形八档固定高度，无岸线/外缘过渡；坡道为唯一连续面例外；自然山海湖无实体身份/命名/谱系。开局冷兵器，枪炮后期实际研究制造装备。20tick/运动秒、12000tick/游戏日。原v0.6逐字保留，历史文档不当当前默认。当前有设计/数据与Python有限参考算法，**没有原生游戏或C++构建入口，生产阶段未开始**；不得恢复旧程序或以历史证据冒充试玩。
+当前规范：2026-10-09，v0.9/ADR0018。入口 docs/design/Sonnheide_Design_v0.9_Executable_Rules.md、data/contracts/game_v0_9.json 及runtime/emergence/interaction合同和data/content运行定义。普通地形八档固定高度，无岸线/外缘过渡；坡道为唯一连续面例外；自然山海湖无实体身份/命名/谱系。开局冷兵器，枪炮后期实际研究制造装备。20tick/运动秒、12000tick/游戏日。原v0.6逐字保留，历史文档不当当前默认。S00/S01新原生实现正在施工，入口tools/build.py；验收结果见本批报告，未测不称通过；不得恢复旧程序或以历史证据冒充试玩。
+
+最新美术要求（2026-10-10）：世界与UI禁止任何颜色描边，使用自然光影；UI不得用绿色/紫色。高分辨率像素及原创代码生成填充图标，主页本批只完成功能按钮，精修后续，其余界面按docs/design/FRONTEND_ART_DIRECTION.md。
 
 1. 自研C++20框架，不用游戏引擎；唯一Steam发行。Metal只开发验证，CI/NullRenderer不代替Windows GPU/Steam实机。独立开源库先核验官方许可/版本/hash/架构理由，可分发原件/配方/manifest/notices入GitHub/GitLFS/Releases；不擅授原创内容开源许可。Python工具3.9+标准库默认。
 2. 拆解真正的不变量/瓶颈/因果依赖，用户明确要求多个subagent深挖独立高风险边界，划分文件所有权并交叉审查；不靠更名、改问法、堆空类或换库冒充推进。
@@ -35,3 +37,7 @@
 
 29. ADR0018：life_profiles唯一生理/危险/伤势计算所有者，combat只提交hit/impulse，economy不复制科研进度；emergence唯一文化/语言/亚种创生计算。Ref经alias归一保持同Actor。各域同tick按runtime_foundation全域phases结算死亡/遗产/继任一次。
 30. 当前统一规格/模型验收`python3 tools/validate_design.py`，仅验证具体有限状态与算式，不证明原生3D/长期经济/容量/Steam实机。尚未创建C++工程前不伪造build/CTest/sanitizer通过。
+
+24. 最新前端按2026-10-10用户要求：文字除外几乎全部像素风；像素面板/控件/图标必须真阶梯实心几何与整数像素，禁止任何颜色描边、border/outline/ring。Light UI深蓝/白/暖红(微暖金中性)，Darkness黑/白/#ffaa00；由真实World/preview Age驱动，无独立UI时钟，UI禁绿紫。主页只交五项纯文字按钮和流程，美化后续；其余S00/S01要完成高分辨率美感与GPU实证，见FRONTEND_ART_DIRECTION。
+
+25. 2026-10-10再次明确覆盖旧网站式构图：所有前端彻底复古老式街机像素化，包括主页与三语字，Fusion Pixel 12px整数倍；主页大像素SONNHEIDE/五项实体文字按钮/原创3D方块背景，油画Logo原件保留但旧呈现不覆盖最新要求。世界按Minecraft式原创方块像素tiles/顶侧色簇/简单方向光/硬阴影/蓝像素水/几何方块云，不写实PBR、反光、波法线、柔云或灰雾；不复制Minecraft资源。全屏高分辨率，无任何描边。
