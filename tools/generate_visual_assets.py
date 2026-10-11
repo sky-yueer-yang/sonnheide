@@ -42,6 +42,7 @@ def ramp(family):
                  recipes)
 B,R,W,G,S,T,C,F,L=[ramp(name) for name in ('blue','red','white','yellow','stone','wood','copper','skin','green')]
 INK=pigment('ink')
+GLYPH_COLOUR='#fff6df'
 
 class Sprite:
     def __init__(self): self.grid=[[None for _ in range(GRID)] for _ in range(GRID)]
@@ -356,6 +357,75 @@ BUILDERS={
     'arrow-left':lambda:arrow('left'),'arrow-right':lambda:arrow('right'),'arrow-up':lambda:arrow('up'),'arrow-down':lambda:arrow('down'),
 }
 for _name in CATEGORY_ICONS: BUILDERS['tab-'+_name]=BUILDERS[_name]
+# The persistent controls and category marks are original flat glyphs. Their
+# single warm-white pigment is independent of the retained coloured objects.
+BUILDERS['toolbar-speed']=lambda:Sprite()
+BUILDERS['toolbar-age']=lambda:Sprite()
+FLAT_GLYPHS={'tab-'+name for name in CATEGORY_ICONS} | {'play','pause','toolbar-speed','toolbar-age'}
+
+def flat_glyph(name):
+    s=Sprite();p=GLYPH_COLOUR
+    if name=='tab-camera':
+        s.polygon(((3,14),(11,6),(20,3),(28,3),(38,8),(45,14),(38,20),(28,25),(20,25),(10,20)),p)
+        s.polygon(((8,14),(14,9),(21,7),(27,7),(35,10),(40,14),(35,18),(27,21),(21,21),(14,18)),None)
+        s.disk(24,14,6,p);s.rect(22,11,3,3,None)
+    elif name=='tab-terrain':
+        s.polygon(((3,25),(14,7),(22,18),(29,3),(45,25)),p)
+        s.polygon(((14,12),(10,19),(14,17),(18,21)),None)
+        s.polygon(((29,8),(24,20),(29,16),(36,23)),None)
+        s.rect(4,24,40,2,p)
+    elif name=='tab-people':
+        s.disk(13,7,4,p)
+        s.rect(10,10,6,3,p)
+        s.polygon(((4,25),(5,18),(10,14),(16,14),(22,18),(23,25)),p)
+        s.polygon(((27,10),(26,3),(33,7),(37,7),(43,3),(42,13),(43,20),(40,25),(28,25),(25,20)),p)
+        s.rect(29,12,3,3,None);s.rect(38,12,3,3,None)
+        s.polygon(((32,18),(38,18),(35,22)),None)
+    elif name=='tab-laws':
+        s.polygon(((3,6),(13,12),(24,3),(35,12),(45,6),(41,23),(7,23)),p)
+        s.rect(11,17,26,3,None);s.rect(7,24,34,2,p)
+        s.rect(22,10,4,4,None)
+    elif name=='tab-buildings':
+        s.polygon(((3,14),(15,4),(27,14)),p)
+        s.rect(6,14,18,12,p);s.rect(12,19,5,7,None)
+        s.rect(8,15,3,3,None);s.rect(19,15,3,3,None)
+        s.polygon(((25,16),(34,8),(45,16)),p)
+        s.rect(28,16,14,10,p);s.rect(32,20,5,6,None)
+        s.rect(38,5,4,8,p)
+    elif name=='tab-economy':
+        for cx,top in ((10,16),(24,10),(37,4)):
+            for y in range(top,24,5):
+                s.disk(cx,y+1,6,p,ry=2)
+                s.rect(cx-6,y+1,13,2,p)
+        s.rect(4,25,40,1,p)
+    elif name=='tab-world':
+        s.disk(24,14,21,p,ry=11);s.disk(24,14,18,None,ry=8)
+        s.disk(24,14,9,p,ry=10);s.disk(24,14,6,None,ry=8)
+        s.rect(4,12,40,3,p)
+    elif name=='tab-settings':
+        for y,knob in ((5,13),(13,34),(21,23)):
+            s.rect(4 if y==5 else 3,y,40 if y==5 else 42,3,p)
+            s.rect(knob-3,y-2,7,7,p)
+            s.rect(knob-1,y,3,3,None)
+    elif name=='play':
+        s.polygon(((13,5),(40,24),(13,43)),p)
+    elif name=='pause':
+        s.rect(12,7,8,34,p);s.rect(28,7,8,34,p)
+    elif name=='toolbar-speed':
+        s.rect(10,4,28,5,p);s.rect(10,39,28,5,p)
+        s.polygon(((13,9),(35,9),(33,17),(27,24),(33,31),(35,39),(13,39),(15,31),(21,24),(15,17)),p)
+        s.polygon(((18,11),(30,11),(29,16),(24,21),(19,16)),None)
+        s.polygon(((18,36),(19,32),(24,27),(29,32),(30,36)),None)
+        s.rect(23,27,2,7,p);s.polygon(((18,36),(24,32),(30,36)),p)
+    elif name=='toolbar-age':
+        # One sun and one crescent, sharing a single flat pigment rather than
+        # a surrounding button disc. The geometry leaves generous air between.
+        s.disk(14,23,7,p)
+        for x,y,w,h in ((12,10,4,5),(12,31,4,5),(1,21,5,4),(22,21,5,4),(4,13,4,4),(4,30,4,4),(21,13,4,4),(21,30,4,4)):
+            s.rect(x,y,w,h,p)
+        s.disk(35,23,11,p,ry=15);s.disk(40,18,9,None,ry=12)
+    else:raise ValueError('Unknown original flat glyph: '+name)
+    return s.grid[:28] if name.startswith('tab-') else s.grid
 BRIEFS={
     'world':('Enamel celestial globe in a brass armillary',('enamel','brass','walnut')),
     'earth':('Hand-painted blue terrestrial sphere',('water enamel','land enamel')),
@@ -392,6 +462,20 @@ BRIEFS={
     'arrow-down':('Cast brass south-pointing direction arrow',('brass',)),
 }
 for _name in CATEGORY_ICONS: BRIEFS['tab-'+_name]=BRIEFS[_name]
+for _name,_brief in {
+    'tab-camera':'Broad watchful eye for observation',
+    'tab-terrain':'Wide mountain and hill range for terrain and ecology',
+    'tab-people':'Human bust beside an alert animal for living beings',
+    'tab-laws':'Low broad crown for civilization and governance',
+    'tab-buildings':'Two adjoining pitched-roof houses for construction',
+    'tab-economy':'Three graduated stacks of coins for economy',
+    'tab-world':'Wide meridian globe for the world',
+    'tab-settings':'Three broad adjustable sliders for settings',
+    'play':'Single solid play triangle with no enclosing disc',
+    'pause':'Two solid pause bars with no enclosing disc',
+    'toolbar-speed':'Simple hourglass with real transparent glass cutouts',
+    'toolbar-age':'Sun and crescent paired for the two Ages',
+}.items():BRIEFS[_name]=(_brief,('warm-white flat pigment',))
 
 def chunk(kind,body): return struct.pack('>I',len(body))+kind+body+struct.pack('>I',zlib.crc32(kind+body)&0xffffffff)
 def png(width,height,rgba):
@@ -496,6 +580,7 @@ def heavy_layout(sprite):
     sprite.outline(radius=2)
 
 def build_icon(name):
+    if name in FLAT_GLYPHS:return flat_glyph(name)
     sprite=BUILDERS[name]()
     # Wax mark must be applied after carving the wider inset ring, so its
     # actual cross/check remains visible and cannot be overwritten by a style.
@@ -540,6 +625,18 @@ def final_key_features(name,grid):
     return features
 
 def validate_grid(name,grid):
+    if name in FLAT_GLYPHS:
+        height=28 if name.startswith('tab-') else 48
+        if len(grid)!=height or any(len(row)!=GRID for row in grid):raise ValueError(name+': flat glyph dimensions')
+        opaque=[(x,y) for y,row in enumerate(grid) for x,value in enumerate(row) if value is not None]
+        if not opaque or {value for row in grid for value in row if value is not None}!={GLYPH_COLOUR}:raise ValueError(name+': one warm-white pigment required')
+        bounds=[min(x for x,y in opaque),min(y for x,y in opaque),max(x for x,y in opaque),max(y for x,y in opaque)]
+        if bounds[0]<1 or bounds[1]<1 or bounds[2]>=GRID-1 or bounds[3]>=height-1:raise ValueError(name+': glyph clipped transparency margin')
+        if name.startswith('tab-') and (bounds[2]-bounds[0]<35 or bounds[3]-bounds[1]>24):raise ValueError(name+': category glyph must be wide and flat')
+        return {'style':'flat_warm_white','logical_size':[GRID,height],'bounds_cells':bounds,
+                'width_fraction':(bounds[2]-bounds[0]+1)/GRID,'height_fraction':(bounds[3]-bounds[1]+1)/height,
+                'visible_fraction':len(opaque)/(GRID*height),'material_colour_count':1,'two_cell_exterior_verified':False,
+                'external_outline_cells':0,'colour':GLYPH_COLOUR,'key_line_features':[]}
     if len(grid)!=GRID or any(len(row)!=GRID for row in grid): raise ValueError(name+': logical dimensions')
     occupied=[(x,y) for y,row in enumerate(grid) for x,value in enumerate(row) if value is not None]
     if not occupied: raise ValueError(name+': empty object')
@@ -582,34 +679,36 @@ def encode_svg(grid):
             while end<GRID and row[end]==value: end+=1
             if value is not None: rectangles.append('<rect x="%d" y="%d" width="%d" height="1" fill="%s"/>'%(x,y,end-x,value))
             x=end
-    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" shape-rendering="crispEdges">'+''.join(rectangles)+'</svg>\n').encode('utf-8')
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 %d" shape-rendering="crispEdges">'%len(grid)+''.join(rectangles)+'</svg>\n').encode('utf-8')
 def encode_png(grid,size):
     if size%GRID or size<GRID: raise ValueError('Exact integer export size required')
     scale=size//GRID
-    data=bytes(channel for y in range(size) for x in range(size) for channel in ((*rgb(grid[y//scale][x//scale]),255) if grid[y//scale][x//scale] is not None else (0,0,0,0)))
-    return png(size,size,data)
+    height=len(grid)*scale
+    data=bytes(channel for y in range(height) for x in range(size) for channel in ((*rgb(grid[y//scale][x//scale]),255) if grid[y//scale][x//scale] is not None else (0,0,0,0)))
+    return png(size,height,data)
 def write_changed(path,body,check=False):
     if not path.exists() or path.read_bytes()!=body:
         if check: raise ValueError('Generated artwork differs: '+str(path.relative_to(ROOT)))
         path.write_bytes(body)
 def generate(check=False):
-    if len(BUILDERS)!=41 or set(BUILDERS)!=set(BRIEFS): raise ValueError('Exactly the 41 consumed original UI objects required')
+    if len(BUILDERS)!=43 or set(BUILDERS)!=set(BRIEFS): raise ValueError('Exactly43 original UI objects and toolbar glyphs required')
     if not check: OUT.mkdir(parents=True,exist_ok=True)
     outputs,objects,expected=[],{},set()
     for name in BUILDERS:
         grid=build_icon(name);detail=validate_grid(name,grid)
-        detail.update({'object':BRIEFS[name][0],'materials':list(BRIEFS[name][1]),'transparent_background':True,'full_frame_background':False,'lighting':'registered discrete material clusters; no blur or antialiasing'})
+        detail.update({'object':BRIEFS[name][0],'materials':list(BRIEFS[name][1]),'transparent_background':True,'full_frame_background':False,'lighting':'single flat warm-white pigment' if name in FLAT_GLYPHS else 'registered discrete material clusters; no blur or antialiasing'})
+        palette='original_flat_warm_white' if name in FLAT_GLYPHS else PALETTE_ID
         objects[name]=detail;body=encode_svg(grid);path=OUT/(name+'.svg');write_changed(path,body,check);expected.add(path.name)
-        outputs.append({'path':path.relative_to(ROOT).as_posix(),'sha256':hashlib.sha256(body).hexdigest(),'palette':PALETTE_ID,'format':'svg','object':name})
+        outputs.append({'path':path.relative_to(ROOT).as_posix(),'sha256':hashlib.sha256(body).hexdigest(),'palette':palette,'format':'svg','object':name})
         for size in (96,192):
             body=encode_png(grid,size);path=OUT/('%s-%d.png'%(name,size));write_changed(path,body,check);expected.add(path.name)
-            outputs.append({'path':path.relative_to(ROOT).as_posix(),'sha256':hashlib.sha256(body).hexdigest(),'pixels':size,'palette':PALETTE_ID,'format':'png','object':name})
+            outputs.append({'path':path.relative_to(ROOT).as_posix(),'sha256':hashlib.sha256(body).hexdigest(),'pixels':size,'width':size,'height':len(grid)*size//GRID,'palette':palette,'format':'png','object':name})
     for path in OUT.iterdir():
         if path.is_file() and path.suffix in ('.svg','.png') and path.name not in expected:
             if check: raise ValueError('Obsolete generated artwork: '+path.name)
             path.unlink()
     manifest={
-        'format':'SonnOriginalIcons9','author':'Sonnheide project','license':'Original project artwork; no public license granted',
+        'format':'SonnOriginalIcons10','author':'Sonnheide project','license':'Original project artwork; no public license granted',
         'recipe':'tools/generate_visual_assets.py','recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'stroke':True,'external_frame':False,'logical_grid':GRID,'scaling':'nearest_integer','alpha':'binary',
         'edge_recipe':{'outer_dark_cells':2,'primary_key_lines_cells':2,'white_contour_cells':0,
@@ -624,9 +723,11 @@ def generate(check=False):
         'pigment_recipe':'base_times_shade_then_linear_white_tint_round_half_up','pigment_derivatives':dict(sorted(PIGMENT_RECIPES.items())),
         'yellow_base':'#ffaa00','yellow_recipe':'shade_then_linear_white_tint_round_half_up',
         'yellow_derivatives':{value:{'shade':r['shade'],'tint':r['white_tint']} for value,r in sorted(PIGMENT_RECIPES.items()) if r['base']=='yellow'},
-        'themes':[],'category_icons':['tab-'+n for n in CATEGORY_ICONS],'category_style':'physical_pixel_object','objects':objects,'outputs':outputs,
+        'themes':[],'category_icons':['tab-'+n for n in CATEGORY_ICONS],'category_style':'wide_flat_warm_white',
+        'flat_glyphs':sorted(FLAT_GLYPHS),'flat_glyph_colour':GLYPH_COLOUR,'category_logical_size':[48,28],
+        'objects':objects,'outputs':outputs,
     }
     write_changed(ROOT/'assets/manifests/original_ui_icons.json',(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode('utf-8'),check)
-    print('Verified' if check else 'Generated','41 original physical pixel objects; 123 exact SVG/PNG outputs')
+    print('Verified' if check else 'Generated','31 original coloured objects and12 flat glyphs;129 exact SVG/PNG outputs')
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');generate(parser.parse_args().check)

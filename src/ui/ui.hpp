@@ -48,7 +48,7 @@ struct WorldView {
     std::string name;
     std::uint64_t day = 0, cells = 0, dry_cells = 0;
     bool paused = false;
-    int speed = 1;
+    double speed = 1;
     bool darkness = false, automatic_age = false;
     std::uint64_t age_ticks_remaining = 0;
     bool dirty = false;
@@ -99,6 +99,7 @@ private:
     void refresh();
     void layout();
     void focus_underlying_controls();
+    const char* modal_panel() const;
     void update_creation_scale();
     void emit(ActionKind kind,const std::string& text={},double a=0,double b=0,double c=0,double d=0);
     std::string text(const std::string& key) const;
@@ -106,6 +107,7 @@ private:
     std::string loaded_saves_signature_;
     std::string local_error_;
     std::string pending_focus_;
+    std::string world_return_focus_="world-info";
     bool valid_creation_inputs() const;
     void input_changed(const std::string& id,const std::string& value);
     Rml::Context* context_=nullptr;
@@ -114,6 +116,7 @@ private:
     View view_;
     std::vector<Action> actions_;
     bool settings_open_=false,world_open_=false,help_open_=false,controls_open_=true;
+    bool speed_open_=false,age_open_=false;
     bool syncing_controls_=false;
     bool error_details_open_=false;
     float outline_density_=0;

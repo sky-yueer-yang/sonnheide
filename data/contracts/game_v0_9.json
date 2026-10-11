@@ -42,7 +42,7 @@
     "python_tools": "3.9+_standard_library_default",
     "current_runtime_exists": true,
     "implemented_slice": "S00_S01_blank_creation_native_pixel_foundation_and_arcade_UI",
-    "verification_record": "docs/planning/DARK_STONE_DELIVERY.md"
+    "verification_record": "docs/planning/COMPACT_TOOLBAR_DELIVERY.md"
   },
   "scope": {
     "world_creation": [
@@ -219,7 +219,27 @@
     "speed_multiplier_changes_wall_time_only": true,
     "calibration_required": "real_route_labor_food_combat_and_fast_forward_before_capacity_claim",
     "calendar_hour_ticks": 500,
-    "motion_seconds_per_calendar_day": 600
+    "motion_seconds_per_calendar_day": 600,
+    "local_speed_preference": "integer_half_steps_not_saved_in_world",
+    "speed_change_preserves_pause": true,
+    "local_speed_half_steps": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      10,
+      20
+    ],
+    "local_speed_labels": [
+      "0.5",
+      "1",
+      "1.5",
+      "2",
+      "3",
+      "5",
+      "10"
+    ]
   },
   "algorithm_amendment": {
     "decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
@@ -335,5 +355,5 @@
     "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
     "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
   },
-  "latest_frontend_decision": "docs/decisions/0025-dark-stone-ui-surfaces.md"
+  "latest_frontend_decision": "docs/decisions/0026-compact-two-row-toolbar.md"
 }

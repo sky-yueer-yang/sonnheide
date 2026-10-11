@@ -8737,23 +8737,25 @@
       "payload_schema": {
         "type": "object",
         "properties": {
-          "speed": {
+          "speed_half_steps": {
             "type": "integer",
             "enum": [
-              0,
               1,
+              2,
+              3,
               4,
-              16,
-              64
+              6,
+              10,
+              20
             ]
           }
         },
         "required": [
-          "speed"
+          "speed_half_steps"
         ],
         "additionalProperties": false
       },
-      "guard": "wallclock_rate_only_pause_freezes_all_authoritative_time",
+      "guard": "wallclock_rate_only_multiplier_equals_half_steps_divided_by_two_preserves_pause_and_fractional_tick_debt",
       "handler_implemented": false,
       "single_writer": true
     },

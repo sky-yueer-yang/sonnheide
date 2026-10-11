@@ -110,13 +110,27 @@ def main():
         if flow.get('status')!='pass' or 'exit-durable-readback' not in flow.get('actions',[]):raise SystemExit('Native flow did not prove the final exit checkpoint.')
         required=['main-menu','main-menu-motion','main-menu-frozen-a','main-menu-frozen-b','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','creation-centered','creation-options-centered','sea-preview','land-preview','blank-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
         required += ['toolbar-'+name for name in ['observe','terrain','life','civilization','construction','economy','world','settings']]
-        required += ['physical-help','physical-save-ledger']
+        required += ['physical-help','physical-save-ledger','speed-popup','age-page','age-page-darkness']
         if any(not (evidence/(name+'.tga')).is_file() for name in required):raise SystemExit('Native screenshot evidence is incomplete: '+str(evidence))
         physical=json.loads((evidence/'physical-ui-gpu.json').read_text(encoding='utf-8'))
         if (physical.get('ui_material_textures_uploaded')!=2 or physical.get('ui_material_families')!=['obsidian','rock'] or
             physical.get('ui_icon_textures_uploaded',0)<20 or
             physical.get('ui_material_sampling')!='nearest' or physical.get('ui_icon_sampling')!='nearest' or physical.get('minimum_logical_size')!=[480,480]):
             raise SystemExit('Actual native texture upload and point sampling acceptance missing.')
+        toolbar=json.loads((evidence/'toolbar-controls.json').read_text(encoding='utf-8'))
+        expected_controls={'pause','speed-toggle','age-open','world-inspector-open'}
+        groups=toolbar.get('fixed_controls_across_sections',[])
+        if (toolbar.get('status')!='pass' or toolbar.get('two_rows') is not True or toolbar.get('separator') is not True or
+            toolbar.get('selected_speed_half_steps')!=[1,2,3,4,6,10,20] or
+            toolbar.get('speed_selection_preserves_pause') is not True or
+            toolbar.get('fractional_speed_preferences_roundtrip') is not True or
+            toolbar.get('play_advances_authoritative_ticks') is not True or
+            toolbar.get('age_commands_preserve_paused_ticks') is not True or len(groups)!=8 or
+            any({entry.get('id') for entry in group.get('controls',[])}!=expected_controls for group in groups)):
+            raise SystemExit('Actual fixed toolbar, fractional speeds and dedicated Age page acceptance missing.')
+        age_commands=toolbar.get('age_commands',[])
+        if [entry.get('action') for entry in age_commands]!=['auto','darkness','light','auto','manual']:
+            raise SystemExit('Native Age page command sequence incomplete.')
         camera=evidence/'camera-input.json'
         if not camera.is_file() or json.loads(camera.read_text(encoding="utf-8")).get('status')!='pass':raise SystemExit('Actual SDL camera and core pick acceptance missing.')
         creation=json.loads((evidence/'creation-ui.json').read_text(encoding='utf-8'))

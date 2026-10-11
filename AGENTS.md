@@ -1,5 +1,7 @@
 # Sonnheide engineering constraints
 
+最新覆盖：2026-10-10 / ADR0026。工具栏固定两排，左侧播放/暂停、折叠速度、Age入口与世界信息跨八分区常驻，竖线隔开右侧工具。速度七档0.5/1/1.5/2/3/5/10，整数半倍档位精确调度，选倍率不取消暂停。Age开独立居中页面保原自动/手动事务。分类页签38/42dp低矮宽肩接连续凸沿，八分类改微黄白#fff6df扁宽剪影；播放无圆圈。深灰石材及边缘裂纹保留。见docs/decisions/0026-compact-two-row-toolbar.md；本批全目标/完整CTest3/3（133.21秒）、ASan/UBSan、67操作/35实际GPU帧通过，见docs/planning/COMPACT_TOOLBAR_DELIVERY.md/json。下方58/62dp高页签、彩色分类和展开速度旧布局仅历史。
+
 最新覆盖：2026-10-10 / ADR0025。用户要求很深灰色石材统一所有弹窗/面板和大部分按钮背景，按钮/页签也有适量真实边缘裂纹；不恢复满面碎石裂缝。所有石面文字转亮暖灰，选中/focus等用同一石材明暗与文字强调，输入可保留黑曜石。连续6dp凸沿与其上58/62dp页签、原有布局三语及世界行为保留。见docs/decisions/0025-dark-stone-ui-surfaces.md；本批ALL/完整CTest3/3、ASan/UBSan、66操作/32真实GPU帧通过，证据见docs/planning/DARK_STONE_DELIVERY.md/json。下方浅奶黄和多材质背景分配仅历史。
 
 最新覆盖：2026-10-10 / ADR0024。用户纠正为微微泛黄的浅奶黄完整石碑：大面干净，边缘少量毛糙缺口或从上缘向内短裂纹，禁止暗赭黄碎岩/满面分块裂纹。原件仅浅石面，损耗按真实控件边缘制作；工具台连续6dp凸石沿+2dp温灰阴面，页签脚恰接沿顶、不挖沿不重叠。浅石文字深棕、标题深红实粗体，禁止黄白描边；其它8材质与41图标原件字节不变。见docs/decisions/0024-pale-stone-tablet-interface.md；本批ALL/完整CTest3/3、ASan/UBSan、66操作/32真实GPU帧已通过；证据见docs/planning/STONE_TABLET_DELIVERY.md/json。下方石材和旧暗底文字规则仅历史，其余世界与交互约束有效。

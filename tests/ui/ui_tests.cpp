@@ -229,9 +229,9 @@ void material_geometry_contract() {
         }
         require(centre_layers==1,"Material colour at the centre must be painted once, without a hidden repeated opacity shell");
         for(const auto& v:panel.vertices) require(v.position.x==std::round(v.position.x) && v.position.y==std::round(v.position.y) && v.tex_coord.x>=0 && v.tex_coord.x<=1 && v.tex_coord.y>=0 && v.tex_coord.y<=1,"Material silhouette and tile seams must retain exact whole raster edges and admitted UV bounds");
-        const auto tab=pixel_stone_mesh(72*density,62*density,density,3*density,2*density,6*density,{255,255,255,255},true);
+        const auto tab=pixel_stone_mesh(76*density,42*density,density,3*density,2*density,6*density,{255,255,255,255},true);
         const auto dock=pixel_stone_mesh(1280*density,88*density,density,3*density,2*density,3*density,{255,255,255,255},false,true);
-        require(!covers(tab,3*density,3*density) && covers(tab,10*density,3*density) && covers(tab,36*density,59*density),"Carved tabs need stepped shoulders and a full real rock foot");
+        require(!covers(tab,3*density,3*density) && covers(tab,10*density,3*density) && covers(tab,38*density,39*density),"Carved tabs need stepped shoulders and a full real rock foot");
         for(float x=.5f;x<1280;x+=8) require(covers(dock,x*density,4.5f*density),"The projecting stone ledge must retain its full visible span beneath all eight tablets");
         require(covers(dock,.5f*density,3.5f*density) && !covers(dock,.5f*density,10.5f*density),"The stone lip must actually project beyond the two-dp body inset, rather than paint a flat line");
         const auto stone=pixel_stone_mesh(1280*density,800*density,density,3*density,2*density,3*density,{255,255,255,255});
@@ -252,7 +252,7 @@ void material_geometry_contract() {
         // fracture. Their icon/text centre stays clean; the crack is confined
         // to the shoulder rather than repeated across the material tile.
         for(bool small_tab:{false,true}) for(unsigned seed:{0u,1u}) {
-            const float w=(small_tab?72.f:60.f)*density,h=(small_tab?62.f:60.f)*density;
+            const float w=(small_tab?76.f:60.f)*density,h=(small_tab?42.f:60.f)*density;
             const auto control=pixel_stone_mesh(w,h,density,3*density,2*density,(small_tab?6.f:3.f)*density,{255,255,255,255},small_tab,false,seed);
             require(pigment_at(control,w*.5f+.5f*density,h*.5f+.5f*density)==232,"Small stone actions must retain a clean shaded centre beneath their artwork or text");
             bool groove=false,open_crack=false;
@@ -419,12 +419,12 @@ void filled_action_contract(Ui& ui,const char* id,float density) {
     require(glyph_width>0 && glyph_width+icon_width+icon_margin<=content.w+.6f,"Actual localized glyph advances and object artwork must fit their painted plaque content; CSS image size alone is insufficient");
     require(content.x>=box.x+3.f-.15f && content.y>=box.y+3.f-.15f && content.x+content.w<=box.x+box.w-3.f+.15f,"Action content must clear its genuine carved material rim");
 }
-void object_icon_contract(Ui& ui,const char* id,float density,float minimum_fill=.75f) {
+void object_icon_contract(Ui& ui,const char* id,float density,float minimum_fill=.75f,float expected_width=48,float expected_height=48) {
     auto* element=ui.context().GetDocument(0)->GetElementById(id);
     auto* icon=element->GetChild(0);require(icon && icon->GetTagName()=="img","Object tool must contain its actual original pixel illustration");
     const auto box=rect(ui,id,density);
     const auto position=icon->GetAbsoluteOffset(Rml::Box::BORDER),size=icon->GetBox().GetSize(Rml::Box::BORDER);
-    require(std::abs(size.x/density-48)<.15f && std::abs(size.y/density-48)<.15f && size.y/density/box.h>=minimum_fill,"Tool artwork must fill its painted hit object instead of floating in an oversized empty square");
+    require(std::abs(size.x/density-expected_width)<.15f && std::abs(size.y/density-expected_height)<.15f && size.y/density/box.h>=minimum_fill,"Tool artwork must fill its painted hit object instead of floating in an oversized empty square");
     require(position.x/density>=box.x-.15f && position.y/density>=box.y-.15f && (position.x+size.x)/density<=box.x+box.w+.15f && (position.y+size.y)/density<=box.y+box.h+.15f,"Actual native object sprite must stay inside its physical painted control at every density");
 }
 void layout_contract(Ui& ui) {
@@ -684,29 +684,30 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         for(int i=0;i<8;++i) {
             const auto button=rect(ui,tabs[i],density),row=rect(ui,"section-tabs",density);
             require(button.y>=row.y-.15f && button.y+button.h<=outer_bar.y+.15f,"Tablets must sit above the continuous projecting stone ledge without overpainting it");
-            require(std::abs(button.y+button.h-outer_bar.y)<.15f && button.h<=62.15f,"Low58/62dp tablets must end exactly at the ledge top, leaving its full six-dp face visible");
+            require(std::abs(button.y+button.h-outer_bar.y)<.15f && button.h<=42.15f,"Low38/42dp tablets must end exactly at the ledge top, leaving its full six-dp face visible");
             auto* panel=ui.context().GetDocument(0)->GetElementById("bottom-bar-frame");
             auto* parent=ui.context().GetDocument(0)->GetElementById(tabs[i]);
             while(parent && parent!=panel) parent=parent->GetParentNode();
             require(parent!=panel,"Categories must be separate protrusions, never contained inside the decorated toolbar panel");
             require(button.x>=bar.x-pixel_tolerance && button.x+button.w<=bar.x+bar.w+pixel_tolerance && button.y+button.h<=height+pixel_tolerance,"Bottom button padding must not overflow the viewport or content row");
-            require(button.w>=58-pixel_tolerance && button.w<=72+pixel_tolerance,"All eight protruding categories must have substantial bounded slots that fit the viewport");
+            require(button.w>=58-pixel_tolerance && button.w<=76+pixel_tolerance,"All eight protruding categories must have substantial bounded slots that fit the viewport");
             auto* element=ui.context().GetDocument(0)->GetElementById(tabs[i]);
             const auto icon=element->GetChild(0)->GetBox().GetSize(Rml::Box::BORDER);
-            require(std::abs(icon.x/density-48)<.15 && std::abs(icon.y/density-48)<.15,"Category silhouettes must render every actual48px logical cell at whole1×/2× scale");
+            require(std::abs(icon.x/density-48)<.15 && std::abs(icon.y/density-28)<.15,"Category silhouettes must render original wide48x28px monochrome artwork at whole1x/2x scale");
             require(element->GetComputedValues().font_size()==12*density,"Bottom text remains a real compact 12dp pixel font at every DPI");
             require(!element->GetAttribute<Rml::String>("data-tooltip-key","").empty(),"Short toolbar labels require their complete localized name tooltip");
-            object_icon_contract(ui,tabs[i],density,.77f);
+            object_icon_contract(ui,tabs[i],density,.66f,48,28);
+            require(element->GetNumChildren()==1,"Category tabs contain only their wide symbol; translated names remain real hover help");
             const auto image_offset=element->GetChild(0)->GetAbsoluteOffset(Rml::Box::BORDER);
-            require(image_offset.y/density+48.f<=button.y+button.h-6.f+.15f,"Actual48px category illustration must fit wholly on its carved face, never across the six-dp rock neck");
-            require(std::abs(button.h-(element->IsClassSet("selected")?62.f:58.f))<.15f,"Selected and ordinary carved page dimensions must be actual62/58dp native geometry");
+            require(image_offset.y/density+28.f<=button.y+button.h-6.f+.15f,"Actual48x28px category illustration must fit wholly on its carved face, never across the six-dp rock neck");
+            require(std::abs(button.h-(element->IsClassSet("selected")?42.f:38.f))<.15f,"Selected and ordinary carved page dimensions must be actual42/38dp native geometry");
 
         }
         require(ui.take_actions().empty(),"Layout/localization queries must not emit commands");
     }
     rock_neck_cache_contract(ui,render,width,height,density);
     const auto observe_panel=rect(ui,"section-tools",density),camera=rect(ui,"camera-home",density),help=rect(ui,"camera-help",density);
-    require(observe_panel.w<=width+.15f && std::abs(camera.w-60)<.15f && std::abs(help.w-60)<.15f && std::abs(camera.y-help.y)<.15f,"Observe tools must occupy60dp physical slots with48dp object silhouettes");
+    require(observe_panel.w<=width+.15f && std::abs(camera.w-60)<.15f && std::abs(help.w-60)<.15f && std::abs(help.y-camera.y-64)<.15f && std::abs(help.x-camera.x)<.15f,"Observe tools must occupy both actual toolbar rows with60dp slots and48dp original objects");
     object_icon_contract(ui,"camera-home",density);object_icon_contract(ui,"camera-help",density);
     const auto civil=rect(ui,"tab-civilization",density);
     ui.context().ProcessMouseMove(static_cast<int>((civil.x+civil.w/2)*density),static_cast<int>((civil.y+civil.h/2)*density),0);
@@ -753,28 +754,10 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
         view.locale=locale;ui.set_view(view);ui.update();layout_contract(ui);
         const auto world_tools=rect(ui,"section-tools",density),save=rect(ui,"save",density),load=rect(ui,"world-load",density),menu=rect(ui,"return-menu",density);
-        require(world_tools.h<=(width>=792?72.2f:136.2f),"Physical world instruments must share one compact real row when they fit, rather than reserve an empty double-height dock");
-        for(const auto* id:{"save","world-load","return-menu","age-light","age-darkness","age-auto","age-manual"}) object_icon_contract(ui,id,density);
-        require(world_tools.w<=width+.15f && std::abs(save.w-60)<.15f && std::abs(load.w-60)<.15f && std::abs(menu.w-60)<.15f,"World tools must use60dp individual physical slots in the lower tool dock");
-        require(std::abs(save.y-load.y)<.15f && std::abs(save.y-menu.y)<.15f,"Save, load and menu controls must share a native flex row in all three locales");
-        const auto clock_group=rect(ui,"world-clock-group",density),save_group=rect(ui,"world-save-group",density),category=rect(ui,"bottom-bar",density);
-        require(clock_group.h>=48 && save_group.h>=48 && clock_group.y>=category.y+category.h-.15f,"Tool groups must have real nonzero layout beneath the category row");
-        const std::array<const char*,5> clock_buttons={"pause","speed-one","speed-four","speed-sixteen","speed-sixtyfour"};
-        float previous_right=clock_group.x;
-        for(const auto* id:clock_buttons) {
-            const auto slot=rect(ui,id,density);
-            require(slot.h>=59.85f && slot.w>=59.85f && std::abs(slot.y-clock_group.y)<.15f,"Every time control must have real60dp geometry in its clock row");
-            require(slot.x>=previous_right-.15f && slot.x+slot.w<=clock_group.x+clock_group.w+.15f && slot.y+slot.h<=height+.15f,"Clock controls must occupy separate visible slots within their block wrapper");
-            previous_right=slot.x+slot.w;
-        }
-        previous_right=save_group.x;
-        for(const auto* id:{"save","world-load","return-menu"}) {
-            const auto slot=rect(ui,id,density);
-            require(slot.h>=59.85f && slot.x>=previous_right-.15f && slot.x+slot.w<=save_group.x+save_group.w+.15f && slot.y>=save_group.y-.15f && slot.y+slot.h<=save_group.y+save_group.h+.15f,"Every save/menu action must have nonzero visible geometry inside its own block wrapper");
-            previous_right=slot.x+slot.w;
-        }
-        const auto light=rect(ui,"age-light",density),dark=rect(ui,"age-darkness",density);
-        require(std::abs(light.w-60)<.15f && std::abs(dark.w-60)<.15f && std::abs(light.y-dark.y)<.15f,"Age tools must occupy two neighbouring60dp physical slots");
+        require(std::abs(world_tools.h-124.f)<.15f,"Each section has exactly two real60dp rows with a four-dp gap, independent of language and window width");
+        for(const auto* id:{"save","world-load","return-menu"}) object_icon_contract(ui,id,density);
+        require(world_tools.w<=width+.15f && std::abs(save.w-60)<.15f && std::abs(load.w-60)<.15f && std::abs(menu.w-60)<.15f,"World tools use60dp individual physical slots in the lower tool dock");
+        require(std::abs(load.y-save.y-64)<.15f && std::abs(load.x-save.x)<.15f && std::abs(menu.x-save.x-64)<.15f && std::abs(menu.y-save.y)<.15f,"World tools fill two actual rows in column order without disturbing permanent transport controls");
         require(ui.take_actions().empty(),"Responsive tool layout and locale changes must not produce intents");
     }
     view.locale=Locale::English;ui.set_view(view);ui.update();
@@ -786,8 +769,67 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     require(short_tooltip->IsVisible(true) && short_tip.w<128.f && std::abs(short_tip.w-std::max(56.f,std::ceil(save_word_width+24.f)))<.6f,"Short Save tooltip must actually fit its stone label rather than reserve a272dp empty plaque");
     require(short_tip.x>=0 && short_tip.y>=0 && short_tip.x+short_tip.w<=width+.15f && short_tip.y+short_tip.h<=height+.15f,"Sized short stone tooltip must preserve its actual bounded native anchor");
     ui.context().ProcessMouseMove(0,0,0);ui.update();
-    click(ui,"speed-sixtyfour",density);require(single(ui,ActionKind::SetSpeed).a==64,"Only approved clock multipliers are exposed");
+    // Every category shares the very same permanent controls and row geometry.
+    const std::array<const char*,4> fixed_ids={"pause","speed-toggle","age-open","world-inspector-open"};
+    std::array<Rect,4> fixed_bounds;
+    for(std::size_t i=0;i<fixed_ids.size();++i)fixed_bounds[i]=rect(ui,fixed_ids[i],density);
+    const auto divider=rect(ui,"toolbar-divider",density),variable=rect(ui,"section-tools",density);
+    require(std::abs(divider.w-2)<.15f && divider.h>=116-.15f && divider.x>fixed_bounds[2].x+fixed_bounds[2].w && variable.x>divider.x+divider.w,"A real recessed vertical divider separates the permanent left transport block from changing section tools");
+    require(std::abs(fixed_bounds[1].y-fixed_bounds[0].y-64)<.15f && std::abs(fixed_bounds[3].y-fixed_bounds[2].y-64)<.15f && std::abs(fixed_bounds[2].x-fixed_bounds[0].x-64)<.15f,"Play/speed and Ages/world information occupy two genuine permanent rows and columns");
+    for(const char* tab:tabs) {
+        click(ui,tab,density);single(ui,ActionKind::SelectBottomSection);
+        for(std::size_t i=0;i<fixed_ids.size();++i) {
+            const auto r=rect(ui,fixed_ids[i],density),old=fixed_bounds[i];
+            require(std::abs(r.x-old.x)<.15f && std::abs(r.y-old.y)<.15f && std::abs(r.w-old.w)<.15f && std::abs(r.h-old.h)<.15f,"Changing any of eight sections must never move or hide the permanent transport control");
+            hit_layer_contract(ui,fixed_ids[i],fixed_ids[i],density);
+        }
+    }
+    const std::array<const char*,7> rates_ids={"speed-half","speed-one","speed-one-half","speed-two","speed-three","speed-five","speed-ten"};
+    const std::array<double,7> rates={.5,1,1.5,2,3,5,10};
+    auto* doc=ui.context().GetDocument(0);
+    require(!doc->GetElementById("speed-panel")->IsVisible(true),"Speed choices must start collapsed");
+    ui.activate("speed-half");require(ui.take_actions().empty(),"A hidden speed choice is not an executable input");
+    for(std::size_t i=0;i<rates.size();++i) {
+        view.world.paused=(i%2)==0;ui.set_view(view);ui.update();
+        click(ui,"speed-toggle",density);require(ui.blocks_world_input() && ui.take_actions().empty(),"Opening speed is a local modal popover, not a clock command");
+        const auto speed_panel=rect(ui,"speed-panel",density);
+        require(speed_panel.x>=0 && speed_panel.y>=0 && speed_panel.x+speed_panel.w<=width+.15f && speed_panel.y+speed_panel.h<=height+.15f,"Actual speed popover must remain bounded above the dock at every viewport and DPI");
+        for(std::size_t j=0;j<rates.size();++j)require(doc->GetElementById(rates_ids[j])->IsClassSet("selected")== (view.world.speed==rates[j]),"Collapsed speed must reopen with the authoritative current rate selected");
+        for(int n=0;n<9;++n) { ui.context().ProcessKeyDown(Rml::Input::KI_TAB,0);ui.context().ProcessKeyUp(Rml::Input::KI_TAB,0);ui.update();auto* owner=ui.context().GetFocusElement();while(owner && owner->GetId()!="speed-panel")owner=owner->GetParentNode();require(owner!=nullptr,"Keyboard traversal stays inside the speed popover"); }
+        if(i==2) {
+            doc->GetElementById(rates_ids[i])->Focus();ui.context().ProcessKeyDown(Rml::Input::KI_SPACE,0);ui.context().ProcessKeyUp(Rml::Input::KI_SPACE,0);ui.update();
+        } else click(ui,rates_ids[i],density);
+        const auto action=single(ui,ActionKind::SetSpeed);
+        require(action.a==rates[i] && action.generation==44,"Each exposed half/integer multiplier must be a single exact session-bound speed intent");
+        require(!ui.blocks_world_input() && !doc->GetElementById("speed-panel")->IsVisible(true) && ui.context().GetFocusElement()->GetId()=="speed-toggle","Selecting a speed closes its popover and returns keyboard focus without toggling pause");
+        view.world.speed=action.a;ui.set_view(view);ui.update();
+        require(doc->GetElementById("pause-icon")->GetAttribute<Rml::String>("data-icon","")== (view.world.paused?"play":"pause"),"Changing speed retains the current paused icon/state");
+    }
+    click(ui,"speed-toggle",density);ui.take_actions();
+    ui.context().ProcessMouseMove(static_cast<int>(width*density)-8,8,0);ui.context().ProcessMouseButtonDown(0,0);ui.context().ProcessMouseButtonUp(0,0);ui.update();
+    require(!ui.blocks_world_input() && ui.take_actions().empty() && !doc->GetElementById("speed-panel")->IsVisible(true),"A click outside speed only dismisses its shield, without activating an underlying control");
+    click(ui,"speed-toggle",density);ui.take_actions();
+    view.error_key="CREATION_DIMENSIONS";ui.set_view(view);ui.update();hit_layer_contract(ui,"speed-one","error-overlay",density);
+    click(ui,"error-dismiss",density);single(ui,ActionKind::DismissError);view.error_key.clear();ui.set_view(view);ui.update();
+    require(ui.blocks_world_input() && doc->GetElementById("speed-panel")->IsVisible(true),"Acknowledging a nested error restores the still-open speed picker");
+    ui.context().ProcessKeyDown(Rml::Input::KI_ESCAPE,0);ui.context().ProcessKeyUp(Rml::Input::KI_ESCAPE,0);ui.update();
+    require(!ui.blocks_world_input() && ui.take_actions().empty() && ui.context().GetFocusElement()->GetId()=="speed-toggle","Escape dismisses speed locally and restores its launcher focus");
+    click(ui,"age-open",density);require(ui.blocks_world_input() && ui.take_actions().empty(),"The sole Ages tool opens its dedicated page without changing World");
+    for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
+        view.locale=locale;ui.set_view(view);ui.update();layout_contract(ui);
+        const auto age=rect(ui,"age-panel",density);
+        require(std::abs(age.x+age.w/2-width/2.f)<.6f && std::abs(age.y+age.h/2-height/2.f)<.6f && age.y>=0 && age.y+age.h<=height+.15f,"Ages is an actually centered bounded page in all three languages");
+        for(const char* id:{"age-light","age-darkness","age-auto","age-manual"}) { auto* control=doc->GetElementById(id);control->ScrollIntoView(false);ui.update();hit_layer_contract(ui,id,id,density); }
+    }
     click(ui,"age-darkness",density);require(single(ui,ActionKind::SetAgeDarkness).generation==44,"Age intent belongs to current session");
+    view.world.darkness=true;view.world.automatic_age=false;ui.set_view(view);ui.update();
+    require(ui.blocks_world_input() && doc->GetElementById("age-darkness")->IsClassSet("selected") && doc->GetElementById("age-manual")->IsClassSet("selected"),"Manual Age selection remains visible in its page and reflects the authoritative automatic-off result");
+    click(ui,"age-auto",density);require(single(ui,ActionKind::SetAgeAutomatic).a==1,"Automatic mode emits its typed switch independently of manual Age selection");
+    view.world.automatic_age=true;ui.set_view(view);ui.update();
+    require(doc->GetElementById("age-auto")->IsClassSet("selected"),"Authoritative automatic mode stays visibly selected");
+    render.reset_draws();ui.render();stone_surface_contract(ui,render,{"age-panel","age-auto","age-close"});
+    click(ui,"age-close",density);require(!ui.blocks_world_input() && ui.take_actions().empty(),"Closing Ages restores the world and emits no clock mutation");
+    click(ui,"tab-world",density);single(ui,ActionKind::SelectBottomSection);
     click(ui,"world-info",density);single(ui,ActionKind::OpenWorldInspector);layout_contract(ui);
     stone_heading_contract(ui.context().GetDocument(0)->GetElementById("world-panel")->GetChild(0)->GetChild(0),density);
     render.reset_draws();ui.render();stone_surface_contract(ui,render,{"world-panel","world-close"});

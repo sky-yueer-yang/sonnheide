@@ -231,7 +231,7 @@ def main():
       ('SetEcologyTheme', obj({'cells':ref('Cells'),'theme':enum('snowfield','flower_meadow','maple_plain','cherry_wild','wetland','savana','sonnheide_sacred_plain','emberland')}), 'soil_only_theme_no_type_wipe_no_new_trees_or_fruit'),
       ('PlantSeedOrSapling', obj({'plant_definition_id':string(64),'position':ref('Position'),'source':enum('god_vegetation','civil_material_project'),'material_claims':array(ref('Ref'),16)}), 'habitat_spacing_and_routes_god_finite_biomass_no_fruit_civil_real_seed_labor'),
       ('SetSoilMoisture', obj({'cells':ref('Cells'),'moisture_q':integer(0,10000)}), 'soil_property_only_no_inventory_or_crop_progress_refill'),
-      ('SetSimulationSpeed', obj({'speed':{'type':'integer','enum':[0,1,4,16,64]}}), 'wallclock_rate_only_pause_freezes_all_authoritative_time'),
+      ('SetSimulationSpeed', obj({'speed_half_steps':{'type':'integer','enum':[1,2,3,4,6,10,20]}}), 'wallclock_rate_only_multiplier_equals_half_steps_divided_by_two_preserves_pause_and_fractional_tick_debt'),
       ('SetEnvironmentAge', obj({'age':enum('light','darkness'),'automatic':{'type':'boolean'},'remaining_ticks':integer(1,12000000)}), 'manual_age_atomically_stops_automatic_no_calendar_technology_change'),
       ('CreateRootReligion', obj({'name':ref('Name'),'prophet':ref('Ref'),'doctrine':ref('Charter')}), 'trusted_player_existing_prophet_root_source_freezes_no_free_goods'),
       ('PreviewObjectDraft', obj({'draft':ref('ObjectDraft')}), 'all_registered_page_fields_only_plan_no_world_write'),

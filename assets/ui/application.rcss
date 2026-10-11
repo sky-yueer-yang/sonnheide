@@ -81,28 +81,48 @@ option:hover, option:checked { decorator: physical-material(rock #ffffffff); col
 #world-status button:hover, #world-status button:focus { decorator: physical-material(rock #ffffffff); }
 #world-name { word-break: break-word; color: #eeeae0; font-size: 24dp; line-height: 36dp; font-effect: pixel-bold(1px #eeeae0); }
 #world-time { display: inline-block; margin: 0 8dp; font-size: 12dp; color: #dedbd4; }
-/* Raised tabs are outside the tool panel. A plain absolute block hosts two
-   normal flow children, so the RmlUi5 flex row has a supported block parent. */
+/* Broad, low category shoulders stand above a permanent two-row tool dock. */
 #bottom-dock { position: absolute; bottom: 0; left: 0; width: 100%; box-sizing: border-box; }
-#section-tabs { position: relative; z-index: 3; height: 62dp; padding: 0 8dp; box-sizing: border-box; }
-#bottom-bar { display: flex; flex-wrap: nowrap; width: 100%; height: 62dp; box-sizing: border-box; padding: 0; text-align: center; }
-#bottom-bar button { height: 58dp; min-height: 58dp; flex-shrink: 0; padding: 3dp 4dp; margin: 4dp 0 0; font-size: 12dp; decorator: physical-tab(rock #bbbbbbff); }
-#bottom-bar button.selected { height: 62dp; min-height: 62dp; margin-top: 0; padding-top: 7dp; decorator: physical-tab(rock #eeeeeeff); }
+#section-tabs { position: relative; z-index: 3; height: 42dp; padding: 0 8dp; box-sizing: border-box; }
+#bottom-bar { display: flex; flex-wrap: nowrap; height: 42dp; box-sizing: border-box; padding: 0; margin: 0 auto; text-align: center; }
+#bottom-bar button { height: 38dp; min-height: 38dp; flex-shrink: 0; padding: 4dp 4dp 6dp; margin: 4dp 0 0; font-size: 12dp; decorator: physical-tab(rock #bbbbbbff); }
+#bottom-bar button.selected { height: 42dp; min-height: 42dp; margin-top: 0; padding-top: 8dp; decorator: physical-tab(rock #eeeeeeff); }
 #bottom-bar button:hover, #bottom-bar button:focus { decorator: physical-tab(rock #ffffffff); }
 #bottom-bar button.selected:hover, #bottom-bar button.selected:focus { decorator: physical-tab(rock #ffffffff); }
-#bottom-bar button span { display: none; }
-#bottom-bar img { display: block; width: 48dp; height: 48dp; margin: 0 auto; }
-#bottom-bar-frame { position: relative; z-index: 1; width: 100%; box-sizing: border-box; padding: 8dp; decorator: physical-dock(rock); }
-.toolbar { position: relative; width: 100%; box-sizing: border-box; padding: 4dp; overflow-y: auto; }
-.toolbar button { width: 60dp; min-width: 60dp; height: 60dp; min-height: 60dp; padding: 6dp; margin: 0 2dp 4dp 0; font-size: 12dp; text-align: center; flex-shrink: 0; }
+#bottom-bar img { display: block; width: 48dp; height: 28dp; margin: 0 auto; }
+#bottom-bar-frame { position: relative; z-index: 1; width: 100%; box-sizing: border-box; padding: 12dp 8dp 8dp; decorator: physical-dock(rock); }
+#toolbar-content { position: relative; height: 124dp; }
+.toolbar { position: absolute; box-sizing: border-box; height: 124dp; }
+.toolbar button { position: absolute; width: 60dp; min-width: 60dp; height: 60dp; min-height: 60dp; padding: 6dp; margin: 0; font-size: 12dp; text-align: center; }
 .toolbar button img { display: block; width: 48dp; height: 48dp; margin: 0; }
-.toolbar button span { display: none; }
-#observe-tools, #world-tools, .world-actions, #age-tools, .clock-row, .future-tools, #settings-tools { display: flex; flex-wrap: wrap; align-items: center; }
-#world-tools { width: 100%; }
-.clock-row { margin-right: 8dp; }
-.world-actions { margin-right: 8dp; }
-#age-tools { margin-top: 0; }
-.future-tools span { margin-left: 8dp; color: #dedbd4; }
+#persistent-tools { left: 0; top: 0; width: 124dp; }
+#pause { left: 0; top: 0; }
+#speed-toggle { left: 0; top: 64dp; }
+#age-open { left: 64dp; top: 0; }
+#world-inspector-open { left: 64dp; top: 64dp; }
+#speed-toggle img { width: 28dp; height: 28dp; margin: 0 auto; }
+#speed-label { display: block; font-size: 12dp; line-height: 16dp; padding-right: 8dp; }
+#speed-chevron { position: absolute; right: 8dp; bottom: 10dp; width: 8dp; height: 5dp; decorator: pixel-down(#fff6df); }
+#toolbar-divider { position: absolute; left: 140dp; top: 4dp; width: 2dp; height: 116dp; background-color: #0d1117; }
+#section-tools { left: 156dp; top: 0; right: 0; overflow-x: auto; overflow-y: hidden; }
+.tool-page { position: relative; height: 124dp; }
+.tool-page button { left: 0; top: 0; }
+.future-tools span { position: absolute; left: 68dp; top: 20dp; right: 0; color: #dedbd4; }
+.future-tools button img { height: 28dp; margin-top: 10dp; }
+#speed-overlay { z-index: 9; background-color: transparent; }
+#speed-panel { position: absolute; left: 12dp; bottom: 196dp; width: 320dp; padding: 12dp; box-sizing: border-box; }
+#speed-panel label { margin: 0 4dp 8dp; }
+#speed-options { display: flex; flex-wrap: wrap; }
+#speed-options button { width: 68dp; min-height: 44dp; padding: 6dp 2dp; margin: 0 4dp 4dp 0; font-size: 24dp; line-height: 28dp; }
+#age-panel { height: 432dp; }
+#age-status { margin: 0 0 12dp; color: #b5b3ad; }
+#age-choices, #age-modes { display: flex; flex-wrap: nowrap; }
+#age-choices button, #age-modes button { width: 50%; flex-shrink: 0; }
+#age-choices button { height: 104dp; padding: 8dp 6dp; }
+#age-choices button img { display: block; width: 48dp; height: 48dp; margin: 0 auto 8dp; }
+#age-choices button span { display: block; font-size: 12dp; line-height: 18dp; word-break: break-word; }
+#age-modes button { min-height: 60dp; padding: 6dp; font-size: 24dp; }
+#age-modes button img { width: 32dp; height: 32dp; margin-right: 8dp; }
 #save-panel { decorator: physical-material(rock); position: absolute; padding: 16dp; box-sizing: border-box; overflow-y: auto; }
 .save-entry { decorator: physical-material(rock #bbbbbbff); font-size: 24dp; line-height: 28dp; display: block; width: 100%; text-align: left; padding: 10dp 12dp; margin-bottom: 6dp; }
 .save-entry.selected { decorator: physical-material(rock #eeeeeeff); }
@@ -141,12 +161,6 @@ body, #world-screen, #creation-screen, #scene-viewport { pointer-events: none; }
 .window-close { width: 60dp; height: 60dp; min-height: 60dp; padding: 6dp; flex-shrink: 0; decorator: physical-material(rock #bbbbbbff); }
 .window-close:hover, .window-close:focus { decorator: physical-material(rock #ffffffff); }
 .window-close img { margin: 0; }
-.clock-row button { font-size: 24dp; line-height: 48dp; }
-/* A normal block separates the nested flex formatting contexts in RmlUi5. */
-.tool-group { display: block; height: 64dp; flex-shrink: 0; }
-.clock-group { width: 320dp; }
-.save-group { width: 196dp; }
-.age-group { width: 252dp; }
 /* Pressed stone wins over hover, selected and dedicated control declarations. */
 button:active, button.selected:active, button.primary:active, .save-entry:active, .save-entry.selected:active, .window-close:active,
 #world-status button:active, #create:active, #settings-close:active, #load-selected:active, #rename-commit:active { decorator: physical-material(rock #8c8c8cff); }

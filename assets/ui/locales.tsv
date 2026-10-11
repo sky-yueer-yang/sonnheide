@@ -108,3 +108,9 @@ size-512-full	1.024 km 方形世界	1.024 km square world	1.024 km quadratische 
 size-1024-full	2.048 km 方形世界	2.048 km square world	2.048 km quadratische Welt
 size-2048-full	4.096 km 方形世界	4.096 km square world	4.096 km quadratische Welt
 size-4096-full	8.192 km 方形世界	8.192 km square world	8.192 km quadratische Welt
+speed-title	速度	Speed	Tempo
+age-switch	切换时代	Ages	Zeitalter
+age-current	当前时代	Current age	Aktuelles Zeitalter
+age-mode	交替方式	Alternation	Wechsel
+age-status-manual	手动	Manual	Manuell
+age-status-auto	自动	Automatic	Automatisch

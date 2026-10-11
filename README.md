@@ -1,8 +1,10 @@
 # SONNHEIDE
 
-2026-10-10：当前 **v0.9 / ADR0025**。自研C++20框架，真正360°三维像素世界，唯一Steam发行。普通地形八档固定高度；计划坡道连接不同平台；取消自然山海湖身份/命名和岸线/外缘过渡。冷兵器起步，后期真实研究、制造和装备枪械。
+2026-10-10：当前 **v0.9 / ADR0026**。自研C++20框架，真正360°三维像素世界，唯一Steam发行。普通地形八档固定高度；计划坡道连接不同平台；取消自然山海湖身份/命名和岸线/外缘过渡。冷兵器起步，后期真实研究、制造和装备枪械。
 
-**深灰石材统一界面已接入并通过开发验收。** 所有弹窗、面板与通常按钮统一很深灰色石材，真实边缘裂纹、连续凸沿和上方页签保留，文字及交互状态同步适配。全目标/完整CTest3/3（130.53秒）、ASan/UBSan、66操作/32实际GPU帧通过。见[ADR0025](docs/decisions/0025-dark-stone-ui-surfaces.md)与[本批交付](docs/planning/DARK_STONE_DELIVERY.md)。
+**双排工具栏已完整接入并通过开发验收。** 左侧固定控制、七档折叠速度、独立时代页与暖白低页签按[ADR0026](docs/decisions/0026-compact-two-row-toolbar.md)实施。全目标/完整CTest3/3（133.21秒）、ASan/UBSan、67操作/35实际GPU帧通过，见[交付报告](docs/planning/COMPACT_TOOLBAR_DELIVERY.md)。
+
+**历史深灰石材统一界面已接入并通过开发验收。** 所有弹窗、面板与通常按钮统一很深灰色石材，真实边缘裂纹、连续凸沿和上方页签保留，文字及交互状态同步适配。全目标/完整CTest3/3（130.53秒）、ASan/UBSan、66操作/32实际GPU帧通过。见[ADR0025](docs/decisions/0025-dark-stone-ui-surfaces.md)与[本批交付](docs/planning/DARK_STONE_DELIVERY.md)。
 
 **历史S00/S01实物像素界面开发验收通过。** 全套深色实物界面、41原创透明像素物件图标、9实际加载材质、大字饱满按钮已接入；高分辨率图标采用粗暗轮廓与厚刻纹，鲜艳颜色压暗。完整CTest3/3（130.21秒）、71,101核心检查、ASan/UBSan和66操作/32实际GPU帧通过；[上一批报告](docs/planning/PHYSICAL_PIXEL_DELIVERY.md)保存记录和截图，[ADR0023](docs/decisions/0023-physical-pixel-interface.md)记录上一批规范。居中空白创建与地表沿ADR0022/0021。[上批报告](docs/planning/HEAVY_ARCADE_DELIVERY.md)与其他交付保留历史结果。Windows GPU与Steam安装仍待实测。人物、建筑、编辑笔刷和后续机制不属于当前试玩。
 

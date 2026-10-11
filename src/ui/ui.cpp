@@ -49,6 +49,9 @@ std::string input_text(Rml::ElementDocument* doc,const char* id) {
     if(auto* input=dynamic_cast<Rml::ElementFormControl*>(doc->GetElementById(id))) return input->GetValue();
     return {};
 }
+const std::array<const char*,7> speed_ids={"speed-half","speed-one","speed-one-half","speed-two","speed-three","speed-five","speed-ten"};
+const std::array<double,7> speed_rates={.5,1,1.5,2,3,5,10};
+std::string speed_text(double speed) { std::ostringstream out;out.imbue(std::locale::classic());out<<speed;return out.str()+"\xc3\x97"; }
 Rml::FontEngineInterface& admitted_font_engine() {
     auto* engine=Rml::GetFontEngineInterface();
     if(!engine) throw std::runtime_error("UI_FONT_ENGINE: native font engine is unavailable");
@@ -109,8 +112,8 @@ void Ui::set_view(const View& view) {
     view_=view;
     if(creation_generation_!=view.creation.generation) { creation_generation_=view.creation.generation; creation_name_=view.creation.name; }
     if(rename_session_!=view.world.session) { rename_session_=view.world.session; rename_name_=view.world.name; world_open_=false; }
-    if(changed_screen) { settings_open_=false; world_open_=false; help_open_=false; if(view.screen==Screen::Creation) controls_open_=true; }
-    if(changed_session) section_=BottomSection::Observe;
+    if(changed_screen) { settings_open_=false; world_open_=false; help_open_=false; age_open_=false; speed_open_=false; if(view.screen==Screen::Creation) controls_open_=true; }
+    if(changed_session) { section_=BottomSection::Observe;age_open_=false;speed_open_=false; }
     if(changed_screen) pending_focus_=view.screen==Screen::MainMenu?"new-world":view.screen==Screen::Creation?"creation-name":view.screen==Screen::Load?"back-load":"tab-observe";
     if(opened_error) pending_focus_="error-dismiss";
     if(closed_error) focus_underlying_controls();
@@ -121,10 +124,22 @@ void Ui::focus_underlying_controls() {
     else if(settings_open_) pending_focus_="locale-zh";
     else if(world_open_ && view_.screen==Screen::World) pending_focus_="world-name-draft";
     else if(help_open_) pending_focus_="help-close";
+    else if(age_open_) pending_focus_=view_.world.darkness?"age-darkness":"age-light";
+    else if(speed_open_) { pending_focus_="speed-one";for(std::size_t i=0;i<speed_rates.size();++i)if(view_.world.speed==speed_rates[i])pending_focus_=speed_ids[i]; }
     else if(view_.screen==Screen::Creation) pending_focus_=controls_open_ || !view_.creation.preview_ready?"creation-width":"create";
     else if(view_.screen==Screen::World) pending_focus_="tab-observe";
     else if(view_.screen==Screen::Load) pending_focus_="back-load";
     else pending_focus_="new-world";
+}
+const char* Ui::modal_panel() const {
+    if(!view_.error_key.empty() || !local_error_.empty()) return "error-panel";
+    if(settings_open_) return "settings-panel";
+    if(world_open_) return "world-panel";
+    if(help_open_) return "help-panel";
+    if(age_open_) return "age-panel";
+    if(speed_open_) return "speed-panel";
+    if(view_.screen==Screen::Creation && (controls_open_ || !view_.creation.preview_ready)) return "creation-controls";
+    return nullptr;
 }
 std::string Ui::text(const std::string& key) const { const auto it=messages_.find(key); return it==messages_.end()?key:it->second[static_cast<std::size_t>(view_.locale)]; }
 void Ui::refresh() {
@@ -165,6 +180,8 @@ void Ui::refresh() {
     show(document_,"load-screen",view_.screen==Screen::Load);
     show(document_,"settings-overlay",settings_open_);
     show(document_,"help-overlay",help_open_);
+    show(document_,"speed-overlay",speed_open_ && view_.screen==Screen::World);
+    show(document_,"age-overlay",age_open_ && view_.screen==Screen::World);
     show(document_,"world-overlay",world_open_ && view_.screen==Screen::World);
     show(document_,"error-overlay",!view_.error_key.empty() || !local_error_.empty());
     show(document_,"busy-indicator",view_.busy || view_.creation.busy);
@@ -193,10 +210,13 @@ void Ui::refresh() {
     input_value(context_,document_,"creation-theme",view_.creation.theme);
     label(document_,"world-name",view_.world.name);
     label(document_,"world-time",text("day")+" "+std::to_string(view_.world.day));
-    label(document_,"pause-label",text(view_.world.paused?"play":"pause"));
+    label(document_,"speed-label",speed_text(view_.world.speed));
+    label(document_,"age-status",text("age-current")+" · "+text(view_.world.darkness?"age-darkness":"age-light")+" · "+text(view_.world.automatic_age?"age-status-auto":"age-status-manual"));
     if(auto* icon=document_->GetElementById("pause-icon")) icon->SetAttribute("data-icon",view_.world.paused?"play":"pause");
     choice(document_,"pause",view_.world.paused);
-    choice(document_,"speed-one",view_.world.speed==1); choice(document_,"speed-four",view_.world.speed==4); choice(document_,"speed-sixteen",view_.world.speed==16); choice(document_,"speed-sixtyfour",view_.world.speed==64);
+    choice(document_,"speed-toggle",speed_open_);
+    choice(document_,"age-open",age_open_);
+    for(std::size_t i=0;i<speed_ids.size();++i) choice(document_,speed_ids[i],view_.world.speed==speed_rates[i]);
     choice(document_,"age-light",!view_.world.darkness); choice(document_,"age-darkness",view_.world.darkness);
     choice(document_,"age-auto",view_.world.automatic_age); choice(document_,"age-manual",!view_.world.automatic_age);
     choice(document_,"locale-zh",view_.locale==Locale::Chinese); choice(document_,"locale-en",view_.locale==Locale::English); choice(document_,"locale-de",view_.locale==Locale::German);
@@ -205,10 +225,10 @@ void Ui::refresh() {
     input_value(context_,document_,"audio-volume",std::to_string(view_.audio_volume));
     const char* tabs[]={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
     for(int i=0;i<8;++i) { choice(document_,tabs[i],i==static_cast<int>(section_)); enable(document_,tabs[i],true); }
-    show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World,"flex"); show(document_,"world-age-group",section_==BottomSection::World); show(document_,"age-tools",section_==BottomSection::World,"flex");
+    show(document_,"observe-tools",section_==BottomSection::Observe); show(document_,"world-tools",section_==BottomSection::World);
     const char* future_panels[]={"terrain-tools","life-tools","civilization-tools","construction-tools","economy-tools"};
-    for(int i=0;i<5;++i) show(document_,future_panels[i],static_cast<int>(section_)==i+1,"flex");
-    show(document_,"settings-tools",section_==BottomSection::Settings,"flex");
+    for(int i=0;i<5;++i) show(document_,future_panels[i],static_cast<int>(section_)==i+1);
+    show(document_,"settings-tools",section_==BottomSection::Settings);
     if(auto* pause=document_->GetElementById("pause")) pause->SetAttribute("data-tooltip-key",view_.world.paused?"play":"pause");
     show(document_,"no-saves",view_.saves.empty());
     std::string signature;
@@ -328,20 +348,27 @@ void Ui::layout() {
         property(id,"top",top);property(id,"max-height",grid(std::max(128.f,h-top-24)));
         property(id,"padding-left",16);property(id,"padding-right",16);
     }
-    const float tab_width=std::floor(std::min(72.f,(w-16.f)/8.f));
+    const float tab_width=std::floor(std::min(76.f,(w-16.f)/8.f));
+    property("bottom-bar","width",tab_width*8.f);
     if(auto* bar=document_->GetElementById("bottom-bar")) {
-        for(int i=0;i<bar->GetNumChildren();++i) if(auto* button=bar->GetChild(i)) {
-            button->SetProperty("width",std::to_string(tab_width)+"dp");
+        for(int i=0;i<bar->GetNumChildren();++i) if(auto* button=bar->GetChild(i)) button->SetProperty("width",std::to_string(tab_width)+"dp");
+    }
+    // Column-major slots guarantee two actual rows without changing the left
+    // transport controls or dock height when another category is selected.
+    for(const char* id:{"observe-tools","terrain-tools","life-tools","civilization-tools","construction-tools","economy-tools","world-tools","settings-tools"}) {
+        auto* page=document_->GetElementById(id);
+        for(int i=0;i<page->GetNumChildren();++i) {
+            auto* button=page->GetChild(i);
+            if(button->GetTagName()!="button") continue;
+            const int slot=button->GetAttribute<int>("data-tool-slot",0);
+            button->SetProperty("left",std::to_string((slot/2)*64)+"dp");
+            button->SetProperty("top",std::to_string((slot%2)*64)+"dp");
         }
     }
-    // The tabs end above the dock's continuous carved stone lip. Its full
-    // width stays visible; no per-tab gap or neck paints over the ledge.
-    // Three physical instrument groups share one row where they actually fit.
-    // At small widths the flex wrapper uses two real rows rather than reserving
-    // a permanently oversized empty toolbar on every screen.
-    const float tool_height=section_==BottomSection::World?(w-24.f>=768.f?72.f:136.f):72.f;
-    property("section-tools","min-height",tool_height);
-    property("section-tools","max-height",std::max(tool_height,std::min(208.f,h*.45f)));
+    const float age_width=std::min(536.f,w-24.f),age_height=std::min(432.f,h-32.f);
+    property("age-panel","width",age_width);property("age-panel","height",age_height);
+    property("age-panel","left",std::round((w-age_width)/2.f));property("age-panel","top",std::round((h-age_height)/2.f));
+    property("speed-panel","width",std::min(320.f,w-24.f));
     property("preview-caption","left",16);property("preview-caption","max-width",w-32.f);
 
 }
@@ -357,7 +384,7 @@ void Ui::update() {
     // localised full name on actual pointer hover, without emitting an intent.
     Rml::Element* hovered=context_->GetHoverElement();
     if(blocks_world_input()) {
-        const char* active=!view_.error_key.empty() || !local_error_.empty()?"error-panel":settings_open_?"settings-panel":world_open_?"world-panel":help_open_?"help-panel":"creation-controls";
+        const char* active=modal_panel();
         auto* owner=hovered;
         while(owner && owner!=document_ && owner->GetId()!=active) owner=owner->GetParentNode();
         if(!owner || owner==document_) hovered=nullptr;
@@ -419,7 +446,7 @@ bool Ui::captures_pointer(int x,int y) const {
     return false;
 }
 bool Ui::text_input_focused() const { if(!context_) return false; const auto* focus=context_->GetFocusElement(); return focus && (focus->GetTagName()=="input" || focus->GetTagName()=="textarea"); }
-bool Ui::blocks_world_input() const { return (view_.screen==Screen::Creation && (controls_open_ || !view_.creation.preview_ready)) || settings_open_ || world_open_ || help_open_ || !view_.error_key.empty() || !local_error_.empty(); }
+bool Ui::blocks_world_input() const { return modal_panel()!=nullptr; }
 void Ui::emit(ActionKind kind,const std::string& value,double a,double b,double c,double d) {
     Action action; action.kind=kind; action.text=value; action.a=a; action.b=b; action.c=c; action.d=d;
     const bool creation=kind==ActionKind::SetBlankBase || kind==ActionKind::SetCreationSize || kind==ActionKind::SetCreationName || kind==ActionKind::SetCreationTheme || kind==ActionKind::RequestPreview || kind==ActionKind::CreateWorld || kind==ActionKind::CancelCreation;
@@ -431,7 +458,13 @@ void Ui::emit(ActionKind kind,const std::string& value,double a,double b,double 
 void Ui::activate(const std::string& id) {
     if(!document_) return;
     if(id=="continue" && !view_.can_continue) return;
-    if(auto* element=document_->GetElementById(id)) if(element->IsPseudoClassSet("disabled")) return;
+    if(auto* element=document_->GetElementById(id)) {
+        if(element->IsPseudoClassSet("disabled") || !element->IsVisible(true)) return;
+        if(const char* active=modal_panel()) {
+            auto* owner=element;while(owner && owner->GetId()!=active)owner=owner->GetParentNode();
+            if(!owner) return;
+        }
+    }
     if(id=="new" || id=="new-world") emit(ActionKind::NewWorld);
     else if(id=="continue" || id=="continue-world") emit(ActionKind::ContinueWorld);
     else if(id=="load" || id=="world-load") emit(ActionKind::OpenLoad);
@@ -457,13 +490,20 @@ void Ui::activate(const std::string& id) {
     else if(id=="camera-help") { help_open_=true; pending_focus_="help-close"; emit(ActionKind::OpenHelp); }
     else if(id=="help-close" || id=="help-dismiss") { help_open_=false; pending_focus_="camera-help"; emit(ActionKind::CloseHelp); }
     else if(id=="pause") emit(ActionKind::SetPaused,"",!view_.world.paused);
-    else if(id=="speed-one" || id=="speed-four" || id=="speed-sixteen" || id=="speed-sixtyfour") emit(ActionKind::SetSpeed,"",id=="speed-one"?1:id=="speed-four"?4:id=="speed-sixteen"?16:64);
+    else if(id=="speed-toggle") { speed_open_=true;focus_underlying_controls(); }
+    else if(std::find(speed_ids.begin(),speed_ids.end(),id)!=speed_ids.end()) {
+        const auto found=std::find(speed_ids.begin(),speed_ids.end(),id);
+        emit(ActionKind::SetSpeed,"",speed_rates[static_cast<std::size_t>(found-speed_ids.begin())]);
+        speed_open_=false;pending_focus_="speed-toggle";
+    }
+    else if(id=="age-open") { age_open_=true;pending_focus_=view_.world.darkness?"age-darkness":"age-light"; }
+    else if(id=="age-close" || id=="age-dismiss") { age_open_=false;pending_focus_="age-open"; }
     else if(id=="age-light") emit(ActionKind::SetAgeLight);
     else if(id=="age-darkness") emit(ActionKind::SetAgeDarkness);
     else if(id=="age-auto" || id=="age-manual") emit(ActionKind::SetAgeAutomatic,"",id=="age-auto"?1:0);
     else if(id=="save") emit(ActionKind::SaveWorld);
-    else if(id=="world-info") { world_open_=true; pending_focus_="world-name-draft"; emit(ActionKind::OpenWorldInspector); }
-    else if(id=="world-close") { world_open_=false; pending_focus_="world-info"; emit(ActionKind::CloseWorldInspector); }
+    else if(id=="world-info" || id=="world-inspector-open") { world_open_=true; world_return_focus_=id;pending_focus_="world-name-draft"; emit(ActionKind::OpenWorldInspector); }
+    else if(id=="world-close") { world_open_=false; pending_focus_=world_return_focus_; emit(ActionKind::CloseWorldInspector); }
     else if(id=="rename-preview") emit(ActionKind::PreviewWorldName,rename_name_);
     else if(id=="rename-commit") emit(ActionKind::CommitWorldName,rename_name_);
     else if(id=="rename-cancel") { rename_name_=view_.world.name; emit(ActionKind::CancelWorldName); }
@@ -498,7 +538,7 @@ void Ui::ProcessEvent(Rml::Event& event) {
     if(event.GetType()=="change" || event.GetType()=="input") { if(target && !syncing_controls_) input_changed(target->GetId(),input_text(document_,target->GetId().c_str())); return; }
     if(event.GetType()=="keydown") {
         const int key=event.GetParameter<int>("key_identifier",0);
-        const char* modal=!view_.error_key.empty() || !local_error_.empty()?"error-panel":settings_open_?"settings-panel":world_open_?"world-panel":help_open_?"help-panel":(view_.screen==Screen::Creation && controls_open_)?"creation-controls":nullptr;
+        const char* modal=modal_panel();
         if(key==Rml::Input::KI_TAB && modal) {
             std::vector<Rml::Element*> controls;
             const auto collect=[&controls](auto&& self,Rml::Element* el)->void {
@@ -519,13 +559,19 @@ void Ui::ProcessEvent(Rml::Event& event) {
         if(key==Rml::Input::KI_ESCAPE) {
             if(!view_.error_key.empty() || !local_error_.empty()) { local_error_.clear(); focus_underlying_controls(); if(!view_.error_key.empty()) emit(ActionKind::DismissError); }
             else if(settings_open_) { settings_open_=false; pending_focus_=view_.screen==Screen::MainMenu?"settings-main":"tab-settings"; emit(ActionKind::CloseSettings); }
-            else if(world_open_) { world_open_=false; pending_focus_="world-info"; emit(ActionKind::CloseWorldInspector); }
+            else if(world_open_) { world_open_=false; pending_focus_=world_return_focus_; emit(ActionKind::CloseWorldInspector); }
             else if(help_open_) { help_open_=false; pending_focus_="camera-help"; emit(ActionKind::CloseHelp); }
+            else if(age_open_) { age_open_=false;pending_focus_="age-open"; }
+            else if(speed_open_) { speed_open_=false;pending_focus_="speed-toggle"; }
             else if(view_.screen==Screen::Creation) emit(ActionKind::CancelCreation);
             else if(view_.screen==Screen::Load) emit(ActionKind::CancelLoad);
             refresh(); layout(); event.StopPropagation();
         } else if((key==Rml::Input::KI_RETURN || key==Rml::Input::KI_SPACE) && target && target->GetTagName()=="button") { activate(target->GetId()); event.StopPropagation(); }
         return;
+    }
+    if(event.GetType()=="click" && speed_open_ && modal_panel() && std::string(modal_panel())=="speed-panel") {
+        auto* owner=target;while(owner && owner->GetId()!="speed-panel")owner=owner->GetParentNode();
+        if(!owner) { speed_open_=false;pending_focus_="speed-toggle";refresh();layout();event.StopImmediatePropagation();return; }
     }
     while(target && target!=document_) { if(target->GetTagName()=="button") { activate(target->GetId()); event.StopPropagation(); return; } target=target->GetParentNode(); }
 }

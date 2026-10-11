@@ -1,4 +1,5 @@
 #include "../../src/core/sonnheide.hpp"
+#include "../../src/core/simulation_clock.hpp"
 #include "../../src/client/client.hpp"
 #include "../../src/ui/ui.hpp"
 #include <RmlUi/Core.h>
@@ -54,7 +55,7 @@ class App {
  bool quit_=false,paused_=false,inspector_was_paused_=false,inspector_open_=false;
  std::vector<ui::Action> platform_actions_;
  ui::Screen load_origin_=ui::Screen::MainMenu;
- int speed_=1;double tick_accumulator_=0,presentation_seconds_=0;
+ sonn::SimulationClock simulation_clock_;double presentation_seconds_=0;
  ui::View view_;
  sonn::Bytes arcade_font_;
  client::Client client_;
@@ -65,6 +66,9 @@ class App {
  fs::path evidence_;
  std::vector<std::string> completed_actions_;
  sonn::Uuid counted_world_{};std::uint64_t counted_geometry_revision_=0;
+ int smoke_toolbar_phase_=0;std::uint64_t smoke_toolbar_tick_=0;bool smoke_speed_captured_=false,smoke_age_captured_=false,smoke_age_dark_captured_=false;
+ sonn::Json::Array smoke_fixed_controls_,smoke_speed_rates_,smoke_age_commands_;
+ std::array<std::array<int,4>,4> smoke_fixed_rects_{};
 public:
  App(fs::path resources,fs::path saves,bool smoke,fs::path evidence):resources_(std::move(resources)),save_root_(std::move(saves)),definitions_(admit_runtime(resources_)),saves_(save_root_),client_({resources_,1280,800,false}),smoke_(smoke),evidence_(std::move(evidence)) {
   Rml::SetSystemInterface(client_.system_interface());Rml::SetRenderInterface(client_.render_interface());Rml::SetFileInterface(client_.file_interface());
@@ -80,17 +84,17 @@ public:
  int run(){
   auto previous=Clock::now();
   while(!quit_){
-   auto now=Clock::now();double dt=std::chrono::duration<double>(now-previous).count();previous=now;
+   auto now=Clock::now();const auto elapsed_ns=std::chrono::duration_cast<std::chrono::nanoseconds>(now-previous).count();double dt=std::chrono::duration<double>(now-previous).count();previous=now;
+   // Settle the elapsed interval using the rate/pause state that governed it.
+   // New UI commands apply only to the next interval, never retroactively.
+   const bool running=session_.active()&&view_.screen==ui::Screen::World&&!paused_&&client_.visible();
+   simulation_clock_.accrue_frame(elapsed_ns,running);
+   if(running)for(unsigned n=0;simulation_clock_.tick_due()&&n<sonn::SimulationClock::work_budget;++n){session_.active()->advance_tick();simulation_clock_.complete_tick();}
    try{poll_jobs();}catch(const sonn::Error& x){error(x.code,x.what());}catch(const std::exception& x){error("INTERNAL_ERROR",x.what());}
    SDL_Event e;while(client_.poll_event(e))event(e);
    auto pending=ui_->take_actions();platform_actions_.insert(platform_actions_.end(),pending.begin(),pending.end());auto actions=std::move(platform_actions_);platform_actions_.clear();
    for(const auto& a:actions){try{act(a);}catch(const sonn::Error& x){error(x.code,x.what());}catch(const std::exception& x){error("INTERNAL_ERROR",x.what());}if(quit_)break;}
    if(quit_)break; // Exit is the last authority action; never write after its final checkpoint.
-   if(session_.active()&&view_.screen==ui::Screen::World&&!paused_&&client_.visible()){
-    tick_accumulator_+=std::min(dt,0.25)*20*speed_;
-    // Bounded work budget carries remainder; no skipped authoritative ticks.
-    unsigned n=0;while(tick_accumulator_>=1&&n++<256){session_.active()->advance_tick();tick_accumulator_-=1;}
-   }
    sync_view();
    // Local animation has no simulation RNG/tick owner. Resume without a time jump.
    if(client_.visible()&&!view_.reduced_motion&&!(session_.active()&&view_.screen==ui::Screen::World&&paused_))presentation_seconds_+=std::clamp(dt,0.0,0.1);
@@ -125,10 +129,10 @@ private:
  }view_.can_continue=false;try{view_.can_continue=saves_.continue_world(definitions_).has_value();}catch(const std::exception& x){error("SAVE_RECOVERY",x.what());}}
  void read_settings(){auto p=save_root_/"preferences.json";if(!fs::exists(p))return;try{
   auto x=sonn::parse_json(bytes_text(sonn::read_file(p,65536)));auto l=x.at("locale").string();view_.locale=l=="de"?ui::Locale::German:l=="en"?ui::Locale::English:ui::Locale::Chinese;
-  view_.reduced_motion=x.at("reduced_motion").boolean();view_.audio_volume=static_cast<int>(std::clamp<std::int64_t>(x.at("audio_volume").integer(),0,100));view_.fullscreen=x.at("fullscreen").boolean();if(x.object().contains("paused"))paused_=x.at("paused").boolean();if(x.object().contains("speed")){int v=static_cast<int>(x.at("speed").integer());if(v==1||v==4||v==16||v==64)speed_=v;}client_.audio_volume(view_.audio_volume/100.f);client_.fullscreen(view_.fullscreen);
+  view_.reduced_motion=x.at("reduced_motion").boolean();view_.audio_volume=static_cast<int>(std::clamp<std::int64_t>(x.at("audio_volume").integer(),0,100));view_.fullscreen=x.at("fullscreen").boolean();if(x.object().contains("paused"))paused_=x.at("paused").boolean();simulation_clock_.restore_preference(x);client_.audio_volume(view_.audio_volume/100.f);client_.fullscreen(view_.fullscreen);
  }catch(const std::exception& x){error("SETTINGS_INVALID",x.what());}}
  void persist_settings(){fs::create_directories(save_root_);auto p=save_root_/"preferences.json";auto tmp=p;tmp+=".tmp";
-  sonn::Json j(sonn::Json::Object{{"locale",ui::locale_code(view_.locale)},{"reduced_motion",view_.reduced_motion},{"fullscreen",view_.fullscreen},{"audio_volume",view_.audio_volume},{"paused",inspector_open_?inspector_was_paused_:paused_},{"speed",speed_}});
+  sonn::Json j(sonn::Json::Object{{"locale",ui::locale_code(view_.locale)},{"reduced_motion",view_.reduced_motion},{"fullscreen",view_.fullscreen},{"audio_volume",view_.audio_volume},{"paused",inspector_open_?inspector_was_paused_:paused_},{"speed_half_steps",simulation_clock_.half_steps()}});
   {std::ofstream f(tmp,std::ios::binary);f<<sonn::canonical_json(j);if(!f)throw sonn::Error("SETTINGS_WRITE","Preferences could not be written");}
 #ifdef _WIN32
   if(!MoveFileExW(tmp.c_str(),p.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))throw sonn::Error("SETTINGS_WRITE",std::to_string(GetLastError()));
@@ -185,9 +189,9 @@ private:
   case A::SetReducedMotion:view_.reduced_motion=a.a!=0;break;
   case A::SetAudioVolume:view_.audio_volume=std::clamp(static_cast<int>(a.a),0,100);client_.audio_volume(view_.audio_volume/100.f);break;
   case A::CameraHome:if(session_.active())client_.frame_surface(client::surface_view(session_.active()->world()));break;
-  case A::SetPaused:paused_=a.a!=0;tick_accumulator_=0;break;
-  case A::SetSpeed:speed_=static_cast<int>(a.a);if(speed_!=1&&speed_!=4&&speed_!=16&&speed_!=64)throw sonn::Error("BAD_SPEED","Unsupported simulation speed");break;
-  case A::OpenWorldInspector:if(inspector_open_)break;inspector_open_=true;inspector_was_paused_=paused_;paused_=true;tick_accumulator_=0;break;
+  case A::SetPaused:paused_=a.a!=0;break;
+  case A::SetSpeed:simulation_clock_.set_speed(a.a);break;
+  case A::OpenWorldInspector:if(inspector_open_)break;inspector_open_=true;inspector_was_paused_=paused_;paused_=true;break;
   case A::CloseWorldInspector:if(inspector_open_)paused_=inspector_was_paused_;inspector_open_=false;rename_.reset();view_.world.rename_preview_ready=false;break;
   case A::SetWorldNameDraft:rename_.reset();view_.world.rename_preview_ready=false;break;
   case A::PreviewWorldName:{if(!session_.active())break;auto* auth=session_.active();sonn::Command c{sonn::Command::Kind::RenameWorld,a.text};sonn::Envelope e{auth->world().id,session_.generation(),auth->world().revision,++command_sequence_,"rename-"+std::to_string(command_sequence_)};rename_=auth->prepare(e,c);view_.world.rename_preview_ready=true;view_.world.rename_preview_token=++preview_token_;view_.world.rename_consequences=sonn::canonical_json(rename_->preview);break;}
@@ -199,18 +203,19 @@ private:
   default:break; // Local UI open/close/tab intents have no world mutation.
   }
  }
- void show_world(){if(!session_.active())throw sonn::Error("NO_WORLD","Continue has no compatible world");view_.screen=ui::Screen::World;if(inspector_open_)paused_=inspector_was_paused_;inspector_open_=false;command_sequence_=std::max(command_sequence_,session_.active()->world().input_sequence);tick_accumulator_=0;rename_.reset();client_.frame_surface(client::surface_view(session_.active()->world()));}
- void sync_view(){if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id||counted_geometry_revision_!=w.terrain.surface_revision()){counted_world_=w.id;counted_geometry_revision_=w.terrain.surface_revision();const auto d=static_cast<std::uint64_t>(w.terrain.micro_divisions());view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard)*d*d;view_.world.dry_cells=w.terrain.dry_micro_count();}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=speed_;}}
+ void show_world(){if(!session_.active())throw sonn::Error("NO_WORLD","Continue has no compatible world");view_.screen=ui::Screen::World;if(inspector_open_)paused_=inspector_was_paused_;inspector_open_=false;command_sequence_=std::max(command_sequence_,session_.active()->world().input_sequence);simulation_clock_.reset_elapsed();rename_.reset();client_.frame_surface(client::surface_view(session_.active()->world()));}
+ void sync_view(){if(auto* a=session_.active()){const auto& w=a->world();view_.world.session=session_.generation();view_.world.name=w.name;view_.world.revision=w.revision;view_.world.day=w.tick/12000;if(counted_world_!=w.id||counted_geometry_revision_!=w.terrain.surface_revision()){counted_world_=w.id;counted_geometry_revision_=w.terrain.surface_revision();const auto d=static_cast<std::uint64_t>(w.terrain.micro_divisions());view_.world.cells=static_cast<std::uint64_t>(w.terrain.width-2*w.terrain.guard)*(w.terrain.height-2*w.terrain.guard)*d*d;view_.world.dry_cells=w.terrain.dry_micro_count();}view_.world.darkness=w.age.current==sonn::Age::Darkness;view_.world.automatic_age=w.age.automatic;view_.world.age_ticks_remaining=w.age.remaining_tick;view_.world.paused=paused_;view_.world.speed=simulation_clock_.speed();}}
  void event(const SDL_Event& e){if(e.type==SDL_EVENT_QUIT){auto prior=ui_->take_actions();platform_actions_.insert(platform_actions_.end(),prior.begin(),prior.end());platform_actions_.push_back({ui::ActionKind::Exit});return;}
   if(e.type==SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED||e.type==SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED){auto d=client_.dimensions();ui_->resize(d.pixel_w,d.pixel_h,d.density);}
+  const bool blocked_before=ui_->blocks_world_input();
   bool consumed=client_.process_ui_event(e,ui_->context());
   if(e.type==SDL_EVENT_MOUSE_BUTTON_UP)client_.process_camera_event(e);
   auto dim=client_.dimensions();float mx=0,my=0;
   const bool pointer=e.type==SDL_EVENT_MOUSE_MOTION||e.type==SDL_EVENT_MOUSE_BUTTON_DOWN||e.type==SDL_EVENT_MOUSE_BUTTON_UP||e.type==SDL_EVENT_MOUSE_WHEEL;
   if(e.type==SDL_EVENT_MOUSE_MOTION){mx=e.motion.x;my=e.motion.y;}else if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN||e.type==SDL_EVENT_MOUSE_BUTTON_UP){mx=e.button.x;my=e.button.y;}else if(e.type==SDL_EVENT_MOUSE_WHEEL){mx=e.wheel.mouse_x;my=e.wheel.mouse_y;}else SDL_GetMouseState(&mx,&my);
   const bool over_ui=pointer&&ui_->captures_pointer(static_cast<int>(mx*dim.density),static_cast<int>(my*dim.density));
-  if(ui_->text_input_focused()||ui_->blocks_world_input()||over_ui)return;
-  if(!consumed&&(view_.screen==ui::Screen::World||preview_)){if(e.type==SDL_EVENT_KEY_DOWN&&e.key.key==SDLK_SPACE){paused_=!paused_;tick_accumulator_=0;}else client_.process_camera_event(e);}
+  if(blocked_before||ui_->text_input_focused()||ui_->blocks_world_input()||over_ui)return;
+  if(!consumed&&(view_.screen==ui::Screen::World||preview_)){if(e.type==SDL_EVENT_KEY_DOWN&&e.key.key==SDLK_SPACE){paused_=!paused_;}else client_.process_camera_event(e);}
  }
  bool exercise_native_camera(){
   auto v=ui_->viewport();const float cx=static_cast<float>(v.x+v.width/2),cy=static_cast<float>(v.y+v.height/2);
@@ -230,7 +235,7 @@ private:
   case 4:if(!same(c.yaw_deg,smoke_camera_before_.yaw_deg-8))throw sonn::Error("SMOKE_KEY","Native Q rotation failed");key(SDLK_E);return false;
   case 5:{if(!same(c.yaw_deg,smoke_camera_before_.yaw_deg))throw sonn::Error("SMOKE_KEY","Native E rotation failed");auto surface=client::surface_view(session_.active()->world());auto hit=client_.pick(surface,cx,cy);if(!hit||!same(hit->point.y,session_.active()->world().terrain.height_for(sonn::TerrainKind::Soil)/1000.)||!same(hit->normal.y,1)||client_.pick(surface,v.x-1,v.y-1))throw sonn::Error("SMOKE_PICK","Screen ray did not hit the same soil top or rejected viewport incorrectly");auto support=session_.active()->world().terrain.support(static_cast<std::int64_t>(std::llround(hit->point.x*1000)),static_cast<std::int64_t>(std::llround(hit->point.z*1000)));if(!support||support->height_mm!=session_.active()->world().terrain.height_for(sonn::TerrainKind::Soil)||support->wet)throw sonn::Error("SMOKE_PICK_SUPPORT","Pick and core support differ");auto* tab=ui_->context().GetDocument(0)->GetElementById("tab-observe");auto p=tab->GetAbsoluteOffset(Rml::Box::BORDER),s=tab->GetBox().GetSize(Rml::Box::BORDER);auto density=client_.dimensions().density;smoke_camera_before_=c;wheel((p.x+s.x/2)/density,(p.y+s.y/2)/density);return false;}
   case 6:if(!unchanged())throw sonn::Error("SMOKE_UI_CAPTURE","Wheel on toolbar changed the camera");button(SDL_EVENT_MOUSE_BUTTON_DOWN,SDL_BUTTON_MIDDLE);{SDL_Event e{};e.type=SDL_EVENT_WINDOW_FOCUS_LOST;push(e);}motion(100,0,SDL_BUTTON_MMASK);return false;
-  case 7:if(!unchanged())throw sonn::Error("SMOKE_FOCUS","Lost focus retained camera drag");ui_->activate("world-info");return false;
+  case 7:if(!unchanged())throw sonn::Error("SMOKE_FOCUS","Lost focus retained camera drag");ui_->activate("world-inspector-open");return false;
   case 8:{auto* input=ui_->context().GetDocument(0)->GetElementById("world-name-draft");input->Focus();key(SDLK_W);return false;}
   case 9:if(!unchanged())throw sonn::Error("SMOKE_TEXT_CAPTURE","Text/modal input changed the camera");ui_->activate("world-close");return false;
   case 10:key(SDLK_W);return false;
@@ -263,6 +268,55 @@ private:
   SDL_Event motion{};motion.type=SDL_EVENT_MOUSE_MOTION;motion.motion.x=x;motion.motion.y=y;push(motion);
   for(const auto type:{SDL_EVENT_MOUSE_BUTTON_DOWN,SDL_EVENT_MOUSE_BUTTON_UP}){SDL_Event button{};button.type=type;button.button.button=SDL_BUTTON_LEFT;button.button.x=x;button.button.y=y;push(button);}
  }
+ void record_toolbar_layout(const char* section){
+  auto* doc=ui_->context().GetDocument(0);sonn::Json::Array controls;
+  static constexpr const char* ids[]={"pause","speed-toggle","age-open","world-inspector-open"};
+  for(std::size_t i=0;i<4;++i){auto* e=doc->GetElementById(ids[i]);if(!e||!e->IsVisible(true))throw sonn::Error("SMOKE_TOOLBAR_FIXED","A permanent control disappeared on a section");
+   const auto p=e->GetAbsoluteOffset(Rml::Box::BORDER),b=e->GetBox().GetSize(Rml::Box::BORDER);
+   const std::array<int,4> rect{int(std::lround(p.x)),int(std::lround(p.y)),int(std::lround(b.x)),int(std::lround(b.y))};
+   if(smoke_fixed_controls_.empty())smoke_fixed_rects_[i]=rect;else if(rect!=smoke_fixed_rects_[i])throw sonn::Error("SMOKE_TOOLBAR_FIXED","Switching sections moved a permanent control");
+   controls.emplace_back(sonn::Json::Object{{"id",ids[i]},{"x",rect[0]},{"y",rect[1]},{"width",rect[2]},{"height",rect[3]}});
+  }
+  const auto& r=smoke_fixed_rects_;auto* line=doc->GetElementById("toolbar-divider");auto* tools=doc->GetElementById("section-tools");
+  if(r[0][0]!=r[1][0]||r[2][0]!=r[3][0]||r[0][1]!=r[2][1]||r[1][1]!=r[3][1]||r[0][1]+r[0][3]>r[1][1]||!line||!line->IsVisible(true)||!tools||line->GetAbsoluteOffset(Rml::Box::BORDER).x<=r[2][0]+r[2][2]||tools->GetAbsoluteOffset(Rml::Box::BORDER).x<=line->GetAbsoluteOffset(Rml::Box::BORDER).x)
+   throw sonn::Error("SMOKE_TOOLBAR_ROWS","Two persistent rows and their right-hand divider do not match actual layout");
+  sonn::Json::Array visible_tools;
+  for(int page_index=0;page_index<tools->GetNumChildren();++page_index){auto* page=tools->GetChild(page_index);if(!page->IsVisible(true))continue;
+   for(int child=0;child<page->GetNumChildren();++child){auto* button=page->GetChild(child);if(button->GetTagName()!="button"||!button->IsVisible(true))continue;const auto p=button->GetAbsoluteOffset(Rml::Box::BORDER),b=button->GetBox().GetSize(Rml::Box::BORDER);const int y=int(std::lround(p.y));if(y!=r[0][1]&&y!=r[1][1])throw sonn::Error("SMOKE_TOOLBAR_ROWS","Section tool is outside the same two actual rows");visible_tools.emplace_back(sonn::Json::Object{{"id",button->GetId()},{"x",int(std::lround(p.x))},{"y",y},{"width",int(std::lround(b.x))},{"height",int(std::lround(b.y))}});}
+  }
+  smoke_fixed_controls_.emplace_back(sonn::Json::Object{{"section",section},{"controls",controls},{"visible_tools",visible_tools}});
+ }
+ bool exercise_toolbar_controls(){
+  static constexpr const char* speed_ids[]={"speed-half","speed-one","speed-one-half","speed-two","speed-three","speed-five","speed-ten"};
+  auto* doc=ui_->context().GetDocument(0);
+  if(smoke_toolbar_phase_<21){const int index=smoke_toolbar_phase_/3,phase=smoke_toolbar_phase_%3;
+   if(phase==0){if(!paused_)throw sonn::Error("SMOKE_TOOLBAR_PAUSE","Speed acceptance starts paused");smoke_toolbar_tick_=session_.active()->world().tick;smoke_native_click("speed-toggle");}
+   else if(phase==1){if(!doc->GetElementById("speed-panel")->IsVisible(true))throw sonn::Error("SMOKE_SPEED_POPOVER","Native speed click did not open choices");if(index==0&&!smoke_speed_captured_){client_.request_screenshot(evidence_/"speed-popup");smoke_speed_captured_=true;return false;}smoke_native_click(speed_ids[index]);}
+   else {const auto half=sonn::SimulationClock::supported_half_steps[std::size_t(index)];if(simulation_clock_.half_steps()!=half||view_.world.speed!=half/2.0||!paused_||session_.active()->world().tick!=smoke_toolbar_tick_||doc->GetElementById("speed-panel")->IsVisible(true))throw sonn::Error("SMOKE_SPEED_SELECTION","Selected exact rate, closed popup or retained pause failed");smoke_speed_rates_.emplace_back(int(half));}
+   ++smoke_toolbar_phase_;return false;
+  }
+  auto age_snapshot=[&](const char* action){const auto& w=session_.active()->world();smoke_age_commands_.emplace_back(sonn::Json::Object{{"action",action},{"age",w.age.current==sonn::Age::Light?"light":"darkness"},{"automatic",w.age.automatic},{"remaining_tick",std::int64_t(w.age.remaining_tick)},{"tick",std::int64_t(w.tick)}});};
+  switch(smoke_toolbar_phase_++){
+  case 21:smoke_native_click("speed-toggle");return false;
+  case 22:smoke_native_click("speed-one-half");return false;
+  case 23:{if(simulation_clock_.speed()!=1.5||!paused_)throw sonn::Error("SMOKE_SPEED_SELECTION","Fractional rate did not persist to runtime");persist_settings();const auto preferences=sonn::parse_json(bytes_text(sonn::read_file(save_root_/"preferences.json",65536)));sonn::SimulationClock restored;restored.restore_preference(preferences);if(restored.speed()!=1.5||preferences.object().contains("speed"))throw sonn::Error("SMOKE_SPEED_PREFERENCE","Actual preferences did not roundtrip exact fractional rate");smoke_toolbar_tick_=session_.active()->world().tick;smoke_native_click("pause");return false;}
+  case 24:if(paused_||simulation_clock_.speed()!=1.5)throw sonn::Error("SMOKE_TOOLBAR_PLAY","Play did not retain selected fractional rate");smoke_native_click("pause");return false;
+  case 25:if(!paused_||simulation_clock_.speed()!=1.5||session_.active()->world().tick<=smoke_toolbar_tick_)throw sonn::Error("SMOKE_TOOLBAR_PAUSE","Real simulation did not advance at selected rate or pause again");smoke_native_click("speed-toggle");return false;
+  case 26:smoke_native_click("speed-one");return false;
+  case 27:if(simulation_clock_.speed()!=1||!paused_)throw sonn::Error("SMOKE_SPEED_SELECTION","Default rate restore lost pause");smoke_toolbar_tick_=session_.active()->world().tick;smoke_native_click("age-open");return false;
+  case 28:if(!doc->GetElementById("age-panel")->IsVisible(true))throw sonn::Error("SMOKE_AGE_PAGE","Dedicated Age page did not open");if(!smoke_age_captured_){client_.request_screenshot(evidence_/"age-page");smoke_age_captured_=true;--smoke_toolbar_phase_;return false;}smoke_native_click("age-auto");return false;
+  case 29:if(!session_.active()->world().age.automatic||!session_.active()->world().age.remaining_tick)throw sonn::Error("SMOKE_AGE_AUTO","Automatic Age was not committed");age_snapshot("auto");smoke_native_click("age-darkness");return false;
+  case 30:if(session_.active()->world().age.current!=sonn::Age::Darkness||session_.active()->world().age.automatic||session_.active()->world().age.remaining_tick)throw sonn::Error("SMOKE_AGE_MANUAL","Selecting Darkness did not atomically stop automatic alternation");if(!smoke_age_dark_captured_){client_.request_screenshot(evidence_/"age-page-darkness");smoke_age_dark_captured_=true;--smoke_toolbar_phase_;return false;}age_snapshot("darkness");smoke_native_click("age-light");return false;
+  case 31:if(session_.active()->world().age.current!=sonn::Age::Light||session_.active()->world().age.automatic)throw sonn::Error("SMOKE_AGE_LIGHT","Selecting Light did not reach authoritative world");age_snapshot("light");smoke_native_click("age-auto");return false;
+  case 32:if(!session_.active()->world().age.automatic)throw sonn::Error("SMOKE_AGE_AUTO","Automatic Age re-enable failed");age_snapshot("auto");smoke_native_click("age-manual");return false;
+  case 33:if(session_.active()->world().age.automatic||session_.active()->world().age.remaining_tick||session_.active()->world().age.current!=sonn::Age::Light)throw sonn::Error("SMOKE_AGE_MANUAL","Manual mode changed Age or retained automatic timer");age_snapshot("manual");smoke_native_click("age-close");return false;
+  case 34:{if(doc->GetElementById("age-panel")->IsVisible(true)||!paused_||session_.active()->world().tick!=smoke_toolbar_tick_)throw sonn::Error("SMOKE_AGE_CLOSE","Age commands changed paused ticks or page remained open");
+   auto bounds=[&](const char* id){auto* e=doc->GetElementById(id);const auto p=e->GetAbsoluteOffset(Rml::Box::BORDER),b=e->GetBox().GetSize(Rml::Box::BORDER);return sonn::Json(sonn::Json::Object{{"x",int(std::lround(p.x))},{"y",int(std::lround(p.y))},{"width",int(std::lround(b.x))},{"height",int(std::lround(b.y))}});};
+   const auto dimensions=client_.dimensions();
+   std::ofstream report(evidence_/"toolbar-controls.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"input_path","SDL_PushEvent -> RmlUi hit -> typed action -> exact simulation scheduler/World command"},{"coordinate_units","physical_pixels"},{"viewport_width_px",dimensions.pixel_w},{"viewport_height_px",dimensions.pixel_h},{"dock_bounds",bounds("bottom-dock")},{"bar_bounds",bounds("bottom-bar-frame")},{"divider_bounds",bounds("toolbar-divider")},{"fixed_controls_across_sections",smoke_fixed_controls_},{"two_rows",true},{"separator",true},{"selected_speed_half_steps",smoke_speed_rates_},{"speed_selection_preserves_pause",true},{"fractional_speed_preferences_roundtrip",true},{"play_advances_authoritative_ticks",true},{"age_commands",smoke_age_commands_},{"age_commands_preserve_paused_ticks",true}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Toolbar controls evidence could not be written");completed_actions_.push_back("native-fixed-toolbar-seven-speeds-age-page");return true;}
+  default:return true;
+  }
+ }
  void smoke_step(){
   static int frame_count=0;static auto stage_time=Clock::now();
   if(std::chrono::duration<double>(Clock::now()-smoke_start_).count()>180)throw sonn::Error("SMOKE_TIMEOUT","Native flow did not complete");
@@ -293,15 +347,16 @@ private:
   case 5:{
    static constexpr const char* sections[]={"observe","terrain","life","civilization","construction","economy","world","settings"};
    if(smoke_material_phase_<16){const auto section=sections[smoke_material_phase_/2];
-    if(smoke_material_phase_%2==0)ui_->activate(std::string("tab-")+section);
-    else {client_.request_screenshot(evidence_/(std::string("toolbar-")+section));completed_actions_.push_back(std::string("physical-toolbar-")+section);}
+    if(smoke_material_phase_%2==0)smoke_native_click((std::string("tab-")+section).c_str());
+    else {record_toolbar_layout(section);client_.request_screenshot(evidence_/(std::string("toolbar-")+section));completed_actions_.push_back(std::string("physical-toolbar-")+section);}
     ++smoke_material_phase_;frame_count=0;stage_time=Clock::now();break;}
-   if(smoke_material_phase_==16){ui_->activate("tab-observe");ui_->activate("camera-help");++smoke_material_phase_;frame_count=0;break;}
+   if(smoke_material_phase_==16){ui_->activate("tab-observe");ui_->update();ui_->activate("camera-help");++smoke_material_phase_;frame_count=0;break;}
    if(smoke_material_phase_==17){client_.request_screenshot(evidence_/"physical-help");completed_actions_.push_back("physical-help-gpu");++smoke_material_phase_;frame_count=0;break;}
    if(smoke_material_phase_==18){ui_->activate("help-close");ui_->activate("tab-world");++smoke_material_phase_;frame_count=0;break;}
+   if(!exercise_toolbar_controls()){frame_count=0;stage_time=Clock::now();break;}
    client_.request_screenshot(evidence_/"blank-oblique");step("oblique-gpu");break;
   }
-  case 6:ui_->activate("age-darkness");step("set-darkness");break;
+  case 6:ui_->activate("age-open");ui_->update();ui_->activate("age-darkness");ui_->activate("age-close");step("set-darkness");break;
   case 7:client_.request_screenshot(evidence_/"darkness");step("dark-gpu");break;
   case 8:ui_->activate("save");ui_->activate("return-menu");step("save-return");break;
   case 9:if(view_.screen==ui::Screen::MainMenu){ui_->activate("continue-world");step("continue");}break;
@@ -312,13 +367,13 @@ private:
    // a separate evidence file instead of passing it through authority JSON.
    std::ofstream gpu(evidence_/"large-world-gpu.json");gpu<<client_.gpu_parameters_json();gpu.flush();if(!gpu)throw sonn::Error("SMOKE_REPORT","Largest world GPU report write failed");
    auto report=sonn::parse_json(bytes_text(sonn::read_file(evidence_/"large-world.json",65536))).object();report["status"]="pass";report["continue_roundtrip_surface_identical"]=true;report["native_gpu_parameters_file"]="large-world-gpu.json";std::ofstream out(evidence_/"large-world.json");out<<sonn::canonical_json(report);out.flush();if(!out)throw sonn::Error("SMOKE_REPORT","Largest world readback report write failed");
-   ui_->activate("tab-settings");ui_->activate("settings-open");step("settings-open");}break;
+   ui_->activate("tab-settings");ui_->update();ui_->activate("settings-open");step("settings-open");}break;
   case 11:client_.request_screenshot(evidence_/"settings-zh");step("settings-zh-gpu");break;
   case 12:ui_->activate("locale-en");step("english");break;
   case 13:client_.request_screenshot(evidence_/"settings-en");step("settings-en-gpu");break;
   case 14:ui_->activate("locale-de");step("german");break;
   case 15:client_.request_screenshot(evidence_/"settings-de");step("settings-de-gpu");break;
-  case 16:ui_->activate("settings-close");ui_->activate("return-menu");step("settings-return");break;
+  case 16:ui_->activate("settings-close");ui_->activate("tab-world");ui_->update();ui_->activate("return-menu");step("settings-return");break;
   case 17:if(view_.screen==ui::Screen::MainMenu){ui_->activate("new-world");step("blank-sea-new");}break;
   case 18:if(view_.screen==ui::Screen::Creation){
    if(!smoke_sea_captured_){record_creation_dialog("creation-options-centered");smoke_sea_captured_=true;frame_count=0;stage_time=Clock::now();break;}
@@ -333,17 +388,21 @@ private:
   case 26:client_.request_screenshot(evidence_/"pixel-near-full");step("full-material-gpu");break;
   case 27:client_.material_diagnostic(client::MaterialDiagnostic::MeanBase);step("base-diagnostic");break;
   case 28:client_.request_screenshot(evidence_/"pixel-near-mean-base");step("base-diagnostic-gpu");break;
-  case 29:client_.material_diagnostic(client::MaterialDiagnostic::Full);ui_->activate("age-darkness");step("near-dark-pixel");break;
+  case 29:client_.material_diagnostic(client::MaterialDiagnostic::Full);ui_->activate("age-open");ui_->update();ui_->activate("age-darkness");ui_->activate("age-close");step("near-dark-pixel");break;
   case 30:client_.request_screenshot(evidence_/"pixel-near-darkness");step("near-dark-gpu");break;
-  case 31:ui_->activate("age-light");step("restore-light-pixel");break;
+  case 31:ui_->activate("age-open");ui_->update();ui_->activate("age-light");ui_->activate("age-close");step("restore-light-pixel");break;
   case 32:client_.request_screenshot(evidence_/"pixel-near-light");step("near-light-gpu");break;
-  case 33:client_.material_diagnostic(client::MaterialDiagnostic::Full);ui_->activate("world-info");step("world-draft-open");break;
+  case 33:client_.material_diagnostic(client::MaterialDiagnostic::Full);ui_->activate("world-inspector-open");step("world-draft-open");break;
   case 34:{auto* input=dynamic_cast<Rml::ElementFormControl*>(ui_->context().GetDocument(0)->GetElementById("world-name-draft"));if(!input)throw sonn::Error("SMOKE_INPUT","Native world name input missing");input->SetValue("");input->Focus();ui_->context().ProcessTextInput("新世界 · Ähren");step("native-utf8-name-input");break;}
   case 35:ui_->activate("rename-preview");step("rename-preview");break;
   case 36:if(view_.world.rename_preview_ready){client_.request_screenshot(evidence_/"world-name-consequences");step("rename-consequences-gpu");}break;
   case 37:ui_->activate("rename-commit");step("rename-commit");break;
   case 38:if(session_.active()->world().name!="新世界 · Ähren")throw sonn::Error("SMOKE_RENAME","Displayed name draft was not committed");ui_->activate("world-close");act({ui::ActionKind::SaveWorld});std::ofstream(evidence_/"gpu-world.json")<<client_.gpu_parameters_json();step("rename-durable");break;
-  case 39:act({ui::ActionKind::NewWorld});ui_->activate("preview");step("new-candidate-while-world-retained");break;
+  case 39:
+   act({ui::ActionKind::NewWorld});
+   // Direct smoke-driver application actions publish their new screen to the
+   // UI before addressing its controls, just as the next normal frame does.
+   ui_->set_view(view_);ui_->update();ui_->activate("preview");step("new-candidate-while-world-retained");break;
   case 40:if(preview_){ui_->activate("cancel-create");step("cancel-candidate");}break;
   case 41:if(view_.screen==ui::Screen::World){if(session_.active()->world().name!="新世界 · Ähren"||saves_.continue_world(definitions_)->name!="新世界 · Ähren")throw sonn::Error("SMOKE_CANCEL","Cancel replaced the retained World or Continue");act({ui::ActionKind::NewWorld});act({ui::ActionKind::SetCreationSize,0,0,"",1,1});step("invalid-dimensions");}break;
   case 42:ui_->activate("preview");step("invalid-preview-request");break;
@@ -352,14 +411,14 @@ private:
   case 45:smoke_native_click("error-dismiss");step("dismiss-error-native-pointer");break;
   case 46:{if(!view_.error_key.empty())throw sonn::Error("SMOKE_MODAL_LAYER","Native pointer did not dismiss the visible error");
    std::ofstream report(evidence_/"error-layer.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"screen","creation"},{"topmost_action_hit",true},{"native_pointer_acknowledged",true},{"path","SDL_PushEvent -> App routing -> RmlUi pointer hit -> error dismiss"}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Modal layer report write failed");
-   ui_->activate("cancel-create");step("cancel-invalid-draft");break;}
+   ui_->activate("creation-close");step("cancel-invalid-draft");break;}
   case 47:if(view_.screen==ui::Screen::World){act({ui::ActionKind::OpenLoad});act({ui::ActionKind::OpenLoad});if(load_origin_!=ui::Screen::World)throw sonn::Error("SMOKE_LOAD_ORIGIN","Duplicate load lost its return destination");step("selected-load-open-twice");}break;
   case 48:if(view_.screen==ui::Screen::Load&&!view_.saves.empty()){
    if(!smoke_load_captured_){client_.request_screenshot(evidence_/"physical-save-ledger");smoke_load_captured_=true;completed_actions_.push_back("physical-save-ledger-gpu");frame_count=0;break;}
    ui_->activate("save-entry-0");step("selected-checkpoint");}break;
   case 49:ui_->activate("load-selected");step("selected-load");break;
   case 50:if(view_.screen==ui::Screen::World){client_.request_screenshot(evidence_/"loaded-world");act({ui::ActionKind::SaveWorld});step("loaded-world-gpu");}break;
-  case 51:ui_->activate("world-info");step("exit-rename-open");break;
+  case 51:ui_->activate("world-inspector-open");step("exit-rename-open");break;
   case 52:{auto* input=dynamic_cast<Rml::ElementFormControl*>(ui_->context().GetDocument(0)->GetElementById("world-name-draft"));if(!input)throw sonn::Error("SMOKE_INPUT","Exit name input missing");input->SetValue("");input->Focus();ui_->context().ProcessTextInput("退出顺序 · Ähren");ui_->activate("rename-preview");step("exit-rename-preview");break;}
   case 53:if(view_.world.rename_preview_ready){ui_->activate("rename-commit");SDL_Event closing{};closing.type=SDL_EVENT_QUIT;if(SDL_PushEvent(&closing)==false)throw sonn::Error("SMOKE_INPUT","Native close event could not be queued");step("rename-then-native-close");}break;
   }

@@ -64,6 +64,15 @@ def main():
         p=runtime/f['path'];check(p.is_file(),'Missing runtime definition '+str(p));check(hashlib.sha256(p.read_bytes()).hexdigest()==f['sha256'],'Definition admission mismatch')
     for p in ['fonts/fusion-pixel-12px-proportional-zh_hans.otf','ui/application.rml','ui/locales.tsv']:
         check((runtime/p).is_file(),'Missing runtime resource '+p)
+    # The native picker and future typed command contract must agree on half
+    # steps; legacy preferences are migrated separately, never valid commands.
+    interaction=json.loads((runtime/'data/contracts/interaction_runtime_v1.json').read_text(encoding='utf-8'))
+    commands=interaction['commands']+interaction['supplementary_commands']
+    speed=next(command for command in commands if command['id']=='SetSimulationSpeed')
+    expected_speed={'type':'object','properties':{'speed_half_steps':{'type':'integer','enum':[1,2,3,4,6,10,20]}},'required':['speed_half_steps'],'additionalProperties':False}
+    check(speed['payload_schema']==expected_speed,'Typed speed contract must admit exactly the seven half-step rates without coupling pause')
+    game=json.loads((runtime/'data/contracts/game_v0_9.json').read_text(encoding='utf-8'))
+    check(game['time_contract']['local_speed_half_steps']==expected_speed['properties']['speed_half_steps']['enum'],'Game clock and typed speed contract disagree')
     check(not (runtime/'geo').exists(),'Removed world-map source must not enter production runtime')
     check((ROOT/'.build/test-resources/geo/gshhs_f.b').is_file(),'Historical source remains available for geometry regression')
     ui=(ROOT/'assets/ui/application.rml').read_text(encoding='utf-8')

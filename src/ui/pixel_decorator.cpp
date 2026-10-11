@@ -375,7 +375,38 @@ PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge
     PixelMesh regions;
     const float neck=tab?std::clamp(std::round(depth),0.f,std::max(0.f,height-1)):0.f;
     if(tab) {
-        regions=pixel_tab_mesh(width,height-neck,edge,corner,0,pigment(232),pigment(207),tint);
+        // A category is a broad low trapezoid attached to the bar. Three
+        // shallow raster steps widen its shoulders across the short face;
+        // the low38/42dp layout, rather than clipped square corners, gives it
+        // the compact category-tab silhouette. All bands are disjoint.
+        const float face_height=height-neck;
+        const float e=std::clamp(std::round(edge),1.f,std::max(1.f,std::floor(std::min(width,face_height)/6)));
+        const float c=std::clamp(std::round(std::max(corner,dp(3))),1.f,std::max(1.f,std::floor(std::min(width,face_height)/8)));
+        const float s1=std::round(face_height*.3f),s2=std::round(face_height*.6f),s3=std::round(face_height*.9f);
+        const auto inset=[&](float y){return y<s1?3*c:y<s2?2*c:y<s3?c:0.f;};
+        Rml::Vector<float> rows={0,s1,s2,s3,face_height,e,s1+e,s2+e,s3+e};
+        for(auto& y:rows)y=std::clamp(y,0.f,face_height);
+        std::sort(rows.begin(),rows.end());rows.erase(std::unique(rows.begin(),rows.end()),rows.end());
+        float face_left=0,face_right=0,face_top=0,face_bottom=0;
+        const auto flush_face=[&] {
+            quad(regions,face_left,face_top,face_right-face_left,face_bottom-face_top,pigment(232));
+        };
+        for(std::size_t i=1;i<rows.size();++i) {
+            const float top=rows[i-1],h=rows[i]-top,mid=top+h/2,outer=inset(mid),right=width-outer;
+            if(mid<e){quad(regions,outer,top,right-outer,h,pigment(207));continue;}
+            const float inner=std::max(outer,e+inset(mid-e)),inner_right=std::min(right,width-inner);
+            quad(regions,outer,top,inner-outer,h,pigment(207));
+            quad(regions,inner_right,top,right-inner_right,h,pigment(207));
+            // A shoulder step can change only the rim while leaving the face
+            // bounds unchanged. Keep that coplanar centre in one rectangle,
+            // rather than introducing a needless seam beneath the glyph.
+            if(inner==face_left && inner_right==face_right && top==face_bottom)face_bottom=top+h;
+            else {
+                flush_face();
+                face_left=inner;face_right=inner_right;face_top=top;face_bottom=top+h;
+            }
+        }
+        flush_face();
         quad(regions,0,height-neck,width,neck,tint);
     } else if(lip && height>dp(12) && width>dp(12)) {
         // The two-dp body inset makes this a slightly projecting stone ledge,

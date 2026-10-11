@@ -20,7 +20,8 @@ const std::array<PhysicalMaterialDefinition,9>& physical_material_definitions();
 PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,float gap_start=0,float gap_width=0);
 // A dark stone face has sparse physical edge chips and short fractures rooted
 // at its actual upper edge. `lip` adds a continuous six-dp raised top ledge
-// followed by a two-dp shadow; attached tabs end above that ledge. detail_seed
+// followed by a two-dp shadow; broad low tabs join that ledge with shallow
+// stepped trapezoid shoulders over the short face. detail_seed
 // only chooses small edge details and never consumes simulation randomness.
 PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,bool lip=false,unsigned detail_seed=0);
 // Only the open tab neck shares the dock's texture coordinates. texture_origin

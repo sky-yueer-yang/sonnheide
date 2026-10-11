@@ -83,3 +83,7 @@ docs/evidence/heavy-arcade/*.log -text -whitespace
 # Bounded native GPU proof images and raw logs for unified dark stone surfaces.
 docs/evidence/dark-stone/*.png -filter -diff -merge -text
 docs/evidence/dark-stone/*.log -text -whitespace
+
+# Native GPU evidence for the compact two-row toolbar.
+docs/evidence/compact-toolbar/*.png -filter -diff -merge -text
+docs/evidence/compact-toolbar/*.log -text -whitespace

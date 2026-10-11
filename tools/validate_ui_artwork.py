@@ -70,9 +70,12 @@ def dark_stone_face_metrics(raw, width, height):
 
 def validate():
     icons = admit('original_ui_icons.json')
-    check(icons['format'] == 'SonnOriginalIcons9' and icons['logical_grid'] == 48 and icons['scaling'] == 'nearest_integer' and icons['alpha'] == 'binary', '48-cell original heavy pixel objects required')
+    check(icons['format'] == 'SonnOriginalIcons10' and icons['logical_grid'] == 48 and icons['scaling'] == 'nearest_integer' and icons['alpha'] == 'binary', '48-cell original objects and exact rectangular toolbar glyphs required')
     check(icons['edge_recipe']['outer_dark_cells'] == 2 and icons['edge_recipe']['white_contour_cells'] == 0, 'Heavy dark icon exterior required')
-    check(icons['category_style'] == 'physical_pixel_object' and icons['yellow_base'] == '#ffaa00', 'Current material-based icon direction')
+    categories={'tab-'+name for name in ('camera','terrain','people','laws','buildings','economy','world','settings')}
+    flat=categories | {'play','pause','toolbar-speed','toolbar-age'}
+    check(icons['category_style'] == 'wide_flat_warm_white' and icons['yellow_base'] == '#ffaa00', 'Current flat toolbar and retained material-object direction')
+    check(set(icons['category_icons']) == categories and set(icons['flat_glyphs']) == flat and icons['flat_glyph_colour'] == '#fff6df' and icons['category_logical_size'] == [48,28], 'Explicit independent warm-white toolbar glyph family')
     bases = dict(icons['primary_colors'], **icons['material_base_colors'])
     for value, rule in icons['pigment_derivatives'].items():
         check(rule['base'] in bases and 0 <= rule['shade'] <= 1 and 0 <= rule['white_tint'] <= 1, 'Bounded material pigment recipe')
@@ -85,46 +88,64 @@ def validate():
         name = path.stem if path.suffix == '.svg' else path.stem.rsplit('-', 1)[0]
         if path.suffix == '.svg': vectors[name] = path
         elif path.suffix == '.png': pngs.setdefault(name, {})[output['pixels']] = path
-    check(len(pngs) == len(vectors) == 41 and pngs.keys() == vectors.keys(), 'Complete 41-icon vector and raster set')
+    check(len(pngs) == len(vectors) == 43 and pngs.keys() == vectors.keys() and flat <= pngs.keys(), 'Complete43-icon vector and raster set')
     for name, versions in pngs.items():
+        logical_height=28 if name in categories else 48
         check(set(versions) == {96, 192}, 'Both integer-resolution icon variants: ' + name)
         logical = None
         for pixels, path in versions.items():
             width, height, raw = rgba_png(path)
-            check(width == height == pixels, 'Icon dimensions')
+            check(width == pixels and height == pixels*logical_height//48, 'Icon dimensions and rectangular category aspect')
             scale = pixels // 48
-            current = b''.join(raw[(y * scale * width + x * scale) * 4:(y * scale * width + x * scale) * 4 + 4] for y in range(48) for x in range(48))
+            current = b''.join(raw[(y * scale * width + x * scale) * 4:(y * scale * width + x * scale) * 4 + 4] for y in range(logical_height) for x in range(48))
             check(all(raw[(y * width + x) * 4:(y * width + x) * 4 + 4] == current[((y // scale) * 48 + x // scale) * 4:((y // scale) * 48 + x // scale) * 4 + 4] for y in range(height) for x in range(width)), 'Noninteger icon pixels: ' + name)
             check(all(current[i] in (0, 255) for i in range(3, len(current), 4)), 'Nonbinary transparency')
             check(logical is None or current == logical, 'Icon variants disagree')
             logical = current
-        painted = [(i % 48, i // 48) for i in range(48 * 48) if logical[i * 4 + 3]]
-        colours = {'#' + logical[i * 4:i * 4 + 3].hex() for i in range(48 * 48) if logical[i * 4 + 3]}
-        check(colours <= icons['pigment_derivatives'].keys() and len(colours) >= 7, 'Original material clusters must be registered: ' + name)
-        exterior = icons['edge_recipe']['outer_color']
-        for x, y in painted:
-            pigment = '#' + logical[(y * 48 + x) * 4:(y * 48 + x) * 4 + 3].hex()
-            channels = tuple(int(pigment[i:i + 2], 16) for i in (1, 3, 5))
-            luminance = sum(a * b for a, b in zip(channels, (.2126, .7152, .0722)))
-            check(luminance <= 220, 'Unbounded bright material highlight: ' + name)
-            if icons['pigment_derivatives'][pigment]['base'] in ('blue', 'red', 'yellow', 'green', 'copper'):
-                check(luminance <= 160.01, 'Vivid icon pigments must be deep rather than washed bright: ' + name)
-            if pigment != exterior:
-                for dy in range(-2, 3):
-                    for dx in range(-2, 3):
-                        if abs(dx) + abs(dy) <= 2:
-                            xx, yy = x + dx, y + dy
-                            check(0 <= xx < 48 and 0 <= yy < 48 and logical[(yy * 48 + xx) * 4 + 3] == 255, 'Actual two-cell icon exterior missing: ' + name)
-        check(all(logical[(y * 48 + x) * 4 + 3] == 0 for y in range(48) for x in range(48) if x in (0, 47) or y in (0, 47)), 'Heavy icon edge clipped the transparent safety row: ' + name)
-        check(painted and len(painted) >= 48 * 48 * .25 and len(painted) < 48 * 48, 'Object must be filled, with actual transparent background: ' + name)
-        check(max(x for x, _ in painted) - min(x for x, _ in painted) + 1 >= 36 and max(y for _, y in painted) - min(y for _, y in painted) + 1 >= 36, 'Painted object is too small: ' + name)
+        painted = [(i % 48, i // 48) for i in range(48 * logical_height) if logical[i * 4 + 3]]
+        colours = {'#' + logical[i * 4:i * 4 + 3].hex() for i in range(48 * logical_height) if logical[i * 4 + 3]}
+        check(all(logical[(y * 48 + x) * 4 + 3] == 0 for y in range(logical_height) for x in range(48) if x in (0,47) or y in (0,logical_height-1)), 'Icon edge clipped the transparent safety row: ' + name)
+        check(painted and len(painted) < 48*logical_height, 'Icon must have a real transparent silhouette: '+name)
+        if name in flat:
+            check(colours == {'#fff6df'}, 'Toolbar marks must use one warm-white pigment with no coloured or dark contour: '+name)
+            if name in categories:
+                width=max(x for x,y in painted)-min(x for x,y in painted)+1
+                height=max(y for x,y in painted)-min(y for x,y in painted)+1
+                check(width>=36 and 18<=height<=25 and width/height>=1.45, 'Category marks must be broad, flat and legible at their actual48x28 size: '+name)
+            if name=='play':
+                rows=[[x for x,y in painted if y==row] for row in sorted({y for x,y in painted})]
+                check(len(rows)>=30 and len({min(row) for row in rows})==1 and all(row==list(range(min(row),max(row)+1)) for row in rows), 'Play must be a single solid triangle without an enclosing ring')
+                widths=[len(row) for row in rows];peak=widths.index(max(widths))
+                check(peak>8 and peak<len(widths)-8 and widths[:peak+1]==sorted(widths[:peak+1]) and widths[peak:]==sorted(widths[peak:],reverse=True), 'Play triangle must widen to one middle tip and taper back')
+            if name=='pause':
+                xs=sorted({x for x,y in painted});ys=sorted({y for x,y in painted})
+                gaps=[index for index in range(1,len(xs)) if xs[index]>xs[index-1]+1]
+                check(len(gaps)==1 and gaps[0]>=6 and len(xs)-gaps[0]==gaps[0] and len(ys)>=28 and len(painted)==len(xs)*len(ys), 'Pause must be exactly two equally thick filled bars with an open gap and no ring')
+        else:
+            check(colours <= icons['pigment_derivatives'].keys() and len(colours) >= 7, 'Original material clusters must be registered: ' + name)
+            exterior = icons['edge_recipe']['outer_color']
+            for x, y in painted:
+                pigment = '#' + logical[(y * 48 + x) * 4:(y * 48 + x) * 4 + 3].hex()
+                channels = tuple(int(pigment[i:i + 2], 16) for i in (1, 3, 5))
+                luminance = sum(a * b for a, b in zip(channels, (.2126, .7152, .0722)))
+                check(luminance <= 220, 'Unbounded bright material highlight: ' + name)
+                if icons['pigment_derivatives'][pigment]['base'] in ('blue', 'red', 'yellow', 'green', 'copper'):
+                    check(luminance <= 160.01, 'Vivid icon pigments must be deep rather than washed bright: ' + name)
+                if pigment != exterior:
+                    for dy in range(-2, 3):
+                        for dx in range(-2, 3):
+                            if abs(dx) + abs(dy) <= 2:
+                                xx, yy = x + dx, y + dy
+                                check(0 <= xx < 48 and 0 <= yy < 48 and logical[(yy * 48 + xx) * 4 + 3] == 255, 'Actual two-cell icon exterior missing: ' + name)
+            check(len(painted)>=48*48*.25, 'Material object must remain filled: '+name)
+            check(max(x for x, _ in painted) - min(x for x, _ in painted) + 1 >= 36 and max(y for _, y in painted) - min(y for _, y in painted) + 1 >= 36, 'Painted object is too small: ' + name)
         root = ET.fromstring(vectors[name].read_text(encoding='utf-8'))
-        check(root.attrib.get('viewBox') == '0 0 48 48', 'Original vector pixel grid')
-        reconstructed = bytearray(48 * 48 * 4)
+        check(root.attrib.get('viewBox') == '0 0 48 '+str(logical_height), 'Original vector pixel grid')
+        reconstructed = bytearray(48 * logical_height * 4)
         for cell in root:
             check(cell.tag.rsplit('}', 1)[-1] == 'rect' and cell.attrib.get('height') == '1', 'SVG must contain exact pixel rows')
             x, y, run = int(cell.attrib['x']), int(cell.attrib['y']), int(cell.attrib['width'])
-            check(0 <= x < 48 and 0 <= y < 48 and run >= 1 and x + run <= 48 and re.fullmatch(r'#[0-9a-fA-F]{6}', cell.attrib['fill']), 'SVG pixel bounds/pigment')
+            check(0 <= x < 48 and 0 <= y < logical_height and run >= 1 and x + run <= 48 and re.fullmatch(r'#[0-9a-fA-F]{6}', cell.attrib['fill']), 'SVG pixel bounds/pigment')
             for column in range(x, x + run):
                 offset = (y * 48 + column) * 4
                 check(reconstructed[offset + 3] == 0, 'Overlapping SVG pixel')
@@ -184,6 +205,6 @@ def validate():
     markup = (ROOT / 'assets/ui/application.rml').read_text(encoding='utf-8')
     for source in re.findall(r'src="\.\./generated/ui/icons/([^\"]+)"', markup):
         check((ROOT / 'assets/generated/ui/icons' / source).is_file(), 'Referenced production icon missing: ' + source)
-    print('PASS 41 filled pixel objects: matching transparent SVG/96/192 PNG; deep grey stone plus eight unchanged dark textures and exact recipe replay')
+    print('PASS31 retained coloured objects and12 flat warm-white glyphs: exact SVG/PNG pairs, broad categories and plainplay/pause;9 original textures and recipe replay')
 
 if __name__ == '__main__': validate()
