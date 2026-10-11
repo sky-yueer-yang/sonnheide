@@ -1,0 +1,12 @@
+{
+  "image_comparison_required": true,
+  "live_advance_ms": 1500,
+  "local_clock_frozen": true,
+  "menu_creates_world": false,
+  "status": "pass",
+  "actual_gpu_pixels_frozen_identical": false,
+  "gpu_rounding_tolerance_lsb": 1,
+  "frozen_max_channel_delta": 1,
+  "live_significant_changed_channels": 13994,
+  "rgba_bytes": 16384000
+}

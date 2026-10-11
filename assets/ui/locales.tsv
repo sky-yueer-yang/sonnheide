@@ -1,0 +1,110 @@
+key	zh-CN	en	de
+new	创建世界	New world	Neue Welt
+continue	继续	Continue	Fortsetzen
+load	载入世界	Load world	Welt laden
+settings	设置	Settings	Einstellungen
+exit	退出	Quit	Beenden
+back	返回	Back	Zurück
+blank	空白世界	Blank world	Leere Welt
+world-name	世界名称	World name	Weltname
+surface	初始地表	Initial surface	Anfangsoberfläche
+soil	平土	Flat soil	Flacher Boden
+ocean	海洋	Ocean	Ozean
+size	世界尺寸	World size	Weltgröße
+width	宽 · 地块数	Width · plots	Breite · Parzellen
+height	长 · 地块数	Length · plots	Länge · Parzellen
+theme	地表主题	Surface theme	Oberflächenthema
+snowfield	雪原	Snowfield	Schneefeld
+flower_meadow	花甸	Flower meadow	Blumenwiese
+maple_field	枫原	Maple plain	Ahornland
+cherry_field	樱野	Cherry field	Kirschland
+wetland	湿地	Wetland	Feuchtgebiet
+savanna	荒原	Wasteland	Ödland
+sonnheide_sacred	圣原	Sacred land	Heiliges Land
+volcanic	炎地	Ember land	Glutland
+initial-empty	开局没有人物或建筑。	No people or buildings at creation.	Zu Beginn gibt es keine Menschen oder Gebäude.
+preview	预览地表	Preview surface	Oberfläche ansehen
+create	创建世界	Create world	Welt erstellen
+preview-camera	中键旋转 · 滚轮缩放	Middle-drag to rotate · Scroll to zoom	Mittlere Taste ziehen zum Drehen · Scrollen zum Zoomen
+camera-home	复位镜头	Reset camera	Kamera zurücksetzen
+save	保存	Save	Speichern
+saved	已保存	Saved	Gespeichert
+main-menu	主菜单	Main menu	Hauptmenü
+age-light	光明时代	Age of Light	Zeitalter des Lichts
+age-darkness	黑暗时代	Age of Darkness	Zeitalter der Dunkelheit
+age-auto	自动交替	Automatic alternation	Automatischer Wechsel
+age-manual	手动切换	Manual switching	Manueller Wechsel
+tab-observe	观察	View	Sicht
+tab-terrain	地表	Terrain	Gelände
+tab-life	生命	Life	Leben
+tab-civilization	文明	Culture	Kultur
+tab-construction	建设	Build	Bauen
+tab-economy	经济	Economy	Handel
+tab-world	世界	World	Welt
+tab-settings	设置	Settings	Optionen
+no-saves	暂无世界存档。	No saved worlds.	Keine Weltspielstände vorhanden.
+load-selected	载入所选世界	Load selected world	Gewählte Welt laden
+language	界面语言	Interface language	Oberflächensprache
+display	显示	Display	Anzeige
+fullscreen	全屏	Fullscreen	Vollbild
+windowed	窗口	Windowed	Fenster
+motion	动态效果	Motion	Bewegung
+motion-normal	完整动态	Full motion	Volle Bewegung
+motion-reduced	减少动态	Reduce motion	Bewegung reduzieren
+volume	音量	Volume	Lautstärke
+done	完成	Done	Fertig
+world	世界	World	Welt
+close	关闭	Close	Schließen
+show-consequences	查看后果	Show consequences	Auswirkungen ansehen
+apply-name	提交名称	Apply name	Namen übernehmen
+cancel-draft	放弃草案	Discard draft	Entwurf verwerfen
+operation-failed	操作未完成	Operation incomplete	Vorgang nicht abgeschlossen
+working	正在处理	Working	Wird bearbeitet
+pause	暂停	Pause	Pause
+play	播放	Play	Weiter
+day	日	Day	Tag
+cells	微地表	micro surfaces	Mikroflächen
+dry-cells	干燥微地表	dry micro surfaces	trockene Mikroflächen
+revision	版本	Revision	Stand
+error-input	请输入有效的数值。	Enter a valid number.	Bitte eine gültige Zahl eingeben.
+error-generic	操作无法完成。	The operation could not complete.	Der Vorgang konnte nicht abgeschlossen werden.
+error-stale	世界或草案已改变，请重新查看后果。	The world or draft has changed. Review the consequences again.	Die Welt oder der Entwurf hat sich geändert. Bitte die Auswirkungen erneut prüfen.
+error-save	世界保存失败，请检查可用空间和写入权限。	The world could not be saved. Check free space and write permission.	Die Welt konnte nicht gespeichert werden. Bitte Speicherplatz und Schreibrechte prüfen.
+error-durability	保存结果尚未确定，请保留当前世界并检查存档。	Save durability is uncertain. Keep the current world open and check the saved files.	Die dauerhafte Speicherung ist ungewiss. Bitte die aktuelle Welt geöffnet lassen und die Dateien prüfen.
+error-no-save	没有可继续的世界存档。	There is no saved world to continue.	Es gibt keinen Weltspielstand zum Fortsetzen.
+error-name	名称不能为空，且必须是有效文字。	The name must be nonempty, valid text.	Der Name darf nicht leer sein und muss gültigen Text enthalten.
+error-size	地图尺寸无效或超出可用预算。	The map size is invalid or exceeds the available budget.	Die Kartengröße ist ungültig oder übersteigt das verfügbare Budget.
+error-checkpoint	存档无法读取或与当前内容不兼容。	The saved world cannot be read or is incompatible with the installed content.	Der Spielstand kann nicht gelesen werden oder ist mit den installierten Inhalten nicht kompatibel.
+error-preferences	设置无法保存，本次运行中仍然有效。	Preferences could not be saved. They still apply during this session.	Die Einstellungen konnten nicht gespeichert werden. Sie gelten weiterhin in dieser Sitzung.
+world-options	编辑世界	Edit world	Welt bearbeiten
+name-change	仅更改世界名称	Only the world name changes	Nur der Weltname wird geändert
+camera-help	操作帮助	Camera controls	Kamerasteuerung
+camera-orbit	按住鼠标中键拖动旋转镜头；滚轮缩放。	Hold the middle mouse button and drag to rotate. Scroll to zoom.	Zum Drehen die mittlere Maustaste gedrückt halten und ziehen. Mit dem Mausrad zoomen.
+camera-pan	按住鼠标右键拖动平移，也可以使用方向键或 WASD。	Hold the right mouse button to pan, or use the arrow keys or WASD.	Zum Verschieben die rechte Maustaste gedrückt halten oder Pfeiltasten beziehungsweise WASD verwenden.
+camera-keys	Q / E 转向；+ / - 缩放。	Q / E turn the camera; + / - zoom.	Q / E drehen die Kamera; + / - ändern den Zoom.
+error-dimensions	长宽须在 32–4096 地块之间，每地块 2 米。	Width and length must be 32–4096 plots at 2 metres per plot.	Breite und Länge müssen 32–4096 Parzellen betragen, je 2 Meter.
+technical-details	技术详情	Technical details	Technische Details
+hide-details	收起详情	Hide details	Details ausblenden
+metres-per-cell	m/格	m/cell	m/Zelle
+tab-observe-full	世界观察与镜头	World view and camera	Weltansicht und Kamera
+tab-terrain-full	地形与生态	Terrain and ecology	Gelände und Ökologie
+tab-life-full	人物与动物	People and animals	Menschen und Tiere
+tab-civilization-full	文明与制度	Civilization and institutions	Zivilisation und Institutionen
+tab-construction-full	建设与资源	Construction and resources	Bau und Ressourcen
+tab-economy-full	经济与物品	Economy and goods	Wirtschaft und Güter
+tab-world-full	世界、存档与时间	World, saves and time	Welt, Spielstände und Zeit
+tab-settings-full	游戏设置	Game settings	Spieleinstellungen
+tool-camera-home	复位	Reset	Zurück
+tool-camera-help	帮助	Help	Hilfe
+tool-main-menu	主菜单	Menu	Menü
+tool-age-light	光明	Light	Licht
+tool-age-darkness	黑暗	Dark	Dunkel
+tool-age-auto	自动	Auto	Auto
+tool-age-manual	手动	Manual	Manuell
+not-available	尚未开放	Not yet available	Noch nicht verfügbar
+fine-surface	微表面 31.25 mm · 地块 2 m	Surface detail 31.25 mm · plot 2 m	Oberflächendetail 31,25 mm · Parzelle 2 m
+size-256-full	512 m 方形世界	512 m square world	512 m quadratische Welt
+size-512-full	1.024 km 方形世界	1.024 km square world	1.024 km quadratische Welt
+size-1024-full	2.048 km 方形世界	2.048 km square world	2.048 km quadratische Welt
+size-2048-full	4.096 km 方形世界	4.096 km square world	4.096 km quadratische Welt
+size-4096-full	8.192 km 方形世界	8.192 km square world	8.192 km quadratische Welt

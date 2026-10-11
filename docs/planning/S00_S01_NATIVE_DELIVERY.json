@@ -1,0 +1,278 @@
+{
+  "format": "SonnNativeEvidence1",
+  "date": "2026-10-10",
+  "device": {
+    "cpu": "Apple M3",
+    "os": "Darwin 25.6.0 arm64",
+    "renderer": "Metal",
+    "native_pixel_size": [
+      2560,
+      1600
+    ],
+    "logical_size": [
+      1280,
+      800
+    ]
+  },
+  "command": "python3 tools/build.py --sanitize --native-smoke --bundle --jobs 6",
+  "source_run": ".build/evidence/native-2ea30fe6902b",
+  "executed_from_portable_package": true,
+  "ctest": {
+    "tests": 3,
+    "passed": 3,
+    "seconds": 7.14,
+    "core_seconds": 3.98,
+    "project_seconds": 1.9,
+    "ui_seconds": 1.26
+  },
+  "instrumentation": [
+    "AddressSanitizer",
+    "UndefinedBehaviorSanitizer"
+  ],
+  "native_flow": {
+    "status": "pass",
+    "actions": 57,
+    "final_exit_name": "退出顺序 · Ähren"
+  },
+  "screenshots": [
+    {
+      "name": "blank-oblique",
+      "tga_sha256": "9f42e19d5a4fd909b338d1c697dbf3f3e978d62b18cd70a98eb16d37cac4ab69",
+      "png_sha256": "7d7228e040d8ec25455d32f8479fbea3cd7f452563566659420a8e1ed0d4d28b",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "blank-preview",
+      "tga_sha256": "8cc82358d2a645e0c65ab552b94f35ba6dfa020eceff959c4d851c497502feeb",
+      "png_sha256": "0b3ad228fddf2bf6ecb88a8ab7cc34102cef627cabc5182d4fc8b2f57fee517e",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "creation-error",
+      "tga_sha256": "e5dd29fd2215cbc0cb76e1ee39ac493092d9a35664128f92eafc748dd206e931",
+      "png_sha256": "8a377779f013f4993fd584b0fc38169493f42fec253dff3d787e24dbee43791a",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "darkness",
+      "tga_sha256": "04cd1c8d5e237e46d6cb98d9ab42f732a3cc5662f93cf8d55aedb0f4f24eb3b1",
+      "png_sha256": "98c2f46588951f749988b7a6c168785485e3bef87de0527133dc956e8027966f",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "earth-map",
+      "tga_sha256": "7e208d09ea83927935663868ca6a741a3710e15f7b35ea2008ef34e2973c9e0b",
+      "png_sha256": "653fb94a4d8752f33ec322fe8544a710ebf9fe80d4739953f038d97c376c0686",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "earth-preview",
+      "tga_sha256": "c8371c0061df2e185d67767f1c67e6a65e46a7fa07edc64e64df766408435538",
+      "png_sha256": "14d2b2c408f8fa29fbfbe6cb2e71e7fbb65d9680b196f8414e21b28f31801e5a",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "earth-world",
+      "tga_sha256": "694c869a32de14d1fe2acfa38615fb8649fa613caf1a50e7b0ba6e942b6821d4",
+      "png_sha256": "b46e62c6e6cb0c33c4189aeb4e07e4d1ba809e779dea63755b194a261e0d7b5a",
+      "stored_png": "docs/evidence/s00-s01-arcade/earth-world.png",
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "loaded-world",
+      "tga_sha256": "9915728c935a0e3852c1b4ff41fac810c1ad4631838b2145e32bdd5764cfa94d",
+      "png_sha256": "69039e19fc9e7a2f7aa511ad4188c8c3a1b2c71a497031bbaa864782b86cb180",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "main-menu",
+      "tga_sha256": "5907a6bc5f3bc94c95e7d17442ab62015358c19e6c0ad69d07d2244f57600528",
+      "png_sha256": "bce9a87c8c89e77bad331716b05dd1f96bd742b5218f2ee335375ddb2ce2ca40",
+      "stored_png": "docs/evidence/s00-s01-arcade/main-menu.png",
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "pixel-near-darkness",
+      "tga_sha256": "ab94ccba87f5de0348ea38bc53cdeb20ebb5de69e9c6009f2a1cad8ad16873ba",
+      "png_sha256": "b89f60e7ee1fa0e52b8ab6bb47dba14ead95f4fea8d01eed2875afb229cd6ec2",
+      "stored_png": "docs/evidence/s00-s01-arcade/pixel-near-darkness.png",
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "pixel-near-full",
+      "tga_sha256": "9bb683c64502ce3f0d882aeea6645f04f5035a199357386e1a7ea28858210fb2",
+      "png_sha256": "24cbc6abb7cf20e3ac56601fc53da15a81c3e63940c135b66d6377af0b8007c4",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "pixel-near-light",
+      "tga_sha256": "9bb683c64502ce3f0d882aeea6645f04f5035a199357386e1a7ea28858210fb2",
+      "png_sha256": "24cbc6abb7cf20e3ac56601fc53da15a81c3e63940c135b66d6377af0b8007c4",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "pixel-near-mean-base",
+      "tga_sha256": "d8679fa4f74b46cb956413bfa86c0b8af0ccf75cf52769c7a7e1ea9e7c703cca",
+      "png_sha256": "4c3bb60f763037b4b6e820f3b8ad06fc9f3d4dc7457b58ea3176d686da685a25",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "settings-de",
+      "tga_sha256": "8765f8dee85fb107a6034bbc72c6ad1fc628c385674553e2b5b27509876ac22c",
+      "png_sha256": "a0bc3f844e3c6fa1d487f17102f46cebb064053bee124d79dca8c86a50eaf61e",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "settings-en",
+      "tga_sha256": "d2e6506299a1857034e94030b9aa88074f878a68011a65be6a51b5b07e04ca30",
+      "png_sha256": "528b2d8fece7c25288efded38e8e4e9b5dc308cc2e452a9daa82b6ddf3455dbe",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "settings-zh",
+      "tga_sha256": "bae8a40464c263f8866483a3b465767f58a2a0ae2b506395448dc6bca44aa6ed",
+      "png_sha256": "f55cc5e724f1712f862055e95329df5322331abb01d708cedccd7e938d165c1c",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "name": "world-name-consequences",
+      "tga_sha256": "866ce1c13ac6a0a0d95f253d2a1da059a4d5c17f9f2c821dc5d021bf08c54bf9",
+      "png_sha256": "e8f0138fb9b9b45497ff6fe2f372808f28d45a3056a4dd69afb58ddcda38e53d",
+      "stored_png": null,
+      "pixels": [
+        2560,
+        1600
+      ]
+    }
+  ],
+  "proof_files": [
+    {
+      "path": "docs/evidence/s00-s01-arcade/camera-input.json",
+      "sha256": "f410afe7a522c12d9ce43ada43e39ec8b2656c3e3af13e14a111ff5c6b3e2121"
+    },
+    {
+      "path": "docs/evidence/s00-s01-arcade/earth-world.png",
+      "sha256": "b46e62c6e6cb0c33c4189aeb4e07e4d1ba809e779dea63755b194a261e0d7b5a"
+    },
+    {
+      "path": "docs/evidence/s00-s01-arcade/gpu-world.json",
+      "sha256": "9d6ed3f9c8ba8687076f953d227bf1107e63e78f1dcaec1d1645232649d3601e"
+    },
+    {
+      "path": "docs/evidence/s00-s01-arcade/main-menu.png",
+      "sha256": "bce9a87c8c89e77bad331716b05dd1f96bd742b5218f2ee335375ddb2ce2ca40"
+    },
+    {
+      "path": "docs/evidence/s00-s01-arcade/native-flow.json",
+      "sha256": "fd2a1c9b13f6a0c9be1bfcb878ee72c1c1920a0b4cd142c813ef9745a8f38a04"
+    },
+    {
+      "path": "docs/evidence/s00-s01-arcade/pixel-near-darkness.png",
+      "sha256": "b89f60e7ee1fa0e52b8ab6bb47dba14ead95f4fea8d01eed2875afb229cd6ec2"
+    },
+    {
+      "path": "docs/evidence/s00-s01-arcade/texture-difference.json",
+      "sha256": "944de431f0d45874f238609e651861ab0dff69b7320bc761632bae2abda0a76d"
+    }
+  ],
+  "windows_ci": {
+    "status": "pass",
+    "source_commit": "f2f222391a10ab70a698b3a7bd7d5f04d2da65bb",
+    "checkout_commit": "12a042295bf08366c40079b645799e13a21b547f",
+    "checkout_kind": "pull_request_merge_preview",
+    "os": "Windows Server 2022",
+    "compiler": "MSVC 19.44.35229.0",
+    "python": "3.9.13",
+    "command": "python tools/build.py --jobs 4 --bundle",
+    "run_id": 38029039916,
+    "job_id": 114145917421,
+    "url": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/38029039916",
+    "completed_at": "2026-10-10T06:05:17Z",
+    "ctest": {
+      "tests": 3,
+      "passed": 3,
+      "seconds": 3.47,
+      "core_seconds": 2.07,
+      "project_seconds": 1.19,
+      "ui_seconds": 0.17
+    },
+    "artifact": {
+      "name": "windows-build-evidence",
+      "id": 11661436900,
+      "size_in_bytes": 96007783,
+      "sha256": "f50919b7b059f03a370d9063be3bd3219a7529b880abb88395414859e28d072a",
+      "url": "https://github.com/sky-yueer-yang/sonnheide/actions/runs/38029039916/artifacts/11661436900",
+      "expires_at": "2027-01-08T05:53:31Z",
+      "includes": [
+        "build.log",
+        "CTest log",
+        "Sonnheide executable",
+        "complete runtime resources"
+      ]
+    },
+    "gpu_executed": false
+  },
+  "windows_gpu": "not_run",
+  "steam_installation": "not_run"
+}

@@ -1,0 +1,1436 @@
+{
+  "schema_version": 1,
+  "contract_id": "warfare_decisions_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "audit_date": "2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "scope": "game_simulation_crisis_real_mobilization_operations_tactics_no_real_world_weapon_instruction",
+  "sources": {
+    "architecture": "docs/architecture/WAR_STRATEGY_AND_TACTICAL_DECISIONS.md",
+    "aggregate": "data/contracts/game_v0_8.json",
+    "decision_core": "data/contracts/decision_core_v1.json",
+    "life": "data/contracts/life_genetics_v1.json",
+    "natural_action": "data/contracts/natural_action_v1.json",
+    "terrain": "data/contracts/terrain_access_v1.json",
+    "settlement": "data/contracts/settlement_lifecycle_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "god_control": "data/contracts/god_control_v1.json",
+    "politics": "data/contracts/political_decisions_v1.json",
+    "source_material": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "economic": "data/contracts/economic_decisions_v1.json"
+  },
+  "research_sources": [
+    {
+      "url": "https://www.guerrilla-games.com/read/killzones-ai-dynamic-procedural-tactics",
+      "primary": true,
+      "verified_date": "2026-10-09",
+      "use": "static_and_observed_dynamic_position_evaluation_not_modern_assets_or_parameters"
+    },
+    {
+      "url": "https://www.cs.cmu.edu/~pfr/publications/b2hd-IJCAI2001WS-Planning.html",
+      "primary": true,
+      "verified_date": "2026-10-09",
+      "use": "periodic_communication_bounded_opponent_hypotheses_and_plan_deadlines_not_military_realism_claim"
+    },
+    {
+      "url": "https://www.sharcnet.ca/my/publications/show/2188",
+      "primary": true,
+      "verified_date": "2026-10-09",
+      "use": "observed_spatial_casualty_history_overlay_not_true_damage"
+    },
+    {
+      "url": "https://www.guerrilla-games.com/read/out-of-sight-out-of-mind-improving-visualization-of-ai-info",
+      "primary": true,
+      "verified_date": "2026-10-09",
+      "use": "why_and_why_not_records_not_engine_dependency"
+    }
+  ],
+  "authority": {
+    "single_writer": true,
+    "role_revision_at_commit": true,
+    "guard_before_score": true,
+    "atomic_failure": true,
+    "ordinary_ai_requires_player_approval_every_decision": false,
+    "planning_uses_WorldTruth": false,
+    "execution_uses_WorldTruth_for_conservation_collision_and_law": true,
+    "truth_rejection_exposes_hidden_facts": false,
+    "god_war": "explicit_capability_event_no_forged_assent_or_implicit_lease",
+    "player_control": "valid_actual_ControlLease_set_only",
+    "preview_changes_world": false,
+    "camera_LOD_UI_worker_completion_changes_world": false,
+    "supported_unlawful_action": "only_existing_explicit_domain_template_actual_assault_or_disobedience_keeps_engine_world_law_conservation_and_sources_records_crime_cannot_forge_public_authority_or_privileged_transfer",
+    "domestic_authorization_proves_international_no_breach": false
+  },
+  "identity": {
+    "army_hierarchy_layers": 1,
+    "persistent_sub_army_entities": false,
+    "direct_members": "existing_ActorRefs_unique_active_duty",
+    "temporary_assignment": "expiring_actor_role_slot_task_map_no_recruitment_budget_inventory_or_entity_page",
+    "formal_split": "peer_Army_actual_people_equipment_transfer_once",
+    "coordination": "existing_peer_ArmyRefs_finite_token",
+    "army_deleted_on_commander_or_city_death": false,
+    "citizenship_service_state_owner_controller_custodian_location_detention_separate": true,
+    "roles": [
+      "militia",
+      "shield_sword",
+      "pike",
+      "bow",
+      "crossbow",
+      "matchlock",
+      "flintlock"
+    ],
+    "artillery": "actual_Army_equipment_existing_crew_no_new_tier",
+    "cavalry_mount_horse_powered_transport": false,
+    "modern_or_magical_weapon_system": false
+  },
+  "shared_decision": {
+    "interfaces": [
+      "DecisionEpisode",
+      "BeliefSnapshot",
+      "CandidatePlan",
+      "Commitment",
+      "OutcomeAttribution"
+    ],
+    "domain_ids": [
+      "WAR_CRISIS",
+      "MOBILIZATION",
+      "OPERATIONS",
+      "ARMY_TACTICS",
+      "INDIVIDUAL_COMBAT",
+      "PEACE_FEASIBILITY"
+    ],
+    "fields_owned_by": "decision_core_v1",
+    "accountable_actor_per_role": true,
+    "unknown_is_zero": false,
+    "typed_claims": [
+      "ActorAvailabilityLedger",
+      "CurrencyEscrow",
+      "ItemBatchReservation",
+      "TransportCapacity",
+      "SurfaceSlotReservation",
+      "CommandAuthority"
+    ],
+    "score": "domain_bounded_dimensionless_q_after_named_raw_metric_reference_normalization_no_generic_mixed_unit_sum",
+    "hard_illegal_plan_can_win_by_personality": false,
+    "bad_forecast_can_fail": true,
+    "hard_illegal_definition": "engine_hard_failure_or_unauthorized_legal_command_not_blanket_ban_on_explicit_supported_unlawful_actor_actions"
+  },
+  "units": {
+    "distance": "integer_mm",
+    "speed": "mm_per_motion_SimSecond",
+    "time": "authoritative_SimTick",
+    "mass": "integer_gram",
+    "energy": "life energy_milli",
+    "currency": "integer_currency_minimal_unit",
+    "work": "integer_work_units_lastIntegratedTick_and_remainder",
+    "probability_preference": "q_0_to_10000",
+    "losses": "life health_milli / actualpersoncount",
+    "sample_motion_second_ticks": 20,
+    "sample_game_day_ticks": 12000,
+    "sample_game_year_days": 360,
+    "engineering_sample_not_real_weapon_timing": true
+  },
+  "personality": {
+    "source": "current_PersonalitySnapshot_not_alleles",
+    "capabilities": "PhenotypeCapacities",
+    "axes": [
+      "curiosity",
+      "piety",
+      "altruism",
+      "risk_tolerance",
+      "order_preference",
+      "ambition"
+    ],
+    "range_q": [
+      0,
+      10000
+    ],
+    "mappings": {
+      "curiosity": [
+        "costed_investigation",
+        "evidenced_route_hypotheses"
+      ],
+      "piety": [
+        "existing_faith_values_oaths_and_sacred_site_claims_not_automatic_enemy"
+      ],
+      "altruism": [
+        "civil_and_household_loss",
+        "rescue_and_limited_pursuit"
+      ],
+      "risk_tolerance": [
+        "mean_lower_tail_upper_loss_weights",
+        "exposure_and_exit_preference"
+      ],
+      "order_preference": [
+        "procedural_commitment",
+        "coordination_or_local_autonomy"
+      ],
+      "ambition": [
+        "existing_role_goal_gain",
+        "leading_or_diplomatic_success_not_free_skill"
+      ]
+    },
+    "context": [
+      "received_reports",
+      "actual_wounds_energy_sleep_exposure",
+      "relationships",
+      "care_and_duty",
+      "skill_training",
+      "pay_arrears",
+      "actual_resource_observation",
+      "existing_faith_culture_language_values",
+      "real_shared_training_or_betrayal_history"
+    ],
+    "piety_equals_religion_membership_or_church_trust": false,
+    "same_axes_different_context_may_differ": true,
+    "commander_brain_shared_by_all": false,
+    "forbidden_effects": [
+      "damage_HP_buff",
+      "inventory_or_skill_creation",
+      "adulthood_override",
+      "peak_entry",
+      "infinite_compliance",
+      "instant_ordinary_communication"
+    ]
+  },
+  "information": {
+    "ObservedFact_fields_owned_by": "decision_core_v1",
+    "per_predicate_quantity_units_required": true,
+    "sources": [
+      "actual_vision_hearing",
+      "existing_scout",
+      "lawful_notice",
+      "received_ally_city_transport_report",
+      "authorized_map_archive"
+    ],
+    "same_root_chain_independent_evidence": false,
+    "observed_received_ticks_separate": true,
+    "late_old_report_overwrites_newer_direct": false,
+    "last_known_enemy": "bounded_reachable_region_from_known_surface_possible_capability_not_true_pose",
+    "vision": "actual_eye_interface_rays_body_samples_occlusion_age_and_actual_lamps",
+    "sound": "uncertain_direction_range_no_exact_private_identity",
+    "own_handheld_and_body": "direct_self_observation",
+    "remote_friendly_stock": "authorized_report_or_query_not_instant_Army_link",
+    "failure_codes": [
+      "BLOCKED_LOCALLY",
+      "RESOURCE_UNAVAILABLE",
+      "AUTHORITY_EXPIRED",
+      "CONTACT_LOST"
+    ],
+    "hidden_quantity_failure_leak": false,
+    "opaque_failure_retry": "saved_backoff_until_new_evidence_or_bounded_due_retry"
+  },
+  "crisis": {
+    "unique_source_key": [
+      "sourceEventId",
+      "claimPredicate",
+      "claimant"
+    ],
+    "sources": [
+      "observed_attack",
+      "occupation",
+      "access_blockade",
+      "treaty_breach",
+      "compensation_due_failure",
+      "protected_member_attack",
+      "territorial_title_dispute",
+      "dependency_independence",
+      "succession",
+      "existing_culture_religion_rights",
+      "lawful_cargo_dispute"
+    ],
+    "opportunistic_claim_recorded_not_fake_self_defense": true,
+    "low_relation_or_adjacency_alone_random_war": false,
+    "goal_types": [
+      "DEFEND_MEMBER",
+      "END_BLOCKADE",
+      "ENFORCE_EXISTING_TREATY",
+      "OBTAIN_CITY_SOVEREIGNTY",
+      "SEEK_DEPENDENCY",
+      "SEEK_INDEPENDENCE",
+      "SECURE_LIMITED_ACCESS",
+      "SEEK_COMPENSATION"
+    ],
+    "goal_fields": [
+      "subjectRefs",
+      "authorityScope",
+      "evidenceRefs",
+      "satisfactionPredicate",
+      "maximumDemand",
+      "exitCondition",
+      "revision"
+    ],
+    "states": [
+      "OBSERVED",
+      "VERIFYING",
+      "CLAIM_FRAMED",
+      "CONTACT_REQUESTED",
+      "NEGOTIATING",
+      "AUTHORIZATION_PENDING",
+      "DECLARED",
+      "ACTIVE",
+      "ARMISTICE_NEGOTIATING",
+      "SETTLED",
+      "DEFERRED",
+      "DEESCALATED",
+      "CLAIM_WITHDRAWN",
+      "AUTHORITY_LOST"
+    ],
+    "candidate_actions": [
+      "ignore_or_accept",
+      "investigate",
+      "send_actual_envoy",
+      "perform_existing_obligation",
+      "compensate",
+      "negotiate_access",
+      "guard_known_interface",
+      "arbitrate",
+      "propose_costed_blockade",
+      "limited_mobilization",
+      "request_alliance_help",
+      "withdraw_claim",
+      "declare_war"
+    ],
+    "declaration_guards": [
+      "ai_new_wars_on_for_autonomous",
+      "discovered_if_required",
+      "alive_current_authorized_role",
+      "constitutional_gate_real_quorum",
+      "lawful_goal_target",
+      "current_starting_cost_claims",
+      "fresh_versions_cooldown"
+    ],
+    "guaranteed_victory_guard": false,
+    "declaration_only": "zero_field_people_allowed_no_free_army_or_occupation",
+    "ai_new_wars_off": "reject_new_autonomous_declaration_war_plot_or_organized_undeclared_offensive_preserve_existing_war_immediate_bounded_self_defense_and_rescue_retreat",
+    "self_defense_not_renamed_offensive": true,
+    "isolated_unlawful_assault": "actual_crime_and_evidence_not_forged_WarAuthorization_or_automatic_state_war",
+    "ai_diplomatic_plans_off": "new_scoped_plans_rejected_existing_signed_obligations_continue",
+    "ai_recruitment_off": "new_scoped_AI_recruitment_rejected_existing_duties_continue",
+    "every_crisis_must_escalate": false,
+    "opportunistic_intent_interface": "political_decisions_v1.OPPORTUNISTIC_EXPANSION_INTENT_actual_known_goal_not_fake_foreign_attack",
+    "self_defense_scope": "actual_ongoing_attack_local_protection_not_cross_border_capture_or_indefinite_expansion_relabel"
+  },
+  "mobilization": {
+    "source": "existing_mature_qualified_CivicActor_not_spawning_or_ordinary_animal",
+    "human_adult_years": 18,
+    "sapient_animal_maturity": "immutable_species",
+    "guards": [
+      "lawful_voluntary_or_conscription_source",
+      "actual_role_body_tool_fit",
+      "unique_Army_duty",
+      "ActorAvailabilityLedger_capacity",
+      "actual_control_scope",
+      "health_and_care_obligations",
+      "actual_budget_equipment_food_claims",
+      "lawful_civil_reserve"
+    ],
+    "stages": [
+      "SurveyLabor",
+      "ProposeRecruitment",
+      "ObtainLegalConsentOrOrder",
+      "ReserveBudgetAndEquipment",
+      "AssignDutySchedule",
+      "TravelToMuster",
+      "IssueActualEquipment",
+      "Train",
+      "Ready"
+    ],
+    "civil_interface": "LaborDisplacementForecast_named_people_tools_access_schedule_income",
+    "protected_services": [
+      "agriculture",
+      "CitySquare_loading_distribution",
+      "transport",
+      "care",
+      "basic_clothing_weapon_maintenance"
+    ],
+    "selection": "bounded_feasible_matching_then_reduce_service_gap_and_skill_mismatch",
+    "player_excess": "explicit_legal_consequences_overrides_AI_preference_not_law_body_unique_schedule",
+    "unfunded_future_supply_wish_is_ProjectDemandQuota": false,
+    "uniform": "actual_stock_fit_service_theme_not_citizenship",
+    "training": "actual_teacher_actor_time_tools_energy_consumables",
+    "full_military_civil_labor_double_count": false,
+    "commander_death": "preserve_Army_valid_delivered_orders_existing_qualified_successor_no_dead_role_new_order",
+    "discharge": "actual_arrears_surviving_borrowed_equipment_return_tasks_and_real_travel",
+    "ActivityTimeLedger_alias": "economic_view_of_same_ActorAvailabilityLedger_not_separate_time_capacity"
+  },
+  "supply": {
+    "container": "finite_ArmySupply_same_batch_owner_custodian_stock_ledger",
+    "usable": "actual_arrived_accessible_edible_nonexpired_quantity",
+    "not_usable": [
+      "orders",
+      "future_production",
+      "reserved_elsewhere",
+      "in_transit",
+      "inaccessible",
+      "inedible",
+      "spoiled"
+    ],
+    "separate_metrics": [
+      "edible_energy_coverage_ticks",
+      "actual_ammo_loaded_stock",
+      "maintenance",
+      "clothing_thermal",
+      "care_material_time"
+    ],
+    "route": "CitySquare_LoadingApron_actual_Road_or_Port_Voyage_actual_unload_ArmySupply",
+    "interdiction": "actual_route_block_or_contact_cargo_transfer_not_remote_stock_delete",
+    "ship_guards": [
+      "space_mass_capacity",
+      "voyage_contract",
+      "continuous_WetRegion_route",
+      "water_depth",
+      "berth_unload_interface",
+      "actor_containment"
+    ],
+    "ship_melee_across_shore": false,
+    "beach_landing": "finite_supply_real_unload_no_free_city",
+    "civil_reserve_authority": true
+  },
+  "operations": {
+    "templates": [
+      "guard_transport_node",
+      "preserve_supply",
+      "escort",
+      "rescue",
+      "fix_observed_enemy",
+      "relieve_blockade",
+      "take_operable_interface",
+      "siege",
+      "withdraw_regroup",
+      "protect_evacuation"
+    ],
+    "candidate_fields": [
+      "authorizedGoal",
+      "satisfactionPredicate",
+      "realOrEstimatedActorsWithUnits",
+      "resourceAndDutyClaims",
+      "routeRevisions",
+      "deploymentArea",
+      "foodCoverage",
+      "exitRoute",
+      "woundedTransport",
+      "observePrerequisites",
+      "conditionBranches",
+      "fallback",
+      "deadline"
+    ],
+    "opponent_hypotheses_sample_max": 5,
+    "update_only_received_observation": true,
+    "actor_or_equipment_double_front": false,
+    "coordination_fields": [
+      "tokenId",
+      "peerPlanRefs",
+      "conditions",
+      "issuedTick",
+      "receivedAcks",
+      "dueTick",
+      "expiryTick",
+      "fallback",
+      "revision"
+    ],
+    "dead_cancelled_peer": "invalidate_condition_timeout_or_replan_not_eternal_wait"
+  },
+  "tactics": {
+    "purposes": [
+      "continue",
+      "hold",
+      "protect_supply",
+      "engage",
+      "observed_side_route",
+      "support",
+      "cover_regroup",
+      "bounded_pursuit",
+      "retreat",
+      "request_ceasefire_surrender"
+    ],
+    "position_metrics": [
+      "arrivalTicks",
+      "legalSurfaceBodyCapacity",
+      "observedThreatAngleRegions",
+      "observedFriendlySupport",
+      "exitQuality",
+      "actualOwnFireOcclusion",
+      "loadedEnergy",
+      "coldWetRisk",
+      "civilAccessBlockage",
+      "slotReservation"
+    ],
+    "generation": "bounded_known_corridor_real_surface_cover_interfaces_not_global_scatter",
+    "cover": "real_structure_tree_trunk_material_not_decor_colour",
+    "side_or_high_ground_damage_buff": false,
+    "commitment": "sample_10_to_40_ticks_hysteresis_actual_switch_cost_urgent_hazard_or_invalid_contact_authority_preempts",
+    "pursuit": "saved_origin_target_lastKnown_time_supply_distance_return_route",
+    "urgent_collision_neighbor_truncation": false,
+    "peak_Actor_exception": false
+  },
+  "formation": {
+    "types": [
+      "Line",
+      "Column",
+      "Square",
+      "Wedge",
+      "Loose",
+      "Echelon"
+    ],
+    "square": "multi_direction_protection_no_cavalry",
+    "fields": [
+      "slotId",
+      "SurfaceRef",
+      "pose",
+      "bodyProfile",
+      "roleCompatibility",
+      "reservation",
+      "expectedArrivalTick",
+      "revision"
+    ],
+    "steps": [
+      "freeze_actual_eligible_bodies",
+      "generate_body_sized_slots",
+      "surface_sweep_filter",
+      "bounded_stable_role_path_assignment",
+      "unique_reservation",
+      "actual_motion_fair_portal_tokens",
+      "derive_actual_arrival_orientation_neighbour_errors"
+    ],
+    "sample_assignment_block_actors_max": 64,
+    "sample_spare_slots_max": 16,
+    "unbounded_cubic_assignment": false,
+    "teleport": false,
+    "cohesion": "actual_geometry_error_coordination_not_damage",
+    "insufficient_space": "narrow_Column_or_safe_current_formation"
+  },
+  "orders": {
+    "extend_existing_commands": [
+      "CommitWarDeclaration",
+      "RecruitExistingActor",
+      "IssueArmyOrder",
+      "CommitPeaceTreaty"
+    ],
+    "new_tool_or_permanent_page": false,
+    "fields": [
+      "orderId",
+      "sourceKind",
+      "issuerRef",
+      "authorityRevision",
+      "armyRef",
+      "actorSetSnapshot",
+      "objective",
+      "routeOrArea",
+      "engagementPolicy",
+      "formationIntent",
+      "issueTick",
+      "earliestStartTick",
+      "expiryTick",
+      "revision",
+      "coordinationToken"
+    ],
+    "ordinary_delivery": "actual_signal_language_training_range_or_real_messenger_route_receivedTick",
+    "signal_sends_enemy_private_map": false,
+    "player_leased_delivery": "explicit_external_intent_current_lease_set_not_fake_commander_message",
+    "queue_conditions": [
+      "actual_arrival",
+      "received_peer_ready",
+      "own_supply_threshold",
+      "observed_target",
+      "named_tick"
+    ],
+    "arbitrary_program": false,
+    "volley": "received_signal_actual_qualified_ready_members_ratio_deadline_fallback"
+  },
+  "combat": {
+    "cycle_states": [
+      "IDLE",
+      "AIMING",
+      "READY",
+      "FIRING",
+      "RECOVERING",
+      "RELOADING",
+      "BLOCKED"
+    ],
+    "cycle_fields": [
+      "weaponRef",
+      "actualAmmoBatch",
+      "startTick",
+      "lastIntegratedTick",
+      "workRequired",
+      "workCompleted",
+      "remainder",
+      "loadedQuantity",
+      "cycleCounter",
+      "committedShotIds"
+    ],
+    "load": "actual_stock_transfer_into_loaded_chamber_quiver_once",
+    "fire": "loaded_consumption_once_not_stock_again",
+    "fire_guards": [
+      "actual_alive_capable",
+      "weapon_custody_fit",
+      "legal_support_ship_fire_interface",
+      "actual_ray_aim_range",
+      "observed_target_or_authorized_area",
+      "ready_positive_loaded",
+      "valid_permission_or_supported_explicit_unlawful_actor_task_expiry",
+      "unique_ShotId"
+    ],
+    "projectile": "authoritative_nonlife_flight_record_not_visual_or_Actor",
+    "projectile_fields": [
+      "ProjectileRef",
+      "sourceActor",
+      "weapon",
+      "initialPose",
+      "velocity",
+      "gameGravity",
+      "ownerAtFire",
+      "ammoReceipt",
+      "expiryTick",
+      "lastIntegratedTick",
+      "hitReceipts"
+    ],
+    "collision": "complete_swept_actual_body_structure_time_then_stable_ref",
+    "RNG": "saved_combat_domain_per_ShotId",
+    "armor": "combat_profiles hit_resolution finalSeverityMilli/blockedkindblunt then unique LifeApplyInjury; same snapshot allcontacts, no double residue/bleeding",
+    "melee": "combat_profiles aim_and_cycle actual body-relative maxreach/sweep/contactwindow/facing/response/loadedstate/uniquecontact",
+    "simultaneous": "same_snapshot_legal_fire_actual_hit_time_same_instant_aggregate_then_unique_death",
+    "death_or_ceasefire_cancels_fired_projectile": false,
+    "new_actions_after_death": "cancel_unfired_preserve_fired_projectile",
+    "repeat_receipt_duplicates_damage": false,
+    "pause_load_new_target_refills_reload": false,
+    "real_weapon_recipe_parameters": false,
+    "aim": "actual_own_weapon_pose_and_actor_ObservedFact_or_authorized_area_no_commit_autoaim_hidden_current_enemy_pose",
+    "same_instant_armor": "coverage_durability_snapshot_all_contacts_then_unique_aggregated_wear_and_injury_not_ID_first_armor_break_advantage",
+    "profile_authority": "data/content/combat_profiles_v1.json",
+    "injury_authority": "data/content/life_profiles_v1.json.injury",
+    "game_weapon_recipe_parameters": true,
+    "weapon_stage_gate": "woodclub from actual primitive task only; swords/pike/bow/crossbow T015 actual adoption+goods+training, firearms T028/29,cannonT030 late actual adoption+goods+training+crew; no starting gun/cannon",
+    "headless_numeric_kernel_defined": true,
+    "operation_parameter_authority": "combat_profiles.operation_parameter_authority selected actual equipment installed version; basefallback, futureonly, canonicalmilli once",
+    "misfire": "combat_profiles.misfire actual loaded charge lost once at admitted ShotAttemptId, future paidclear/reload only"
+  },
+  "morale": {
+    "individual_fields": [
+      "fearStress",
+      "pain",
+      "fatigue",
+      "sleepEnergyExposure",
+      "receivedLossMemory",
+      "commanderTrust",
+      "dutyCommitment",
+      "exitBelief"
+    ],
+    "states": [
+      "STEADY",
+      "HESITATING",
+      "SEEKING_COVER",
+      "ORDERLY_RETREAT",
+      "ROUTED",
+      "REQUEST_SURRENDER"
+    ],
+    "army_average_replaces_personal_hazard": false,
+    "morale_damage_HP_armor_multiplier": false,
+    "fatigue_injury": "life_capability_once_not_duplicate_morale_penalty",
+    "loss_memory": "witnessed_or_received_event_once_not_global_deaths",
+    "recovery": "real_safe_ticks_rest_food_care_trusted_orders_not_aura",
+    "no_exit": "real_cover_or_surrender_not_teleport_infinite_wall_loop",
+    "care": "existing_actual_labor_resources_body_load_no_new_hospital_or_heal",
+    "numeric_transitions": "combat_profiles morale_transitions fear actual known pulse/decay and threshold hysteresis, nohealth buff"
+  },
+  "occupation_captivity": {
+    "siege": "real_routes_gates_food_consumption_no_abstract_population_delete",
+    "structure_damage": "actual_whole_object_or_stable_section_durability_support_loss_not_pixel_debris_copy",
+    "occupation_guards": [
+      "real_administrative_interface",
+      "current_key_transport_entry_control",
+      "qualified_garrison",
+      "real_sustained_control",
+      "defender_local_administration_inoperative",
+      "actual_food_order_capacity"
+    ],
+    "square_destroyed": "logical_custody_capacity_zero_not_physical_anchor",
+    "damaged_city_interface": "actual_built_or_approved_finite_emergency_interface",
+    "landless_city_sea_capture": false,
+    "occupation_implies_title_or_private_owner": false,
+    "captivity": "living_identity_real_capacity_food_guard_routes_detention_authority_separate",
+    "surrender_without_capacity": "possible_real_disarm_release_pending_terms_not_auto_death",
+    "exchange": "actual_body_transfer_transport_permission_not_teleport"
+  },
+  "peace": {
+    "interface": "PeaceFeasibilityReport",
+    "recipient": "political_decisions_v1",
+    "fields": [
+      "own_authorized_costs",
+      "known_actual_losses",
+      "verified_occupation",
+      "belief_enemy_demand_loss_ranges",
+      "valid_WarGoals",
+      "signing_authority",
+      "actual_transfer_food_payment_capacity",
+      "inaccessible_exchange",
+      "rights_resident_risks"
+    ],
+    "enemy_secret_treasury_bottom_price": false,
+    "ceasefire": "legal_effective_tick_commit_and_real_delivery_ack_known_recipients_no_new_fire_old_projectiles_continue",
+    "late_notice": "actual_receivedTick_vs_effectiveTick_incident_evidence_not_auto_new_world_war",
+    "signed_terms_instant_execution": false,
+    "preserve": [
+      "wounds",
+      "pay_arrears",
+      "surviving_equipment_returns",
+      "spent_ammo",
+      "private_owner",
+      "culture_language_family",
+      "due_debts"
+    ],
+    "forged_third_party_signature": false
+  },
+  "terrain_civic": {
+    "wipe": "ADR0017_ground_ArmySupply_boat_unprotected_cargo_loss_live_Actor_uniform_hand_weapon_chamber_and_carried_ammo_preserved",
+    "life": "actual_pose_identity_genome_knowledge_Gestation_then_real_hazard",
+    "dependencies": [
+      "route",
+      "slot",
+      "weapon_grip",
+      "line_of_fire",
+      "support",
+      "food_source",
+      "item_container",
+      "reservation",
+      "far_water_connectivity",
+      "role_authority",
+      "membership",
+      "lease"
+    ],
+    "wipe_refills_military_goods": false,
+    "normalization": "final_alive_members_geometry_once_Army_City_State_crown_lease",
+    "last_city_loss_deletes_Army_State": false,
+    "weapon_binding_and_state_not_reset_by_geography_wipe": true
+  },
+  "transaction_order": [
+    "validate_generations_authority_rules_intent",
+    "integrate_existing_actual_work_reload_injury_once",
+    "validate_true_people_stock_custody_schedule_geometry_capacity",
+    "prepare_same_time_legal_actions",
+    "unique_consumption_loss_hit_damage",
+    "normalize_death_estate_members_Army_City_State_crown_leases",
+    "append_receipts_events",
+    "publish_snapshot"
+  ],
+  "budget": {
+    "sample_only": true,
+    "queue": [
+      "dueTick_ASC",
+      "overdueAge_DESC",
+      "subjectRef_ASC"
+    ],
+    "sample_tactics_ticks": 10,
+    "sample_operations_ticks": 120,
+    "sample_crisis_game_days": 1,
+    "sample_crisis_candidates_max": 16,
+    "sample_operation_templates_max": 12,
+    "sample_refinements_per_template_max": 3,
+    "sample_operation_nodes_max": 48,
+    "sample_depth_max": 4,
+    "sample_army_purposes_max": 10,
+    "sample_person_actions_max": 8,
+    "sample_person_positions_max": 24,
+    "sample_army_metrics_per_due": 128,
+    "sample_refined_slot_paths_per_due": 16,
+    "cursor_saved": true,
+    "mandatory_collision_physiology_due_effect_reserve": true,
+    "wall_clock_worker_race": false,
+    "exhaustion": "save_cursor_safe_wait_not_skip_hazard_or_unprepared_spend",
+    "final_population_capacity_promised": false,
+    "shared_global_decision_logical_primitives_per_tick": 4096,
+    "sample_military_share_of_global_decision_primitives_per_tick": 1024,
+    "military_quota_is_additional": false,
+    "mandatory_execution_budget": "separate_collision_combat_physiology_domain_do_not_skip_due_effects_reduce_planning_or_delay_wallclock_publication"
+  },
+  "persistence": {
+    "save": [
+      "episodes",
+      "belief_source_chains",
+      "personal_memory_trust_backoff",
+      "authorized_goals_costs",
+      "orders_send_receive_ack_expiry",
+      "batches_custody_reservations",
+      "ActorAvailabilityLedger",
+      "formation_intent_actual_slots",
+      "coordination_deadlines",
+      "reload_work_remainder_loaded",
+      "projectiles_hits",
+      "damage_death_receipts",
+      "occupation_nodes_control_ticks",
+      "POW",
+      "treaty_due",
+      "RNG_domain_counters",
+      "logical_cursor"
+    ],
+    "replay_executed_effects": false,
+    "old_player_session_lease": "invalidate_no_auto_resume",
+    "actual_completed_effects_preserved": true
+  },
+  "ui": {
+    "locales": [
+      "zh-CN",
+      "en",
+      "de"
+    ],
+    "existing_pages": [
+      "war",
+      "army",
+      "person",
+      "city",
+      "state",
+      "item",
+      "contract",
+      "brain",
+      "task"
+    ],
+    "Army_main_actions": [
+      "move",
+      "engage",
+      "defend",
+      "formation",
+      "supply",
+      "retreat"
+    ],
+    "why": "decision_time_evidence_intervals_guards_personality_contributions_not_retrospective_truth",
+    "typed_parameters": [
+      "pursuit_limit",
+      "fire_discipline",
+      "retreat_threshold",
+      "food_reserve",
+      "finite_coordination"
+    ],
+    "arbitrary_stock_reload_health_dead_role_edit": false,
+    "unnecessary_small_text_button_border": false
+  },
+  "invariants": [
+    "Declaration_not_free_mobilization_or_occupation",
+    "Existing_life_sources_one_Army_duty",
+    "ActivityTimeLedger_not_double_labor",
+    "Distinct_political_commander_personal_decisions",
+    "Received_evidence_not_planning_WorldTruth",
+    "Unknown_not_zero_same_source_not_multiple_votes",
+    "Personality_no_guard_override",
+    "Ammo_transfer_fire_unique_receipts",
+    "No_animation_authority_damage",
+    "Real_slot_arrival_not_teleport",
+    "Morale_not_force_HP_supply_buff",
+    "Finite_supply_ship_prison_capacity",
+    "Blockade_not_remote_stock_delete",
+    "Occupation_not_title_private_owner",
+    "Fired_projectiles_survive_death_ceasefire",
+    "Typewipe_no_reload_refill",
+    "God_war_no_forged_assent_or_implicit_lease",
+    "Camera_LOD_worker_determinism",
+    "Absolute_saved_cycle_due_identity",
+    "Atomic_failure"
+  ],
+  "verification_scenarios": [
+    {
+      "id": "WD01",
+      "group": "政治危机",
+      "case": "war_rule_off_existing_war_self_defense",
+      "expected": "关新战争同时阻新声明和有组织未宣战进攻，已有战争和即时有限自卫继续。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD02",
+      "group": "政治危机",
+      "case": "relation_without_actual_claim",
+      "expected": "关系低相邻本身不roll开战。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD03",
+      "group": "政治危机",
+      "case": "claim_source_dedup",
+      "expected": "同根转述唯一证据/怨恨，无重复归因。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD04",
+      "group": "政治危机",
+      "case": "crown_death_authority_stale",
+      "expected": "死亡摄政/角色修订使旧声明失效无半写。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD05",
+      "group": "政治危机",
+      "case": "constitutional_votes_real",
+      "expected": "quorum与代表票真实，不刷签署者。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD06",
+      "group": "政治危机",
+      "case": "wrong_belief_allowed_bad_choice",
+      "expected": "误情报可坏战略，不能truth筛全知或赠现货。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD07",
+      "group": "政治危机",
+      "case": "declaration_only_not_field_army",
+      "expected": "0出征威吓无免费Army或占领。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD08",
+      "group": "政治危机",
+      "case": "piety_no_automatic_enemy_buff",
+      "expected": "虔诚不等根信仰/教会信任，无必战或伤害加成。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD09",
+      "group": "有限情报",
+      "case": "god_map_not_ai_knowledge",
+      "expected": "God全图不进入AI的隐藏真相。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD10",
+      "group": "有限情报",
+      "case": "old_observation_late_report",
+      "expected": "观测与送达分开，迟报不覆盖较新直接观察。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD11",
+      "group": "有限情报",
+      "case": "opaque_failure_no_probe",
+      "expected": "失败不泄隐藏量，重复未知探测受backoff。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD12",
+      "group": "有限情报",
+      "case": "last_known_bounded_search",
+      "expected": "失踪敌有限可达域，不跟实际隐位置。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD13",
+      "group": "有限情报",
+      "case": "real_occlusion_not_decor",
+      "expected": "门墙树干按真几何，装饰不挡视弹。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD14",
+      "group": "有限情报",
+      "case": "unknown_language_signal",
+      "expected": "未学语言/信号不瞬懂全命令。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD15",
+      "group": "有限情报",
+      "case": "expected_allies_not_present",
+      "expected": "预计援军不计战场人数。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD16",
+      "group": "有限情报",
+      "case": "area_fire_explicit_authority",
+      "expected": "未识别目标仅显式合法区域射击，不伪锁敌。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD17",
+      "group": "动员经济",
+      "case": "maturity_body_actor_source",
+      "expected": "现有成熟CivicActor/fit，不招普通动物或生成兵。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD18",
+      "group": "动员经济",
+      "case": "exclusive_activity_and_army",
+      "expected": "ActorAvailabilityLedger军役农工护理互斥；ActivityTimeLedger同账别名，无双Army/双额度。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD19",
+      "group": "动员经济",
+      "case": "civil_service_real_capacity",
+      "expected": "保留真实工具接入/排班的粮衣照护物流，不只人数。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD20",
+      "group": "动员经济",
+      "case": "muster_actual_travel",
+      "expected": "接受招募不瞬到军营。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD21",
+      "group": "动员经济",
+      "case": "uniform_actual_fit_service_theme",
+      "expected": "实库存fit服役国配色，无免费制服。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD22",
+      "group": "动员经济",
+      "case": "training_actual_work",
+      "expected": "真实时间器材教官，不换Army满技能。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD23",
+      "group": "动员经济",
+      "case": "one_pay_debtor_partial_due",
+      "expected": "多城拨款与欠薪唯一整数账/部分支付。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD24",
+      "group": "动员经济",
+      "case": "mobilization_atomic_failure",
+      "expected": "人员库存资金任一冲突零半写。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD25",
+      "group": "补给航运",
+      "case": "order_not_actual_arrival",
+      "expected": "unfunded愿望不成订单quota，在途预约不算可用粮。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD26",
+      "group": "补给航运",
+      "case": "blockade_not_remote_stock_delete",
+      "expected": "封锁停实际路线/夺真货，不扣远库。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD27",
+      "group": "补给航运",
+      "case": "finite_supply_container",
+      "expected": "登陆有限容器不赠广场。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD28",
+      "group": "补给航运",
+      "case": "port_loss_ship_registry",
+      "expected": "港楼毁保船籍在途人货。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD29",
+      "group": "补给航运",
+      "case": "ship_capacity_and_melee",
+      "expected": "舱位mass/pose真实，船上不隔岸近战。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD30",
+      "group": "补给航运",
+      "case": "actual_edible_energy",
+      "expected": "不同食性/腐败按可食能量，不一百分比补给。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD31",
+      "group": "补给航运",
+      "case": "unknown_bridge_loss_local_failure",
+      "expected": "未知断桥现场受阻后报告，不全知改路。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD32",
+      "group": "补给航运",
+      "case": "civil_reserve_military_priority",
+      "expected": "军供优先明确法律后果，非无限粮。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD33",
+      "group": "战略编组",
+      "case": "exclusive_multiple_fronts",
+      "expected": "同人器械不同前线互斥，不双算Army人数。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD34",
+      "group": "战略编组",
+      "case": "bounded_search_safe_wait",
+      "expected": "搜索耗尽保存cursor/安全等待，不默认攻。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD35",
+      "group": "战略编组",
+      "case": "coordination_dead_peer_timeout",
+      "expected": "死亡取消Army撤条件后有界回退。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD36",
+      "group": "战略编组",
+      "case": "commander_death_continuity",
+      "expected": "Army存续，有效送达命令可续，无死人新令。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD37",
+      "group": "战略编组",
+      "case": "temporary_assignment_no_hierarchy",
+      "expected": "临时编组无团营预算库存人口。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD38",
+      "group": "战略编组",
+      "case": "peer_army_split_transfer",
+      "expected": "平级分兵真实人员器材从source一次转。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD39",
+      "group": "战略编组",
+      "case": "same_personality_context_changes",
+      "expected": "同六轴不同伤势报告责任会不同选择。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD40",
+      "group": "战略编组",
+      "case": "individual_distinct_brains",
+      "expected": "军官和士兵非同脑，各自风险可救伤迟疑。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD41",
+      "group": "阵形运动",
+      "case": "slots_real_surface_arrival",
+      "expected": "planned槽位不teleport，真楼层坡宽body核。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD42",
+      "group": "阵形运动",
+      "case": "large_species_actual_slot",
+      "expected": "牛按真实体规，不缩人槽。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD43",
+      "group": "阵形运动",
+      "case": "narrow_portal_fairness",
+      "expected": "门桥column真token/公平批，无穿人。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD44",
+      "group": "阵形运动",
+      "case": "cohesion_not_damage",
+      "expected": "cohesion影响解释/协同非基础伤害乘数。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD45",
+      "group": "阵形运动",
+      "case": "terrain_full_dependency_revocation",
+      "expected": "改地撤slot/route/远水证，活人真实hazard。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD46",
+      "group": "阵形运动",
+      "case": "peak_no_military_exception",
+      "expected": "高峰阻Actor进入飞越，救伤/勇气不豁免。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD47",
+      "group": "阵形运动",
+      "case": "civil_access_blockade_explicit",
+      "expected": "普通守位不暗堵旧通路，战封须法律后果。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD48",
+      "group": "阵形运动",
+      "case": "square_no_cavalry_system",
+      "expected": "方阵真实多向保护，无骑兵隐藏依赖。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD49",
+      "group": "战斗实物",
+      "case": "zero_loaded_no_fire",
+      "expected": "空装填UNLOADED，粒子不伤。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD50",
+      "group": "战斗实物",
+      "case": "load_transfer_fire_once",
+      "expected": "stock转loaded再fire，只扣一次不双扣。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD51",
+      "group": "战斗实物",
+      "case": "shot_replay_receipt",
+      "expected": "同Shot/hit receipt不可复制消费伤害。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD52",
+      "group": "战斗实物",
+      "case": "reload_save_pause_target_change",
+      "expected": "绝对work/remainder/loaded保持，不免费重装。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD53",
+      "group": "战斗实物",
+      "case": "projectile_swept_collision",
+      "expected": "完整swept防穿越，帧LOD近邻截断不漏人体。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD54",
+      "group": "战斗实物",
+      "case": "armor_coverage_durability",
+      "expected": "头盔不护脚，坏护具不假保护。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD55",
+      "group": "战斗实物",
+      "case": "simultaneous_hit_order",
+      "expected": "同瞬间hit聚合后唯一death，Id先者无免费免反击。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD56",
+      "group": "战斗实物",
+      "case": "fit_and_animation_no_authority",
+      "expected": "species适配器具，IK/notify不能扣HP越程。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD57",
+      "group": "退却护理",
+      "case": "morale_choice_not_hp_buff",
+      "expected": "士气改变选择，不增加HP基础伤害护甲。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD58",
+      "group": "退却护理",
+      "case": "retreat_real_route_wounded_load",
+      "expected": "撤退真路体规/负重伤员，无瞬移。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD59",
+      "group": "退却护理",
+      "case": "pursuit_bounded_return_supply",
+      "expected": "失踪有限搜，时间余粮归程约束。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD60",
+      "group": "退却护理",
+      "case": "blocked_exit_surrender",
+      "expected": "无路真实遮蔽/投降，不无限墙角寻路。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD61",
+      "group": "退却护理",
+      "case": "captivity_food_capacity_identity",
+      "expected": "俘虏真容量粮和身份，不新人口自动同化。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD62",
+      "group": "退却护理",
+      "case": "exchange_actual_body_transfer",
+      "expected": "签约不瞬移，实际运输交接。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD63",
+      "group": "退却护理",
+      "case": "care_actual_resources_time",
+      "expected": "护理实物时间，无免费医院回血。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD64",
+      "group": "退却护理",
+      "case": "death_estate_loot_once",
+      "expected": "死伤实物回收/遗产同源唯一custody。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD65",
+      "group": "城市和平",
+      "case": "occupation_not_title_private_owner",
+      "expected": "占领行政control非主权/私人货自动归属。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD66",
+      "group": "城市和平",
+      "case": "destroyed_square_zero_capacity",
+      "expected": "广场逻辑capacity0非隐形占领anchor。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD67",
+      "group": "城市和平",
+      "case": "landless_city_no_sea_capture",
+      "expected": "失地共同体续，无海面capture index。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD68",
+      "group": "城市和平",
+      "case": "siege_actual_routes_food",
+      "expected": "围困真实流量粮债，非抽象每日死人。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD69",
+      "group": "城市和平",
+      "case": "ceasefire_existing_projectile",
+      "expected": "知停火停新shot，已发projectile继续。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD70",
+      "group": "城市和平",
+      "case": "peace_keeps_injury_debt_return",
+      "expected": "和平保伤欠薪装备返还实际后续。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD71",
+      "group": "城市和平",
+      "case": "god_war_separate_lease_assent",
+      "expected": "神意事件不假签约/自动lease或法物理豁免。",
+      "status": "planned_not_executed_production"
+    },
+    {
+      "id": "WD72",
+      "group": "城市和平",
+      "case": "camera_locale_workers_replay",
+      "expected": "镜头UI帧线程完成顺序不改World/RNG。",
+      "status": "planned_not_executed_production"
+    }
+  ],
+  "verification_scenario_count": 72,
+  "finite_reference_model": {
+    "path": "docs/research/models/warfare_decision_reference_model.py",
+    "entry": "run",
+    "scope": "abstract_authorization_mobilization_belief_choice_loaded_ammo_receipts_simultaneous_fire_ceasefire_not_production_tactics",
+    "production_evidence": false
+  },
+  "excluded": [
+    "modern_weapons",
+    "nuclear_UFO",
+    "free_people_goods",
+    "cavalry_mounts",
+    "nested_Army",
+    "omniscient_future_search",
+    "faith_damage_buff",
+    "random_disaster",
+    "pixel_by_pixel_building_fracture",
+    "new_hospital_industry",
+    "new_permanent_tactical_page"
+  ],
+  "domain_comparators": {
+    "normalizer": {
+      "formula": "10000*min(max(x,0),r)//r",
+      "raw_units_preserved": true,
+      "reference_r": "positive_frozen_same_metric_reference_for_this_episode",
+      "r_zero_positive_cost": "cannot_afford_or_requires_authorization_not_epsilon_divide",
+      "r_zero_zero_cost": "q_zero",
+      "unknown_reference_or_cost": "not_zero_observe_or_explicit_interval",
+      "civil_gap": "max(foodGapQ,clothingGapQ,careGapQ,transportGapQ)_retain_raw_vector",
+      "casualty_reference": "known_actual_candidate_own_members_not_global_population"
+    },
+    "operation_tiers": [
+      "immediate_life_hazard",
+      "existing_protection_or_retreat_commitment",
+      "current_WarGoal_feasible_stage",
+      "optional_observe_regroup"
+    ],
+    "operation_score": "sum_named_dimensionless_weighted_contributions_divided_by_sum_abs_weights_not_raw_unit_sum",
+    "riskLossQ": "((10000-riskQ)*upperLossQ+riskQ*meanLossQ)//10000",
+    "weights_sample": {
+      "goal": "2200+ambitionQ//5",
+      "supply": "2000+orderQ//10",
+      "civil": "1200+altruismQ//3",
+      "information": "400+curiosityQ//10",
+      "existing_value": "400+pietyQ//10",
+      "future_loss": "2400-riskQ//10",
+      "time": 800,
+      "cost": 1200,
+      "future_switch": "300+orderQ//10"
+    },
+    "metrics": [
+      "goalImprovementQ",
+      "remainingSupplyQ",
+      "civilProtectionQ",
+      "informationGainQ",
+      "existingValueAlignmentQ",
+      "riskLossQ",
+      "arrivalDelayQ",
+      "costQ",
+      "futureSwitchLossQ"
+    ],
+    "existing_value_alignment_q_range": [
+      -10000,
+      10000
+    ],
+    "piety_infers_automatic_anti_other_faith": false,
+    "military_field_forecast_scenarios_max": 4,
+    "commander_operation_score_reused_as_soldier_score": false,
+    "soldier_role_specific_metrics": [
+      "dutyContactQ",
+      "observedSupportQ",
+      "actualCoverQ",
+      "exitQ",
+      "arrivalCostQ",
+      "loadedEnergyQ",
+      "exposureQ",
+      "friendlyFireOcclusionQ",
+      "switchSlotCostQ"
+    ],
+    "selected_plan_wins_resource_arbitration_automatically": false,
+    "attribution_chain": [
+      "rawMetric",
+      "normalizerRevision",
+      "q",
+      "weight",
+      "contribution"
+    ],
+    "near_optimal_random": "decision_core_v1_saved_episode_counter_once_not_each_tick"
+  },
+  "physics_profile": "data/content/life_profiles_v1.json.hazard_physics",
+  "weapon_profile": "data/content/combat_profiles_v1.json",
+  "technology_profile": "data/content/technology_runtime_v1.json",
+  "source_boundaries": {
+    "military_initial": "no start gun cannon gear or soldiers; existing actual population only",
+    "traditional": "actual T015 knowledge/adoption and manufactured weapon plus real training, no source capability copy grantsstock",
+    "late_firearm": "T028/T029/T030 actual staged late knowledge/prototypes/production/training; premodern ceiling only",
+    "MountAsset_private_horse_cavalry": false,
+    "combat_not_real_performance": "allgame power/motion timing fields abstract; no real firearm manufacture instructions"
+  }
+}

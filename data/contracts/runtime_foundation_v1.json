@@ -1,0 +1,2506 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_runtime_foundation_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0021-2026-10-10",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/DETERMINISTIC_WORLD_AND_RUNTIME.md",
+  "interfaces": {
+    "terrain": "data/contracts/terrain_access_v1.json",
+    "life": "data/contracts/life_genetics_v1.json",
+    "life_profiles": "data/content/life_profiles_v1.json",
+    "economy_content": "data/content/economy_content_v1.json",
+    "godterrain": "data/contracts/god_control_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "decisions": "data/contracts/decision_core_v1.json"
+  },
+  "fixed_terrain": {
+    "ordered_flat_heights_mm": {
+      "deep_ocean": -20000,
+      "close_ocean": -8000,
+      "shallow_water": -2000,
+      "sand": 0,
+      "soil": 0,
+      "hill": 16000,
+      "mountain": 48000,
+      "high_peak": 96000
+    },
+    "one_height_per_flat_kind": true,
+    "water_level_mm": 0,
+    "default_blank_land": "soil",
+    "default_blank_water": "close_ocean",
+    "default_earth_land": "soil",
+    "default_earth_water": "close_ocean",
+    "height_quantum_mm": 500,
+    "ramp_corner_quantum_mm": 1,
+    "continuous_height_exception": "CreateRamp_owned_ramp_patch_only",
+    "arbitrary_flat_height": false,
+    "natural_edge_slope": false,
+    "natural_shaping_noise": false,
+    "irregular_coast_transition": false,
+    "soil_sand_switch_wipes": true,
+    "ramp_kind_at_point": "h<0_depth3m12m;0<=h<8m_top_material_sand_or_soil;8<=h<32hill;32<=h<80mountain;h>=80high_peak",
+    "cell_size_mm": 2000,
+    "micro_size_um": 31250,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height"
+  },
+  "operators": {
+    "allowed": [
+      "PaintPreset",
+      "RaiseOneTier",
+      "LowerOneTier",
+      "FlattenToPreset",
+      "CopyFlatTerrain",
+      "CreateRamp",
+      "RemoveRamp",
+      "PaintEcologyTheme"
+    ],
+    "removed": [
+      "Smooth",
+      "SetArbitraryTargetHeight",
+      "StrengthAsContinuousHeightDelta"
+    ],
+    "tier_order": [
+      "deep_ocean",
+      "close_ocean",
+      "shallow_water",
+      "sand",
+      "soil",
+      "hill",
+      "mountain",
+      "high_peak"
+    ],
+    "tier_limit": "AT_TIER_LIMIT",
+    "ramp_raise_lower_requires_explicit_flat_target": true,
+    "copy_ramp": "COPY_RAMP_REQUIRES_NEW_PLAN",
+    "flat_copy_outputs": [
+      "kind",
+      "ecology_theme"
+    ],
+    "flat_copy_excludes": [
+      "RampRef",
+      "geometryBeforeImage",
+      "stock",
+      "mineral_reserve",
+      "Plant",
+      "Actor",
+      "building",
+      "history"
+    ],
+    "ordinary_paint_restores": "whole_hit_cell_flat_at_selected_kind_height_then_release_old_ramp_cell_ownership",
+    "wipe": "exact_changed_canonical_geography_footprint_ground_whole_object_closure_minus_frozen_actual_living_actor_portable_subtree_ADR0017",
+    "same_kind_geometry": "no_type_wipe_but_actual_support_collision_hazard_and_access_consequences"
+  },
+  "brush": {
+    "cell_hit": "positive_area_intersection_not_center_or_zero_area_edge",
+    "order": [
+      "y",
+      "x"
+    ],
+    "stroke": "world_space_polyline_swept_region_union_deduplicate_no_FPS_dose",
+    "default_radius_cells": 2,
+    "radius_range_cells": [
+      1,
+      32
+    ],
+    "max_stroke_cells": 4096,
+    "raise_lower_repetition": "once_per_cell_per_stroke"
+  },
+  "world_creation": {
+    "Nx_core_range": [
+      32,
+      4096
+    ],
+    "guard_cells": 8,
+    "guard_kind": "deep_ocean",
+    "guard_editable": false,
+    "authority_axis_max_cells": 4112,
+    "max_authority_cells": 16908544,
+    "outside": "render_only_ocean_no_entities_navigation_titles_or_resources",
+    "actor_boundary": "complete_body_and_sweep_in_authority_real_braking_before_edge_no_wall_no_teleport",
+    "out_of_bounds_command": "reject_no_clamp",
+    "irregular_edge_transition": false,
+    "candidate_hash": "canonical_generated_effective_surface_shared_by_preview_create_save_readback",
+    "default_core_cells": [
+      1024,
+      1024
+    ],
+    "actual_core_extent_formula": "Nx_management_count_times2000mm_Ny_management_count_times2000mm",
+    "geometry_resident_budget_bytes": 134217728,
+    "presets_management_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "entries": [
+      "blank_flat_land",
+      "blank_ocean"
+    ],
+    "independent_height_core_range": [
+      32,
+      4096
+    ],
+    "world_map_selection": false,
+    "geography_runtime_required": false,
+    "soil_top_mm": 0,
+    "water_level_mm": 0,
+    "ocean_kind": "close_ocean",
+    "initial_humans": 0,
+    "initial_buildings": 0,
+    "candidate_publication": "first_durable_save_readback_before_session_publish"
+  },
+  "natural_objects": {
+    "persistent_natural_entities": false,
+    "WaterBodyRef": false,
+    "MountainRef": false,
+    "OceanRef": false,
+    "LakeRef": false,
+    "natural_naming": false,
+    "split_merge_identity_inheritance": false,
+    "sea_lake": "derived_navigation_and_display_classification_only",
+    "wet_node": "ManagementCoord/MicroCoord/terrainRevision/minimumTriangleIndex",
+    "max_wet_nodes_per_cell": "two_per_micro_triangle_surface_not_management_cell",
+    "connectivity": "positive_length_actual_micro_wet_shared_edge_to_guard",
+    "temporary_component_key": "minimum_current_local_node_of_component",
+    "component_is_saved_entity": false,
+    "route_dependency": "coordinate_portal_geometry_and_terrain_revision_not_component_identity",
+    "persistent_natural_history": false
+  },
+  "ramp_solver": {
+    "endpoint": "existing_flat_actual_landing_fixed_kind_height_no_peak",
+    "input_quantize": "profile_management_cell_centers_ties_to_even_new2000mm_actual_micro_surface_support",
+    "path_shape": "ordered_orthogonal_grid_polyline_with_real_flat_turn_landings",
+    "nonorthogonal_segment": "enumerate_X_then_Y_and_Y_then_X",
+    "max_control_points": 16,
+    "max_segments": 32,
+    "max_centerline_cells": 512,
+    "max_candidates": 64,
+    "candidate_enumeration": "direct_XY_YX_then_longest_short_segment_one_rectangular_detour_axis_direction_offset1_to8_cells_stable_order_no_recursive_infinite_search",
+    "pedestrian_width_mm": 4000,
+    "pedestrian_turn_platform_mm": 4000,
+    "vehicle_width_mm": 4000,
+    "vehicle_turn_platform": "ceil_to_cell(2*radius+bodyWidth+2*clearance)sample16000mm",
+    "rise_allocation": "r0+round_even(totalRiseR*straight_prefix_length/total_straight_length)",
+    "corner_height": "axis_linear_interpolation_then_round_even_1mm_transverse_constant",
+    "turn_height": "adjacent_straight_common_endpoint_flat",
+    "shoulder": "complete_hit_cells_no_natural_transition",
+    "conflicting_corner_assignment": "reject",
+    "nonadjacent_positive_area_self_overlap": "reject",
+    "winner_order": [
+      "positiveFillVolume+excavationVolume",
+      "changedCellCount",
+      "centerlineLength",
+      "canonicalCornerArray"
+    ],
+    "validation": [
+      "all_actual_triangle_grades",
+      "every_cross_edge_step",
+      "full_body_sweep",
+      "turning_pad",
+      "width_clearance",
+      "peak",
+      "support",
+      "existing_protected_access"
+    ],
+    "failure": "RAMP_ROUTE_NO_FEASIBLE_CANDIDATE_actual_reasons",
+    "save": [
+      "RampRef",
+      "actual_owned_cell_revisions",
+      "geometry_hash",
+      "合法_fixed_flat_or_verified_prior_ramp_before_images"
+    ],
+    "restore": "new_transaction_only_own_current_revisions_no_stock_population_or_old_certificates_restore"
+  },
+  "numeric": {
+    "authority": "checked_int64_mm_tick_cash_quantity_and_fixed_point",
+    "geometry_intermediates": "checked128_reduced_rational_denominator_positive_gcd_canonical",
+    "rounding": "nearest_ties_to_even",
+    "quantity": "floor_with_saved_remainder",
+    "overflow": "reject_entire_candidate",
+    "GPU_float_authoritative": false
+  },
+  "clock": {
+    "ticks_per_motion_second": 20,
+    "ticks_per_game_day": 12000,
+    "ticks_per_calendar_hour": 500,
+    "days_per_month": 30,
+    "months_per_year": 12,
+    "days_per_year": 360,
+    "old_1200_or_4800_profiles_active": false,
+    "speed_multipliers": [
+      1,
+      4,
+      16,
+      64
+    ],
+    "speed_changes": "wall_clock_only_same_SimTick_results_and_consumption",
+    "sleep_8_hours_ticks": 4000,
+    "work_8_hours_ticks": 4000,
+    "cross_day_travel": "real_food_rest_and_current_task_not_instant_complete"
+  },
+  "command_admission": {
+    "envelope": [
+      "WorldId",
+      "SessionGeneration",
+      "DraftGeneration",
+      "CandidateGeneration",
+      "requestedTick",
+      "applyTick",
+      "boundaryOrdinal",
+      "authorityClass",
+      "actorRef",
+      "inputSequence",
+      "commandId",
+      "idempotencyKey",
+      "readSet",
+      "consequenceHash"
+    ],
+    "inputSequence": "trusted_monotonic_session_order_no_readonly_query_sequence",
+    "sort": [
+      "applyTick",
+      "boundaryOrdinal",
+      "inputSequence",
+      "commandId"
+    ],
+    "prepared_ready": "next_unfrozen_boundary_after_complete_logical_prepare_and_explicit_required_approval_not_worker_wall_clock_race",
+    "pause": "zero_time_boundaryOrdinal_increment_no_metabolic_or_work_or_deadline_advance",
+    "conflicting_later_readSet": "reject_or_explicit_reprepare_repreview_no_silent_patch"
+  },
+  "simulation_tick": {
+    "phases": [
+      "FREEZE",
+      "INTEGRATE_OLD",
+      "MARK_DUE_DEATH",
+      "APPLY_BOUNDARY_COMMANDS",
+      "DELIVER_AND_FREEZE_DUE",
+      "PREPARE_PHYSICAL",
+      "RESOLVE_PHYSICAL",
+      "ACTUAL_INTERACTIONS",
+      "DUE_EXECUTION",
+      "FINAL_LIFECYCLE",
+      "PUBLISH"
+    ],
+    "physical_snapshot": "one_post_boundary_command_and_delivered_information_snapshot",
+    "simultaneous_contacts": "sort_actual_contact_fraction_then_aggregate_exact_same_time_using_pre_contact_armor_and_life_snapshot",
+    "dead_actor_unfired_later_action": "cancel",
+    "already_fired_projectile_after_death": "continue_actual_physics",
+    "due_effect_sort": [
+      "dueTick",
+      "irreversibleExistingTransferPriority",
+      "legalPriorityClass",
+      "negative_waitAge",
+      "subjectRef",
+      "effectId"
+    ],
+    "ballot_cutoff": "valid_receivedTick<=deadline_and_current_eligibility_frozen_in_phase4_no_extra_votes_if_scan_slow",
+    "resource_claim": "one_truth_stock_cash_capacity_claim_and_unique_receipt",
+    "life_death_writer": "LifeApplyInjury_and_life_due_effects_only",
+    "final_normalization": "one_final_alive_member_geometry_set_phase9",
+    "successor_new_command": "next_boundary_not_retroactive_same_tick_authorization",
+    "publish": "one_atomic_world_revision_after_complete_mandatory_effect_closure",
+    "over_budget": "save_logical_frontier_slow_wall_clock_no_partial_tick_or_skipped_hazard"
+  },
+  "hazard_interface": {
+    "contact_record": "HazardContactFacts",
+    "fields": [
+      "ActorRef",
+      "sourceEventId",
+      "actualTick",
+      "contactFraction",
+      "supportRef",
+      "worldPose",
+      "velocity",
+      "submersionQ",
+      "headCovered",
+      "medium",
+      "compressiveContact",
+      "entrapment",
+      "rescueSupport"
+    ],
+    "authoritative_profile": "data/content/life_profiles_v1.json.hazard_physics",
+    "injury_record": "InjuryImpulse",
+    "injury_fields": [
+      "ActorRef",
+      "sourceEventId",
+      "kind",
+      "bodyRegion",
+      "severity_milli",
+      "actualTick"
+    ],
+    "writer": "LifeApplyInjury",
+    "health_max_milli": 100000,
+    "energy_unit": "energy_milli",
+    "separate_debts": [
+      "fatigue",
+      "sleep",
+      "thermal",
+      "infection",
+      "wound",
+      "oxygen"
+    ],
+    "actual_carried_items_preserved_but_hazard_exempt": false,
+    "consumer_reads": "SpeciesBodyProfile_and_Phenotype_export_not_raw_alleles"
+  },
+  "save_wire": {
+    "format": "SonnSave1",
+    "major": 1,
+    "minor": 0,
+    "endian": "little",
+    "magic_ascii": "SONNSAV1",
+    "header_bytes": 120,
+    "entry_bytes": 64,
+    "header_fields": [
+      "magic8",
+      "major_u16",
+      "minor_u16",
+      "flags_u32_zero",
+      "segmentCount_u32",
+      "reserved_u32_zero",
+      "tick_u64",
+      "WorldRevision_u64",
+      "WorldUUID16",
+      "definitionManifestSha256_32",
+      "segmentTableSha256_32"
+    ],
+    "entry_fields": [
+      "kind_u32",
+      "schemaVersion_u32",
+      "offset_u64",
+      "length_u64",
+      "recordCount_u64",
+      "payloadSha256_32"
+    ],
+    "required_segments": {
+      "1": "MANIFEST",
+      "2": "TERRAIN",
+      "3": "ENTITIES",
+      "4": "LEDGERS",
+      "5": "TASKS",
+      "6": "DECISIONS",
+      "7": "PROVENANCE",
+      "8": "EVENTS_AND_RECEIPTS"
+    },
+    "optional_segments": {
+      "2147483649": "PRESENTATION"
+    },
+    "table": "strict_kind_ASC_unique_offset_contiguous_after_table_no_gaps_overlap_or_tail",
+    "payload": "canonical_UTF8_JSON_unique_keys_NFC_strings_sort_keys_codepoint_ASC_int_only_no_float_nan_whitespace",
+    "compression": false,
+    "limits": {
+      "segments": 32,
+      "depth": 64,
+      "string_utf8_bytes": 65536,
+      "segment_bytes": 134217728,
+      "file_bytes": 268435456,
+      "records_per_segment": 1000000
+    },
+    "hashes": "SHA256_table_and_each_payload_before_object_materialization",
+    "unknown_required_segment": "reject",
+    "unknown_optional_segment": "validate_bounded_length_and_hash_then_skip_no_code",
+    "unknown_version_or_schema": "reject",
+    "missing_definition_manifest": "reject_no_default_profiles",
+    "migration": "explicit_future_whitelist_fromHash_toHash_migratorHash_isolated_conversion_original_preserved_none_in_v1",
+    "natural_entity_segments": false,
+    "derived_wet_nav_cache_required": false,
+    "optional_presentation_changes_world_hash": false,
+    "currency_saved": [
+      "scopeId",
+      "currencyId",
+      "initializationEventId",
+      "profileHash",
+      "eligibilitySnapshot",
+      "freezeTick",
+      "issued_total",
+      "allocations",
+      "largestRemainderCursor",
+      "entitlementConversionReceipts",
+      "issuer_counterpart_account",
+      "unallocated_public_reserve",
+      "committedFlag"
+    ],
+    "World_Session_Draft_Candidate_isolation": true,
+    "ObjectRef": "runtime_foundation_v1.object_ref_wire",
+    "header_tick_revision_max": 9223372036854775807
+  },
+  "checkpoint": {
+    "protocol": [
+      "snapshot_completed_WorldRevision",
+      "same_volume_unique_temp_write",
+      "flush_file",
+      "close_and_full_durable_readback_parse_verify",
+      "atomic_rename_to_immutable_checkpoint",
+      "flush_checkpoint_publication",
+      "write_and_flush_pointer_temp",
+      "atomic_replace_slot_Continue_pointer",
+      "directory_fsync_or_native_durable_publish_success_commit_point",
+      "publish_World_or_continue_then_rotate_oldest_autosave"
+    ],
+    "failed_any_barrier": "before_commit_point_preserve_in_memory_old_World_and_Continue_and_never_delete_previous_valid_checkpoint",
+    "orphan_good_checkpoint": "may_list_recovery_not_auto_continue",
+    "paths": "relative_fixed_slot_root_no_absolute_parent_symlink_escape_network_URL",
+    "import": "isolated_full_validate_then_write_own_checkpoint_never_trust_external_path",
+    "commit_point": "pointer_atomic_replace_plus_directory_flush_or_verified_native_durable_publish_success",
+    "durability_unknown": "post_replace_flush_error_cannot_promise_old_disk_pointer_bytes_preserve_old_memory_and_checkpoints_no_World_publish_no_automatic_new_Continue",
+    "crash_recovery": "validated_previous_confirmed_slot_or_explicit_user_recovery_of_new_valid_candidate_never_trust_client_success_bit_or_attempt_metadata_as_authority",
+    "attempt_metadata": "bounded_local_recovery_display_only_not_a_trusted_commit_receipt"
+  },
+  "platform": {
+    "re_adopt_lock": "data/native_dependencies.lock.json",
+    "reverified_official_licenses_on": "2026-10-09",
+    "dependency_pins": [
+      {
+        "name": "sdl",
+        "version": "3.2.28",
+        "revision": "7f3ae3d57459e59943a4ecfefc8f6277ec6bf540",
+        "archive_sha256": "7a8347c770b90b33daac2352858ca03f9c9a2ccc8ce711054870361d1a6b32e5",
+        "license_identifier": "Zlib",
+        "official_source_url": "https://codeload.github.com/libsdl-org/SDL/tar.gz/7f3ae3d57459e59943a4ecfefc8f6277ec6bf540"
+      },
+      {
+        "name": "rmlui",
+        "version": "5.1",
+        "revision": "40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9",
+        "archive_sha256": "59cc05404011645873048fbf7aac5131ac4c8c304853fa448d1aa43b4e2ba340",
+        "license_identifier": "MIT",
+        "official_source_url": "https://codeload.github.com/mikke89/RmlUi/tar.gz/40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9"
+      },
+      {
+        "name": "freetype",
+        "version": "2.13.3",
+        "revision": "42608f77f20749dd6ddc9e0536788eaad70ea4b5",
+        "archive_sha256": "68ce87bb59ea209eb7350f41a94a27519ce16b37011b475a1e62d4abee154b66",
+        "license_identifier": "FTL",
+        "official_source_url": "https://codeload.github.com/freetype/freetype/tar.gz/42608f77f20749dd6ddc9e0536788eaad70ea4b5"
+      },
+      {
+        "name": "bgfx-cmake",
+        "version": "commit",
+        "revision": "f2ea8fb0438721d754aefa22b14fe161f948a383",
+        "archive_sha256": "8b038a670a214cc95f803028d3484def92ee729334d50aff2c4dee594e4aacc8",
+        "license_identifier": "CC0-1.0",
+        "official_source_url": "https://codeload.github.com/bkaradzic/bgfx.cmake/tar.gz/f2ea8fb0438721d754aefa22b14fe161f948a383"
+      },
+      {
+        "name": "bgfx",
+        "version": "commit",
+        "revision": "cca91681c953d2de9531197b0f580c866ffaa775",
+        "archive_sha256": "fdf2642d58327bee772eb06e4fdb32aef4c53c0d17325820a848d1628e01a24e",
+        "license_identifier": "BSD-2-Clause",
+        "official_source_url": "https://codeload.github.com/bkaradzic/bgfx/tar.gz/cca91681c953d2de9531197b0f580c866ffaa775"
+      },
+      {
+        "name": "bx",
+        "version": "commit",
+        "revision": "d86e4ea9d9da6e832a3ff41398587d82b772c69b",
+        "archive_sha256": "ebceffb7cba8d29dc0931de6b2fd2a700f26fbd5a3b978ee92398b91f2260956",
+        "license_identifier": "BSD-2-Clause",
+        "official_source_url": "https://codeload.github.com/bkaradzic/bx/tar.gz/d86e4ea9d9da6e832a3ff41398587d82b772c69b"
+      },
+      {
+        "name": "bimg",
+        "version": "commit",
+        "revision": "101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1",
+        "archive_sha256": "efb47d1ee18a653658c04e3aabbafd4e302b17a191c18cfe2ca64b6892761f94",
+        "license_identifier": "BSD-2-Clause",
+        "official_source_url": "https://codeload.github.com/bkaradzic/bimg/tar.gz/101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1"
+      }
+    ],
+    "new_production_build_verified": false,
+    "window_input_audio": "SDL3",
+    "GPU": "bgfx_Windows_D3D11_development_Metal",
+    "UI": "RmlUi_local_native_no_browser",
+    "fonts": "FreeType_FTL",
+    "core_platform_includes": false,
+    "steam_only": true,
+    "old_runtime_reused": false
+  },
+  "reference_model": {
+    "path": "docs/research/models/world_runtime_reference_model.py",
+    "scope": "finite_actual_terrain_ramp_tick_and_binary_checkpoint_arithmetic_not_full_game",
+    "production_implemented": false,
+    "excludes_OS_durability": true
+  },
+  "acceptance_cases": [
+    {
+      "case_id": "RF01",
+      "scenario": "fixed_flat_height",
+      "expected": "every_flat_kind_has_one_height_no_ninth_height",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF02",
+      "scenario": "sand_soil_switch",
+      "expected": "1m_to_2m_real_kind_wipe_ground_preserve_actual_carried_subtree",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF03",
+      "scenario": "theme_no_wipe",
+      "expected": "theme_changes_no_height_or_items",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF04",
+      "scenario": "ordinary_chunk",
+      "expected": "chunk_edge_no_fake_coast_or_height",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF05",
+      "scenario": "flat_copy",
+      "expected": "copy_flat_kind_theme_not_ID_stock_or_actor",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF06",
+      "scenario": "ramp_copy",
+      "expected": "reject_ramp_source_use_new_explicit_plan",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF07",
+      "scenario": "raise_endpoint",
+      "expected": "AT_TIER_LIMIT_no_arbitrary_clamp",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF08",
+      "scenario": "stroke_overlap",
+      "expected": "one_tier_per_cell_per_stroke",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF09",
+      "scenario": "blank_land",
+      "expected": "soil2m_core_deep20m_guard_no_coast_slope",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF10",
+      "scenario": "earth_center",
+      "expected": "exact_center_even_odd_deepest_source_level",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF11",
+      "scenario": "date_line",
+      "expected": "one_unwrapped_rect_two_source_windows_same_candidate",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF12",
+      "scenario": "polar",
+      "expected": "reject_outside_80degrees_no_other_projection",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF13",
+      "scenario": "narrow_island",
+      "expected": "may_disappear_in_center_sampling_preview_matches_result",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF14",
+      "scenario": "earth_lake_island",
+      "expected": "L1L2L3L4_source_classification_not_WaterBodyRef",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF15",
+      "scenario": "boundary",
+      "expected": "external_commands_reject_no_clamp_actors_brake_in_authority",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF16",
+      "scenario": "wet_two_nodes",
+      "expected": "NE_SW_wet_separate_regions_not_one_cell_component",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF17",
+      "scenario": "wet_point_touch",
+      "expected": "zero_length_point_or_diagonal_not_connected",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF18",
+      "scenario": "component_rebuild",
+      "expected": "components_current_revision_no_saved_natural_identity",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF19",
+      "scenario": "water_split_merge",
+      "expected": "temporary_nav_key_recomputed_no_lake_history_or_inherited_name",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF20",
+      "scenario": "ramp_quantization",
+      "expected": "fixed125mm_ties_to_even_actual_triangle_checks",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF21",
+      "scenario": "ramp_short",
+      "expected": "reject_average_grade_or_route_too_short",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF22",
+      "scenario": "ramp_turn",
+      "expected": "actual_flat_turn_platform_full_body_sweep",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF23",
+      "scenario": "ramp_self_cross",
+      "expected": "reject_positive_area_nonadjacent_overlap",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF24",
+      "scenario": "ramp_remove",
+      "expected": "only_owned_revision_restore_original_fixed_kind_no_goods_restore",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF25",
+      "scenario": "ramp_type_change",
+      "expected": "exact_footprint_applies_ADR17_portable_protection",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF26",
+      "scenario": "tick_input",
+      "expected": "inputSequence_then_commandId_not_worker_finish",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF27",
+      "scenario": "tick_pause",
+      "expected": "zero_time_boundaryOrdinal_no_metabolism_work_or_deadline_advance",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF28",
+      "scenario": "tick_death_command",
+      "expected": "due_dead_actor_cannot_new_action_role",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF29",
+      "scenario": "tick_wipe_handoff",
+      "expected": "wipe_invalidates_ground_source_before_new_pickup_portable_source_survives",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF30",
+      "scenario": "tick_simultaneous_hits",
+      "expected": "same_time_armor_snapshot_unique_aggregated_damage_both_legal_shots",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF31",
+      "scenario": "tick_projectile",
+      "expected": "already_fired_survives_shooter_death_or_ceasefire",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF32",
+      "scenario": "tick_food",
+      "expected": "last_quantity_one_physical_claim_receipt",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF33",
+      "scenario": "tick_due_work",
+      "expected": "earned_work_preserved_death_does_not_complete_unperformed_handoff",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF34",
+      "scenario": "tick_ballot_cutoff",
+      "expected": "receivedTick_le_deadline_and_final_eligible_set_frozen_once",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF35",
+      "scenario": "tick_crown",
+      "expected": "one_final_alive_set_no_intermediate_king_spawn",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF36",
+      "scenario": "clock_units",
+      "expected": "12000day_500hour_20motionsecond_same_sim_at_all_speed_multipliers",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF37",
+      "scenario": "save_binary",
+      "expected": "120byte_header64byte_entries_exact_table_and_payload_hash",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF38",
+      "scenario": "save_bad_length",
+      "expected": "reject_overflow_overlap_tail_or_short_read_before_world_publish",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF39",
+      "scenario": "save_duplicate",
+      "expected": "reject_duplicate_segments_JSON_keys_Refs_receipts",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF40",
+      "scenario": "save_bad_definition",
+      "expected": "missing_fixed_definition_hash_reject_no_default_species",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF41",
+      "scenario": "save_fault",
+      "expected": "shortwrite_flush_readback_or_pointer_replace_fail_preserves_old_continue",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF42",
+      "scenario": "save_migration",
+      "expected": "only_major1_minor0_current_white_list_no_old_runtime_auto_load",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF43",
+      "scenario": "save_presentation",
+      "expected": "optional_camera_removed_same_deterministic_World",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF44",
+      "scenario": "currency_retry",
+      "expected": "currency_initialization_saved_once_same_scope_no_reissue",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF45",
+      "scenario": "hazard_authority",
+      "expected": "contact_facts_or_injury_impulse_only_LifeApplyInjury_writes_health",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF46",
+      "scenario": "dependency_lock",
+      "expected": "seven_pins_original_hashes_licenses_no_engine_no_old_program_restore",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF47",
+      "scenario": "post_pointer_replace_directory_flush_error",
+      "expected": "DURABILITY_UNKNOWN_preserve_old_in_memory_World_and_previous_valid_checkpoint_no_false_disk_rollback_claim_or_automatic_new_Continue",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF48",
+      "scenario": "counter_rng_primitive_and_canonical_encoding",
+      "expected": "SHA256_abc_known_vector_and_exact138byte_subject_domain_counter_preimage_match_CPP_stdlib_reference",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF49",
+      "scenario": "counter_rng_uint64_rejection_boundary",
+      "expected": "n10_raw2pow64minus1_reject_then_raw17_returns7_attempt2_no_modulo_bias",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF50",
+      "scenario": "counter_rng_saved_event_and_draw_resume",
+      "expected": "same_frozen_event_counter_index_same_bits_then_next_index_not_repeat_or_skip",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF51",
+      "scenario": "counter_rng_domain_alias_identity",
+      "expected": "different_domain_or_event_different_preimage_view_alias_canonicalizes_same_subject_or_rejects_no_second_stream",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF52",
+      "scenario": "counter_rng_query_failed_plan_and_committed_freeze",
+      "expected": "query_preview_failed_candidate_no_draw_or_counter_change_real_EventFreeze_publish_advances_once_retry_saved_receipt_only",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF53",
+      "scenario": "counter_rng_invalid_bound_or_index_overflow",
+      "expected": "bool_zero_negative_overflow_bounds_reject_index_counter_never_wrap",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF54",
+      "scenario": "counter_rng_finite_rejection_exhaustion",
+      "expected": "4096attempts_RNG_REJECTION_LIMIT_entire_candidate_reject_no_reseed_or_modulo_fallback",
+      "status": "future_production_unexecuted"
+    },
+    {
+      "case_id": "RF55",
+      "scenario": "counter_rng_presentation_or_thread_independence",
+      "expected": "camera_LOD_locale_thread_wallclock_no_authoritative_draw_identity_or_order_change",
+      "status": "future_production_unexecuted"
+    }
+  ],
+  "acceptance_case_count": 55,
+  "object_ref_wire": {
+    "fields": {
+      "world_id": "32_lowercase_hex",
+      "kind": "canonical_typed_enum",
+      "stable_id": "16_lowercase_hex_uint64",
+      "generation": "uint32_1_to_4294967295"
+    },
+    "life_ref_kind": "actor",
+    "person_animal": "view_alias_only_same_ActorRef_not_second_identity",
+    "view_aliases_to_canonical_kind": {
+      "person": "actor",
+      "animal": "actor",
+      "city": "settlement",
+      "empire": "state",
+      "port": "building",
+      "ship": "vehicle",
+      "equipment": "item",
+      "thermal_exposure": "actor",
+      "skill": "actor"
+    },
+    "thermal_exposure": "read_only_actor_snapshot_not_an_independent_Ref_or_RNG_subject",
+    "render_json_number_for_uint64_ID": false,
+    "save_records_sort": [
+      "world_id",
+      "kind",
+      "stable_id",
+      "generation"
+    ],
+    "canonical_kind_registry": {
+      "access_certificate": {
+        "owner": "data/contracts/terrain_access_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "geometry_dependency_revisions",
+          "actor_class",
+          "full_clearance_path",
+          "entrance_or_driveway_support",
+          "claims",
+          "protected_access"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "account": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "owner_ref",
+          "currency_id",
+          "balance_minor",
+          "journal_receipt_refs",
+          "reserved_minor"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "action_episode": {
+        "owner": "data/contracts/natural_action_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "owner_actor_ref",
+          "task_ref",
+          "motion_stage",
+          "actual_phase_work_remainder",
+          "contact_target_ref",
+          "support_revision",
+          "actual_effect_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "actor": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "species_ref",
+          "subspecies_ref",
+          "genome_ref",
+          "birth_tick",
+          "creation_source",
+          "world_pose",
+          "motion_state",
+          "health_milli",
+          "energy_ledgers",
+          "debt_ledgers",
+          "actual_portable_bindings",
+          "gestation_refs"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "alliance": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "member_state_refs",
+          "charter_ref",
+          "representation_seats",
+          "treaty_refs",
+          "active_obligations"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "army": {
+        "owner": "data/contracts/warfare_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "serving_state_ref",
+          "commander_ref",
+          "actual_member_refs",
+          "orders",
+          "equipment_bindings",
+          "logistics_claims",
+          "actual_position"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "belief_snapshot": {
+        "owner": "data/contracts/decision_core_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "subject_ref",
+          "actual_known_tick",
+          "observed_fact_sources",
+          "uncertainty_intervals",
+          "role_scope",
+          "bounded_message_evidence",
+          "snapshot_revision"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "bottleneck": {
+        "owner": "data/contracts/natural_action_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "actual_geometry_revision",
+          "portal_coordinates",
+          "deck_rights",
+          "usable_width",
+          "actor_class_queue",
+          "reservation_cursor",
+          "access_certificate_dependencies"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "building": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "definition_id",
+          "definition_hash",
+          "transform",
+          "actual_geometry",
+          "structural_integrity",
+          "legal_owner_ref",
+          "support_bindings",
+          "entrance_access_ref",
+          "driveway_access_ref",
+          "delivery_apron",
+          "containers"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "cash_envelope": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "source_account_ref",
+          "currency_id",
+          "reserved_minor",
+          "authorized_purpose",
+          "claim_ref",
+          "due_tick",
+          "debit_or_release_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "church": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "religion_ref",
+          "denomination_ref",
+          "charter_ref",
+          "actual_members",
+          "office_refs",
+          "account_ref",
+          "doctrine_revision"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "church_charter": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "church_ref",
+          "constitutional_clauses",
+          "authority_roles",
+          "amendment_receipts",
+          "effective_tick"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "city_square": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "settlement_ref",
+          "civic_building_ref",
+          "actual_container_refs",
+          "public_account_ref",
+          "service_capacity",
+          "actual_support"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "commitment": {
+        "owner": "data/contracts/decision_core_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "subject_ref",
+          "decision_episode_ref",
+          "actual_claim_refs",
+          "authorized_plan",
+          "interruption_policy",
+          "deadline_tick",
+          "execution_status",
+          "effect_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "container": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "actual_capacity_volume",
+          "actual_capacity_mass",
+          "content_refs",
+          "support_binding",
+          "custodian_ref",
+          "access_policy"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "contract": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "counterparty_refs",
+          "quantities",
+          "amount_minor",
+          "currency_id",
+          "due_tick",
+          "delivery_point_ref",
+          "terms",
+          "legal_status",
+          "committed_claims",
+          "performance_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "control_group": {
+        "owner": "data/contracts/interaction_runtime_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "member_actor_refs",
+          "local_owner_scope",
+          "group_index",
+          "annotation_revision"
+        ],
+        "scope": "local_profile",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "control_lease": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "holder_permission_ref",
+          "session_generation",
+          "lease_revision",
+          "mode",
+          "scope_ref",
+          "actor_refs",
+          "expires_tick",
+          "scope_membership_revision",
+          "lawful_role_guards"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "crown_election": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "office_ref",
+          "constitution_revision",
+          "eligible_seat_snapshot",
+          "nomination_refs",
+          "ballot_receipts",
+          "deadline_tick",
+          "frozen_due_set",
+          "result_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "crown_office": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "state_ref",
+          "constitution_revision",
+          "incumbent_ref",
+          "vacancy_event_ref",
+          "succession_policy",
+          "regency_ref",
+          "appointment_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "culture": {
+        "owner": "data/contracts/emergence_algorithms_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "origin_human_ref",
+          "origin_receipt",
+          "language_refs",
+          "practice_prototype",
+          "member_affinity_index",
+          "parent_culture_refs"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "decision_episode": {
+        "owner": "data/contracts/decision_core_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "subject_ref",
+          "domain",
+          "belief_snapshot_ref",
+          "frozen_candidate_ids",
+          "decision_counter",
+          "search_frontier",
+          "due_tick",
+          "selected_commitment_ref",
+          "freeze_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "denomination": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "root_religion_ref",
+          "parent_denomination_ref",
+          "doctrine_clauses",
+          "member_refs",
+          "origin_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "divine_grant": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "trusted_player_source",
+          "permission_scope",
+          "target_refs",
+          "typed_effect",
+          "source_limits",
+          "unique_effect_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "document": {
+        "owner": "data/contracts/social_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "author_ref",
+          "language_ref",
+          "content_symbols",
+          "actual_medium_batch_ref",
+          "actual_custodian_ref",
+          "publication_license_ref"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "dynasty": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "origin_actor_ref",
+          "legal_lineage_index",
+          "member_refs",
+          "succession_policy",
+          "current_representative_ref"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "empire_petition": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "founding_state_ref",
+          "member_state_refs",
+          "religion_ref",
+          "proposed_charter",
+          "signed_authority_receipts",
+          "approval_status",
+          "frozen_constitution_revisions"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "enterprise": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "charter_ref",
+          "legal_owner_refs",
+          "account_ref",
+          "actual_employee_refs",
+          "facility_refs",
+          "production_line_refs",
+          "obligations"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "estate": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "decedent_actor_ref",
+          "death_receipt",
+          "asset_refs",
+          "creditor_claims",
+          "beneficiary_refs",
+          "settled_allocation_receipts",
+          "finalization_status"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "facility": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "building_ref",
+          "actual_work_slots",
+          "operation_target_refs",
+          "installed_equipment_refs",
+          "receiving_capacity",
+          "actual_support"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "family": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "biological_parent_edges",
+          "legal_adoption_edges",
+          "actual_member_refs",
+          "family_charter",
+          "genealogy_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "fruit_batch": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "tree_ref",
+          "absolute_quantity_g",
+          "maturity_q",
+          "expiry_tick",
+          "growth_remainder",
+          "picking_reservations",
+          "unique_growth_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "garment": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "definition_id",
+          "legal_owner_ref",
+          "actual_wearer_ref",
+          "slot_binding",
+          "fit_profile",
+          "absolute_durability_damage",
+          "wetness_q",
+          "expiry_tick"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "genesis_node": {
+        "owner": "data/contracts/emergence_algorithms_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "settlement_ref",
+          "actual_member_index",
+          "evidence_graph",
+          "phi_q",
+          "mu_q",
+          "evidence_day_bits",
+          "random_event_state",
+          "origin_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "genome": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "owner_actor_ref",
+          "immutable_species_ref",
+          "raw_alleles_by_trait",
+          "biological_parent_provenance",
+          "subspecies_profile_revision",
+          "edit_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "gestation": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "immutable_species_ref",
+          "biological_parent_refs",
+          "conception_receipt",
+          "snapshotted_raw_genome",
+          "snapshotted_sapience_source",
+          "carrier_actor_or_nest_ref",
+          "required_ticks",
+          "paid_productive_nutrition",
+          "paid_dry_matter",
+          "progress_work_remainder",
+          "committed_birth_capacity_reservation",
+          "born_actor_refs",
+          "finalization_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "ground_resource": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "source_definition_id",
+          "actual_footprint",
+          "remaining_quantity",
+          "growth_source_budget",
+          "maturity_state",
+          "reservations",
+          "source_debit_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "history_event": {
+        "owner": "data/contracts/runtime_foundation_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "actual_tick",
+          "boundary_ordinal",
+          "root_effect_id",
+          "canonical_subject_refs",
+          "immutable_payload",
+          "source_provenance"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record",
+        "registered_receipt_subtypes": [
+          "actual_effect",
+          "consent",
+          "legal_authorization",
+          "ballot",
+          "deadline_input",
+          "source_debit",
+          "handoff",
+          "loss",
+          "injury",
+          "death",
+          "birth",
+          "inheritance",
+          "appointment",
+          "research_result",
+          "event_freeze"
+        ],
+        "receipt_fields": [
+          "issuer_ref",
+          "subject_refs",
+          "actual_tick",
+          "payload_sha256",
+          "frozen_dependency_revisions",
+          "root_effect_id",
+          "actual_source_receipt_refs"
+        ],
+        "proof": "typed subtype from immutable committed event only; caller supplied Ref or successbit is not legal proof"
+      },
+      "hive": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "actual_colony_actor_refs",
+          "queen_actor_ref",
+          "role_plan",
+          "real_support",
+          "honey_productive_reserve",
+          "care_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "household": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "actual_member_refs",
+          "residence_ref",
+          "budget_preferences",
+          "account_refs",
+          "owned_stock_refs",
+          "care_obligations"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "innovation": {
+        "owner": "data/contracts/social_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "author_refs",
+          "knowledge_definition_ref",
+          "research_receipt",
+          "measured_outcome",
+          "publication_license_refs"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "item": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "commodity_definition_id",
+          "legal_owner_ref",
+          "custodian_ref",
+          "actual_location_binding",
+          "absolute_quantity",
+          "absolute_damage",
+          "wetness_q",
+          "made_tick",
+          "expiry_tick",
+          "reservations"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "knowledge_license": {
+        "owner": "data/contracts/social_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "knowledge_ref",
+          "licensor_ref",
+          "actual_recipient_ref",
+          "scope_terms",
+          "fee_obligation",
+          "expiry_tick",
+          "adoption_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "language": {
+        "owner": "data/contracts/emergence_algorithms_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "origin_human_ref",
+          "origin_receipt",
+          "semantic_kernel",
+          "phoneme_palette",
+          "root_term_forms",
+          "parent_language_refs",
+          "sound_change_versions",
+          "actual_speaker_skill_index"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "map_marker": {
+        "owner": "data/contracts/interaction_runtime_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "title",
+          "actual_position",
+          "color",
+          "annotation",
+          "linked_object_ref",
+          "local_owner_scope"
+        ],
+        "scope": "local_profile",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "message": {
+        "owner": "data/contracts/decision_core_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "source_ref",
+          "recipient_refs",
+          "issued_tick",
+          "delivery_task_ref",
+          "message_kind",
+          "bounded_payload",
+          "payload_sha256",
+          "known_source_confidence",
+          "received_tick_by_actual_recipient",
+          "cancellation_or_delivery_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "mineral_deposit": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "source_definition_id",
+          "actual_footprint",
+          "remaining_quantity",
+          "material_grade",
+          "extraction_reservations",
+          "unique_debit_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "name_record": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "subject_ref",
+          "exact_text",
+          "language_ref",
+          "actual_namer_ref",
+          "effective_tick",
+          "superseded_tick",
+          "immutable_prior_name_refs"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "origin_session": {
+        "owner": "data/contracts/emergence_algorithms_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "candidate_ref",
+          "candidate_revision",
+          "actual_teacher_ref",
+          "actual_participant_refs",
+          "meaning_ids",
+          "communication_support",
+          "work_remainders",
+          "availability_claims",
+          "energy_receipts",
+          "accepted_term_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "outcome_attribution": {
+        "owner": "data/contracts/decision_core_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "subject_ref",
+          "commitment_ref",
+          "root_effect_id",
+          "actual_received_evidence",
+          "observed_outcome",
+          "confounder_flags",
+          "unique_learning_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "permission": {
+        "owner": "data/contracts/runtime_foundation_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "holder_local_session_id",
+          "session_generation",
+          "capability_scope",
+          "world_id",
+          "permission_revision",
+          "trusted_issuer",
+          "revoked_status"
+        ],
+        "scope": "trusted_session",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "plant": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "definition_id",
+          "actual_pose",
+          "maturity_q",
+          "actual_biomass_reserve",
+          "fruit_batch_refs",
+          "habitat_dependencies",
+          "actual_growth_source_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "political_plot": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "goal_id",
+          "actual_participant_refs",
+          "belief_snapshot_ref",
+          "staged_action_plan",
+          "resource_claims",
+          "authority_or_illicit_status",
+          "actual_outcome_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "production_line": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "facility_ref",
+          "recipe_id",
+          "installed_target_versions",
+          "actual_worker_refs",
+          "input_claims",
+          "work_progress",
+          "receiving_container_ref",
+          "output_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "project": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "definition_id",
+          "sponsor_ref",
+          "site_geometry",
+          "support_and_access_certificates",
+          "material_claims",
+          "actual_deliveries",
+          "actual_work_remainders",
+          "elapsed_due_tick",
+          "final_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "projectile": {
+        "owner": "data/contracts/warfare_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "shot_id",
+          "source_actor_ref",
+          "actual_pose",
+          "actual_velocity",
+          "physics_remainders",
+          "expiry_tick",
+          "residual_power",
+          "unique_hit_receipts",
+          "recoverable_material_reserve"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "ramp": {
+        "owner": "data/contracts/terrain_access_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "owned_cells",
+          "corner_height_r",
+          "actual_geometry_hash",
+          "cell_ownership_revisions",
+          "verified_before_images",
+          "creation_receipt",
+          "source_material_claims",
+          "access_dependencies"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "regency": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "office_ref",
+          "incumbent_ref",
+          "regent_actor_ref",
+          "authorized_scope",
+          "expires_tick",
+          "constitution_revision",
+          "appointment_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "religion": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "player_root_creation_receipt",
+          "prophet_actor_ref",
+          "frozen_root_doctrine",
+          "frozen_church_nature",
+          "denomination_refs",
+          "member_affinity_index"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "research_project": {
+        "owner": "data/contracts/social_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "node_id",
+          "lead_actor_ref",
+          "actual_work_intervals",
+          "input_claims",
+          "experiment_wip",
+          "measured_samples",
+          "source_receipts",
+          "remaining_wait_tick",
+          "knowledge_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "reservation": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "claim_owner_ref",
+          "actual_resource_ref",
+          "absolute_reserved_quantity",
+          "legal_priority",
+          "due_tick",
+          "expiry_tick",
+          "consumed_or_released_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "road": {
+        "owner": "data/contracts/terrain_access_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "actual_geometry",
+          "support_bindings",
+          "deck_rights",
+          "legal_owner_ref",
+          "access_dependencies",
+          "material_embedded_quantities",
+          "integrity"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "save_slot": {
+        "owner": "data/contracts/interaction_runtime_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "slot_id",
+          "saved_world_id",
+          "checkpoint_relative_path",
+          "file_sha256",
+          "confirmed_revision",
+          "validation_status",
+          "recovery_candidate_metadata"
+        ],
+        "scope": "local_profile",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "settlement": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "community_axis",
+          "physical_axis",
+          "actual_member_refs",
+          "legal_charter",
+          "rank",
+          "state_ref",
+          "service_cells",
+          "legal_title_cells",
+          "office_refs",
+          "final_normalization_receipt"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "shipment": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "source_container_ref",
+          "destination_container_ref",
+          "cargo_refs",
+          "carrier_ref",
+          "contract_ref",
+          "actual_route",
+          "transfer_custody_receipts",
+          "delivery_status"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "species": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "definition_id",
+          "definition_hash",
+          "fixed_body_envelope",
+          "fixed_diet",
+          "fixed_reproductive_roles",
+          "fixed_capability_mask",
+          "fixed_trait_bounds"
+        ],
+        "scope": "immutable_definition",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "state": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "constitution_axes",
+          "charter_ref",
+          "actual_subject_index",
+          "settlement_refs",
+          "sovereignty_cells",
+          "occupation_refs",
+          "crown_office_ref",
+          "law_versions",
+          "public_account_refs"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "stock_batch": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "commodity_definition_id",
+          "legal_owner_ref",
+          "custodian_ref",
+          "actual_location",
+          "absolute_quantity",
+          "quality_q",
+          "made_tick",
+          "expiry_tick",
+          "reservations",
+          "debit_and_transfer_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "subspecies": {
+        "owner": "data/contracts/life_genetics_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "immutable_species_ref",
+          "parent_subspecies_ref",
+          "shared_raw_trait_profile",
+          "actual_member_index",
+          "founder_provenance",
+          "profile_revision",
+          "lineage_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "task": {
+        "owner": "data/contracts/natural_action_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "owner_actor_ref",
+          "goal_ref",
+          "operation_kind",
+          "actual_target_refs",
+          "route_dependencies",
+          "claims",
+          "actual_work_progress",
+          "status",
+          "due_tick",
+          "effect_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "task_plan": {
+        "owner": "data/contracts/natural_action_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "owner_actor_ref",
+          "ordered_task_refs",
+          "actual_cost_requirements",
+          "dependency_revisions",
+          "logical_frontier",
+          "cancellation_status"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "tax_assessment": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "tax_law_revision",
+          "liable_ref",
+          "actual_taxable_receipt",
+          "amount_minor",
+          "currency_id",
+          "due_tick",
+          "payment_receipts",
+          "unpaid_obligation_status"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "treaty": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "party_refs",
+          "lawful_signatory_receipts",
+          "typed_terms",
+          "effective_tick",
+          "obligations",
+          "termination_status",
+          "performance_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "vehicle": {
+        "owner": "data/contracts/economic_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "definition_id",
+          "actual_transform",
+          "geometry_collision_envelope",
+          "legal_owner_ref",
+          "controller_ref",
+          "actual_occupants",
+          "cargo_bindings",
+          "installed_drive_profile",
+          "stored_civil_energy"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "war": {
+        "owner": "data/contracts/warfare_decisions_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "belligerent_state_refs",
+          "lawful_declaration_receipt",
+          "war_goals",
+          "known_front_records",
+          "actual_army_refs",
+          "treaty_refs",
+          "end_status"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "world": {
+        "owner": "data/contracts/runtime_foundation_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "world_profile",
+          "world_seed_32bytes",
+          "definition_manifest_hash",
+          "authoritative_tick",
+          "boundary_ordinal",
+          "world_revision",
+          "terrain_arrays",
+          "entity_registry"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      },
+      "world_rule": {
+        "owner": "data/contracts/civic_control_v1.json",
+        "required_fields": [
+          "canonical_ref",
+          "record_revision",
+          "provenance",
+          "registered_rule_id",
+          "typed_value",
+          "rule_revision",
+          "effective_tick",
+          "transition_receipts"
+        ],
+        "scope": "committed_world_record",
+        "identity_allocation": "one_registered_stable_id_and_generation_not_display_name_or_page_id",
+        "unknown_payload_or_missing_required_field": "reject_no_empty_placeholder_record"
+      }
+    },
+    "canonical_kind_count": 77,
+    "view_subselector_requirements": {
+      "skill": "canonical ActorRef + registered skill_id; Training.actor/skill_id must match view; no SkillRef allocated or second RNG subject",
+      "thermal_exposure": "same canonical ActorRef read-only actual physiology snapshot"
+    },
+    "batch": "generic role label only; actual transport/save Ref must use stock_batch or fruit_batch registry kind, not allocate batch identity",
+    "kind_admission": "exact key membership canonical_kind_registry; current World/definition/session lookup verifies generation, owning scope and required typed fields; regex alone is insufficient",
+    "strict_record_scope": "trusted_session permission and local_profile kinds are not simulation entities or RNG subjects; immutable species record binds exact installed definition package; no natural geography identities",
+    "role_aliases_without_new_identity": {
+      "TreeRef": "plant",
+      "NodeRef": "genesis_node",
+      "BuyerRef": "actual party canonical kind",
+      "SellerRef": "actual party canonical kind",
+      "HomeCityRef": "settlement",
+      "ObjectRef": "actual registered canonical kind",
+      "CellRef": "coordinate revision key, not stable Ref",
+      "SurfaceRef": "coordinate surface revision key, not stable Ref",
+      "LocalWetRegionRef": "derived local navigation key, not stable Ref"
+    }
+  },
+  "counter_rng": {
+    "algorithm_id": "SONNRNG1_SHA256_UINT64LE_REJECTION",
+    "world_seed_bytes": 32,
+    "definition_hash_bytes": 32,
+    "hash": "SHA256 exactly; digest first8 bytes interpreted uint64 little-endian; never std::hash, rand, locale encoding or floating-point distribution",
+    "preimage_order": [
+      "magic_ASCII_SONNRNG1_exact8bytes",
+      "WorldSeed_exact32rawbytes",
+      "domain_utf8_byte_length_u16LE",
+      "domain_ASCII_[a-z][a-z0-9_.]{0,63}",
+      "subject.world_id_exact16hexdecodedbytes",
+      "subject.kind_utf8_byte_length_u16LE",
+      "subject.kind_canonical_ASCII_[a-z][a-z0-9_]{0,63}",
+      "subject.stable_id_uint64LE_parsed_from16lowercasehex",
+      "subject.generation_uint32LE_1_to4294967295",
+      "definitionManifestSha256_exact32rawbytes",
+      "eventCounter_uint64LE",
+      "drawIndex_uint64LE",
+      "rejectionAttempt_uint64LE"
+    ],
+    "reference_validation": "exact canonical_kind_registry key and current lookup/generation before RNG; view aliases map by object_ref_wire.view_aliases_to_canonical_kind; skill/thermal are Actor views with no independent identity; local/session/immutable-definition records do not own simulation streams; no natural geography Ref",
+    "uniform_bound": "integer n from1 through2^63-1; bool/zero/negative/overflow reject",
+    "uniform_rule": "limit=floor(2^64/n)*n in checked128; attempt starts0; raw=uint64LE(SHA256(preimage)[0:8]); raw>=limit rejects and increments attempt only; otherwise result=raw%n and nextDrawIndex=drawIndex+1. For inclusive[a,b], n=b-a+1 checked and result=a+uniform(n)",
+    "maximum_rejection_attempts": 4096,
+    "attempt_exhaustion": "RNG_REJECTION_LIMIT rejects entire candidate; never reseed/change domain/advance eventCounter or silently modulo",
+    "counter_advance": "per(canonicalSubject,domain) next eventCounter advances once only on successful single-writer publish of immutable EventFreezeReceipt; includes real DecisionEpisode first candidate freeze, conception, actual utterance and due daily recurrence. Mere query, UI preview, render, failed candidate, canceled uncommitted action and worker slice never draw or advance",
+    "event_draw_state": "frozen EventFreezeReceipt stores algorithmId/domain/eventCounter/definitionHash plus ordered draw purposes and nextDrawIndex; rejected attempts are replayable from preimage, successful draw increments index once; already committed event retry returns saved values and no new draw",
+    "overflow": "eventCounter/drawIndex advance beyond uint64 rejects RNG_COUNTER_OVERFLOW, no wrap; all domain event shapes have finite definition-bounded draw count",
+    "prepare_commit": "authorized real event prepares using isolated candidate state; successful publish stores draws/index/counter atomically. UI preview cannot ask random future outcomes or consume a stream. If event froze earlier its committed Receipt is the source, later outcome cancellation does not undo a past freeze",
+    "persistence": [
+      "WorldSeed32bytes",
+      "algorithmId",
+      "canonicalSubject_domain_nextEventCounter",
+      "frozenEventCounter_and_drawPurposes",
+      "nextDrawIndex",
+      "committed_sample_values_and_receipts"
+    ],
+    "known_primitive_vector": {
+      "input_ASCII": "abc",
+      "sha256_hex": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    },
+    "reference_encoding_vector": {
+      "WorldSeed_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "subject": {
+        "world_id": "11111111111111111111111111111111",
+        "kind": "actor",
+        "stable_id": "0000000000000002",
+        "generation": 3
+      },
+      "domain": "birth",
+      "definition_hash_hex": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eventCounter": 4,
+      "drawIndex": 5,
+      "rejectionAttempt": 0,
+      "preimage_length_bytes": 138,
+      "derived_digest_and_uniform": "world_runtime_reference_model.run counter_rng_vectors reports actual calculated digest/raw/uniform10000 during root batch validation; not yet an executed result"
+    },
+    "reference_rejection_vector": {
+      "n": 10,
+      "injected_raw_by_attempt_decimal": [
+        "18446744073709551615",
+        "17"
+      ],
+      "limit_decimal": "18446744073709551610",
+      "expected_result": 7,
+      "expected_consumed_attempts": 2,
+      "purpose": "finite unbiased reduction boundary; injected raw source only in reference verification, never player RNG input"
+    },
+    "canonical_kind_registry_ref": "runtime_foundation_v1.object_ref_wire.canonical_kind_registry",
+    "excluded_subject_scopes": [
+      "local_profile",
+      "trusted_session",
+      "immutable_definition"
+    ]
+  },
+  "decision": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md",
+  "fine_profile_update": "ADR0021_RLE_management2000mm_sparse_micro31250um",
+  "micro_surface_update": {
+    "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+    "profile": 2,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "soil_sand_top_mm": 0,
+    "water_surface_mm": 0,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height",
+    "default_core_cells": 1024,
+    "maximum_core_cells": 4096,
+    "presets_core_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "reclamation": "replace_only_wet_microfaces_preserve_dry_kind_theme_revision",
+    "representation": "row_RLE_plus_sparse_palette_packed_fine_patches",
+    "production_full_game_implemented": false,
+    "binary_patch_codec": "lossless_minimum_fixed_spans_row_offset_spans_sorted_row_dictionary_or_raw_bitpacked_fallback",
+    "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
+    "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
+    "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  },
+  "legacy_earth_geometry_reference": {
+    "status": "historical_source_and_core_regression_only_not_production_entry",
+    "specification": {
+      "source": "GSHHG_2.3.7_fixed_original_hash_L1L2L3L4",
+      "projection": "equirectangular_standard_parallel_0_degrees_game_distance_not_real_distance",
+      "coordinates": "integer_microdegrees_with_unwrapped_east",
+      "latitude_bounds_udeg": [
+        -90000000,
+        90000000
+      ],
+      "maximum_longitude_span_udeg": 360000000,
+      "maximum_latitude_span_udeg": 180000000,
+      "date_line": "east_unwrapped_after_west_relative_source_longitude_two_windows_one_candidate",
+      "scale": "same_rational_game_mm_per_microdegree_both_axes",
+      "Nx_core_range": [
+        32,
+        4096
+      ],
+      "Ny_core_formula": "ceil(Nx*(north-south)/(eastUnwrapped-west))",
+      "cell_center_udeg": "west+(micro_x+1/2)*W/(Nx*64),south+(micro_z+1/2)*W/(Nx*64)_exact_rational",
+      "cell_center_outside_source_rect": "close_ocean",
+      "source_ring_test": "point_on_segment_inside_first_then_exact_even_odd_half_open_y_crossing",
+      "layer_precedence": "deepest_containing_L1land_L2water_L3land_L4water_same_depth_sourcePolygonId_ASC",
+      "missing_or_invalid_nested_source": "reject_package",
+      "narrow_island": "full_source_scanline_micro_centers_preserve_islands_missed_by_management_centers_only_features_without_a31250um_sample_may_disappear",
+      "guard_cells": 8,
+      "guard_kind": "deep_ocean",
+      "guard_editable": false,
+      "authority_axis_max_cells": 4112,
+      "max_authority_cells": 16908544,
+      "capacity_claim": "admission_limits_only_not_measured_performance",
+      "outside": "render_only_ocean_no_entities_navigation_titles_or_resources",
+      "actor_boundary": "complete_body_and_sweep_in_authority_real_braking_before_edge_no_wall_no_teleport",
+      "out_of_bounds_command": "reject_no_clamp",
+      "rectangular_cut_visible_allowed": true,
+      "irregular_edge_transition": false,
+      "candidate_hash": "canonical_generated_effective_surface_shared_by_preview_create_save_readback",
+      "source_profile_read_only": true,
+      "source_ring_unwrap": "follow_edges_min_delta_in_half_open_minus180_to180_then_whole360degree_copies_and_exact_dateline_clip_not_independent_vertex_clamp",
+      "default_core_cells": [
+        1024,
+        1024
+      ],
+      "actual_core_extent_formula": "Nx_management_count_times2000mm_Ny_management_count_times2000mm",
+      "earth_scale_mode": "stylized_uniform_not_1_to_1",
+      "geometry_resident_budget_bytes": 134217728,
+      "presets_management_cells": [
+        256,
+        512,
+        1024,
+        2048,
+        4096
+      ]
+    }
+  }
+}

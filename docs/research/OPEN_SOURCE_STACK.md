@@ -1,5 +1,11 @@
 # 开源复用决定、许可边界与锁定计划
 
+2026-10-08版本裁决：本文旧平陆不可编辑、七分区、RECLAIMED-only港口或MakeHuman生产条款由[ADR0012](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0012-editable-3d-pixel-world.md)覆盖；未冲突的身份/经济/菜单/许可规则继续有效。当前像素路线见[v0.7](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/design/Sonnheide_Design_v0.7_Pixel_World.md)，本文既有实测/源锁仅代表其原范围。
+
+最新采用 [Poly Haven＋固定mmikk Hex-Tiling](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0011-ground-sky-and-bounded-world-preview.md)。四个MIT原始算法文件归档于third_party/hextile；PBR/纯天空的准确原件与来源包见 [资源锁](../../assets/manifests/ground_sky_sources.json)。这不是新增运行时引擎，bgfx GPU移植仍待实施。
+
+2026年10月7日写实平面地表专项比较见 [REALISTIC_GROUND_SYSTEMS](REALISTIC_GROUND_SYSTEMS.md)：扫描材质、离线生成工具、抗重复算法、地被与许可边界分别核验，均明确候选与正式集成的区别。当前原生菜单依赖的实际锁定/集成状态以 [NATIVE_SOURCE_AUDIT](NATIVE_SOURCE_AUDIT.md) 为准，下面早期总览表中的待接入状态不覆盖该记录。
+
 核验日期：2026-10-06。资料来自上游项目、作者或官方规格。**“选择”是工程决策，“集成”必须有实际构建与运行证据。** Abyssal已固定commit/原文件SHA-256并构建CPU参考；MakeHuman人体/骨架/权重及三款服装的选定源件已归档，尚未变成游戏角色。下表运行时库仍待接入时锁定兼容版本，不编造未经构建验证的release/commit。状态与许可写入依赖清单。
 
 ## 1. 选择独立库，不引入游戏引擎
@@ -39,7 +45,7 @@
 
 原项目WebGL2/three.js 0.180.0调度须移植到C++20/bgfx；不采用浏览器作为生产客户端。已从上游蝶形与inverse FFT流程提取独立CPU正确性参考，并核对直接2D IDFT、幅值/方向/Hermitian谱及错误边界。CPU参考不执行全谱海洋、GPU材质或实际帧渲染；上游HTML的three.js CDN依赖未归档，不声称完整离线浏览器demo。
 
-native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有序pass、shaderc采样/uniform、depth/UV、浮动原点相位和独立海陆mask。真实海底高程用于表现时须与ETOPO/世界datum一致，低于海平面LAND不能被shader淹没。TMA/浅水衰减不等于真实河湖/水动力；海面浪高仍不写仿真。成本与跨后端验收见[RENDERING](../architecture/RENDERING.md)。
+native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有序pass、shaderc采样/uniform、depth/UV、浮动原点相位和独立海陆mask。按ADR 0010不采真实海底高程；统一静水面与派生水边浅滩只供受限表现，不得移岸线、赠陆地或随填海抬天然岸坡。TMA/浅水衰减不等于真实河湖/水动力；海面浪高仍不写仿真。成本与跨后端验收见[RENDERING](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/RENDERING.md)。
 
 仍拒绝游戏引擎运行时、未明确许可shader、许可不明的示例HDRI/贴图，以及直接依赖WebGL framebuffer假设的生产代码。bgfx基础和合法CC0材质可以补充该移植，保留各自通知。[bgfx shader工具](https://bkaradzic.github.io/bgfx/tools.html)、[示例资产许可](https://bkaradzic.github.io/bgfx/license.html)。
 
@@ -49,7 +55,7 @@ native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有�
 |---|---|---|
 |人物基体与工具生态|正式采用MakeHuman v1.3.0人体数据与MPFB v2.0.17离线路线；少量男女/年龄体型统一拓扑/骨架|MakeHuman程序AGPL-3.0-or-later、MPFB程序GPL-3.0-or-later、核心图形CC0分开；工具未运行且不链接游戏。已归档源件/锁定commit与限制见[生态核验](MAKEHUMAN_ECOSYSTEM.md)、[精确manifest](../../assets/manifests/makehuman_sources.json)。[官方许可说明](https://static.makehumancommunity.org/about/license.html)|
 |人物动作|先制作最小 idle/walk/work/carry/attack/enter/exit 套件；只有单项来源/许可清楚的外部动作才导入|ozz 提供运行能力，不意味着动作资产 MIT。动作须统一骨架、单位、loop、root motion 与事件时序；战斗/劳动事件只读仿真|
-|服装|正式复用MakeHuman社区逐项许可清楚的衣物；军装统一款式由项目原创|[ADR 0004](../decisions/0004-clothing-and-makehuman.md)按用户要求覆盖旧极简服饰约束，衣物成为耐久/库存/产业系统。首批男女T恤和短裤源件已归档，缺贴图与游戏适配另验；胸罩候选存在许可证据冲突，未导入。共享mesh不等于没有实物衣橱；不用自由布料物理|
+|服装|正式复用MakeHuman社区逐项许可清楚的衣物；军装统一款式由项目原创|[ADR 0004](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/decisions/0004-clothing-and-makehuman.md)按用户要求覆盖旧极简服饰约束，衣物成为耐久/库存/产业系统。首批男女T恤和短裤源件已归档，缺贴图与游戏适配另验；胸罩候选存在许可证据冲突，未导入。共享mesh不等于没有实物衣橱；不用自由布料物理|
 |材料/HDRI|Poly Haven 的纹理与 HDRI 候选；不采购其建筑模型|官方资产为 CC0，可再分发；页面文字、logo、渲染展示图并非同样授权。只下载明确资产原文件及许可证据，不复制预览图作为贴图。[官方许可页](https://polyhaven.com/license)|
 |字体|指定 Noto Sans CJK 字体文件，覆盖中英与希腊码；不依赖玩家系统字体|指定目录 LICENSE 为 SIL OFL 1.1。保留许可及字体命名约束；文件/子集 hash 入资产清单。[Noto CJK Sans LICENSE](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)|
 |建模工具|Blender 作为离线创作工具|Blender 自身 GPL 与用户创作模型是不同对象；官方说明创作输出归创作者。保留脚本、`.blend`、材质、导出配置，而不是只留最终 GLB。[Blender 官方授权说明](https://www.blender.org/about/license/)|
@@ -68,4 +74,4 @@ native移植保留谱/cascade/泡沫算法，重写GPU资源生命周期、有�
 
 GitHub 托管不自动等于我们决定开源自己的游戏：原创代码、设计与建筑的授权策略由仓库总策略决定；第三方各自保留原许可。打包工具生成 THIRD_PARTY_NOTICES 与 asset credits；CC0 即便不强制署名，也保留来源以支持后续复核。构建 cache 不进 Git，但其所有输入、参数与生成器必须可追溯。
 
-接入验收的顺序是：许可证/来源可分发 → 精确版本锁定 → 平台构建 → 最小真实工作负载 → 性能/生命周期验证 → 进入发布依赖。任何一环没有证据时状态仍为候选或待集成。详细视觉验收在 [RENDERING.md](../architecture/RENDERING.md)。
+接入验收的顺序是：许可证/来源可分发 → 精确版本锁定 → 平台构建 → 最小真实工作负载 → 性能/生命周期验证 → 进入发布依赖。任何一环没有证据时状态仍为候选或待集成。详细视觉验收在 [RENDERING.md](https://github.com/sky-yueer-yang/sonnheide/blob/b13f01890053bd58609af3366883c93ebef18e22/docs/architecture/RENDERING.md)。

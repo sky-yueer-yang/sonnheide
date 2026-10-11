@@ -1,0 +1,1384 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_terrain_access_v1",
+  "design_version": "0.9",
+  "audit_date": "2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md",
+  "source_baseline": {
+    "path": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "immutable": true,
+    "role": "historical_user_source_not_execution_instruction"
+  },
+  "scope": {
+    "authoritative_3d": true,
+    "single_world_writer": true,
+    "stores": "steam_only",
+    "game_engine": false,
+    "procedural_world_template_library": false,
+    "steam_workshop": false,
+    "steam_cloud": false,
+    "private_horse_mechanism": false,
+    "riding_or_horse_vehicle_profile": false,
+    "dense_global_xyz_voxels": false,
+    "terrain_caves_or_floating_islands": false,
+    "camera_affects_simulation": false,
+    "persistent_natural_entities": false,
+    "natural_object_names": false,
+    "free_height_paint": false,
+    "natural_coast_height_transition": false
+  },
+  "world_creation": {
+    "modes": [
+      "blank",
+      "earth_selection"
+    ],
+    "blank_base_choices": [
+      "ocean",
+      "flat_land"
+    ],
+    "earth_source": "GSHHG_2.3.7_exact_center_even_odd_L1L2L3L4",
+    "earth_dem": false,
+    "initial_human_population": 0,
+    "initial_buildings": 0,
+    "effective_terrain_editable": true,
+    "source_provenance_immutable": true,
+    "same_effective_terrain_for_blank_and_earth": true,
+    "highest_preview_uses_same_effective_surface": true,
+    "first_checkpoint_durable_write_and_readback_before_publish": true,
+    "candidate_isolation_keys": [
+      "WorldId",
+      "SessionGeneration",
+      "DraftGeneration",
+      "CandidateGeneration",
+      "sourceRevision"
+    ],
+    "cancel_failure_or_late_result_preserves_current_world_and_continue_pointer": true,
+    "generated_human_population_or_buildings": false,
+    "initial_wild_animals": "life_ecology_contract_controls_actual_animals_no_generated_citizens",
+    "raster_contract": "data/contracts/runtime_foundation_v1.json.world_creation",
+    "edge": "rectangular_cut_deep_ocean_guard_no_slope_or_irregular_transition",
+    "projection": "equirectangular_standard_parallel_0_game_units_no_polar_selection",
+    "initial_flat_heights_mm": {
+      "land": 0,
+      "water": -8000,
+      "ocean_guard": -20000
+    }
+  },
+  "sample_profile": {
+    "status": "engineering_calibration_example_not_real_geography_or_measured_capacity",
+    "frozen_per_world": true,
+    "cell_size_mm": 2000,
+    "height_quantum_mm": 500,
+    "chunk_side_cells": 64,
+    "minimum_height_q": -40,
+    "maximum_height_q": 192,
+    "still_water_level_mm": 0,
+    "high_peak_start_mm": 80000,
+    "height_band_classification": "actual_surface_height_at_query_point",
+    "land_bands": [
+      {
+        "id": "lowland",
+        "minimum_mm_inclusive": 0,
+        "maximum_mm_exclusive": 8000
+      },
+      {
+        "id": "hill",
+        "minimum_mm_inclusive": 8000,
+        "maximum_mm_exclusive": 32000
+      },
+      {
+        "id": "mountain",
+        "minimum_mm_inclusive": 32000,
+        "maximum_mm_exclusive": 80000
+      },
+      {
+        "id": "high_peak",
+        "minimum_mm_inclusive": 80000,
+        "maximum_mm_exclusive": null
+      }
+    ],
+    "water_depth_bands": [
+      {
+        "id": "shallow_water",
+        "minimum_mm_exclusive": 0,
+        "maximum_mm_inclusive": 3000
+      },
+      {
+        "id": "close_ocean",
+        "minimum_mm_exclusive": 3000,
+        "maximum_mm_inclusive": 12000
+      },
+      {
+        "id": "deep_ocean",
+        "minimum_mm_exclusive": 12000,
+        "maximum_mm_inclusive": null
+      }
+    ],
+    "admission": {
+      "max_stroke_cells": 4096,
+      "max_directly_affected_entities": 8192,
+      "max_preview_bytes": 4194304,
+      "logical_topology_work_per_tick": 8192,
+      "max_logical_topology_work": 1048576,
+      "over_budget": "reject_or_explicit_bounded_staged_plan_never_silent_truncation"
+    },
+    "arithmetic": "checked_int64_local_cell_mm_and_rational_comparison_with_frozen_rounding",
+    "profile_edit_in_existing_world": false,
+    "actor_flight_ceiling_mm": 256000,
+    "ramp_height_quantum_mm": 1,
+    "ramp_quantum_base_divisor": 4,
+    "minimum_ramp_height_r": -160,
+    "maximum_ramp_height_r": 768,
+    "flat_height_by_kind_mm": {
+      "deep_ocean": -20000,
+      "close_ocean": -8000,
+      "shallow_water": -2000,
+      "sand": 0,
+      "soil": 0,
+      "hill": 16000,
+      "mountain": 48000,
+      "high_peak": 96000
+    },
+    "flat_height_membership_required": true,
+    "flat_kind_is_authority": true,
+    "arbitrary_flat_height": false,
+    "terrain_height_band_applies_to": "ramp_actual_continuous_surface_only_flat_uses_one_fixed_kind",
+    "clock_profile": "data/contracts/runtime_foundation_v1.json.clock",
+    "rounding": "nearest_ties_to_even_checked_rational"
+  },
+  "brush_presets": [
+    {
+      "id": "shallow_water",
+      "labels": {
+        "zh-CN": "浅水",
+        "en": "Shallow Water",
+        "de": "Flachwasser"
+      },
+      "default_target_height_mm": -2000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": -2000
+    },
+    {
+      "id": "close_ocean",
+      "labels": {
+        "zh-CN": "近海",
+        "en": "Close Ocean",
+        "de": "Küstenmeer"
+      },
+      "default_target_height_mm": -8000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": -8000
+    },
+    {
+      "id": "deep_ocean",
+      "labels": {
+        "zh-CN": "深海",
+        "en": "Deep Ocean",
+        "de": "Tiefsee"
+      },
+      "default_target_height_mm": -20000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": -20000
+    },
+    {
+      "id": "sand",
+      "labels": {
+        "zh-CN": "沙地",
+        "en": "Sand",
+        "de": "Sand"
+      },
+      "default_target_height_mm": 0,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 0
+    },
+    {
+      "id": "soil",
+      "labels": {
+        "zh-CN": "土地",
+        "en": "Soil",
+        "de": "Boden"
+      },
+      "default_target_height_mm": 0,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 0
+    },
+    {
+      "id": "hill",
+      "labels": {
+        "zh-CN": "丘陵",
+        "en": "Hill",
+        "de": "Hügel"
+      },
+      "default_target_height_mm": 16000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 16000
+    },
+    {
+      "id": "mountain",
+      "labels": {
+        "zh-CN": "山地",
+        "en": "Mountain",
+        "de": "Berg"
+      },
+      "default_target_height_mm": 48000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 48000
+    },
+    {
+      "id": "high_peak",
+      "labels": {
+        "zh-CN": "高峰",
+        "en": "High Peak",
+        "de": "Hochgebirge"
+      },
+      "default_target_height_mm": 96000,
+      "changes": "whole_hit_cell_flat_fixed_kind_height_and_top_material",
+      "explicit_creation_target_height_mm": 96000
+    }
+  ],
+  "authoritative_surface": {
+    "single_value_height_function_per_horizontal_point": true,
+    "geometry_below_surface_is_solid": true,
+    "column_shape_ids": [
+      "flat",
+      "ramp_patch"
+    ],
+    "flat_fields": [
+      "terrainKind"
+    ],
+    "ramp_fields": [
+      "cornerHeightR",
+      "triangulation",
+      "rampOwnerRef"
+    ],
+    "common_fields": [
+      "topMaterial",
+      "ecologyRef",
+      "mutationSource",
+      "mutationEventId",
+      "revision"
+    ],
+    "shape_specific_fields_mutually_exclusive": true,
+    "ramp_corner_order": [
+      "NW",
+      "NE",
+      "SE",
+      "SW"
+    ],
+    "ramp_control_heights_quantized": true,
+    "ramp_interior_height_quantized_to_steps": false,
+    "triangulation": "fixed_NW_SE_two_triangles",
+    "triangle_height_query": "exact_frozen_barycentric_rational_height",
+    "corner_ownership": "owning_cell_no_separately_writable_chunk_halo",
+    "neighbor_edge_top_heights_may_differ": true,
+    "differing_edges_are_real_vertical_faces": true,
+    "crossing_neighbor_edge_profiles": "split_at_exact_frozen_rational_crossing",
+    "cross_edge_traversal_requires": "matching_height_or_actor_profile_legal_actual_step",
+    "consumers_share_same_surface_revision": [
+      "rendering",
+      "ray_picking",
+      "collision",
+      "support",
+      "navigation",
+      "water",
+      "high_peak_mask",
+      "thermal_altitude"
+    ],
+    "navigation_subdivision_grants_support": false,
+    "bridge_surface_is_ramp_patch": false,
+    "legacy_wet_cell_predicate_valid_only_for_flat": true,
+    "ramp_corner_encoding": "cornerHeightR_times_frozen_rampHeightQuantumMm",
+    "flat_encoding": "terrainKind_enum_unique_height_no_arbitrary_heightQ",
+    "ramp_targets_match_actual_quantized_platforms": true,
+    "minimum_ramp_rise_per_two_metre_edge_mm": 1,
+    "coarse_base_only_car_ramp_is_mathematically_impossible": true,
+    "flat_height_query": "runtime_foundation.fixed_terrain.ordered_flat_heights_mm[terrainKind]",
+    "ramp_height_exclusive_authoring": "CreateRamp_owned_geometry",
+    "continuous_height_elsewhere": false,
+    "fixed_height_membership": true
+  },
+  "ramp_records": {
+    "stable_ref": "RampRef",
+    "fields": [
+      "RampRef",
+      "origin",
+      "orderedControlPoints",
+      "widthMm",
+      "intendedMovementProfileRefs",
+      "touchedCellRefs",
+      "geometryBeforeImages",
+      "ownedCellRevisions",
+      "state",
+      "createdEventId",
+      "lastEditEventId"
+    ],
+    "states": [
+      "ACTIVE",
+      "FRAGMENTED",
+      "REMOVED"
+    ],
+    "origin_values": [
+      "DIVINE_EDIT",
+      "CIVIC_EARTHWORK"
+    ],
+    "geometry_ownership_is_legal_land_ownership": false,
+    "ramp_record_creates_road_quality": false,
+    "overlap_policy": "one_combined_current_surface_not_two_floating_meshes",
+    "geometry_before_image_fields": [
+      "surfaceShape",
+      "terrainKind_if_flat",
+      "cornerHeightR_if_ramp",
+      "priorRampRef_if_owned",
+      "priorGeometryHash"
+    ]
+  },
+  "ramp_authoring": {
+    "toolbar_section": "terrain_ecology",
+    "tool_id": "terrain_ramp",
+    "labels": {
+      "zh-CN": "斜坡",
+      "en": "Ramp",
+      "de": "Rampe"
+    },
+    "removal_labels": {
+      "zh-CN": "移除斜坡",
+      "en": "Remove Ramp",
+      "de": "Rampe entfernen"
+    },
+    "selection_order": [
+      "existing_bottom_landing",
+      "existing_top_landing",
+      "bounded_ordered_route_control_points"
+    ],
+    "default_width_mm": 4000,
+    "intended_modes": [
+      "pedestrian",
+      "vehicle",
+      "explicit_species_profile"
+    ],
+    "canonical_sampling": "runtime_foundation_v1.ramp_solver",
+    "frame_count_affects_patch": false,
+    "yaw_or_lod_affects_patch": false,
+    "necessary_length_formula": "horizontal_arclength_mm >= abs(rise_mm) / maximum_longitudinal_grade",
+    "length_proof_is_sufficient": false,
+    "required_checks": [
+      "actual_bottom_landing_support",
+      "actual_top_landing_support",
+      "every_triangle_longitudinal_grade",
+      "every_triangle_cross_grade",
+      "every_cross_edge_step",
+      "full_body_swept_clearance",
+      "actual_usable_width",
+      "turning_radius_and_swept_curve",
+      "land_or_water_capability",
+      "high_peak_exclusion",
+      "existing_protected_access",
+      "legal_rights",
+      "profile_and_definition_versions"
+    ],
+    "car_traversal_implied_by_pedestrian_traversal": false,
+    "implicit_road_rights_or_structure_or_free_resources": false,
+    "necessary_length_can_be_increased_by_corner_quantization": true,
+    "sample_walk_rise_mm": 14000,
+    "sample_walk_straight_feasible_length_mm": 48000,
+    "sample_vehicle_rise_mm": 14000,
+    "sample_vehicle_straight_feasible_length_mm": 112000,
+    "max_control_points": 16,
+    "max_segments": 32,
+    "max_candidates": 64,
+    "self_intersection": "nonadjacent_positive_area_overlap_reject",
+    "natural_shoulder_blend": false,
+    "arbitrary_target_height": false,
+    "endpoints": "fixed_actual_dry_flat_kind_landing_no_high_peak",
+    "candidate_solver_contract": "data/contracts/runtime_foundation_v1.json.ramp_solver"
+  },
+  "movement_sample_profiles": [
+    {
+      "id": "pedestrian_unloaded_v1",
+      "status": "calibration_example",
+      "maximum_longitudinal_grade": {
+        "rise": 1,
+        "run": 3
+      },
+      "maximum_cross_grade": {
+        "rise": 1,
+        "run": 4
+      },
+      "maximum_vertical_step_mm": 250,
+      "minimum_usable_width_mm": 800,
+      "minimum_headroom_mm": 2100,
+      "minimum_turn_radius_mm": 0,
+      "capability_source": "human_fixed_body_and_bounded_PhenotypeCapacities"
+    },
+    {
+      "id": "small_wheeled_vehicle_v1",
+      "status": "calibration_example",
+      "maximum_longitudinal_grade": {
+        "rise": 1,
+        "run": 8
+      },
+      "maximum_cross_grade": {
+        "rise": 1,
+        "run": 12
+      },
+      "maximum_vertical_step_mm": 50,
+      "minimum_usable_width_mm": 3000,
+      "minimum_headroom_mm": 2800,
+      "minimum_turn_radius_mm": 6000,
+      "capability_source": "immutable_vehicle_definition_actual_condition_load_and_energy"
+    },
+    {
+      "id": "animal_species_profile_v1",
+      "status": "immutable_species_envelope_with_bounded_phenotype",
+      "maximum_longitudinal_grade": null,
+      "maximum_cross_grade": null,
+      "maximum_vertical_step_mm": null,
+      "minimum_usable_width_mm": null,
+      "minimum_headroom_mm": null,
+      "minimum_turn_radius_mm": null,
+      "requires_explicit_species_body_and_capacity_values_before_use": true,
+      "capability_source": "immutable_SpeciesDefinition_and_bounded_PhenotypeCapacities",
+      "fallback_to_human_profile": false
+    }
+  ],
+  "high_peak": {
+    "labels": {
+      "zh-CN": "高峰不可通行",
+      "en": "High Peak Is Impassable",
+      "de": "Hochgebirge ist unpassierbar"
+    },
+    "predicate": "actual_surface_height_mm >= frozen_high_peak_start_mm",
+    "polygon_construction": "clip_each_authoritative_triangle_exactly_at_threshold",
+    "exclude_entire_cell_if_one_corner_is_peak": false,
+    "volume": "vertical_prism_of_clipped_peak_projection_from_peak_threshold_plane_to_world_actor_flight_ceiling",
+    "test": "actual_body_projection_and_swept_volume_intersection_not_center_only",
+    "applies_to": "all_mobile_living_actors_including_humans_animals_uplifted_animals_flying_birds_and_bees",
+    "forbidden_authorized_actions": [
+      "standing",
+      "walking",
+      "climbing",
+      "swimming_into_excluded_volume",
+      "flying_over",
+      "birth_placement",
+      "player_placement",
+      "divine_relocation",
+      "possession_movement",
+      "meta_control_movement"
+    ],
+    "exceptions_for_ramp_genes_species_equipment_or_world_law": false,
+    "camera_or_nonliving_visual_particles_are_actors": false,
+    "material_or_soil_theme_can_remove_peak": false,
+    "explicit_height_lowering_below_threshold_can_remove_peak": true,
+    "peak_construction_by_god_is_forbidden": false,
+    "forced_actor_intrusion_after_destructive_terrain_change": "same_Actor_true_pose_InvalidOccupancyHazard_TERRAIN_ENTRAPPED_or_PEAK_ENCROACHED_no_legal_peak_occupancy",
+    "hazard_actor_may_be_recorded_but_has_legal_peak_occupancy": false,
+    "plant_tree_policy": "actual_habitat_temperature_and_growth_constraints_not_direct_navigation_ban_no_inaccessible_free_harvest"
+  },
+  "water": {
+    "still_water_level_mm": 0,
+    "sea_lake_shared_still_level": true,
+    "flat_wet_predicate": "fixedHeightByKindMm[terrainKind]<0",
+    "ramp_wet_predicate": "query_triangle_height_mm < 0",
+    "ramp_wet_shape": "exact_triangle_clip_at_zero",
+    "dry_at_exact_zero": true,
+    "water_depth_formula": "max(0,stillWaterLevelMm-actual_surface_height_mm)",
+    "semantic_connectivity": 4,
+    "shared_edge_connection": "positive_length_matching_wet_interval_not_point_or_diagonal_touch",
+    "sea_predicate": "verified_wet_component_connected_to_protected_authoritative_ocean_source",
+    "deep_ocean_preset_may_result_in_lake": true,
+    "semantic_water_connection_guarantees_ship_route": false,
+    "high_altitude_lakes": false,
+    "volume_fluid_simulation": false,
+    "waves_modify_authority": false,
+    "sky_brightness_freezes_water_or_changes_level": false,
+    "domain": {
+      "bounded_authority": true,
+      "editable_interior": true,
+      "protected_ocean_guard_editable": false,
+      "outside_is_render_only_ocean": true,
+      "out_of_bounds_clamp": false,
+      "ordinary_chunk_edge_is_coast": false,
+      "visual_rectangular_world_wall": false,
+      "guard_cells": 8,
+      "protected_ocean_guard_kind": "deep_ocean",
+      "rectangular_land_cut_visible_allowed": true,
+      "irregular_transition": false,
+      "actor_stop": "real_braking_and_full_body_domain_admission_no_invisible_wall_or_teleport"
+    },
+    "local_wet_region_ref": "LocalWetRegionRef",
+    "maximum_local_wet_regions_per_cell": 2,
+    "graph_node_identity": [
+      "CellRef",
+      "localWetRegionId"
+    ],
+    "intra_cell_join": "positive_length_shared_wet_interval_between_fixed_triangles",
+    "portal_identity_fields": [
+      "localWetRegionRef",
+      "shared_edge_wet_interval",
+      "region_revision"
+    ],
+    "diagonal_dry_NW_SE_wet_NE_SW": "two_unconnected_local_wet_regions_never_implicitly_merge",
+    "local_region_ref_fields": [
+      "CellRef",
+      "inputTerrainRevision",
+      "minimumTriangleIndex"
+    ],
+    "local_region_is_permanent_lake_identity": false,
+    "persistent_water_identity": false,
+    "WaterBodyRef": false,
+    "temporary_component_identity": "current_minimum_local_node_at_inputTerrainRevision_rebuildable_not_saved_or_named",
+    "persistent_split_merge_lineage": false,
+    "query_kind_and_temporary_component": "point_specific_wet_region_and_temporary_nav_component_not_entity"
+  },
+  "removal": {
+    "target": "existing_RampRef",
+    "operation": "new_geometry_edit_not_world_rollback",
+    "default_geometry": "verified_before_images_for_cells_still_owned_by_target_ramp",
+    "retains_current": [
+      "topMaterial",
+      "ecology",
+      "trees_and_fruit",
+      "mineral_rate_and_stock",
+      "legal_rights",
+      "entities",
+      "goods",
+      "event_history",
+      "GroundResourceRef_absolute_quantity",
+      "GroundResource_quality",
+      "GroundResource_current_support_footprint",
+      "GroundResource_production_remainder_and_lastIntegratedTick",
+      "GroundResource_actual_reservations_and_losses"
+    ],
+    "overwritten_cell_policy": "explicit_fragment_preview_never_overwrite_later_foreign_geometry",
+    "invalid_before_image_error": "RAMP_SOURCE_CHANGED",
+    "fallback": "new_explicit_height_or_ramp_plan",
+    "refund_consumed_materials_or_labor": false,
+    "resurrect_or_restore_lost_goods": false,
+    "civil_removal_fill_and_transport_requires_real_resources_and_labor": true,
+    "in_transit_people_cars_cargo_and_orders_preserved": true,
+    "pathless_platform_actor": "stranded_on_existing_valid_support_not_teleported_to_bottom",
+    "ordinary_removal_preserves_old_access_or_switches_to_existing_certified_alternative": true,
+    "prior_ramp_restore_policy": {
+      "active_or_fragmented_prior_record": "revalidate_geometry_hash_then_update_actual_owner_cells_under_new_removal_event",
+      "removed_or_unverifiable_prior_record": "RAMP_SOURCE_CHANGED_requires_new_explicit_height_or_ramp_proposal",
+      "restores_old_creation_receipt_or_route_certificate": false,
+      "flat_before_image_owner": null,
+      "mutation_source": "current_operation_not_replayed_original_project"
+    },
+    "geometry_before_images_include_food_reserve_state": false,
+    "terrain_restoration_refills_ground_food_reserves": false,
+    "kind_change_override": "before_images_only_geometry_changed_kind_wipes_current_nonliving_including_cargo_no_stock_or_life_rollback"
+  },
+  "authorization_and_conservation": {
+    "godterrain_origin": "DIVINE_EDIT",
+    "godterrain_material_charge": false,
+    "godterrain_grants": [],
+    "godterrain_never_grants": [
+      "goods",
+      "food",
+      "minerals_in_inventory",
+      "animals",
+      "human_population",
+      "building_condition",
+      "road_quality",
+      "legal_ownership",
+      "energy",
+      "project_completion",
+      "construction_refund"
+    ],
+    "civil_origin": "CIVIC_EARTHWORK",
+    "civil_requires": [
+      "legal_rights",
+      "knowledge_and_tools",
+      "real_delivery",
+      "real_material_consumption",
+      "real_labor",
+      "stage_completion",
+      "existing_access_preservation"
+    ],
+    "unfinished_civil_cells_retain_old_geometry": true,
+    "god_overwrites_civil_project_status": "SUPERSEDED_REPLAN_REQUIRED",
+    "released_reservations_are_consumed_goods_refunds": false,
+    "earthwork_volume_ledger": {
+      "fields": [
+        "positiveFillVolume",
+        "excavationVolume",
+        "netVolume"
+      ],
+      "formula": "clip_each_triangle_after_minus_before_at_zero_then_integrate_area_times_mean_triangle_vertex_difference",
+      "net_zero_implies_no_work": false,
+      "positive_fill_consumes_real_recipe_materials": true,
+      "excavation_requires_real_labor_transport_disposal": true,
+      "ordinary_excavated_terrain_becomes_commodity_or_mined_stock": false
+    },
+    "canonical_type_change_wipe": "all_God_geography_operators_and_ramp_restore_crossing_actual_kind_apply_ADR0015",
+    "flat_height_free_edit": false,
+    "allowed_operators": [
+      "PaintPreset",
+      "RaiseOneTier",
+      "LowerOneTier",
+      "FlattenToPreset",
+      "CopyFlatTerrain",
+      "CreateRamp",
+      "RemoveRamp",
+      "PaintEcologyTheme"
+    ],
+    "removed_operators": [
+      "Smooth",
+      "SetArbitraryTargetHeight",
+      "StrengthAsContinuousHeightDelta"
+    ],
+    "type_wipe": "ADR0017_exact_actual_changed_geography_ground_closure_minus_living_actor_actual_portable_subtree"
+  },
+  "transactions": {
+    "writer": "single",
+    "commands": [
+      {
+        "id": "PreviewRampStroke",
+        "writes_world": false
+      },
+      {
+        "id": "CommitRampStroke",
+        "writes_world": true
+      },
+      {
+        "id": "PreviewRampRemoval",
+        "writes_world": false
+      },
+      {
+        "id": "CommitRampRemoval",
+        "writes_world": true
+      }
+    ],
+    "trusted_authority": "dispatcher_not_payload_isGod",
+    "preview_modes": [
+      "protect",
+      "destructive"
+    ],
+    "proposal_fields": [
+      "WorldId",
+      "SessionGeneration",
+      "DraftGeneration",
+      "commandId",
+      "expectedSnapshotRevision",
+      "terrainProfileHash",
+      "movementProfileHashes",
+      "controlPoints",
+      "widthMm",
+      "targetHeightsQ",
+      "intendedProfileRefs",
+      "mode",
+      "canonicalGeometryPatch",
+      "RampRef_if_removal",
+      "sortedReadSet",
+      "dependencyVersions",
+      "groundResourceDependencyVersions"
+    ],
+    "preview_fields": [
+      "preciseGeometry",
+      "endpoints",
+      "slopes",
+      "usableWidths",
+      "peakPolygons",
+      "skippedCells",
+      "bodyClearanceFailures",
+      "immutableActorProfileFailures",
+      "affectedSupportBindings",
+      "occupancyRefs",
+      "inTransitRefs",
+      "accessCertificateChanges",
+      "waterTopologyChanges",
+      "knownDirectLosses",
+      "hazardCandidates",
+      "unresolvedRemoteConnectivity",
+      "reservationsAndContractChanges",
+      "previewToken",
+      "consequenceHash",
+      "positiveFillVolume",
+      "excavationVolume",
+      "netVolume",
+      "affectedGroundResourceRefs",
+      "reserveSupportChanges",
+      "reserveQuantityLosses",
+      "reserveReservationChanges",
+      "futureHabitatProductionChanges"
+    ],
+    "commit_revalidates_exact_dependency_versions": true,
+    "changed_consequences_error": "REQUIRES_REPREVIEW",
+    "atomic_publish_fields": [
+      "terrain_shapes",
+      "RampRecord",
+      "immediate_support_and_collision",
+      "actor_hazard_or_location_state",
+      "in_transit_state",
+      "goods_loss_ledger",
+      "reservation_and_contract_state",
+      "superseded_projects",
+      "access_revocations",
+      "derived_dirty_sets",
+      "event_history",
+      "idempotent_receipt",
+      "ground_resource_support_and_absolute_reserves",
+      "ground_resource_quality_and_production_state",
+      "ground_resource_loss_ledger",
+      "grazing_and_collection_reservation_transitions"
+    ],
+    "preallocate_and_validate_entire_write_set_before_publish": true,
+    "failure_preserves_world_and_receipt": true,
+    "retry_same_command_id": "same_receipt_no_repeat_loss",
+    "worker_may_write_authority": false,
+    "worker_wall_time_affects_ready_tick_or_hazard_result": false,
+    "remote_connectivity_not_ready": "explicit_NAV_UNVERIFIED_and_certificate_revocation_for_destructive_mode",
+    "protect_mode_accepts_unverified_required_access": false,
+    "ordinary_building_support_moves_with_terrain": false,
+    "building_access_contract_requires": [
+      "complete_footprint",
+      "actual_support",
+      "needed_original_rectangular_foundation",
+      "every_required_pedestrian_entrance",
+      "required_garage_vehicle_access",
+      "actual_front_delivery_area",
+      "construction_and_permanent_claims"
+    ],
+    "construction": "real_front_delivery_then_automatic_duration_original_rectangular_mesh_enclosure_visual_only",
+    "settlement_normalization": "final_geometry_alive_members_and_typed_membership_set_once_before_publish"
+  },
+  "error_precedence": [
+    {
+      "priority": 1,
+      "category": "world_session_schema_range_arithmetic",
+      "examples": [
+        "WRONG_WORLD",
+        "STALE_SESSION",
+        "UNKNOWN_VERSION",
+        "MALFORMED",
+        "RANGE_ERROR",
+        "ARITHMETIC_OVERFLOW"
+      ]
+    },
+    {
+      "priority": 2,
+      "category": "authority_domain_rights",
+      "examples": [
+        "GOD_TERRAIN_DISABLED",
+        "UNAUTHORIZED",
+        "PROTECTED_OCEAN_GUARD",
+        "OUTSIDE_AUTHORITY",
+        "CIVIL_RIGHTS_MISSING"
+      ]
+    },
+    {
+      "priority": 3,
+      "category": "geometry_owner_budget",
+      "examples": [
+        "INVALID_RAMP_GEOMETRY",
+        "RAMP_SOURCE_CHANGED",
+        "ADMISSION_BUDGET_EXCEEDED"
+      ]
+    },
+    {
+      "priority": 4,
+      "category": "living_traversal_peak",
+      "examples": [
+        "HIGH_PEAK_FORBIDDEN"
+      ]
+    },
+    {
+      "priority": 5,
+      "category": "physical_traversal",
+      "examples": [
+        "NO_LANDING_SUPPORT",
+        "STEP_TOO_HIGH",
+        "GRADE_TOO_STEEP",
+        "CROSS_GRADE_TOO_STEEP",
+        "INSUFFICIENT_WIDTH",
+        "INSUFFICIENT_HEADROOM",
+        "TURN_RADIUS_TOO_SMALL",
+        "SWEPT_COLLISION",
+        "MATERIAL_NOT_TRAVERSABLE"
+      ]
+    },
+    {
+      "priority": 6,
+      "category": "protected_support_access_and_occupancy",
+      "examples": [
+        "PROTECTED_ACCESS_WOULD_FAIL",
+        "SUPPORT_WOULD_FAIL",
+        "OCCUPANCY_CONFLICT",
+        "REMOTE_ACCESS_UNVERIFIED"
+      ]
+    },
+    {
+      "priority": 7,
+      "category": "current_commit_dependencies",
+      "examples": [
+        "REQUIRES_REPREVIEW",
+        "DEFINITION_VERSION_CHANGED"
+      ]
+    },
+    {
+      "priority": 8,
+      "category": "publish_preparation",
+      "examples": [
+        "WRITESET_ALLOCATION_FAILED",
+        "STORAGE_CAPACITY_FAILED"
+      ]
+    }
+  ],
+  "path_and_support": {
+    "surface_and_rights_certificate": "AccessCertificate",
+    "certificate_dependencies": [
+      "WorldId",
+      "terrain_and_clearance_revisions",
+      "peak_region_revision",
+      "road_bridge_door_revisions",
+      "legal_access_rights",
+      "movement_profile_hash",
+      "actual_body_dimensions",
+      "actual_load",
+      "phenotype_revision",
+      "destination_and_entrance",
+      "protected_corridor"
+    ],
+    "thermal_risk_record": "ExposureEstimate_separate_from_geometric_access_proof",
+    "enter_each_segment_revalidates_local_geometry_peak_and_capacity": true,
+    "capability_edit_revalidates_dependent_paths": true,
+    "same_path_when_scene_hidden": true,
+    "support_loss_states": [
+      "FALLING",
+      "TERRAIN_ENTRAPPED",
+      "IN_WATER",
+      "GROUNDED",
+      "TRAPPED_IN_DAMAGED_CONTAINER",
+      "STRANDED"
+    ],
+    "hazard_records_require": [
+      "causeEventId",
+      "startedTick",
+      "dueTick",
+      "physicalContactVersions",
+      "rescuePredicate",
+      "damageRuleVersion"
+    ],
+    "auto_teleport_or_deletion": false
+  },
+  "thermal": {
+    "field_authoritative": true,
+    "sample_parameters_are_real_meteorology": false,
+    "base_temperature_mC": 24000,
+    "lapse_mC_per_game_m": 250,
+    "allowed_minimum_temperature_mC": -50000,
+    "allowed_maximum_temperature_mC": 60000,
+    "formula": "baseTemperature_mC - lapse_mC_per_game_m * max(exposureAltitudeMm,0) / 1000",
+    "rounding": "frozen_checked_integer_rational_rule",
+    "higher_is_not_warmer_under_same_horizontal_conditions": true,
+    "theme_color_changes_temperature": false,
+    "earth_height_is_real_dem": false,
+    "exposure_altitude_sources": {
+      "on_surface": "actual_feet_surface_height",
+      "in_building": "actual_occupied_floorY",
+      "flying": "authoritative_actor_reference_y",
+      "in_water": "still_water_surface_thermal_environment"
+    },
+    "below_sea_bed_creates_unbounded_warmth": false,
+    "shelter_proof": "real_intact_container_structure_and_water_wind_exclusion",
+    "heating_proof": "real_operating_heating_device_and_consumed_actual_energy",
+    "sacred_tree_glow_or_lamp_is_free_heat": false,
+    "ages": [
+      "light",
+      "darkness"
+    ],
+    "age_changes_temperature": false,
+    "astronomical_day_night": false,
+    "seasons": false,
+    "pause_freezes_exposure_and_consumption": true,
+    "hidden_scene_freezes_exposure": false,
+    "life_contract": "data/contracts/life_genetics_v1.json",
+    "phenotype_interface": "PhenotypeCapacities",
+    "trait_refs": [
+      "cold_tolerance",
+      "heat_tolerance",
+      "thermal_regulation",
+      "wet_cold_tolerance",
+      "strength",
+      "stamina",
+      "ground_speed",
+      "agility",
+      "climb_capacity",
+      "fatigue_recovery",
+      "basal_efficiency",
+      "fasting_tolerance",
+      "energy_storage_capacity"
+    ],
+    "species_immutable_capability_envelope_enforced_before_use": true,
+    "individual_state": [
+      "maintenance_energy_nonrecoverable",
+      "productive_energy_from_real_food",
+      "energyReserveSourcePartitions",
+      "fatigue_debt",
+      "body_wetness",
+      "exposureDebt_cold",
+      "exposureDebt_heat",
+      "next_physiology_tick"
+    ],
+    "worn_item_state": [
+      "ItemRef",
+      "bodySlot",
+      "actualCoverage",
+      "materialInsulation",
+      "heatDissipation",
+      "condition",
+      "wetness",
+      "repairCount"
+    ],
+    "unbounded_clothes_slot_stacking": false,
+    "metabolic_order": [
+      "food_absorption",
+      "storage",
+      "basal",
+      "thermal",
+      "movement_work"
+    ],
+    "positive_basal_demand_floor": true,
+    "decor_or_unpicked_fruit_is_energy": false,
+    "fasting_tolerance_eliminates_food_demand": false,
+    "insufficient_energy": "slower_or_stopped_real_work_and_movement_after_purpose_eligible_source_allocation_with_saved_deficit",
+    "cold_load_inputs": [
+      "actual_temperature",
+      "cold_tolerance",
+      "thermal_regulation",
+      "wet_cold_tolerance",
+      "body_wetness",
+      "actual_worn_insulation_and_condition",
+      "available_metabolic_energy"
+    ],
+    "heat_load_inputs": [
+      "actual_temperature",
+      "heat_tolerance",
+      "thermal_regulation",
+      "actual_worn_heat_dissipation",
+      "actual_work_heat",
+      "available_metabolic_energy"
+    ],
+    "debt_and_health": "saved_incremental_exposure_debt_bounded_damage_on_due_ticks",
+    "safe_environment_resets_all_injury_or_debt": false,
+    "genes_subspecies_uplift_clothes_or_load_reset_energy_injury_debt": false,
+    "no_clothes_direct_death_trigger": false,
+    "formalwear_missing_blocks_work_or_wages": false,
+    "clothing_durability_repair_and_replacement_retained": true,
+    "world_rule": {
+      "id": "thermal_consequences",
+      "labels": {
+        "zh-CN": "冷热伤害",
+        "en": "Thermal Consequences",
+        "de": "Kälte- und Hitzefolgen"
+      },
+      "default": true,
+      "false_effect": "retain_real_energy_fatigue_wetness_and_exposure_debt_suppress_direct_thermal_health_loss",
+      "reenable_effect": "current_state_and_new_tick_bounded_damage_no_historical_catchup_death",
+      "independent_of": "hunger_consequences",
+      "disables_peak_collision_fall_or_entrapment": false
+    },
+    "hunger_rule_false_creates_food_or_energy": false,
+    "energy_source_contract": {
+      "authoritative_accounts": [
+        "maintenance_energy_nonrecoverable",
+        "productive_energy_from_real_food"
+      ],
+      "derived_read_only_total": "energy_total=sum(authoritative_source_accounts)",
+      "independent_mutable_total_account": false,
+      "storage_preserves_source_tags": true,
+      "storage_transforms_maintenance_into_productive": false,
+      "maintenance_origin": "finite_once_initial_or_supported_safety_balance_from_life_contract",
+      "productive_origin": "actual_uniquely_consumed_real_food_batch_or_ground_reserve_absorption_only",
+      "basal_and_thermal_allocator": "debit_maintenance_first_then_productive_with_per_source_receipt_and_saved_unpaid_deficit",
+      "consumption_receipt_fields": [
+        "ActorRef",
+        "purpose",
+        "tick",
+        "maintenanceDebit",
+        "productiveDebit",
+        "unpaidDeficit",
+        "ruleRevision"
+      ],
+      "nonrecoverable_loss_can_become_stock_or_biological_product": false,
+      "maintenance_allowed_purposes": [
+        "basal",
+        "thermal",
+        "bounded_maintenance_movement",
+        "bounded_bootstrap_direct_foraging_of_existing_real_food"
+      ],
+      "productive_required_purposes": [
+        "commodity_transport",
+        "production_work",
+        "gestation_material_or_energy",
+        "animal_harvestable_product_conversion",
+        "transferable_food_or_feed_reserve"
+      ],
+      "bootstrap_food_source_must_be_debited": true,
+      "higher_energy_storage_capacity_creates_balance": false,
+      "lower_capacity_preserves_absolute_source_balances_and_explicit_over_capacity": true
+    },
+    "food_sources_require_actual_consumed_edible_stock_or_ground_reserve": true,
+    "trait_to_capacity_export": {
+      "strength": "maximum_supported_load",
+      "agility": "agility",
+      "fatigue_recovery": "fatigue_recovery",
+      "other_supported_traits": "same_named_versioned_PhenotypeCapacities_export"
+    },
+    "consumer_reads_alleles_or_shared_profile_to_recalculate": false,
+    "authoritative_life_profile": "data/content/life_profiles_v1.json",
+    "hazard_profile": "data/content/life_profiles_v1.json.hazard_physics",
+    "clock": "runtime_foundation_v1.clock_12000_ticks_per_day"
+  },
+  "persistence": {
+    "save_fields": [
+      "effective_flat_or_ramp_column_data",
+      "all_ramp_cornerHeightR_and_frozen_independent_rampHeightQuantumMm",
+      "RampRecord_before_images_and_fragment_ownership",
+      "frozen_profile_hashes",
+      "peak_and_wet_rebuild_inputs",
+      "absolute_actor_location",
+      "support_and_container_bindings",
+      "pending_hazards",
+      "real_goods_and_reservations",
+      "absolute_maintenance_and_productive_energy_source_balances_source_preserving_reserve_partitions_fatigue_wetness_and_exposure_debt",
+      "worn_item_wetness_and_condition",
+      "next_due_ticks",
+      "topology_logical_frontier_and_consumed_work",
+      "generation_and_source_revision",
+      "inputTerrainRevision_sorted_wet_nav_frontier_coordinate_portals_no_natural_identity",
+      "GroundResourceRef_absolute_quantity_quality_capacity_and_actual_clipped_support_footprint",
+      "GroundResource_productionRemainder_lastIntegratedTick_and_current_state",
+      "GroundResource_reservations_revision_origin_and_damage_loss_receipts"
+    ],
+    "derived_mesh_or_nav_is_authoritative": false,
+    "load_refills_energy_trees_fruit_or_goods": false,
+    "unknown_versions_or_invalid_surfaces": "reject_keep_old_world",
+    "illegal_active_peak_standing": "reject_not_clamp",
+    "known_forced_hazard_actor_in_peak_prism": "preserve_hazard_identity_and_due_tasks_not_convert_to_legal_standing",
+    "previous_implementation_tests_are_new_evidence": false,
+    "energy_total_load_policy": "derive_from_saved_source_accounts_never_reconstruct_from_percentage_or_duplicate_total",
+    "geometry_before_images_restore_ground_resources": false,
+    "wire_contract": "data/contracts/runtime_foundation_v1.json.save_wire",
+    "natural_entities_saved": false,
+    "derived_water_component_rebuildable": true
+  },
+  "performance": {
+    "uniform_and_base_plus_patch_chunks": true,
+    "ramp_records_sparse": true,
+    "reverse_dependency_indices": [
+      "cell_to_support",
+      "cell_to_actual_body_occupancy_and_clearance",
+      "cell_to_protected_access_corridor",
+      "wet_portal_coordinate_and_revision_to_ports_and_routes",
+      "cell_to_actual_ground_resource_support_and_habitat_footprint",
+      "GroundResourceRef_to_grazing_and_collection_reservations_and_tasks"
+    ],
+    "every_brush_scans_all_world_cities": false,
+    "temperature_updates_on_due_ticks_and_actual_state_events": true,
+    "physiology_integrates_to_event_tick_before_parameter_change": true,
+    "logical_work_budget_frontier_saved": true,
+    "million_position_updates_prove_game_capacity": false,
+    "acceptance_requires": [
+      "real_support",
+      "path_revalidation",
+      "goods",
+      "phenotype_capacity",
+      "thermal_and_metabolic_state"
+    ]
+  },
+  "invariants": [
+    {
+      "id": "TA01",
+      "statement": "one_effective_current_surface_shared_by_all_consumers"
+    },
+    {
+      "id": "TA02",
+      "statement": "ramp_is_solid_actual_continuous_supported_geometry_not_average_grade_or_visual_tag"
+    },
+    {
+      "id": "TA03",
+      "statement": "peak_exclusion_uses_exact_clipped_height_region_and_all_mobile_living_actor_swept_volume"
+    },
+    {
+      "id": "TA04",
+      "statement": "no_gene_species_world_rule_ramp_control_or_relocation_bypasses_peak"
+    },
+    {
+      "id": "TA05",
+      "statement": "wet_region_and_water_shared_edge_connectivity_derived_from_same_flat_or_ramp_surface"
+    },
+    {
+      "id": "TA06",
+      "statement": "god_changes_geometry_without_creating_real_goods_population_energy_or_refunds"
+    },
+    {
+      "id": "TA07",
+      "statement": "terrain_support_occupants_goods_and_old_certificate_revocation_publish_atomically"
+    },
+    {
+      "id": "TA08",
+      "statement": "removal_is_new_geometry_edit_without_undo_of_history_or_foreign_overwrites"
+    },
+    {
+      "id": "TA09",
+      "statement": "civil_work_and_ordinary_buildings_preserve_existing_required_access"
+    },
+    {
+      "id": "TA10",
+      "statement": "metabolism_debts_and_due_ticks_survive_traits_uplift_camera_pause_save_and_load"
+    },
+    {
+      "id": "TA11",
+      "statement": "profile_frozen_and_every_new_candidate_isolated_from_current_world"
+    },
+    {
+      "id": "TA12",
+      "statement": "thermal_injury_rule_off_is_no_free_energy_and_no_historical_catchup_damage"
+    },
+    {
+      "id": "TA13",
+      "statement": "maintenance_and_real_food_productive_energy_remain_separate_saved_source_accounts_no_storage_or_thermal_source_laundering"
+    },
+    {
+      "id": "TA14",
+      "statement": "terrain_ground_resource_support_loss_quantity_quality_production_and_reservations_publish_atomically_no_stale_feeding_or_geometry_restore_refill"
+    }
+  ],
+  "acceptance_cases": [
+    {
+      "id": "T01",
+      "case": "half_metre_vertical_step_small_average_grade",
+      "expected": "wheeled_vehicle_rejected_for_actual_step"
+    },
+    {
+      "id": "T02",
+      "case": "soil2m_to_hill16m_forty_two_then_forty_eight_metre_walk_ramp_125mm",
+      "expected": "42m_quantization_can_exceed_per_face_grade_48m_actual125mm_distribution_legal_subject_to_clearance"
+    },
+    {
+      "id": "T03",
+      "case": "fourteen_metre_rise_forty_eight_metre_vehicle_ramp",
+      "expected": "vehicle_grade_rejected_despite_pedestrian_success"
+    },
+    {
+      "id": "T04",
+      "case": "fourteen_metre_rise_112_metre_vehicle_route",
+      "expected": "actual_each2m_rise250mm_full_turn_sweep_access_and_real_delivery_qualify"
+    },
+    {
+      "id": "T05",
+      "case": "one_peak_corner_neighboring_legal_foothill",
+      "expected": "only_exact_peak_polygon_excluded_not_whole_cell"
+    },
+    {
+      "id": "T06",
+      "case": "max_cold_gene_flying_bird_uplifted_rabbit_and_possessed_human",
+      "expected": "all_living_peak_entry_and_overflight_rejected"
+    },
+    {
+      "id": "T07",
+      "case": "high_peak96m_painted_soil2m",
+      "expected": "fixed_preset_actual_lowering_removes_peak_exact_kind_wipe_ground_keep_living_portable_items"
+    },
+    {
+      "id": "T08",
+      "case": "ramp_zero_crossing_dry_NW_SE_wet_NE_SW_point_only_edge_NE_sea_SW_lake_save_reload",
+      "expected": "two_wet_regions_distinct_NE_SEA_SW_LAKE_rebuildable_point_specific_components_no_natural_identity_or_history_positive_length_four_connectivity"
+    },
+    {
+      "id": "T09",
+      "case": "remove_ramp_with_people_vehicle_cargo_factory_and_garage",
+      "expected": "atomic_support_hazards_and_access_revocation_no_auto_delivery_or_teleport"
+    },
+    {
+      "id": "T10",
+      "case": "protect_mode_removes_only_access_with_unbuilt_alternative",
+      "expected": "not_approved_before_real_replacement_exists"
+    },
+    {
+      "id": "T11",
+      "case": "ramp_partly_overwritten_then_removed",
+      "expected": "fragment_preview_no_foreign_geometry_or_goods_restoration"
+    },
+    {
+      "id": "T12",
+      "case": "god_raises_peak_or_digs_deep_water_under_life",
+      "expected": "protected_rejection_or_previewed_actual_hazard_without_free_relocation"
+    },
+    {
+      "id": "T13",
+      "case": "ordinary_next_building_blocks_old_entrance",
+      "expected": "reject_or_atomically_switch_existing_certified_replacement"
+    },
+    {
+      "id": "T14",
+      "case": "same_actor_at_soil2_hill16_mountain48_metres",
+      "expected": "sample_air_temperatures_23500_20000_12000_mC"
+    },
+    {
+      "id": "T15",
+      "case": "wet_cold_low_food_actor_vs_dry_clothed_fed_actor",
+      "expected": "real_metabolism_insulation_and_exposure_debt_differ"
+    },
+    {
+      "id": "T16",
+      "case": "trait_subspecies_uplift_and_save_load",
+      "expected": "energy_injury_fatigue_debt_preserved_no_peak_or_body_override"
+    },
+    {
+      "id": "T17",
+      "case": "disable_thermal_injury_then_reenable",
+      "expected": "actual_deficits_recorded_no_old_damage_catchup_only_new_tick_bounded_loss"
+    },
+    {
+      "id": "T18",
+      "case": "vehicle_enters_after_preview_and_stale_worker_result_arrives",
+      "expected": "repreview_required_stale_generation_dropped_idempotent_retry"
+    },
+    {
+      "id": "T19",
+      "case": "pause_reload_speed_camera_locale_lod_variants",
+      "expected": "same_tick_geometry_route_energy_debt_and_event_results"
+    },
+    {
+      "id": "T20",
+      "case": "creation_failure_cancel_and_visual_outer_ocean",
+      "expected": "old_world_continue_pointer_preserved_authority_bounds_without_wall_or_teleport"
+    },
+    {
+      "id": "T21",
+      "case": "maintenance_only_actor_cold_ramp_foraging_then_milk_meat_egg_or_gestation_conversion_attempt",
+      "expected": "per_source_thermal_debits_no_products_from_safety_energy_only_actual_ground_reserve_consumption_creates_productive_balance_save_reload_keeps_two_accounts"
+    },
+    {
+      "id": "T22",
+      "case": "two_actors_reserved_same_forage_patch_ramp_partial_burial_or_flood_removal_geometry_restore_and_save_reload",
+      "expected": "atomic_clipped_support_exact_reserve_loss_reservation_reduction_stale_consumption_no_energy_no_refill_on_restoration_or_load_surviving_dry_reserve_and_future_bounded_production_preserved"
+    }
+  ],
+  "evidence_boundary": "design_contract_checks_do_not_prove_running_terrain_animals_renderer_or_steam_build",
+  "ground_resources": {
+    "identity": "GroundResourceRef_stable_never_reused",
+    "forage_alias": "ForagePatch_is_same_ground_resource_forage_subtype_not_a_second_inventory",
+    "owns_tree_nectar_or_fruit_stock": false,
+    "tree_bloom_and_fruit_owner": "existing_Plant_or_Farm_reserve_not_duplicated_GroundResource",
+    "fields": [
+      "resourceKind",
+      "supportFootprint",
+      "supportBinding",
+      "absoluteQuantity",
+      "quality",
+      "capacity",
+      "productionRemainder",
+      "lastIntegratedTick",
+      "reservationRefs",
+      "state",
+      "revision",
+      "origin",
+      "lastDamageEventId"
+    ],
+    "states": [
+      "ACTIVE",
+      "PRODUCTION_SUSPENDED",
+      "INACCESSIBLE",
+      "FLOODED",
+      "BURIED",
+      "DEPLETED",
+      "REMOVED"
+    ],
+    "quantity_unit": "resource_definition_fixed_point_minimum_unit_not_render_density",
+    "quantity_derived_from_decoration": false,
+    "support_test": "actual_resource_footprint_against_current_triangular_surface_and_wet_regions_not_cell_wet_boolean",
+    "before_terrain_publish": "integrate_old_valid_habitat_production_once_to_commit_tick_then_prepare_new_support_reserve_and_reservation_state",
+    "same_tick_double_production": false,
+    "partial_damage": "clip_actual_before_and_after_support_footprints_and_preserve_unaffected_supported_portion",
+    "quantity_loss_rule": "ceil_to_minimum_resource_unit(current_available_quantity_times_lost_footprint_area_over_current_available_footprint_area)_capped_by_actual_quantity",
+    "retained_quantity": "exact_old_quantity_minus_explicit_committed_loss_never_derived_from_new_capacity",
+    "preserve_clipped_current_footprint": true,
+    "new_fill_buries_old_resource": "BURIED_and_versioned_loss_of_affected_edible_reserve_no_auto_reattach_to_new_surface",
+    "flood_or_support_loss": "versioned_available_quantity_quality_production_and_reservation_transition_no_auto_floating_stock_batch",
+    "theme_only_change": "preserve_existing_kind_quantity_quality_and_reservations_change_future_production_habitat_only",
+    "capacity_lowering": "explicit_over_capacity_no_reset_or_refund",
+    "damaged_reservations": "release_or_reduce_exact_current_available_quantities_in_same_publish",
+    "consumption_revalidates": [
+      "GroundResource_revision",
+      "actual_current_support",
+      "current_available_quantity",
+      "reservation_identity_and_quantity",
+      "actor_actual_access"
+    ],
+    "stale_consumption_may_add_actor_energy_or_deliver_goods": false,
+    "recovery_after_geometry_restoration": "surviving_current_reserve_may_requalify_but_consumed_or_lost_quantities_never_restored",
+    "habitat_resumption": "future_bounded_production_from_current_tick_and_saved_remainder_no_catchup_for_suspended_habitat",
+    "new_god_ground_grants_ready_food": false,
+    "new_zero_quantity_record_requires": [
+      "explicit_source_event",
+      "current_creation_tick",
+      "bounded_future_production_definition",
+      "actual_supported_habitat"
+    ],
+    "protection_policy": "known_real_reserve_loss_and_required_food_access_are_protected_dependencies_not_zero_quantity_visual_grass",
+    "loss_receipt": "EcologyResourceLoss_with_source_ref_quantity_cause_and_revision_once_not_commodity_refund",
+    "resource_kind_habitat_policy": "loss_and_support_rules_use_frozen_resource_kind_land_water_and_depth_envelope_aquatic_resource_not_damaged_by_wet_alone",
+    "geography_kind_wipe": "destroy_hit_physical_GroundResource_and_reserved_forage_once_no_refill"
+  },
+  "algorithm_interfaces": {
+    "mutation": "data/contracts/god_control_v1.json",
+    "settlement": "data/contracts/settlement_lifecycle_v1.json",
+    "movement": "data/contracts/natural_action_v1.json",
+    "generator": "data/contracts/vegetation_generator_v1.json",
+    "runtime_foundation": "data/contracts/runtime_foundation_v1.json",
+    "fixed_height_semantics": "fixed8_v0.9_only_owned_ramp_continuous",
+    "natural_objects": "none_wet_nav_components_only"
+  },
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "runtime_foundation": "data/contracts/runtime_foundation_v1.json",
+  "fixed_height_cases": [
+    {
+      "case_id": "FH01",
+      "scenario": "sand_to_soil",
+      "expected": "height1000_to2000_typewipe_ground_preserve_living_portable_subtree"
+    },
+    {
+      "case_id": "FH02",
+      "scenario": "paint_hill_at_world_edge",
+      "expected": "height16000_all_hit_core_cells_no_transition_guard_unchanged"
+    },
+    {
+      "case_id": "FH03",
+      "scenario": "split_or_join_water",
+      "expected": "rebuild_nav_components_no_WaterBodyRef_or_natural_names"
+    }
+  ],
+  "fine_profile_update": "ADR0021_management2000mm_micro31250um_ramp_planned1mm_legacy_calibration_examples_are_historical",
+  "micro_surface_update": {
+    "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+    "profile": 2,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "soil_sand_top_mm": 0,
+    "water_surface_mm": 0,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height",
+    "default_core_cells": 1024,
+    "maximum_core_cells": 4096,
+    "presets_core_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "reclamation": "replace_only_wet_microfaces_preserve_dry_kind_theme_revision",
+    "representation": "row_RLE_plus_sparse_palette_packed_fine_patches",
+    "production_full_game_implemented": false,
+    "binary_patch_codec": "lossless_minimum_fixed_spans_row_offset_spans_sorted_row_dictionary_or_raw_bitpacked_fallback",
+    "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
+    "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
+    "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "crop": [
+    600,
+    180,
+    1700,
+    850
+  ],
+  "mean_absolute_difference_rgb": [
+    18.77833107191316,
+    14.150024423337856,
+    8.451685210312077
+  ],
+  "differing_pixel_fraction": 1.0,
+  "method": "full GPU image versus mean-base texture, same native camera"
+}

@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_social_decisions_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/SOCIAL_ECOLOGICAL_AND_RESEARCH_DECISIONS.md",
+  "interfaces": {
+    "decision_core": "data/contracts/decision_core_v1.json",
+    "life": "data/contracts/life_genetics_v1.json",
+    "natural_actions": "data/contracts/natural_action_v1.json",
+    "settlement": "data/contracts/settlement_lifecycle_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "economic": "data/contracts/economic_decisions_v1.json",
+    "emergence": "data/contracts/emergence_algorithms_v1.json",
+    "life_profiles": "data/content/life_profiles_v1.json"
+  },
+  "authority": {
+    "single_writer": true,
+    "new_humans_only_player_or_legal_birth": true,
+    "same_actor_uplift": true,
+    "same_time_labor_care_military_not_double": true,
+    "actual_acceptance_not_assumed": true
+  },
+  "social_contact": {
+    "candidates": "actual_contacts_family_neighbors_colleagues_delivered_introduction_not_global_spouse_search",
+    "requires": [
+      "actual_reachable_contact",
+      "actual_available_time",
+      "counterparty_acceptance",
+      "language_or_bounded_primitive_interface"
+    ],
+    "relation_axes": [
+      "care",
+      "trust",
+      "familiarity",
+      "conflict"
+    ],
+    "same_event_updates_all_relations_identically": false,
+    "rejection_cooldown_saved": true
+  },
+  "household": {
+    "merge_or_split_requires": [
+      "actual_parties_acceptance",
+      "real_care_arrangements",
+      "actual_housing_capacity_or_explicit_homelessness",
+      "budget_and_property_claims"
+    ],
+    "changes_family_genome_or_citizenship_automatically": false,
+    "split_duplicates_goods_or_balance": false
+  },
+  "care_and_birth": {
+    "preconditions": "life.breeding_preconditions_not_reimplemented",
+    "two_civic_parties_accept_independently": true,
+    "current_maturity_not_adult_appearance": true,
+    "sample_care_forecast_days": 30,
+    "care_capacity": "existing_actor_actual_time_food_warmth_not_funded_wish",
+    "income_poverty_blanket_biological_class_ban": false,
+    "public_support_is_free_caregiver_or_milk": false,
+    "existing_gestation_rule_genome_sapience_snapshot_preserved": true,
+    "missing_care_state": "CARE_GAP_real_life_outcome_not_NPC_spawn"
+  },
+  "migration": {
+    "alternatives": [
+      "RepairHere",
+      "ChangeWork",
+      "RequestRealAid",
+      "JoinKnownCity",
+      "FoundRealSettlement",
+      "Wait"
+    ],
+    "information": "actual_offer_invitation_reports_with_ttl",
+    "family_member_acceptance_independent": true,
+    "wage_quote_guarantees_future_income": false,
+    "destination_reservation_is_arrived_population": false,
+    "real_failed_move_keeps_actor_goods_and_return_task": true,
+    "new_city_uses_existing_settlement_algorithm": true
+  },
+  "education": {
+    "candidate_sources": [
+      "actual_knowledgeable_actor",
+      "actual_book_archive",
+      "actual_training_facility"
+    ],
+    "preconditions": [
+      "known_prerequisite_DAG_frontier",
+      "teacher_and_student_accept",
+      "language_body_interface",
+      "legal_knowledge_access",
+      "real_time_seat_material_and_budget"
+    ],
+    "progress": "actual_effective_work_ticks_times_frozen_life_learning_and_instruction_coefficients_integer_remainder",
+    "animation_advances_knowledge": false,
+    "false_instruction": "may_transmit_source_belief_not_physical_skill_certification",
+    "UI_locale_changes_simulated_language": false,
+    "uplift_can_teach_learn_existing": true,
+    "primitive_contact_creates_formal_language": false,
+    "knowledge_decay_authority": "life_profiles trait_consumer memory_retention rate on actual unused skills; original source observations/receipts remain; real practice receipt once prevents same interval teaching duplication"
+  },
+  "culture_language": {
+    "founder_species": "human",
+    "human_actual_genesis_participation_required": true,
+    "primary_secondary_nucleation": "emergence_algorithms_v1.culture complete evidence graph/coherence/reciprocity/mu/phi/dual threshold/actual human origin algorithm",
+    "animal_genesis_or_formal_language_branch": false,
+    "knowledge_book_gene_or_flag_creates_origin": false,
+    "learned_animal_maintains_and_transmits_existing": true,
+    "citizenship_automatically_wipes_affinities": false,
+    "language_branch": "emergence_algorithms_v1.language full meanings-feature convergence/actual innovation/teaching/intelligibility/learner cohort/hysteresis",
+    "origin_trigger_by_citizenship_or_elapsed_time": false
+  },
+  "religion": {
+    "root_creation_source": "player_only",
+    "separate": [
+      "faith_conviction",
+      "denomination_membership",
+      "doctrinal_understanding",
+      "church_leadership_trust"
+    ],
+    "piety_is_faith_or_trust": false,
+    "charity_to_nonmember_auto_conversion": false,
+    "donation": "own_disposable_real_quantity_after_basic_obligations_unique_receipt",
+    "church_strategy": [
+      "local_consolidation",
+      "open_propagation",
+      "services_and_teaching"
+    ],
+    "real_legal_budget_and_staff_required": true,
+    "root_or_charter_frozen_nature_changes_by_new_leader": false,
+    "religion_or_species_default_enemy": false
+  },
+  "research": {
+    "candidates": [
+      "actual_observed_process_bottleneck",
+      "actual_failed_experiment",
+      "real_user_problem",
+      "known_prior_knowledge_and_licenses",
+      "bounded_curiosity_exploration"
+    ],
+    "states": [
+      "QUESTION",
+      "HYPOTHESIS",
+      "DESIGN_EXPERIMENT",
+      "RESERVE",
+      "PERFORM",
+      "OBSERVE",
+      "REVISE",
+      "VALIDATE",
+      "DOCUMENTED"
+    ],
+    "work_material_failure_receipts_required": true,
+    "high_curiosity_instant_invention": false,
+    "future_success_truth_read": false,
+    "project_random_counter_saved_no_reload_reroll": true,
+    "adoption_requires": [
+      "actual_knowledge_and_license",
+      "real_training",
+      "actual_equipment_production_or_purchase",
+      "installation_or_tooling",
+      "downtime_and_validation"
+    ],
+    "invention_free_global_upgrade": false,
+    "source_technology_active_count": 408,
+    "all_408_runtime_definitions_complete": false,
+    "runtime_content": "data/content/technology_runtime_v1.json per-node prerequisites/experiment protocols/result work/cost/learning/install/adoption; source 408catalog no implicit runtime"
+  },
+  "ordinary_animals": {
+    "readers": "species_actual_senses_physiology_body_and_known_local_sources",
+    "civic_goal_set_without_uplift": false,
+    "decor_is_food": false,
+    "forage_claim": "actual_plant_forage_item_reserve_unique_contact_consumption",
+    "prey_lost": "bounded_last_known_area_search_not_current_truth_tracking",
+    "adult_body_creates_meat": false,
+    "predation_off": "blocks_new_episodes_existing_stage_exits_according_to_life_rule_no_health_or_food_reset",
+    "all_moving_life_peak_exemptions": false,
+    "bee_actor_per_real_individual": true,
+    "physiology_and_hazard_authority": "life_profiles only, existing real food productive material/converters and correct breathingmedium"
+  },
+  "agreement_states": [
+    "INVITED",
+    "PARTIALLY_ACCEPTED",
+    "ACCEPTED",
+    "RESERVING",
+    "COMMITTED",
+    "PERFORMING",
+    "CLOSED",
+    "REJECTED",
+    "EXPIRED",
+    "FAILED"
+  ],
+  "performance": {
+    "sample_person_social_candidates_max": 12,
+    "sample_curriculum_nodes_max": 16,
+    "sample_experiment_plan_nodes_max": 24,
+    "sample_ordinary_animal_food_candidates_max": 16,
+    "all_slices_within_shared_fixed_work_budget": true,
+    "unsafe_collision_neighbors_truncated_by_cognitive_cap": false
+  },
+  "persistence": [
+    "accepted_party_refs_and_generations",
+    "actual_claims",
+    "current_project_stages_due_work_remainders",
+    "knowledge_and_language_progress",
+    "care_time_reservations",
+    "belief_and_trust_sources",
+    "project_random_counters",
+    "unique_effect_receipts"
+  ],
+  "new_global_tools": 0,
+  "acceptance_cases": [
+    {
+      "id": "SD01",
+      "given": "陌生对象不在可知集合",
+      "expected": "不全地图挑配偶",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD02",
+      "given": "对方拒绝接触",
+      "expected": "冷却保留不每tick强邀",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD03",
+      "given": "邀请未实际送达",
+      "expected": "对方无接受事实",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD04",
+      "given": "一个邀请重复回调",
+      "expected": "同意只一次",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD05",
+      "given": "低好感但真实护理义务",
+      "expected": "关系偏好不擦义务",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD06",
+      "given": "工资违约",
+      "expected": "雇佣信任变化不自动亲情归零",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD07",
+      "given": "无共同正式语言",
+      "expected": "允许有界手势不赠Language",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD08",
+      "given": "合并Household一方拒绝",
+      "expected": "保持原户/钱/物",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD09",
+      "given": "分户两者同持一批粮",
+      "expected": "实际产权保管唯一不复制",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD10",
+      "given": "homeless家庭",
+      "expected": "可共同生活不免费房床",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD11",
+      "given": "全龄成人身材未成熟者",
+      "expected": "不能替成熟生育/签约门控",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD12",
+      "given": "跨species亲密关系",
+      "expected": "不形成跨species受孕",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD13",
+      "given": "一方不同意生育",
+      "expected": "不能由高fertility或君主命令强制",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD14",
+      "given": "照护者同小时军役",
+      "expected": "availability冲突需重排",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD15",
+      "given": "照护者死亡",
+      "expected": "CARE_GAP不刷保姆",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD16",
+      "given": "现有孕体生育off",
+      "expected": "现due快照合法出生继续",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD17",
+      "given": "父母事后启智/改Genome",
+      "expected": "孕体来源快照不改",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD18",
+      "given": "公共护理预算无粮",
+      "expected": "不能无中生有奶/食品",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD19",
+      "given": "同家部分成员不愿迁",
+      "expected": "真实协商/暂留不同人计划",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD20",
+      "given": "目的工资报价过时",
+      "expected": "实际失效保持Actor实物可返程",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD21",
+      "given": "住房预约未到达",
+      "expected": "不计目的居住人口",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD22",
+      "given": "同文化目的地",
+      "expected": "不自动国籍/住房准入",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD23",
+      "given": "教师没有对应知识",
+      "expected": "不能免费教学",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD24",
+      "given": "同教师并发四课堂",
+      "expected": "time/seat只能实际准入",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD25",
+      "given": "读秘密知识无许可",
+      "expected": "不通过UI名字学会",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD26",
+      "given": "已知先修未满足",
+      "expected": "只取DAG边界课程",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD27",
+      "given": "动画结束无实际work",
+      "expected": "学习进度不变",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD28",
+      "given": "错误教材",
+      "expected": "带来源belief不是合格工程能力",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD29",
+      "given": "高求知受伤无书",
+      "expected": "可休息询问不能立刻学全部",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD30",
+      "given": "UI改德国文",
+      "expected": "模拟Language不变",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD31",
+      "given": "启智动物教学",
+      "expected": "同已有语言/身体适配不禁职业",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD32",
+      "given": "动物独立文化创始",
+      "expected": "拒绝源违规不新Culture",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD33",
+      "given": "人类无实际创生参加",
+      "expected": "引用挂名不符合nucleus",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD34",
+      "given": "改旗/制服统一",
+      "expected": "不补文化实践事件",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD35",
+      "given": "人类创始人死",
+      "expected": "已存在CultureLanguage不删",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD36",
+      "given": "根宗教AI创建候选",
+      "expected": "拒绝player-only源",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD37",
+      "given": "高piety腐败主教",
+      "expected": "可保信仰拒捐/改革",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD38",
+      "given": "非信徒获救济",
+      "expected": "不自动改信/创文化",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD39",
+      "given": "多教会同一捐款",
+      "expected": "扣账和奉献receipt唯一",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD40",
+      "given": "教会根性质换领导",
+      "expected": "冻结不改根",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD41",
+      "given": "科研没试件/设备",
+      "expected": "不能U分足够瞬间发明",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD42",
+      "given": "失败实验重复读档",
+      "expected": "不重抽材料或无限经验",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD43",
+      "given": "科研后装机",
+      "expected": "必须培训/生产/停机不全球升级",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD44",
+      "given": "普通动物吃装饰草",
+      "expected": "无真实营养reserve",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD45",
+      "given": "两动物同果",
+      "expected": "实际contact独扣一批",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD46",
+      "given": "捕食失去视野",
+      "expected": "最后已知有限搜索不全知追",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD47",
+      "given": "成年玩家动物屠宰",
+      "expected": "只真实productive reserve不免费肉",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "SD48",
+      "given": "飞鸟蜂受寒峰禁区",
+      "expected": "不因species基因进入高峰",
+      "status": "future_production_acceptance_not_executed"
+    }
+  ],
+  "acceptance_case_count": 48,
+  "time_profile": {
+    "ticks_per_motion_second": 20,
+    "ticks_per_game_day": 12000,
+    "ticks_per_calendar_hour": 500,
+    "days_per_year": 360,
+    "physiology_step_max_tick": 20,
+    "integration": "rate*dt+saved remainder divided by denominator; dt raw SimTick, never wall clock; split at actual effect boundaries"
+  },
+  "reference_model": "docs/research/models/emergence_life_combat_reference_model.py"
+}

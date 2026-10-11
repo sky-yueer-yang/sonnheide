@@ -1,0 +1,2991 @@
+{
+  "format": "SonnOriginalIcons9",
+  "author": "Sonnheide project",
+  "license": "Original project artwork; no public license granted",
+  "recipe": "tools/generate_visual_assets.py",
+  "recipe_sha256": "8322436b12a6d23a4988bf57606b4bab119042dbc59b983227601305ba3a5446",
+  "stroke": true,
+  "external_frame": false,
+  "logical_grid": 48,
+  "scaling": "nearest_integer",
+  "alpha": "binary",
+  "edge_recipe": {
+    "outer_dark_cells": 2,
+    "primary_key_lines_cells": 2,
+    "white_contour_cells": 0,
+    "neighborhood": "Manhattan distance <= 2 from opaque material",
+    "outer_color": "#081527",
+    "directional_bevel": false,
+    "body_shading": "dark saturated materials with broad engraved lines and small bounded highlights"
+  },
+  "colored_luminance": {
+    "metric": "0.2126 R + 0.7152 G + 0.0722 B; encoded sRGB bytes, range 0..255",
+    "families": [
+      "blue",
+      "red",
+      "yellow",
+      "green",
+      "copper"
+    ],
+    "maximum": 160,
+    "very_bright_threshold": 220,
+    "very_bright_pixels_per_icon_maximum": 0,
+    "primary_base_colors_are_sources": true,
+    "yellow_base_need_not_appear_as_unshaded_pixel": true
+  },
+  "palette": "original_heavy_dark_pixel_materials",
+  "primary_colors": {
+    "blue": "#1662b8",
+    "red": "#de402d",
+    "white": "#ffffff",
+    "yellow": "#ffaa00"
+  },
+  "material_base_colors": {
+    "stone": "#84a0b3",
+    "wood": "#753c1e",
+    "copper": "#b95b29",
+    "skin": "#e99663",
+    "green": "#318d5c",
+    "ink": "#081527"
+  },
+  "pigment_recipe": "base_times_shade_then_linear_white_tint_round_half_up",
+  "pigment_derivatives": {
+    "#030e1a": {
+      "base": "blue",
+      "shade": 0.14,
+      "white_tint": 0
+    },
+    "#061a32": {
+      "base": "blue",
+      "shade": 0.27,
+      "white_tint": 0
+    },
+    "#07140d": {
+      "base": "green",
+      "shade": 0.14,
+      "white_tint": 0
+    },
+    "#081527": {
+      "base": "ink",
+      "shade": 1.0,
+      "white_tint": 0.0
+    },
+    "#092a4f": {
+      "base": "blue",
+      "shade": 0.43,
+      "white_tint": 0
+    },
+    "#0d2619": {
+      "base": "green",
+      "shade": 0.27,
+      "white_tint": 0
+    },
+    "#0e3f76": {
+      "base": "blue",
+      "shade": 0.64,
+      "white_tint": 0
+    },
+    "#104784": {
+      "base": "blue",
+      "shade": 0.72,
+      "white_tint": 0
+    },
+    "#120905": {
+      "base": "wood",
+      "shade": 0.15,
+      "white_tint": 0
+    },
+    "#124f95": {
+      "base": "blue",
+      "shade": 0.81,
+      "white_tint": 0
+    },
+    "#14181b": {
+      "base": "stone",
+      "shade": 0.15,
+      "white_tint": 0
+    },
+    "#153d28": {
+      "base": "green",
+      "shade": 0.43,
+      "white_tint": 0
+    },
+    "#1a0d06": {
+      "base": "copper",
+      "shade": 0.14,
+      "white_tint": 0
+    },
+    "#1a5ca8": {
+      "base": "blue",
+      "shade": 0.9,
+      "white_tint": 0.025
+    },
+    "#1f0906": {
+      "base": "red",
+      "shade": 0.14,
+      "white_tint": 0
+    },
+    "#1f5a3b": {
+      "base": "green",
+      "shade": 0.64,
+      "white_tint": 0
+    },
+    "#211600": {
+      "base": "yellow",
+      "shade": 0.13,
+      "white_tint": 0
+    },
+    "#212121": {
+      "base": "white",
+      "shade": 0.13,
+      "white_tint": 0
+    },
+    "#221109": {
+      "base": "wood",
+      "shade": 0.29,
+      "white_tint": 0
+    },
+    "#236642": {
+      "base": "green",
+      "shade": 0.72,
+      "white_tint": 0
+    },
+    "#262e34": {
+      "base": "stone",
+      "shade": 0.29,
+      "white_tint": 0
+    },
+    "#28724b": {
+      "base": "green",
+      "shade": 0.81,
+      "white_tint": 0
+    },
+    "#2c1d13": {
+      "base": "skin",
+      "shade": 0.19,
+      "white_tint": 0
+    },
+    "#318257": {
+      "base": "green",
+      "shade": 0.9,
+      "white_tint": 0.025
+    },
+    "#32190b": {
+      "base": "copper",
+      "shade": 0.27,
+      "white_tint": 0
+    },
+    "#361c0e": {
+      "base": "wood",
+      "shade": 0.46,
+      "white_tint": 0
+    },
+    "#3c110c": {
+      "base": "red",
+      "shade": 0.27,
+      "white_tint": 0
+    },
+    "#3d4a52": {
+      "base": "stone",
+      "shade": 0.46,
+      "white_tint": 0
+    },
+    "#422c00": {
+      "base": "yellow",
+      "shade": 0.26,
+      "white_tint": 0
+    },
+    "#454545": {
+      "base": "white",
+      "shade": 0.27,
+      "white_tint": 0
+    },
+    "#4c2714": {
+      "base": "wood",
+      "shade": 0.65,
+      "white_tint": 0
+    },
+    "#4f3322": {
+      "base": "skin",
+      "shade": 0.34,
+      "white_tint": 0
+    },
+    "#502712": {
+      "base": "copper",
+      "shade": 0.43,
+      "white_tint": 0
+    },
+    "#566874": {
+      "base": "stone",
+      "shade": 0.65,
+      "white_tint": 0
+    },
+    "#582d17": {
+      "base": "wood",
+      "shade": 0.75,
+      "white_tint": 0
+    },
+    "#5f1c13": {
+      "base": "red",
+      "shade": 0.43,
+      "white_tint": 0
+    },
+    "#623219": {
+      "base": "wood",
+      "shade": 0.84,
+      "white_tint": 0
+    },
+    "#637886": {
+      "base": "stone",
+      "shade": 0.75,
+      "white_tint": 0
+    },
+    "#696969": {
+      "base": "white",
+      "shade": 0.41,
+      "white_tint": 0
+    },
+    "#6b4700": {
+      "base": "yellow",
+      "shade": 0.42,
+      "white_tint": 0
+    },
+    "#6e381c": {
+      "base": "wood",
+      "shade": 0.94,
+      "white_tint": 0
+    },
+    "#6f8696": {
+      "base": "stone",
+      "shade": 0.84,
+      "white_tint": 0
+    },
+    "#754b32": {
+      "base": "skin",
+      "shade": 0.5,
+      "white_tint": 0
+    },
+    "#763a1a": {
+      "base": "copper",
+      "shade": 0.64,
+      "white_tint": 0
+    },
+    "#7c96a8": {
+      "base": "stone",
+      "shade": 0.94,
+      "white_tint": 0
+    },
+    "#85421e": {
+      "base": "copper",
+      "shade": 0.72,
+      "white_tint": 0
+    },
+    "#878787": {
+      "base": "white",
+      "shade": 0.53,
+      "white_tint": 0
+    },
+    "#8e291d": {
+      "base": "red",
+      "shade": 0.64,
+      "white_tint": 0
+    },
+    "#964a21": {
+      "base": "copper",
+      "shade": 0.81,
+      "white_tint": 0
+    },
+    "#996600": {
+      "base": "yellow",
+      "shade": 0.6,
+      "white_tint": 0
+    },
+    "#9e6643": {
+      "base": "skin",
+      "shade": 0.68,
+      "white_tint": 0
+    },
+    "#9e9e9e": {
+      "base": "white",
+      "shade": 0.62,
+      "white_tint": 0
+    },
+    "#a02e20": {
+      "base": "red",
+      "shade": 0.72,
+      "white_tint": 0
+    },
+    "#a9562a": {
+      "base": "copper",
+      "shade": 0.9,
+      "white_tint": 0.025
+    },
+    "#af714a": {
+      "base": "skin",
+      "shade": 0.75,
+      "white_tint": 0
+    },
+    "#b37700": {
+      "base": "yellow",
+      "shade": 0.7,
+      "white_tint": 0
+    },
+    "#b43424": {
+      "base": "red",
+      "shade": 0.81,
+      "white_tint": 0
+    },
+    "#b8b8b8": {
+      "base": "white",
+      "shade": 0.72,
+      "white_tint": 0
+    },
+    "#c17d52": {
+      "base": "skin",
+      "shade": 0.83,
+      "white_tint": 0
+    },
+    "#c93f2e": {
+      "base": "red",
+      "shade": 0.9,
+      "white_tint": 0.025
+    },
+    "#c98600": {
+      "base": "yellow",
+      "shade": 0.79,
+      "white_tint": 0
+    },
+    "#d1d1d1": {
+      "base": "white",
+      "shade": 0.82,
+      "white_tint": 0
+    },
+    "#d4895a": {
+      "base": "skin",
+      "shade": 0.91,
+      "white_tint": 0
+    },
+    "#dc9508": {
+      "base": "yellow",
+      "shade": 0.86,
+      "white_tint": 0.03
+    }
+  },
+  "yellow_base": "#ffaa00",
+  "yellow_recipe": "shade_then_linear_white_tint_round_half_up",
+  "yellow_derivatives": {
+    "#211600": {
+      "shade": 0.13,
+      "tint": 0
+    },
+    "#422c00": {
+      "shade": 0.26,
+      "tint": 0
+    },
+    "#6b4700": {
+      "shade": 0.42,
+      "tint": 0
+    },
+    "#996600": {
+      "shade": 0.6,
+      "tint": 0
+    },
+    "#b37700": {
+      "shade": 0.7,
+      "tint": 0
+    },
+    "#c98600": {
+      "shade": 0.79,
+      "tint": 0
+    },
+    "#dc9508": {
+      "shade": 0.86,
+      "tint": 0.03
+    }
+  },
+  "themes": [],
+  "category_icons": [
+    "tab-camera",
+    "tab-terrain",
+    "tab-people",
+    "tab-laws",
+    "tab-buildings",
+    "tab-economy",
+    "tab-world",
+    "tab-settings"
+  ],
+  "category_style": "physical_pixel_object",
+  "objects": {
+    "world": {
+      "bounds_cells": [
+        5,
+        5,
+        43,
+        44
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.5282118055555556,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3352506162695152,
+      "luminance709_max_by_material": {
+        "blue": 71.0854,
+        "ink": 19.5358,
+        "wood": 45.4944,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Enamel celestial globe in a brass armillary",
+      "materials": [
+        "enamel",
+        "brass",
+        "walnut"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "earth": {
+      "bounds_cells": [
+        3,
+        3,
+        44,
+        45
+      ],
+      "width_fraction": 0.875,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.5785590277777778,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.17179294823705926,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "green": 109.6748,
+        "ink": 19.5358,
+        "white": 209.0,
+        "yellow": 105.4782
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Hand-painted blue terrestrial sphere",
+      "materials": [
+        "water enamel",
+        "land enamel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "camera": {
+      "bounds_cells": [
+        3,
+        4,
+        42,
+        43
+      ],
+      "width_fraction": 0.8333333333333334,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.4131944444444444,
+      "material_colour_count": 13,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3088235294117647,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "copper": 46.2004,
+        "ink": 19.5358,
+        "wood": 58.3998,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Polished brass telescope on walnut tripod",
+      "materials": [
+        "brass",
+        "glass",
+        "walnut"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "blank": {
+      "bounds_cells": [
+        5,
+        3,
+        42,
+        45
+      ],
+      "width_fraction": 0.7916666666666666,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.5859375,
+      "material_colour_count": 10,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.2362962962962963,
+      "luminance709_max_by_material": {
+        "copper": 46.2004,
+        "green": 75.2184,
+        "ink": 19.5358,
+        "wood": 52.5534,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Empty land parcel on unfurled cartography scroll",
+      "materials": [
+        "parchment",
+        "wood",
+        "copper"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "people": {
+      "bounds_cells": [
+        4,
+        3,
+        44,
+        44
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4995659722222222,
+      "material_colour_count": 16,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.32927888792354476,
+      "luminance709_max_by_material": {
+        "blue": 63.7112,
+        "copper": 77.645,
+        "ink": 19.5358,
+        "red": 25.7808,
+        "skin": 136.3522,
+        "stone": 23.3662,
+        "white": 184.0,
+        "wood": 32.5168,
+        "yellow": 105.4782
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Blue-clothed citizen beside a copper-red fox",
+      "materials": [
+        "cloth",
+        "skin",
+        "fur",
+        "leather"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "buildings": {
+      "bounds_cells": [
+        3,
+        5,
+        43,
+        44
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.4765625,
+      "material_colour_count": 16,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.21766848816029144,
+      "luminance709_max_by_material": {
+        "blue": 56.5536,
+        "ink": 19.5358,
+        "red": 78.0576,
+        "stone": 145.772,
+        "wood": 45.4944,
+        "yellow": 105.4782
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Original masonry cottage with red tile roof and steel hammer",
+      "materials": [
+        "stone",
+        "tile",
+        "wood",
+        "steel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "terrain": {
+      "bounds_cells": [
+        3,
+        4,
+        42,
+        44
+      ],
+      "width_fraction": 0.8333333333333334,
+      "height_fraction": 0.8541666666666666,
+      "visible_fraction": 0.4388020833333333,
+      "material_colour_count": 17,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.24629080118694363,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "copper": 68.4456,
+        "green": 95.4518,
+        "ink": 19.5358,
+        "stone": 71.8138,
+        "white": 209.0,
+        "wood": 45.4944,
+        "yellow": 45.5004
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cutaway terrain diorama with strata, snow, grass, tree and stream",
+      "materials": [
+        "soil",
+        "stone",
+        "snow",
+        "water",
+        "vegetation"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "economy": {
+      "bounds_cells": [
+        3,
+        5,
+        44,
+        43
+      ],
+      "width_fraction": 0.875,
+      "height_fraction": 0.8125,
+      "visible_fraction": 0.4574652777777778,
+      "material_colour_count": 13,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.2286527514231499,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 78.0576,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Embroidered red leather coin pouch and stacks of gold",
+      "materials": [
+        "leather",
+        "gold"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "laws": {
+      "bounds_cells": [
+        3,
+        2,
+        46,
+        44
+      ],
+      "width_fraction": 0.9166666666666666,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.6024305555555556,
+      "material_colour_count": 12,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.31484149855907784,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "stone": 130.2654,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 1,
+          "rectangle_cells": [
+            11,
+            19,
+            18,
+            20
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": null
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 2,
+          "rectangle_cells": [
+            11,
+            23,
+            18,
+            24
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 3,
+          "rectangle_cells": [
+            11,
+            28,
+            18,
+            29
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 4,
+          "rectangle_cells": [
+            11,
+            32,
+            18,
+            33
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 5,
+          "rectangle_cells": [
+            11,
+            37,
+            18,
+            38
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 1,
+          "rectangle_cells": [
+            29,
+            17,
+            35,
+            18
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 7,
+          "colour": "#14181b",
+          "separation_rows_before": null
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 2,
+          "rectangle_cells": [
+            29,
+            21,
+            36,
+            22
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 3,
+          "rectangle_cells": [
+            29,
+            26,
+            35,
+            27
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 7,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 4,
+          "rectangle_cells": [
+            29,
+            30,
+            36,
+            31
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 5,
+          "rectangle_cells": [
+            29,
+            35,
+            35,
+            36
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 7,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        }
+      ],
+      "object": "Two engraved Commandment stone tablets with ten carved marks and gold rays",
+      "materials": [
+        "stone",
+        "gold light"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "settings": {
+      "bounds_cells": [
+        2,
+        3,
+        44,
+        44
+      ],
+      "width_fraction": 0.8958333333333334,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.5386284722222222,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.27880741337630943,
+      "luminance709_max_by_material": {
+        "blue": 63.7112,
+        "copper": 100.469,
+        "ink": 19.5358,
+        "yellow": 123.1642
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Copper mechanical gear and enamel winding key",
+      "materials": [
+        "copper",
+        "blue enamel",
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "pause": {
+      "bounds_cells": [
+        3,
+        3,
+        44,
+        45
+      ],
+      "width_fraction": 0.875,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.57421875,
+      "material_colour_count": 11,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.17233560090702948,
+      "luminance709_max_by_material": {
+        "blue": 56.5536,
+        "copper": 15.2584,
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Two brass stop bars inset in an enamel control medallion",
+      "materials": [
+        "brass",
+        "enamel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "play": {
+      "bounds_cells": [
+        3,
+        3,
+        44,
+        45
+      ],
+      "width_fraction": 0.875,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.57421875,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.17233560090702948,
+      "luminance709_max_by_material": {
+        "blue": 56.5536,
+        "ink": 19.5358,
+        "red": 78.0576,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Faceted ruby arrow set in a brass control medallion",
+      "materials": [
+        "ruby",
+        "brass",
+        "enamel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "save": {
+      "bounds_cells": [
+        3,
+        4,
+        41,
+        44
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.8541666666666666,
+      "visible_fraction": 0.5911458333333334,
+      "material_colour_count": 17,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.2011747430249633,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "ink": 19.5358,
+        "red": 78.0576,
+        "wood": 20.0366,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Closed gilt chronicle with blue gemstone and brass clasp",
+      "materials": [
+        "red leather",
+        "parchment",
+        "gemstone",
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "load": {
+      "bounds_cells": [
+        4,
+        3,
+        43,
+        44
+      ],
+      "width_fraction": 0.8333333333333334,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.5559895833333334,
+      "material_colour_count": 11,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.23341139734582358,
+      "luminance709_max_by_material": {
+        "copper": 77.645,
+        "ink": 19.5358,
+        "wood": 45.4944,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Open oak archive chest retrieving a parchment sheet",
+      "materials": [
+        "oak",
+        "copper",
+        "parchment"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "back": {
+      "bounds_cells": [
+        4,
+        4,
+        42,
+        41
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.7916666666666666,
+      "visible_fraction": 0.3602430555555556,
+      "material_colour_count": 8,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.26265060240963856,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cast brass return arrow",
+      "materials": [
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "close": {
+      "bounds_cells": [
+        4,
+        2,
+        42,
+        43
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.5442708333333334,
+      "material_colour_count": 12,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.18899521531100477,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 78.0576,
+        "white": 209.0,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Red wax seal with ivory cross and golden ribbon tails",
+      "materials": [
+        "wax",
+        "ivory",
+        "ribbon"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "create": {
+      "bounds_cells": [
+        4,
+        2,
+        41,
+        44
+      ],
+      "width_fraction": 0.7916666666666666,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.4544270833333333,
+      "material_colour_count": 16,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3638968481375358,
+      "luminance709_max_by_material": {
+        "copper": 68.4456,
+        "green": 95.4518,
+        "ink": 19.5358,
+        "red": 91.1114,
+        "wood": 20.0366,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Jewelled wand creating a living land parcel",
+      "materials": [
+        "ruby",
+        "brass",
+        "grass",
+        "soil"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "check": {
+      "bounds_cells": [
+        4,
+        2,
+        42,
+        43
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.5442708333333334,
+      "material_colour_count": 12,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.18899521531100477,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 78.0576,
+        "white": 209.0,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Red wax approval seal with gold check and ribbon tails",
+      "materials": [
+        "wax",
+        "gold",
+        "ribbon"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "audio": {
+      "bounds_cells": [
+        5,
+        3,
+        45,
+        44
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4305555555555556,
+      "material_colour_count": 17,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.39919354838709675,
+      "luminance709_max_by_material": {
+        "blue": 71.0854,
+        "copper": 77.645,
+        "ink": 19.5358,
+        "stone": 23.3662,
+        "wood": 45.4944,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Lacquered gramophone cabinet with flared gold horn",
+      "materials": [
+        "walnut",
+        "brass",
+        "vinyl"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "help": {
+      "bounds_cells": [
+        4,
+        3,
+        42,
+        42
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.5598958333333334,
+      "material_colour_count": 11,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.20465116279069767,
+      "luminance709_max_by_material": {
+        "blue": 12.5278,
+        "ink": 19.5358,
+        "red": 41.5944,
+        "stone": 44.7324,
+        "white": 209.0,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Open parchment handbook and a silver quill",
+      "materials": [
+        "parchment",
+        "leather",
+        "silver feather"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tools": {
+      "bounds_cells": [
+        3,
+        2,
+        45,
+        43
+      ],
+      "width_fraction": 0.8958333333333334,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4509548611111111,
+      "material_colour_count": 10,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3397497593840231,
+      "luminance709_max_by_material": {
+        "blue": 63.7112,
+        "ink": 19.5358,
+        "stone": 145.772,
+        "wood": 52.5534
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Crossed steel axe and blue wrench with walnut handle",
+      "materials": [
+        "steel",
+        "blue enamel",
+        "walnut"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "star": {
+      "bounds_cells": [
+        5,
+        4,
+        43,
+        42
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.8125,
+      "visible_fraction": 0.4244791666666667,
+      "material_colour_count": 11,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.418200408997955,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 91.1114,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Faceted gold five-point brooch with inset ruby",
+      "materials": [
+        "gold",
+        "ruby"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "sun": {
+      "bounds_cells": [
+        3,
+        3,
+        45,
+        45
+      ],
+      "width_fraction": 0.8958333333333334,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.4344618055555556,
+      "material_colour_count": 8,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3626373626373626,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Engraved golden sun disk and twelve cast rays",
+      "materials": [
+        "gold"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "moon": {
+      "bounds_cells": [
+        2,
+        4,
+        41,
+        43
+      ],
+      "width_fraction": 0.8333333333333334,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.3654513888888889,
+      "material_colour_count": 13,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3669833729216152,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "stone": 130.2654,
+        "white": 209.0,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Chased silver crescent pendant and two gold stars",
+      "materials": [
+        "silver",
+        "gold"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "exit": {
+      "bounds_cells": [
+        4,
+        3,
+        44,
+        44
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.5911458333333334,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.27312775330396477,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 91.1114,
+        "stone": 130.2654,
+        "wood": 52.5534,
+        "yellow": 105.4782
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Open oak doorway with physical warm-red exit arrow",
+      "materials": [
+        "oak",
+        "stone",
+        "red enamel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "cycle": {
+      "bounds_cells": [
+        2,
+        3,
+        45,
+        44
+      ],
+      "width_fraction": 0.9166666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4774305555555556,
+      "material_colour_count": 11,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.4163636363636364,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "ink": 19.5358,
+        "red": 78.0576,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Blue-glass hourglass with sand and turning cast arrows",
+      "materials": [
+        "glass",
+        "gold",
+        "red enamel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "hand": {
+      "bounds_cells": [
+        4,
+        3,
+        42,
+        43
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.8541666666666666,
+      "visible_fraction": 0.5177951388888888,
+      "material_colour_count": 10,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.2347024308466052,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 61.6062,
+        "wood": 20.0366,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Articulated gold gauntlet with leather wrist and buckle",
+      "materials": [
+        "gold",
+        "leather"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "zoom-in": {
+      "bounds_cells": [
+        3,
+        2,
+        43,
+        43
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4730902777777778,
+      "material_colour_count": 18,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.20733944954128442,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "copper": 68.4456,
+        "ink": 19.5358,
+        "white": 184.0,
+        "wood": 58.3998,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Brass-rimmed glass magnifier with ivory plus",
+      "materials": [
+        "brass",
+        "glass",
+        "walnut",
+        "ivory"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "zoom-out": {
+      "bounds_cells": [
+        3,
+        2,
+        43,
+        43
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4730902777777778,
+      "material_colour_count": 18,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.20733944954128442,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "copper": 68.4456,
+        "ink": 19.5358,
+        "white": 184.0,
+        "wood": 58.3998,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Brass-rimmed glass magnifier with ivory minus",
+      "materials": [
+        "brass",
+        "glass",
+        "walnut",
+        "ivory"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "arrow-left": {
+      "bounds_cells": [
+        4,
+        4,
+        42,
+        41
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.7916666666666666,
+      "visible_fraction": 0.3602430555555556,
+      "material_colour_count": 8,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.26265060240963856,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cast brass west-pointing direction arrow",
+      "materials": [
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "arrow-right": {
+      "bounds_cells": [
+        5,
+        4,
+        43,
+        41
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.7916666666666666,
+      "visible_fraction": 0.3602430555555556,
+      "material_colour_count": 8,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.26265060240963856,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cast brass east-pointing direction arrow",
+      "materials": [
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "arrow-up": {
+      "bounds_cells": [
+        6,
+        4,
+        43,
+        42
+      ],
+      "width_fraction": 0.7916666666666666,
+      "height_fraction": 0.8125,
+      "visible_fraction": 0.3602430555555556,
+      "material_colour_count": 8,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.26265060240963856,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cast brass north-pointing direction arrow",
+      "materials": [
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "arrow-down": {
+      "bounds_cells": [
+        6,
+        5,
+        43,
+        43
+      ],
+      "width_fraction": 0.7916666666666666,
+      "height_fraction": 0.8125,
+      "visible_fraction": 0.3602430555555556,
+      "material_colour_count": 8,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.26265060240963856,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cast brass south-pointing direction arrow",
+      "materials": [
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-camera": {
+      "bounds_cells": [
+        3,
+        4,
+        42,
+        43
+      ],
+      "width_fraction": 0.8333333333333334,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.4131944444444444,
+      "material_colour_count": 13,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3088235294117647,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "copper": 46.2004,
+        "ink": 19.5358,
+        "wood": 58.3998,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Polished brass telescope on walnut tripod",
+      "materials": [
+        "brass",
+        "glass",
+        "walnut"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-terrain": {
+      "bounds_cells": [
+        3,
+        4,
+        42,
+        44
+      ],
+      "width_fraction": 0.8333333333333334,
+      "height_fraction": 0.8541666666666666,
+      "visible_fraction": 0.4388020833333333,
+      "material_colour_count": 17,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.24629080118694363,
+      "luminance709_max_by_material": {
+        "blue": 83.4556,
+        "copper": 68.4456,
+        "green": 95.4518,
+        "ink": 19.5358,
+        "stone": 71.8138,
+        "white": 209.0,
+        "wood": 45.4944,
+        "yellow": 45.5004
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Cutaway terrain diorama with strata, snow, grass, tree and stream",
+      "materials": [
+        "soil",
+        "stone",
+        "snow",
+        "water",
+        "vegetation"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-people": {
+      "bounds_cells": [
+        4,
+        3,
+        44,
+        44
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.4995659722222222,
+      "material_colour_count": 16,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.32927888792354476,
+      "luminance709_max_by_material": {
+        "blue": 63.7112,
+        "copper": 77.645,
+        "ink": 19.5358,
+        "red": 25.7808,
+        "skin": 136.3522,
+        "stone": 23.3662,
+        "white": 184.0,
+        "wood": 32.5168,
+        "yellow": 105.4782
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Blue-clothed citizen beside a copper-red fox",
+      "materials": [
+        "cloth",
+        "skin",
+        "fur",
+        "leather"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-laws": {
+      "bounds_cells": [
+        3,
+        2,
+        46,
+        44
+      ],
+      "width_fraction": 0.9166666666666666,
+      "height_fraction": 0.8958333333333334,
+      "visible_fraction": 0.6024305555555556,
+      "material_colour_count": 12,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.31484149855907784,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "stone": 130.2654,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 1,
+          "rectangle_cells": [
+            11,
+            19,
+            18,
+            20
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": null
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 2,
+          "rectangle_cells": [
+            11,
+            23,
+            18,
+            24
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 3,
+          "rectangle_cells": [
+            11,
+            28,
+            18,
+            29
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 4,
+          "rectangle_cells": [
+            11,
+            32,
+            18,
+            33
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 1,
+          "ordinal": 5,
+          "rectangle_cells": [
+            11,
+            37,
+            18,
+            38
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 1,
+          "rectangle_cells": [
+            29,
+            17,
+            35,
+            18
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 7,
+          "colour": "#14181b",
+          "separation_rows_before": null
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 2,
+          "rectangle_cells": [
+            29,
+            21,
+            36,
+            22
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 3,
+          "rectangle_cells": [
+            29,
+            26,
+            35,
+            27
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 7,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 4,
+          "rectangle_cells": [
+            29,
+            30,
+            36,
+            31
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 8,
+          "colour": "#14181b",
+          "separation_rows_before": 2
+        },
+        {
+          "purpose": "carved_tablet_groove",
+          "tablet": 2,
+          "ordinal": 5,
+          "rectangle_cells": [
+            29,
+            35,
+            35,
+            36
+          ],
+          "actual_thickness_cells": 2,
+          "actual_length_cells": 7,
+          "colour": "#14181b",
+          "separation_rows_before": 3
+        }
+      ],
+      "object": "Two engraved Commandment stone tablets with ten carved marks and gold rays",
+      "materials": [
+        "stone",
+        "gold light"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-buildings": {
+      "bounds_cells": [
+        3,
+        5,
+        43,
+        44
+      ],
+      "width_fraction": 0.8541666666666666,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.4765625,
+      "material_colour_count": 16,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.21766848816029144,
+      "luminance709_max_by_material": {
+        "blue": 56.5536,
+        "ink": 19.5358,
+        "red": 78.0576,
+        "stone": 145.772,
+        "wood": 45.4944,
+        "yellow": 105.4782
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Original masonry cottage with red tile roof and steel hammer",
+      "materials": [
+        "stone",
+        "tile",
+        "wood",
+        "steel"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-economy": {
+      "bounds_cells": [
+        3,
+        5,
+        44,
+        43
+      ],
+      "width_fraction": 0.875,
+      "height_fraction": 0.8125,
+      "visible_fraction": 0.4574652777777778,
+      "material_colour_count": 13,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.2286527514231499,
+      "luminance709_max_by_material": {
+        "ink": 19.5358,
+        "red": 78.0576,
+        "yellow": 153.9144
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Embroidered red leather coin pouch and stacks of gold",
+      "materials": [
+        "leather",
+        "gold"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-world": {
+      "bounds_cells": [
+        5,
+        5,
+        43,
+        44
+      ],
+      "width_fraction": 0.8125,
+      "height_fraction": 0.8333333333333334,
+      "visible_fraction": 0.5282118055555556,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.3352506162695152,
+      "luminance709_max_by_material": {
+        "blue": 71.0854,
+        "ink": 19.5358,
+        "wood": 45.4944,
+        "yellow": 138.5694
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Enamel celestial globe in a brass armillary",
+      "materials": [
+        "enamel",
+        "brass",
+        "walnut"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    },
+    "tab-settings": {
+      "bounds_cells": [
+        2,
+        3,
+        44,
+        44
+      ],
+      "width_fraction": 0.8958333333333334,
+      "height_fraction": 0.875,
+      "visible_fraction": 0.5386284722222222,
+      "material_colour_count": 14,
+      "two_cell_exterior_verified": true,
+      "primary_key_lines_cells": 2,
+      "dark_ink_fraction_of_opaque": 0.27880741337630943,
+      "luminance709_max_by_material": {
+        "blue": 63.7112,
+        "copper": 100.469,
+        "ink": 19.5358,
+        "yellow": 123.1642
+      },
+      "pixels_luminance_over_220": 0,
+      "key_line_features": [],
+      "object": "Copper mechanical gear and enamel winding key",
+      "materials": [
+        "copper",
+        "blue enamel",
+        "brass"
+      ],
+      "transparent_background": true,
+      "full_frame_background": false,
+      "lighting": "registered discrete material clusters; no blur or antialiasing"
+    }
+  },
+  "outputs": [
+    {
+      "path": "assets/generated/ui/icons/world.svg",
+      "sha256": "e2952ccc09d2d91aecaefaa2143b45faf8ee00f0989482a40948a3e3517ba49e",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "world"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-96.png",
+      "sha256": "c184d9749da18101b148377405ef0211c06278a547197fc8a8b256cfd744bfb0",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "world"
+    },
+    {
+      "path": "assets/generated/ui/icons/world-192.png",
+      "sha256": "9e8a5e42c1c9ec9d23fff2f96d1c89dec283c9ad021cf4878828994ff8d9849d",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "world"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth.svg",
+      "sha256": "a50521f093d2f3ad716d2c18782c7e4f4edebb8788a5cc4d08d3dd399faeca8d",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "earth"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-96.png",
+      "sha256": "45b9f7bf0a0cd1eea12b39c8dafcce8b315969e56c630602c45b601cdc8ed8c4",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "earth"
+    },
+    {
+      "path": "assets/generated/ui/icons/earth-192.png",
+      "sha256": "38c0bd89819968cfc65ef5e99dc64463dce4cf9b8ba672fb3d0c5ee1e38c5a1c",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "earth"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera.svg",
+      "sha256": "d2921a9c97d17a9086931db0a26d369c0c0e8d1163d431c3e56d44e437db9977",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "camera"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-96.png",
+      "sha256": "ff37ceeb6672e770ecacad78d02b10d6c0d256fdca8544160d1c0d75c04533de",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "camera"
+    },
+    {
+      "path": "assets/generated/ui/icons/camera-192.png",
+      "sha256": "4cc4275151e5b89dbcda2e1b603fff878ff0f36e60c6c0ce12decc9518579893",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "camera"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank.svg",
+      "sha256": "c2799d607dd98219e69451f93bbbc619dfd26457a2d6bf9d296d21e652ee92d5",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "blank"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-96.png",
+      "sha256": "0fd048353ac0214c12033ee8adbda955217b684e06e2bbb771378f4a92608c68",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "blank"
+    },
+    {
+      "path": "assets/generated/ui/icons/blank-192.png",
+      "sha256": "fea31b8d8d12004d169c6027c6c85b467102ff62a0e613979c5427ef204d7609",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "blank"
+    },
+    {
+      "path": "assets/generated/ui/icons/people.svg",
+      "sha256": "d0755947b67f3c1d50996d7b145c12069008de0c8b12fdb7ea533bedcf0d3fda",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "people"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-96.png",
+      "sha256": "52f2371baa6951cbb7df75e35ad907a0a91021d1b1a41219d4b22a787e5c50d7",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "people"
+    },
+    {
+      "path": "assets/generated/ui/icons/people-192.png",
+      "sha256": "18fe07fe0f3d3ca994c765ed967e29d2cfea94d71104cffdbca4fcd9946ef668",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "people"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings.svg",
+      "sha256": "5ec1a59c23461cb7126a5817a2f2c6e8166b15dacd2d1748a634ed362b65e426",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "buildings"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-96.png",
+      "sha256": "8f1ad6a1c30d74c866557fcb377f77f287915b6b21350defc6298c6023dba47d",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "buildings"
+    },
+    {
+      "path": "assets/generated/ui/icons/buildings-192.png",
+      "sha256": "9448f7a60f4fb22827845e20b67b057750c47a4bf8510aa0cdc68283d2db1076",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "buildings"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain.svg",
+      "sha256": "7f147883fdbc15279d0d2e79e3d35d58325736c69986bad033289f7a2bb937f3",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "terrain"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-96.png",
+      "sha256": "00f9b44297c493072490f0fffb292be1ffb3613ae70ca1c1aada38be813e5817",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "terrain"
+    },
+    {
+      "path": "assets/generated/ui/icons/terrain-192.png",
+      "sha256": "179de36665696a950816ddebb8b451b0e5cb61ca818709d6c1a41538366f599b",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "terrain"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy.svg",
+      "sha256": "05d5a15c9c7f3fe0479d912326d78f3efeb48b7e5157986ddfb453fd0ca97ece",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "economy"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-96.png",
+      "sha256": "5998f85cb5de936662ec5d7964e95a2b3172749b5655da2ece2a0e81dfd1f3e1",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "economy"
+    },
+    {
+      "path": "assets/generated/ui/icons/economy-192.png",
+      "sha256": "4d789c354c0644744490001f9d2ce5b6c385afd7925a00f850b0db8e958ee0e1",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "economy"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws.svg",
+      "sha256": "1e02915d218d41714c3b79dac3a7989b1846186a8d4811d2d2d6fd111a632c58",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "laws"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-96.png",
+      "sha256": "b872885942fcd553db7972a33eb4be4d53222abfd7f2536578bdf9dd5a9d4a05",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "laws"
+    },
+    {
+      "path": "assets/generated/ui/icons/laws-192.png",
+      "sha256": "1e3261b75d335001d53521e579314fcae5d54588c3b56d66b36408015a803e19",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "laws"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings.svg",
+      "sha256": "4a63f5d2f2984faac582a0c93375bf577a572def3cf7057d127d264737a7e398",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "settings"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-96.png",
+      "sha256": "6909df9286874da1aaf7ca354bf73e1d84294c1a70231e9cdd0ff386f813bc59",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "settings"
+    },
+    {
+      "path": "assets/generated/ui/icons/settings-192.png",
+      "sha256": "3182a4a52c0aa500546f86c076d70483a0a8cfb733d9b8196b8e2394e0d56441",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "settings"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause.svg",
+      "sha256": "4a308721bbb568b5e84970e93ab3b153dfd8cfe8eebd35e92cff502bed688506",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "pause"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-96.png",
+      "sha256": "296a9bdd9302bab41fcfba2e4a32a2e727697a1791a92e1db2904d6f1aeda3bb",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "pause"
+    },
+    {
+      "path": "assets/generated/ui/icons/pause-192.png",
+      "sha256": "3568a85851f1eedb331e7803c807c134297c9bd576846f50b11be746fe9faaa7",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "pause"
+    },
+    {
+      "path": "assets/generated/ui/icons/play.svg",
+      "sha256": "d75846b3849545b7e606b6559d6644453ded4cb33484f971392de7521cf2967c",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "play"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-96.png",
+      "sha256": "de43b50b2ba4ecb171a1acf45796f1a8165158560456a11da34bb241cbf37716",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "play"
+    },
+    {
+      "path": "assets/generated/ui/icons/play-192.png",
+      "sha256": "e50f63c49d47d4805821528081e164d6708324e9382a9bbbded736cdff57dd72",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "play"
+    },
+    {
+      "path": "assets/generated/ui/icons/save.svg",
+      "sha256": "61b171cbd2adac370609bea775fa0f58582c7780bf4446962b87546ca6e4b8dd",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "save"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-96.png",
+      "sha256": "c63b713f2194d416c3039189bf9a74ed01d52f3a258f332d8f8a229fa0a9a293",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "save"
+    },
+    {
+      "path": "assets/generated/ui/icons/save-192.png",
+      "sha256": "6f5cc603ce18d162f131514793976e51231bc73ba2b8869b32efe0faa4e20875",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "save"
+    },
+    {
+      "path": "assets/generated/ui/icons/load.svg",
+      "sha256": "1a296fdda767be61efa09ebdfe83dcb24e393c29529b61d262a57a17dcc36e5a",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "load"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-96.png",
+      "sha256": "6e4001882a6e9a4f821e9aa2900213649689c42d47c370fe11d6c5ec4c2a80ce",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "load"
+    },
+    {
+      "path": "assets/generated/ui/icons/load-192.png",
+      "sha256": "e0fd902ac5f24a3a88e634dbaedc45977f5bb51515603de41b71c75bd43d473d",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "load"
+    },
+    {
+      "path": "assets/generated/ui/icons/back.svg",
+      "sha256": "6fe57268e13ad9d3e96f75ae8eb2ea774d8ea1109012c9923b7c2413976e767c",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "back"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-96.png",
+      "sha256": "2295e98837fb206a022579aafcd1a1a4868c0ddc6ffc2339263dedd12dde5495",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "back"
+    },
+    {
+      "path": "assets/generated/ui/icons/back-192.png",
+      "sha256": "175bde0a7baee8ce87d99fa21c33c79adf75d66d2e449342462e87aee899dd06",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "back"
+    },
+    {
+      "path": "assets/generated/ui/icons/close.svg",
+      "sha256": "c5c9383394955f48637817a2ad763f1692f9e0d39f5b14b1e6dc637becf4d92d",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "close"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-96.png",
+      "sha256": "2fd69b079f3701d60beaf3f7cab348bb481c42f32fb31ee7b9f09eaa813426f1",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "close"
+    },
+    {
+      "path": "assets/generated/ui/icons/close-192.png",
+      "sha256": "e894ffb3f4db4734c79c1d8d15238fa2aba5b4ae59d6d4f8235f62e08540ced9",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "close"
+    },
+    {
+      "path": "assets/generated/ui/icons/create.svg",
+      "sha256": "b3ed2eb4baa43cb917afb31c0a249e7eec1de71c81be40e4380791ed2a9acd0f",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "create"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-96.png",
+      "sha256": "96fba31cf86d0e4f117aa162656408d3183b6962c3136523acce970f64275c75",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "create"
+    },
+    {
+      "path": "assets/generated/ui/icons/create-192.png",
+      "sha256": "1a523195ca38e3ad56ab2e5a838dc09adf5bf2073102da842d4d710924a4ff02",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "create"
+    },
+    {
+      "path": "assets/generated/ui/icons/check.svg",
+      "sha256": "57027bffa2187cd419cd074c5c42466c48647fb12c77e0bbe31e5d4912f3b7be",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "check"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-96.png",
+      "sha256": "a85cf034ca592054f8dca4b34759d7efad91706fed9ba54bf3ac2d89efac40b3",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "check"
+    },
+    {
+      "path": "assets/generated/ui/icons/check-192.png",
+      "sha256": "d19c327e06520d3ab8cb3170647afc159c9bd3cbfe708c52d6f0299111c43d73",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "check"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio.svg",
+      "sha256": "0d6b7280102df74631a1cbe8012d916cef0e6fd4374c80e8355edc5cdd141e20",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "audio"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-96.png",
+      "sha256": "028f64a2165868cc11c04df33f6dffe0be1cced10887d1dc8dcdf8378956bb99",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "audio"
+    },
+    {
+      "path": "assets/generated/ui/icons/audio-192.png",
+      "sha256": "348149c2f85ca9830fe4293e94592ec88a2e477300adc7feb429b25737094450",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "audio"
+    },
+    {
+      "path": "assets/generated/ui/icons/help.svg",
+      "sha256": "0f79a002485af48aa3168f67fa0c46aedddecdd20fa5e84b02b3f9c2c223cc84",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "help"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-96.png",
+      "sha256": "17fc08a8f3a6acaa19ed1657495d64c766938cce337e10a5e9543d657372f4e1",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "help"
+    },
+    {
+      "path": "assets/generated/ui/icons/help-192.png",
+      "sha256": "de7dc291d1e9f4d110ef7f9849379c9051d4805975aff1e93ee87fd5a0ce86aa",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "help"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools.svg",
+      "sha256": "afdd5812add45c481cdc55ab0dcc50225a518a74076299c767ac30b9c6998a0e",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tools"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-96.png",
+      "sha256": "2de6063993eb80e5fd4e1fd6005ddc99f442820ad23a7034d8a0e8546da036e6",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tools"
+    },
+    {
+      "path": "assets/generated/ui/icons/tools-192.png",
+      "sha256": "e013ce76672a86b2b05991db52bad5d98426aaa7f34ac812e978287b124e3231",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tools"
+    },
+    {
+      "path": "assets/generated/ui/icons/star.svg",
+      "sha256": "bedb501df031d99e79c0b0d26aca55a299a1168cb6e0e51b070c75f5a5c8696e",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "star"
+    },
+    {
+      "path": "assets/generated/ui/icons/star-96.png",
+      "sha256": "82c0c1a80a03686b2626d616f2c2d2b62071487282c59afeb871a8ebf359fe86",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "star"
+    },
+    {
+      "path": "assets/generated/ui/icons/star-192.png",
+      "sha256": "291ed5150085bedd64d35c4f1b846badebd02b173ea08b2c09e6ac2fc101f4a7",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "star"
+    },
+    {
+      "path": "assets/generated/ui/icons/sun.svg",
+      "sha256": "c0818cfe4ed9951925e304a35394edf20490884cd98c2e6f3c61b01fa5384fd4",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "sun"
+    },
+    {
+      "path": "assets/generated/ui/icons/sun-96.png",
+      "sha256": "f789ce3688d96956d0c1105b68f48ea3ad9c6de9716880cfee9feead2e801d69",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "sun"
+    },
+    {
+      "path": "assets/generated/ui/icons/sun-192.png",
+      "sha256": "4cb6599d2c48e054cc779d185e5260cbf70ff33f1a285680462866130eb09aee",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "sun"
+    },
+    {
+      "path": "assets/generated/ui/icons/moon.svg",
+      "sha256": "6af8ebd6dc8dccc876f50bf2f91dbe10460aff001ff096ee46e7fdc364ad4baa",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "moon"
+    },
+    {
+      "path": "assets/generated/ui/icons/moon-96.png",
+      "sha256": "acfbbf1240ca689668f573f87f5a8b186837488b8af452fa7b5c3519af51aac1",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "moon"
+    },
+    {
+      "path": "assets/generated/ui/icons/moon-192.png",
+      "sha256": "53cee8794455a721db00ca1fd4f516ba1046461b10b039be770e2242dff48d1b",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "moon"
+    },
+    {
+      "path": "assets/generated/ui/icons/exit.svg",
+      "sha256": "c3faee734ec643dcaceac66374aa5d4949b9ea13de224216ee854ffe3eadf375",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "exit"
+    },
+    {
+      "path": "assets/generated/ui/icons/exit-96.png",
+      "sha256": "ea1b7ee202eb6e007583ac9b600d668cf4b20e43cf9c0d0c70427065c2227601",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "exit"
+    },
+    {
+      "path": "assets/generated/ui/icons/exit-192.png",
+      "sha256": "519e7f10438b546ad206074571c9426b3f7f2ea7e8de8551a76176793a6454db",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "exit"
+    },
+    {
+      "path": "assets/generated/ui/icons/cycle.svg",
+      "sha256": "67a3ab5595f0922ae11b136c0ddaaef4a9141f44a87750188edb5762bf9e5d05",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "cycle"
+    },
+    {
+      "path": "assets/generated/ui/icons/cycle-96.png",
+      "sha256": "c012c09537c20f6ce0cdb47dd6694ab62a69998e31c5688beafc0894117baa5a",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "cycle"
+    },
+    {
+      "path": "assets/generated/ui/icons/cycle-192.png",
+      "sha256": "d31d2c5e754480abb388d70b50366789ce057a265b638a5670d67bb64021757a",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "cycle"
+    },
+    {
+      "path": "assets/generated/ui/icons/hand.svg",
+      "sha256": "e08fad36b5b22b66e066c8511bae7cc131588e772c48aa89a9c8a63b47d6063f",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "hand"
+    },
+    {
+      "path": "assets/generated/ui/icons/hand-96.png",
+      "sha256": "43cabadc408e726a1192a5ca10796f2fcd5b45a789b5eb9086e17b3c5763c1ac",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "hand"
+    },
+    {
+      "path": "assets/generated/ui/icons/hand-192.png",
+      "sha256": "82af3a0ef53023cd9cf9aaf2108a764cd73318714bb6d94f6f852248df5aec70",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "hand"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-in.svg",
+      "sha256": "f25f3d09d3e1c9290d0c098d8814e748c43e14a310353264c7f5966c7c3c3b42",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "zoom-in"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-in-96.png",
+      "sha256": "43c05e767910352d8ebbfd90f2938e5665be4d9b53a40a9ba31593ebc6645841",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "zoom-in"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-in-192.png",
+      "sha256": "a16dc9932a71605885e5984b7e7630b7c6e75f33601d4764a4f98425d4f00a89",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "zoom-in"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-out.svg",
+      "sha256": "0dde0fdb79adf7b9fc198757f0ecb573a22b921e4c5241c945fc8de13d2d02c6",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "zoom-out"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-out-96.png",
+      "sha256": "0dd42c88f68a5ab0eea8ddb5afa278a2493d6016446443d56e05e4d2f51d91f9",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "zoom-out"
+    },
+    {
+      "path": "assets/generated/ui/icons/zoom-out-192.png",
+      "sha256": "17b71661a10be0e214b0eac5cfed15ce8385443f9d057f93202d02512362de41",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "zoom-out"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-left.svg",
+      "sha256": "6fe57268e13ad9d3e96f75ae8eb2ea774d8ea1109012c9923b7c2413976e767c",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "arrow-left"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-left-96.png",
+      "sha256": "2295e98837fb206a022579aafcd1a1a4868c0ddc6ffc2339263dedd12dde5495",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-left"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-left-192.png",
+      "sha256": "175bde0a7baee8ce87d99fa21c33c79adf75d66d2e449342462e87aee899dd06",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-left"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-right.svg",
+      "sha256": "afd4307d0fecddbb34496384d8f1014fa8eac13b16cc3c3fdac01c71761d0903",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "arrow-right"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-right-96.png",
+      "sha256": "46b7a01330f5aecad6f0c6c3f17e1737dbea5c7888b5cdd95f727a120394cb5c",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-right"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-right-192.png",
+      "sha256": "c8b0e420618f8d4619397efe6f24847ae5d772831793405a37e537368ad153ad",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-right"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-up.svg",
+      "sha256": "dd0c84bf2a38e8f6d8ce030796b67d26667dc2047b8fa096f6cc77d9bbcd0dfa",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "arrow-up"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-up-96.png",
+      "sha256": "a057ba5a8b7e9ec5863204608e601df09171778340604f0c7cfcb7489be5f8e3",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-up"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-up-192.png",
+      "sha256": "8cddbfabbe714fc14c2766895d2660c6cf3b08b14079c563852fcd69ee8407f3",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-up"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-down.svg",
+      "sha256": "88f99619dfee44ccfa92c8acdbcabdb43bb6e77f26e29791d5987a6736c66917",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "arrow-down"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-down-96.png",
+      "sha256": "9b63c2fcb568fc624fb6be82281b07c83c4d3d1725f4eec51ab72fca7c8d589e",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-down"
+    },
+    {
+      "path": "assets/generated/ui/icons/arrow-down-192.png",
+      "sha256": "feaa15a5a35c90f18856a3de61cd792730187dce9666faf9ba7ca8b7fdea3fa7",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "arrow-down"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-camera.svg",
+      "sha256": "d2921a9c97d17a9086931db0a26d369c0c0e8d1163d431c3e56d44e437db9977",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-camera"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-camera-96.png",
+      "sha256": "ff37ceeb6672e770ecacad78d02b10d6c0d256fdca8544160d1c0d75c04533de",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-camera"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-camera-192.png",
+      "sha256": "4cc4275151e5b89dbcda2e1b603fff878ff0f36e60c6c0ce12decc9518579893",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-camera"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-terrain.svg",
+      "sha256": "7f147883fdbc15279d0d2e79e3d35d58325736c69986bad033289f7a2bb937f3",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-terrain"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-terrain-96.png",
+      "sha256": "00f9b44297c493072490f0fffb292be1ffb3613ae70ca1c1aada38be813e5817",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-terrain"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-terrain-192.png",
+      "sha256": "179de36665696a950816ddebb8b451b0e5cb61ca818709d6c1a41538366f599b",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-terrain"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-people.svg",
+      "sha256": "d0755947b67f3c1d50996d7b145c12069008de0c8b12fdb7ea533bedcf0d3fda",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-people"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-people-96.png",
+      "sha256": "52f2371baa6951cbb7df75e35ad907a0a91021d1b1a41219d4b22a787e5c50d7",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-people"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-people-192.png",
+      "sha256": "18fe07fe0f3d3ca994c765ed967e29d2cfea94d71104cffdbca4fcd9946ef668",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-people"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-laws.svg",
+      "sha256": "1e02915d218d41714c3b79dac3a7989b1846186a8d4811d2d2d6fd111a632c58",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-laws"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-laws-96.png",
+      "sha256": "b872885942fcd553db7972a33eb4be4d53222abfd7f2536578bdf9dd5a9d4a05",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-laws"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-laws-192.png",
+      "sha256": "1e3261b75d335001d53521e579314fcae5d54588c3b56d66b36408015a803e19",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-laws"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-buildings.svg",
+      "sha256": "5ec1a59c23461cb7126a5817a2f2c6e8166b15dacd2d1748a634ed362b65e426",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-buildings"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-buildings-96.png",
+      "sha256": "8f1ad6a1c30d74c866557fcb377f77f287915b6b21350defc6298c6023dba47d",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-buildings"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-buildings-192.png",
+      "sha256": "9448f7a60f4fb22827845e20b67b057750c47a4bf8510aa0cdc68283d2db1076",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-buildings"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-economy.svg",
+      "sha256": "05d5a15c9c7f3fe0479d912326d78f3efeb48b7e5157986ddfb453fd0ca97ece",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-economy"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-economy-96.png",
+      "sha256": "5998f85cb5de936662ec5d7964e95a2b3172749b5655da2ece2a0e81dfd1f3e1",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-economy"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-economy-192.png",
+      "sha256": "4d789c354c0644744490001f9d2ce5b6c385afd7925a00f850b0db8e958ee0e1",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-economy"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-world.svg",
+      "sha256": "e2952ccc09d2d91aecaefaa2143b45faf8ee00f0989482a40948a3e3517ba49e",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-world"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-world-96.png",
+      "sha256": "c184d9749da18101b148377405ef0211c06278a547197fc8a8b256cfd744bfb0",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-world"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-world-192.png",
+      "sha256": "9e8a5e42c1c9ec9d23fff2f96d1c89dec283c9ad021cf4878828994ff8d9849d",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-world"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-settings.svg",
+      "sha256": "4a63f5d2f2984faac582a0c93375bf577a572def3cf7057d127d264737a7e398",
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "svg",
+      "object": "tab-settings"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-settings-96.png",
+      "sha256": "6909df9286874da1aaf7ca354bf73e1d84294c1a70231e9cdd0ff386f813bc59",
+      "pixels": 96,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-settings"
+    },
+    {
+      "path": "assets/generated/ui/icons/tab-settings-192.png",
+      "sha256": "3182a4a52c0aa500546f86c076d70483a0a8cfb733d9b8196b8e2394e0d56441",
+      "pixels": 192,
+      "palette": "original_heavy_dark_pixel_materials",
+      "format": "png",
+      "object": "tab-settings"
+    }
+  ]
+}

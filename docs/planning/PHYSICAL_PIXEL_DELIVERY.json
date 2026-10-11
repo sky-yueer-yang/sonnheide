@@ -1,0 +1,1672 @@
+{
+  "format": "SonnheidePhysicalPixelDelivery1",
+  "date": "2026-10-10",
+  "status": "pass",
+  "scope": "S00_S01_heavy_physical_pixel_UI_original_icons_and_materials",
+  "publication_parent": "7a723df2fb389d98ae5abf5345edad45b9cf179f",
+  "command": "python3 tools/build.py --sanitize --native-smoke --bundle --jobs 6",
+  "device": {
+    "renderer": "Metal",
+    "gpu": "Apple M3",
+    "pixel_size": [
+      2560,
+      1600
+    ],
+    "role": "development_GPU_evidence"
+  },
+  "build": {
+    "all_targets": true,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 130.21,
+    "core_invariant_checks": 71101,
+    "asan": true,
+    "ubsan": true
+  },
+  "native_action_count": 66,
+  "physical_gpu": {
+    "minimum_logical_size": [
+      480,
+      480
+    ],
+    "ui_material_sampling": "nearest",
+    "ui_icon_sampling": "nearest",
+    "ui_material_textures_uploaded": 9,
+    "ui_icon_textures_uploaded": 26,
+    "renderer": "Metal",
+    "camera": {
+      "yaw_deg": 32,
+      "pitch_deg": 32,
+      "distance_m": 299.2,
+      "target": [
+        528,
+        0,
+        272
+      ]
+    },
+    "pixel_size": [
+      2560,
+      1600
+    ],
+    "world_extent_m": [
+      1056,
+      544
+    ],
+    "terrain_profile": 2,
+    "management_cell_m": 2,
+    "micro_surface_m": 0.03125,
+    "building_grid_independent": true,
+    "theme_layers": 24,
+    "atlas_layers": 32,
+    "tile_pixels": 128,
+    "pixels_per_metre": 64,
+    "material_atlas_bytes": 2097152,
+    "material_uploads": 1,
+    "material_sha256": "9bac6cea8c7b83da1e7146da65943e47dbc8c8a32bcab1416760767a9b89ac7b",
+    "shadow_map": 1024,
+    "outline": false,
+    "water_level_m": 0,
+    "soil_height_m": 0,
+    "sand_height_m": 0,
+    "water_land_height_epsilon_m": 0,
+    "diagnostic": 0,
+    "presentation_only": false,
+    "presentation_seconds": 8.67913,
+    "menu_scene": "navy_pixel_stars_meteors",
+    "menu_geometry_generated": false,
+    "material_model": "authoritative_sparse_micro_surface_and_pixel_clusters",
+    "age": "Light",
+    "surface_identity": "24d523fa092eceb6e4298304384e8c71",
+    "surface_revision": 1,
+    "mesh_uploads": 834,
+    "mesh_cache_resets": 5,
+    "resident_detail_chunks": 128,
+    "resident_chunk_limit": 128,
+    "cached_geometry_vertices": 948240,
+    "cached_geometry_indices": 1422360,
+    "cached_geometry_gpu_bytes": 39826080,
+    "geometry_resident_limit_bytes": 67108864,
+    "far_elevated_geometry_bytes": 0,
+    "geometry_evictions": 305,
+    "detail_geometry_upload_bytes_this_frame": 0,
+    "detail_texture_upload_bytes_this_frame": 0,
+    "detail_upload_limit_bytes_per_frame": 8388608,
+    "near_surface_geometry": "exact_micro_mask_on_shared_zero_plane",
+    "land_mask_vertices": 4,
+    "decoration_cpu_sample_limit_per_frame": 65536,
+    "decoration_cpu_samples_this_frame": 0,
+    "decoration_cpu_chunk_limit_per_frame": 16,
+    "decoration_cpu_chunks_this_frame": 0,
+    "complete_overview_gpu_bytes": 574464,
+    "coverage_count_bits": 13,
+    "complete_overview_available": true,
+    "fine_coverage_atlas_gpu_bytes": 16777216,
+    "fine_page_gpu_bytes": 65536,
+    "fine_atlas_patch_limit": 1024,
+    "resident_fine_patches": 0,
+    "fine_patch_candidates": 0,
+    "fine_patch_deferred": 0,
+    "fine_decode_column_limit_per_frame": 1048576,
+    "fine_window_management_cell_limit": 16384,
+    "fine_texture_uploads": 0,
+    "fine_page_uploads": 5,
+    "decoration_quads": 237060,
+    "mechanical_trees_spawned_by_renderer": 0,
+    "water_depth_uploads": 5,
+    "water_depth_cell_m": 2,
+    "outside_water_depth_m": 20,
+    "scene_logical": [
+      0,
+      0,
+      1280,
+      800
+    ]
+  },
+  "modal_layer": {
+    "native_pointer_acknowledged": true,
+    "path": "SDL_PushEvent -> App routing -> RmlUi pointer hit -> error dismiss",
+    "screen": "creation",
+    "status": "pass",
+    "topmost_action_hit": true
+  },
+  "creation": {
+    "centered": true,
+    "creation_entry": "blank_only",
+    "dialog_height_px": 1408,
+    "dialog_left_px": 672,
+    "dialog_top_px": 96,
+    "dialog_width_px": 1216,
+    "geography_loaded_on_startup": false,
+    "status": "pass",
+    "viewport_height_px": 1600,
+    "viewport_width_px": 2560,
+    "world_map_controls_present": false
+  },
+  "large_world": {
+    "actual_geometry_bytes": 394096,
+    "continue_roundtrip_surface_identical": true,
+    "core_height_cells": 4096,
+    "core_width_cells": 4096,
+    "geometry_budget_bytes": 134217728,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "native_gpu_parameters_file": "large-world-gpu.json",
+    "physical_height_mm": 8192000,
+    "physical_width_mm": 8192000,
+    "status": "pass",
+    "surface_hash": "6e6ab529b2b9071e97583ee00d6f34b88d9db35b4f291d292017e622877b81c2",
+    "zero_plane_land_pick_mm": 0
+  },
+  "presentation": {
+    "image_comparison_required": true,
+    "live_advance_ms": 1513,
+    "local_clock_frozen": true,
+    "menu_creates_world": false,
+    "status": "pass",
+    "actual_gpu_pixels_frozen_identical": true,
+    "gpu_rounding_tolerance_lsb": 1,
+    "frozen_max_channel_delta": 0,
+    "live_significant_changed_channels": 12672,
+    "rgba_bytes": 16384000
+  },
+  "ui": {
+    "materials": [
+      "marble",
+      "brass",
+      "crimson",
+      "obsidian",
+      "wood",
+      "parchment",
+      "leather",
+      "iron",
+      "enamel"
+    ],
+    "material_rim_dp": 3,
+    "material_depth_dp": 3,
+    "material_pixels": [
+      512,
+      512
+    ],
+    "material_scale": "1 texel per logical dp; cached UV-tiled geometry",
+    "icons": 41,
+    "icon_outputs": 123,
+    "icon_logical_grid": 48,
+    "icon_dark_outline_cells": 2,
+    "icon_actual_painted_bounds_min_fraction": 0.7916666666666666,
+    "icon_alpha": "binary with transparent safety edge",
+    "action_text_dp": 24,
+    "tool_icon_dp": 48,
+    "tool_slot_dp": 60,
+    "tabs": {
+      "active_dp": 62,
+      "inactive_dp": 58,
+      "neck_dp": 6
+    },
+    "locales": [
+      "zh-CN",
+      "en",
+      "de"
+    ],
+    "tested_logical_viewports": [
+      [
+        480,
+        480
+      ],
+      [
+        480,
+        640
+      ],
+      [
+        640,
+        480
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "densities": [
+      1,
+      2
+    ],
+    "important_gold": "#d99100",
+    "important_red": "#c83a29",
+    "layout_rejection_warnings": 0,
+    "future_tool_fake_success": false
+  },
+  "source_code_manifest": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "30f778f180823673cfa400fded413b04138b0a46d276bff1df1d6d3e4cf776b0"
+    },
+    {
+      "path": "apps/game/main.cpp",
+      "sha256": "3c95e3487e0d540f9d9d1868abfc9f0757370079a7e7d7bcf6a2f1bc32c9e577"
+    },
+    {
+      "path": "assets/manifests/arcade_fonts.json",
+      "sha256": "1653cf120cd5f1900fd7ca383436f41a53e2a6f9aa589991861447ca9ede0a03"
+    },
+    {
+      "path": "assets/manifests/civic_hall_graybox.json",
+      "sha256": "bde0a9f22d23e1696d8f82795dd23142727734b26050dd00b508e5d56f06b443"
+    },
+    {
+      "path": "assets/manifests/ground_sky_runtime.json",
+      "sha256": "b7580192b39c7ddcafba328592b9951eebdfb6a72d81ced4404f60a2460eed59"
+    },
+    {
+      "path": "assets/manifests/ground_sky_sources.json",
+      "sha256": "7e517a55e1d75b0dd98b6d17bd6ca8748408762e54cc7a1f2427a8b13bb79baa"
+    },
+    {
+      "path": "assets/manifests/interface_assets.json",
+      "sha256": "848d828eddea6a8258ae9da1b4f755b70ecedf991f080cb056c23880046d735b"
+    },
+    {
+      "path": "assets/manifests/makehuman_candidates.json",
+      "sha256": "4ed3d650469a69d3ed8c5e597ef52d6a166426d54b82dcae9c0cce1414cdc9f3"
+    },
+    {
+      "path": "assets/manifests/makehuman_sources.json",
+      "sha256": "225be8a2152291d9b56532959e8ee7ca029466de85a8dc2d99c1744a9a91c284"
+    },
+    {
+      "path": "assets/manifests/menu_paintings.json",
+      "sha256": "160b64af5a436a0ae67757df28398026990e422f8ee8b9f1049db969c5aae15c"
+    },
+    {
+      "path": "assets/manifests/native_fonts.json",
+      "sha256": "e285513713523309c8c6afa348e4e41816991d0e95c23bf98800cb10132c9146"
+    },
+    {
+      "path": "assets/manifests/original_ui_icons.json",
+      "sha256": "ba984f31217f1d7d487d4fa9c70f2f9ce1c858af20fa7368ce52c48f819d1db9"
+    },
+    {
+      "path": "assets/manifests/original_ui_materials.json",
+      "sha256": "1c8d9f885cdaafc3a81598c19510d2fbfc9ebf27768e082e01206b79b63e75f9"
+    },
+    {
+      "path": "assets/manifests/port_graybox.json",
+      "sha256": "4cc9fddb8f32a9cf03f2146a03fba209dd40a956d370ba3bb6b74b485358b2f4"
+    },
+    {
+      "path": "assets/manifests/residence_graybox.json",
+      "sha256": "e3e81b8d375cb8354de7e7c255238d8578ef1e0de141b1527a12170133c61d8a"
+    },
+    {
+      "path": "assets/shaders/common.sh",
+      "sha256": "898a0c49d37ed230b1bd78b812bf603d834185bd576bcb684e66ba13b0d86e02"
+    },
+    {
+      "path": "assets/shaders/shadow.fs.sc",
+      "sha256": "889f9e162b323b055e54292ee269aa60ec94a7cf35752b15084c47dc80c726a5"
+    },
+    {
+      "path": "assets/shaders/shadow.vs.sc",
+      "sha256": "94410a6484f25caa0ffb868bd5bf99eb324efc649e9b9beff046131697b937dd"
+    },
+    {
+      "path": "assets/shaders/sky.fs.sc",
+      "sha256": "427b9192d8142e924e8cfd441e58854df69cfbb0e758ada08a68e758feeb4671"
+    },
+    {
+      "path": "assets/shaders/sky.vs.sc",
+      "sha256": "1e42f47fa8fc675c3f88ee16fbc5c3ae0ba84da3598db0e9dd920a4ad072c3f0"
+    },
+    {
+      "path": "assets/shaders/surface.sh",
+      "sha256": "c98562911e824fcc399d63daf3c2043acd41c9dc76ce256ffe0001d12b19feac"
+    },
+    {
+      "path": "assets/shaders/ui.fs.sc",
+      "sha256": "cbacaa7fdf8b99f240e4215965f7aa379309b5a0158e5f2ded406eef234a14d8"
+    },
+    {
+      "path": "assets/shaders/ui.vs.sc",
+      "sha256": "5f607d6d65d90705f44bac007698eb5e07d42a53a59787322ddf076c7d58d060"
+    },
+    {
+      "path": "assets/shaders/varying.def.sc",
+      "sha256": "a5a2cb446b80bc10c4cf2a109a10a1bfee7dbf9df7ed12c82bd6fccf972bb0e0"
+    },
+    {
+      "path": "assets/shaders/water.fs.sc",
+      "sha256": "7186846e7634c64c514ec0f339bdb75dcddbed27939e436dcd8d3dc8ff4bcaf0"
+    },
+    {
+      "path": "assets/shaders/world.fs.sc",
+      "sha256": "9a4479930b55939423c9ef00c8fd61088efa6854aeaeef8f5ca0ac5928de05d4"
+    },
+    {
+      "path": "assets/shaders/world.vs.sc",
+      "sha256": "cc8c7cd3a918a180f0b02d474a65b979b2d62befe53cae2d75c2d5eba56680d3"
+    },
+    {
+      "path": "assets/ui/application.rcss",
+      "sha256": "5d60a1061ef6974736bae064f67a3b299b20b85136ccb72256a20b0961dd1423"
+    },
+    {
+      "path": "assets/ui/application.rml",
+      "sha256": "bd46ddcb8accea653e858975e056b2e3af3462b6095955b6fc47f5dfa1d90450"
+    },
+    {
+      "path": "assets/ui/locales.tsv",
+      "sha256": "b15dbb9d49e87372c43fb098f2baa5cfee70a618e23078666b9eb1ea348f478d"
+    },
+    {
+      "path": "data/contracts/civic_control_v1.json",
+      "sha256": "053dc2f3c772772723564515ff7ac22d979b6331fef4f4dbd2b86d90afac316b"
+    },
+    {
+      "path": "data/contracts/decision_core_v1.json",
+      "sha256": "021d6af9dfd97f9fb82b479683dea28e975c12c84a062f016d0236d09833ddc7"
+    },
+    {
+      "path": "data/contracts/economic_decisions_v1.json",
+      "sha256": "a7056780707fd1b43471808aabd4d8f4585394955fb9542dc763999a06466dc1"
+    },
+    {
+      "path": "data/contracts/emergence_algorithms_v1.json",
+      "sha256": "6609b02e8309272e6ad6b41a2700308d9a08e3f5e2a0d10a5b6ac4cb5246551d"
+    },
+    {
+      "path": "data/contracts/game_v0_8.json",
+      "sha256": "ba3917aeb5e1f509936da0467ed50c24c7a59147d047769d4eb502fdc5ee3c8b"
+    },
+    {
+      "path": "data/contracts/game_v0_9.json",
+      "sha256": "60d9f064de48ab5fdbf872e745d67185931d81550464182ea40b1815e4c72422"
+    },
+    {
+      "path": "data/contracts/god_control_v1.json",
+      "sha256": "9c8a9924940a6dbb9a4254441301f846cff5b97a6708abef629e2b938bf64ac5"
+    },
+    {
+      "path": "data/contracts/interaction_runtime_v1.json",
+      "sha256": "6944c85f808acd66cfe41283bf8ffa5d2c7f99cbe9723feda8ee3a8e307046c4"
+    },
+    {
+      "path": "data/contracts/life_genetics_v1.json",
+      "sha256": "e52d7deedc42c49159a2dcdb0e3871448b1fe1c43a8ce26a095211e83f0663af"
+    },
+    {
+      "path": "data/contracts/natural_action_v1.json",
+      "sha256": "9e10aac3c8dceca9e301dbcd639e3f98841e8418a1eaaac73940a158a005aa5e"
+    },
+    {
+      "path": "data/contracts/pixel_world.json",
+      "sha256": "6ca9435afdbbc3d2bb979b60e5d5dac3699cf9cddb8915a5a84194b461877475"
+    },
+    {
+      "path": "data/contracts/political_decisions_v1.json",
+      "sha256": "0bdc94e74e0e2cff66a275c3e4d242b7abfc79020261798aff04ab5af5524c20"
+    },
+    {
+      "path": "data/contracts/runtime_foundation_v1.json",
+      "sha256": "b821e8ba15586c65f76faeb0a84eba2bb8df8adbfe7cbac53b8d52b6ab068651"
+    },
+    {
+      "path": "data/contracts/settlement_lifecycle_v1.json",
+      "sha256": "d4b27e7e888b6c48d5cc72141c5ef343cc2ae0624afc10915ce7561a9d2c3ba8"
+    },
+    {
+      "path": "data/contracts/social_decisions_v1.json",
+      "sha256": "ee7862d3ace666bd4a7ba045fb236f50ce40666ac54639a7a791a7a72f9283f3"
+    },
+    {
+      "path": "data/contracts/surface_ecology.json",
+      "sha256": "c914270d96c0cc3ebac8c6f2ace2e148195699d059816ad5fb5b6f4c5357b99b"
+    },
+    {
+      "path": "data/contracts/terrain_access_v1.json",
+      "sha256": "9841b042db54cde77767b366106f1e2bb9e1c660ae67be253512d377063fb0f2"
+    },
+    {
+      "path": "data/contracts/tool_registry_v1.json",
+      "sha256": "3ef85a80284fb8ede25def1cce275f9ecc58e86b175ed4282d4406f3c4fdad44"
+    },
+    {
+      "path": "data/contracts/vegetation_generator_v1.json",
+      "sha256": "1f4c68fc91651b3b30d176a2ef5322b3498f6e8f4ee384ebae9dd01d2f4db22f"
+    },
+    {
+      "path": "data/contracts/warfare_decisions_v1.json",
+      "sha256": "01074d942be8930722e32b700f7134afda9e21c3a727428ee059110d005e1a67"
+    },
+    {
+      "path": "src/client/client.cpp",
+      "sha256": "fca29d59e45d529f195e4ccd76b10c8c2f494b5aa97883ce0e1443057fa833d7"
+    },
+    {
+      "path": "src/client/client.hpp",
+      "sha256": "812b7945317d7893011a3d9b72dd9037c28b0b46922b7442f24394384d631e9d"
+    },
+    {
+      "path": "src/core/geography.cpp",
+      "sha256": "8ba1e15c733bd4cca60f15d2ab95a3142bfaaca5cfd2216b36d07c6b696267e1"
+    },
+    {
+      "path": "src/core/hash.cpp",
+      "sha256": "f56b7f608e11b617952235f9b12a466d6530c464e3e0807e1ac36191b9c9b5b0"
+    },
+    {
+      "path": "src/core/json.cpp",
+      "sha256": "938066324f0e02f4a1638ce76a2b9b9ed92e7f907762badee7e28ef06a71ecac"
+    },
+    {
+      "path": "src/core/ref_registry.inc",
+      "sha256": "3106c2bfe953990a70a36276d8b82e2e06b5014b914d27fdea897d7f133444db"
+    },
+    {
+      "path": "src/core/save.cpp",
+      "sha256": "1a208813be14e88b721361fa72a544cc8b8a5fbca876e0b55ba214870c71b47f"
+    },
+    {
+      "path": "src/core/sonnheide.hpp",
+      "sha256": "a59e7e3c48cdab4221c4c8ca65431536700930388336c3b3e6a6ae2ec0c49eb6"
+    },
+    {
+      "path": "src/core/terrain.cpp",
+      "sha256": "4360fd325ad9339c09b9f121412f7f5fa36d7e6c277f5ba0d03cac96c8653bf0"
+    },
+    {
+      "path": "src/core/unicode_tables.inc",
+      "sha256": "ef51f94739b47201f0b023ec2631cb0975dfe83aba5a7718f18c9747b717792a"
+    },
+    {
+      "path": "src/core/world.cpp",
+      "sha256": "acf729aeae7f3962d80252c16644b8278a6e50b7d8874db73ace488d3cf50397"
+    },
+    {
+      "path": "src/ui/pixel_decorator.cpp",
+      "sha256": "bcc5d47d8784d19c9e1f9f140d67008f23bd4d348010cfb3b31b3961b0726a16"
+    },
+    {
+      "path": "src/ui/pixel_decorator.hpp",
+      "sha256": "90fcefcf2c39c6ad3bb5f6e88c48add1f0de9dfff3ff2f422aacef494c249303"
+    },
+    {
+      "path": "src/ui/ui.cpp",
+      "sha256": "00eac2d6421ae0d9cb9ef82702e0220a7a45822e6948c2de76ffb453cdacbec1"
+    },
+    {
+      "path": "src/ui/ui.hpp",
+      "sha256": "db1ac5e33fbcb4f0945f34440c00d2298a3a274ef143944924ca229e1b62ff45"
+    },
+    {
+      "path": "tests/core/core_tests.cpp",
+      "sha256": "550ee6dcc6adfda4e37510b59b56b7bfca8aee7b12949168b630b3499e2a5478"
+    },
+    {
+      "path": "tests/ui/ui_tests.cpp",
+      "sha256": "414254603177bc6bb76dd5918208203354cc3909055106f322c6f995747ce809"
+    },
+    {
+      "path": "tools/build.py",
+      "sha256": "0ab31f7176c364aa353dec0a719940f9c465f1502218f88560b03ea74a21f74b"
+    },
+    {
+      "path": "tools/generate_interaction_spec.py",
+      "sha256": "748f403ab80d86e48329c79a0893d6e955c5c81c88c6a039c9e1ddb1c224a9ea"
+    },
+    {
+      "path": "tools/generate_ui_materials.py",
+      "sha256": "5c5eb801c929c696f3dfb763b840eb0ab47cdb0b02750fc1551f0bcacc8aef63"
+    },
+    {
+      "path": "tools/generate_unicode_tables.py",
+      "sha256": "25c4cb60b70dc2459aabf3ec42c222992af26bfd97e9154bd87760e5dda20fbf"
+    },
+    {
+      "path": "tools/generate_visual_assets.py",
+      "sha256": "8322436b12a6d23a4988bf57606b4bab119042dbc59b983227601305ba3a5446"
+    },
+    {
+      "path": "tools/play.py",
+      "sha256": "2dbc711a6ec146c39fb78a97c5c2fc1dafe8116cd3e919103552ad023ddad183"
+    },
+    {
+      "path": "tools/prepare_sources.py",
+      "sha256": "4d930d11c21a8184aa7175f30191322f829137f03d5230de34fd485b10776ec5"
+    },
+    {
+      "path": "tools/validate_design.py",
+      "sha256": "cdeb7db056d0e937d01701033804eb0f8f30fe51f78a7976b85072391764d30e"
+    },
+    {
+      "path": "tools/validate_project.py",
+      "sha256": "a8cfdadf7efb0c540e4f47eab32bee39948ae53324e78eca906d9e5d4a980939"
+    },
+    {
+      "path": "tools/validate_ui_artwork.py",
+      "sha256": "26cb63ebe1944544ae705dab4d278bf1ae2f580ee8b92d59cf14dee7612d8d0e"
+    }
+  ],
+  "executable_sha256": "da1421e11192b80234be443538f823c75c407fa69fe395b61275e2b4a946a453",
+  "resource_manifests": {
+    "definitions.json": {
+      "files": [
+        {
+          "path": "data/content/combat_profiles_v1.json",
+          "sha256": "7af094de21b34cc631a9cf6ce3c416dff46aa7638303e19d8a7af75c13f480b3"
+        },
+        {
+          "path": "data/content/economy_content_v1.json",
+          "sha256": "4269f5995a1237849c235e5e7d9a96e10b240646d8ea6fac01f0571fc01219ef"
+        },
+        {
+          "path": "data/content/life_profiles_v1.json",
+          "sha256": "bfa71e06e3ad16af0c57fd2922de9fc55c617eab02aa2a4f580736f29825f096"
+        },
+        {
+          "path": "data/content/technology_runtime_v1.json",
+          "sha256": "bca2583b43db79c2401071adc71987636be7f1cfb158546901004fba28e8fa4b"
+        },
+        {
+          "path": "data/contracts/civic_control_v1.json",
+          "sha256": "053dc2f3c772772723564515ff7ac22d979b6331fef4f4dbd2b86d90afac316b"
+        },
+        {
+          "path": "data/contracts/decision_core_v1.json",
+          "sha256": "021d6af9dfd97f9fb82b479683dea28e975c12c84a062f016d0236d09833ddc7"
+        },
+        {
+          "path": "data/contracts/economic_decisions_v1.json",
+          "sha256": "a7056780707fd1b43471808aabd4d8f4585394955fb9542dc763999a06466dc1"
+        },
+        {
+          "path": "data/contracts/emergence_algorithms_v1.json",
+          "sha256": "6609b02e8309272e6ad6b41a2700308d9a08e3f5e2a0d10a5b6ac4cb5246551d"
+        },
+        {
+          "path": "data/contracts/game_v0_9.json",
+          "sha256": "60d9f064de48ab5fdbf872e745d67185931d81550464182ea40b1815e4c72422"
+        },
+        {
+          "path": "data/contracts/god_control_v1.json",
+          "sha256": "9c8a9924940a6dbb9a4254441301f846cff5b97a6708abef629e2b938bf64ac5"
+        },
+        {
+          "path": "data/contracts/interaction_runtime_v1.json",
+          "sha256": "6944c85f808acd66cfe41283bf8ffa5d2c7f99cbe9723feda8ee3a8e307046c4"
+        },
+        {
+          "path": "data/contracts/life_genetics_v1.json",
+          "sha256": "e52d7deedc42c49159a2dcdb0e3871448b1fe1c43a8ce26a095211e83f0663af"
+        },
+        {
+          "path": "data/contracts/natural_action_v1.json",
+          "sha256": "9e10aac3c8dceca9e301dbcd639e3f98841e8418a1eaaac73940a158a005aa5e"
+        },
+        {
+          "path": "data/contracts/pixel_world.json",
+          "sha256": "6ca9435afdbbc3d2bb979b60e5d5dac3699cf9cddb8915a5a84194b461877475"
+        },
+        {
+          "path": "data/contracts/political_decisions_v1.json",
+          "sha256": "0bdc94e74e0e2cff66a275c3e4d242b7abfc79020261798aff04ab5af5524c20"
+        },
+        {
+          "path": "data/contracts/runtime_foundation_v1.json",
+          "sha256": "b821e8ba15586c65f76faeb0a84eba2bb8df8adbfe7cbac53b8d52b6ab068651"
+        },
+        {
+          "path": "data/contracts/settlement_lifecycle_v1.json",
+          "sha256": "d4b27e7e888b6c48d5cc72141c5ef343cc2ae0624afc10915ce7561a9d2c3ba8"
+        },
+        {
+          "path": "data/contracts/social_decisions_v1.json",
+          "sha256": "ee7862d3ace666bd4a7ba045fb236f50ce40666ac54639a7a791a7a72f9283f3"
+        },
+        {
+          "path": "data/contracts/surface_ecology.json",
+          "sha256": "c914270d96c0cc3ebac8c6f2ace2e148195699d059816ad5fb5b6f4c5357b99b"
+        },
+        {
+          "path": "data/contracts/terrain_access_v1.json",
+          "sha256": "9841b042db54cde77767b366106f1e2bb9e1c660ae67be253512d377063fb0f2"
+        },
+        {
+          "path": "data/contracts/tool_registry_v1.json",
+          "sha256": "3ef85a80284fb8ede25def1cce275f9ecc58e86b175ed4282d4406f3c4fdad44"
+        },
+        {
+          "path": "data/contracts/vegetation_generator_v1.json",
+          "sha256": "1f4c68fc91651b3b30d176a2ef5322b3498f6e8f4ee384ebae9dd01d2f4db22f"
+        },
+        {
+          "path": "data/contracts/warfare_decisions_v1.json",
+          "sha256": "01074d942be8930722e32b700f7134afda9e21c3a727428ee059110d005e1a67"
+        }
+      ],
+      "format": "SonnDefinitions1"
+    },
+    "assets.json": {
+      "files": [
+        {
+          "path": "fonts/fusion-pixel-12px-proportional-zh_hans.otf",
+          "sha256": "9955f9e20abd758316418a2942aa6ee773754060da4a3f9286581fd11312f6c3"
+        },
+        {
+          "path": "generated/buildings/civic_hall_graybox.gltf",
+          "sha256": "0e56eb2727ba47a2f9e23f48a72c1060021138b178191e4351aa79c72537f914"
+        },
+        {
+          "path": "generated/buildings/port_graybox.gltf",
+          "sha256": "fafd10ed4f66a0cd2dbf767cfa02a2d6d061242930ed9f4edaa2712305e7e3b0"
+        },
+        {
+          "path": "generated/buildings/residence_graybox.gltf",
+          "sha256": "2f9b182f50c5c72dc23331636b88936326c4a6a66f7439381dadc42790ac6149"
+        },
+        {
+          "path": "generated/ui/icons/arrow-down-192.png",
+          "sha256": "feaa15a5a35c90f18856a3de61cd792730187dce9666faf9ba7ca8b7fdea3fa7"
+        },
+        {
+          "path": "generated/ui/icons/arrow-down-96.png",
+          "sha256": "9b63c2fcb568fc624fb6be82281b07c83c4d3d1725f4eec51ab72fca7c8d589e"
+        },
+        {
+          "path": "generated/ui/icons/arrow-down.svg",
+          "sha256": "88f99619dfee44ccfa92c8acdbcabdb43bb6e77f26e29791d5987a6736c66917"
+        },
+        {
+          "path": "generated/ui/icons/arrow-left-192.png",
+          "sha256": "175bde0a7baee8ce87d99fa21c33c79adf75d66d2e449342462e87aee899dd06"
+        },
+        {
+          "path": "generated/ui/icons/arrow-left-96.png",
+          "sha256": "2295e98837fb206a022579aafcd1a1a4868c0ddc6ffc2339263dedd12dde5495"
+        },
+        {
+          "path": "generated/ui/icons/arrow-left.svg",
+          "sha256": "6fe57268e13ad9d3e96f75ae8eb2ea774d8ea1109012c9923b7c2413976e767c"
+        },
+        {
+          "path": "generated/ui/icons/arrow-right-192.png",
+          "sha256": "c8b0e420618f8d4619397efe6f24847ae5d772831793405a37e537368ad153ad"
+        },
+        {
+          "path": "generated/ui/icons/arrow-right-96.png",
+          "sha256": "46b7a01330f5aecad6f0c6c3f17e1737dbea5c7888b5cdd95f727a120394cb5c"
+        },
+        {
+          "path": "generated/ui/icons/arrow-right.svg",
+          "sha256": "afd4307d0fecddbb34496384d8f1014fa8eac13b16cc3c3fdac01c71761d0903"
+        },
+        {
+          "path": "generated/ui/icons/arrow-up-192.png",
+          "sha256": "8cddbfabbe714fc14c2766895d2660c6cf3b08b14079c563852fcd69ee8407f3"
+        },
+        {
+          "path": "generated/ui/icons/arrow-up-96.png",
+          "sha256": "a057ba5a8b7e9ec5863204608e601df09171778340604f0c7cfcb7489be5f8e3"
+        },
+        {
+          "path": "generated/ui/icons/arrow-up.svg",
+          "sha256": "dd0c84bf2a38e8f6d8ce030796b67d26667dc2047b8fa096f6cc77d9bbcd0dfa"
+        },
+        {
+          "path": "generated/ui/icons/audio-192.png",
+          "sha256": "348149c2f85ca9830fe4293e94592ec88a2e477300adc7feb429b25737094450"
+        },
+        {
+          "path": "generated/ui/icons/audio-96.png",
+          "sha256": "028f64a2165868cc11c04df33f6dffe0be1cced10887d1dc8dcdf8378956bb99"
+        },
+        {
+          "path": "generated/ui/icons/audio.svg",
+          "sha256": "0d6b7280102df74631a1cbe8012d916cef0e6fd4374c80e8355edc5cdd141e20"
+        },
+        {
+          "path": "generated/ui/icons/back-192.png",
+          "sha256": "175bde0a7baee8ce87d99fa21c33c79adf75d66d2e449342462e87aee899dd06"
+        },
+        {
+          "path": "generated/ui/icons/back-96.png",
+          "sha256": "2295e98837fb206a022579aafcd1a1a4868c0ddc6ffc2339263dedd12dde5495"
+        },
+        {
+          "path": "generated/ui/icons/back.svg",
+          "sha256": "6fe57268e13ad9d3e96f75ae8eb2ea774d8ea1109012c9923b7c2413976e767c"
+        },
+        {
+          "path": "generated/ui/icons/blank-192.png",
+          "sha256": "fea31b8d8d12004d169c6027c6c85b467102ff62a0e613979c5427ef204d7609"
+        },
+        {
+          "path": "generated/ui/icons/blank-96.png",
+          "sha256": "0fd048353ac0214c12033ee8adbda955217b684e06e2bbb771378f4a92608c68"
+        },
+        {
+          "path": "generated/ui/icons/blank.svg",
+          "sha256": "c2799d607dd98219e69451f93bbbc619dfd26457a2d6bf9d296d21e652ee92d5"
+        },
+        {
+          "path": "generated/ui/icons/buildings-192.png",
+          "sha256": "9448f7a60f4fb22827845e20b67b057750c47a4bf8510aa0cdc68283d2db1076"
+        },
+        {
+          "path": "generated/ui/icons/buildings-96.png",
+          "sha256": "8f1ad6a1c30d74c866557fcb377f77f287915b6b21350defc6298c6023dba47d"
+        },
+        {
+          "path": "generated/ui/icons/buildings.svg",
+          "sha256": "5ec1a59c23461cb7126a5817a2f2c6e8166b15dacd2d1748a634ed362b65e426"
+        },
+        {
+          "path": "generated/ui/icons/camera-192.png",
+          "sha256": "4cc4275151e5b89dbcda2e1b603fff878ff0f36e60c6c0ce12decc9518579893"
+        },
+        {
+          "path": "generated/ui/icons/camera-96.png",
+          "sha256": "ff37ceeb6672e770ecacad78d02b10d6c0d256fdca8544160d1c0d75c04533de"
+        },
+        {
+          "path": "generated/ui/icons/camera.svg",
+          "sha256": "d2921a9c97d17a9086931db0a26d369c0c0e8d1163d431c3e56d44e437db9977"
+        },
+        {
+          "path": "generated/ui/icons/check-192.png",
+          "sha256": "d19c327e06520d3ab8cb3170647afc159c9bd3cbfe708c52d6f0299111c43d73"
+        },
+        {
+          "path": "generated/ui/icons/check-96.png",
+          "sha256": "a85cf034ca592054f8dca4b34759d7efad91706fed9ba54bf3ac2d89efac40b3"
+        },
+        {
+          "path": "generated/ui/icons/check.svg",
+          "sha256": "57027bffa2187cd419cd074c5c42466c48647fb12c77e0bbe31e5d4912f3b7be"
+        },
+        {
+          "path": "generated/ui/icons/close-192.png",
+          "sha256": "e894ffb3f4db4734c79c1d8d15238fa2aba5b4ae59d6d4f8235f62e08540ced9"
+        },
+        {
+          "path": "generated/ui/icons/close-96.png",
+          "sha256": "2fd69b079f3701d60beaf3f7cab348bb481c42f32fb31ee7b9f09eaa813426f1"
+        },
+        {
+          "path": "generated/ui/icons/close.svg",
+          "sha256": "c5c9383394955f48637817a2ad763f1692f9e0d39f5b14b1e6dc637becf4d92d"
+        },
+        {
+          "path": "generated/ui/icons/create-192.png",
+          "sha256": "1a523195ca38e3ad56ab2e5a838dc09adf5bf2073102da842d4d710924a4ff02"
+        },
+        {
+          "path": "generated/ui/icons/create-96.png",
+          "sha256": "96fba31cf86d0e4f117aa162656408d3183b6962c3136523acce970f64275c75"
+        },
+        {
+          "path": "generated/ui/icons/create.svg",
+          "sha256": "b3ed2eb4baa43cb917afb31c0a249e7eec1de71c81be40e4380791ed2a9acd0f"
+        },
+        {
+          "path": "generated/ui/icons/cycle-192.png",
+          "sha256": "d31d2c5e754480abb388d70b50366789ce057a265b638a5670d67bb64021757a"
+        },
+        {
+          "path": "generated/ui/icons/cycle-96.png",
+          "sha256": "c012c09537c20f6ce0cdb47dd6694ab62a69998e31c5688beafc0894117baa5a"
+        },
+        {
+          "path": "generated/ui/icons/cycle.svg",
+          "sha256": "67a3ab5595f0922ae11b136c0ddaaef4a9141f44a87750188edb5762bf9e5d05"
+        },
+        {
+          "path": "generated/ui/icons/earth-192.png",
+          "sha256": "38c0bd89819968cfc65ef5e99dc64463dce4cf9b8ba672fb3d0c5ee1e38c5a1c"
+        },
+        {
+          "path": "generated/ui/icons/earth-96.png",
+          "sha256": "45b9f7bf0a0cd1eea12b39c8dafcce8b315969e56c630602c45b601cdc8ed8c4"
+        },
+        {
+          "path": "generated/ui/icons/earth.svg",
+          "sha256": "a50521f093d2f3ad716d2c18782c7e4f4edebb8788a5cc4d08d3dd399faeca8d"
+        },
+        {
+          "path": "generated/ui/icons/economy-192.png",
+          "sha256": "4d789c354c0644744490001f9d2ce5b6c385afd7925a00f850b0db8e958ee0e1"
+        },
+        {
+          "path": "generated/ui/icons/economy-96.png",
+          "sha256": "5998f85cb5de936662ec5d7964e95a2b3172749b5655da2ece2a0e81dfd1f3e1"
+        },
+        {
+          "path": "generated/ui/icons/economy.svg",
+          "sha256": "05d5a15c9c7f3fe0479d912326d78f3efeb48b7e5157986ddfb453fd0ca97ece"
+        },
+        {
+          "path": "generated/ui/icons/exit-192.png",
+          "sha256": "519e7f10438b546ad206074571c9426b3f7f2ea7e8de8551a76176793a6454db"
+        },
+        {
+          "path": "generated/ui/icons/exit-96.png",
+          "sha256": "ea1b7ee202eb6e007583ac9b600d668cf4b20e43cf9c0d0c70427065c2227601"
+        },
+        {
+          "path": "generated/ui/icons/exit.svg",
+          "sha256": "c3faee734ec643dcaceac66374aa5d4949b9ea13de224216ee854ffe3eadf375"
+        },
+        {
+          "path": "generated/ui/icons/hand-192.png",
+          "sha256": "82af3a0ef53023cd9cf9aaf2108a764cd73318714bb6d94f6f852248df5aec70"
+        },
+        {
+          "path": "generated/ui/icons/hand-96.png",
+          "sha256": "43cabadc408e726a1192a5ca10796f2fcd5b45a789b5eb9086e17b3c5763c1ac"
+        },
+        {
+          "path": "generated/ui/icons/hand.svg",
+          "sha256": "e08fad36b5b22b66e066c8511bae7cc131588e772c48aa89a9c8a63b47d6063f"
+        },
+        {
+          "path": "generated/ui/icons/help-192.png",
+          "sha256": "de7dc291d1e9f4d110ef7f9849379c9051d4805975aff1e93ee87fd5a0ce86aa"
+        },
+        {
+          "path": "generated/ui/icons/help-96.png",
+          "sha256": "17fc08a8f3a6acaa19ed1657495d64c766938cce337e10a5e9543d657372f4e1"
+        },
+        {
+          "path": "generated/ui/icons/help.svg",
+          "sha256": "0f79a002485af48aa3168f67fa0c46aedddecdd20fa5e84b02b3f9c2c223cc84"
+        },
+        {
+          "path": "generated/ui/icons/laws-192.png",
+          "sha256": "1e3261b75d335001d53521e579314fcae5d54588c3b56d66b36408015a803e19"
+        },
+        {
+          "path": "generated/ui/icons/laws-96.png",
+          "sha256": "b872885942fcd553db7972a33eb4be4d53222abfd7f2536578bdf9dd5a9d4a05"
+        },
+        {
+          "path": "generated/ui/icons/laws.svg",
+          "sha256": "1e02915d218d41714c3b79dac3a7989b1846186a8d4811d2d2d6fd111a632c58"
+        },
+        {
+          "path": "generated/ui/icons/load-192.png",
+          "sha256": "e0fd902ac5f24a3a88e634dbaedc45977f5bb51515603de41b71c75bd43d473d"
+        },
+        {
+          "path": "generated/ui/icons/load-96.png",
+          "sha256": "6e4001882a6e9a4f821e9aa2900213649689c42d47c370fe11d6c5ec4c2a80ce"
+        },
+        {
+          "path": "generated/ui/icons/load.svg",
+          "sha256": "1a296fdda767be61efa09ebdfe83dcb24e393c29529b61d262a57a17dcc36e5a"
+        },
+        {
+          "path": "generated/ui/icons/moon-192.png",
+          "sha256": "53cee8794455a721db00ca1fd4f516ba1046461b10b039be770e2242dff48d1b"
+        },
+        {
+          "path": "generated/ui/icons/moon-96.png",
+          "sha256": "acfbbf1240ca689668f573f87f5a8b186837488b8af452fa7b5c3519af51aac1"
+        },
+        {
+          "path": "generated/ui/icons/moon.svg",
+          "sha256": "6af8ebd6dc8dccc876f50bf2f91dbe10460aff001ff096ee46e7fdc364ad4baa"
+        },
+        {
+          "path": "generated/ui/icons/pause-192.png",
+          "sha256": "3568a85851f1eedb331e7803c807c134297c9bd576846f50b11be746fe9faaa7"
+        },
+        {
+          "path": "generated/ui/icons/pause-96.png",
+          "sha256": "296a9bdd9302bab41fcfba2e4a32a2e727697a1791a92e1db2904d6f1aeda3bb"
+        },
+        {
+          "path": "generated/ui/icons/pause.svg",
+          "sha256": "4a308721bbb568b5e84970e93ab3b153dfd8cfe8eebd35e92cff502bed688506"
+        },
+        {
+          "path": "generated/ui/icons/people-192.png",
+          "sha256": "18fe07fe0f3d3ca994c765ed967e29d2cfea94d71104cffdbca4fcd9946ef668"
+        },
+        {
+          "path": "generated/ui/icons/people-96.png",
+          "sha256": "52f2371baa6951cbb7df75e35ad907a0a91021d1b1a41219d4b22a787e5c50d7"
+        },
+        {
+          "path": "generated/ui/icons/people.svg",
+          "sha256": "d0755947b67f3c1d50996d7b145c12069008de0c8b12fdb7ea533bedcf0d3fda"
+        },
+        {
+          "path": "generated/ui/icons/play-192.png",
+          "sha256": "e50f63c49d47d4805821528081e164d6708324e9382a9bbbded736cdff57dd72"
+        },
+        {
+          "path": "generated/ui/icons/play-96.png",
+          "sha256": "de43b50b2ba4ecb171a1acf45796f1a8165158560456a11da34bb241cbf37716"
+        },
+        {
+          "path": "generated/ui/icons/play.svg",
+          "sha256": "d75846b3849545b7e606b6559d6644453ded4cb33484f971392de7521cf2967c"
+        },
+        {
+          "path": "generated/ui/icons/save-192.png",
+          "sha256": "6f5cc603ce18d162f131514793976e51231bc73ba2b8869b32efe0faa4e20875"
+        },
+        {
+          "path": "generated/ui/icons/save-96.png",
+          "sha256": "c63b713f2194d416c3039189bf9a74ed01d52f3a258f332d8f8a229fa0a9a293"
+        },
+        {
+          "path": "generated/ui/icons/save.svg",
+          "sha256": "61b171cbd2adac370609bea775fa0f58582c7780bf4446962b87546ca6e4b8dd"
+        },
+        {
+          "path": "generated/ui/icons/settings-192.png",
+          "sha256": "3182a4a52c0aa500546f86c076d70483a0a8cfb733d9b8196b8e2394e0d56441"
+        },
+        {
+          "path": "generated/ui/icons/settings-96.png",
+          "sha256": "6909df9286874da1aaf7ca354bf73e1d84294c1a70231e9cdd0ff386f813bc59"
+        },
+        {
+          "path": "generated/ui/icons/settings.svg",
+          "sha256": "4a63f5d2f2984faac582a0c93375bf577a572def3cf7057d127d264737a7e398"
+        },
+        {
+          "path": "generated/ui/icons/star-192.png",
+          "sha256": "291ed5150085bedd64d35c4f1b846badebd02b173ea08b2c09e6ac2fc101f4a7"
+        },
+        {
+          "path": "generated/ui/icons/star-96.png",
+          "sha256": "82c0c1a80a03686b2626d616f2c2d2b62071487282c59afeb871a8ebf359fe86"
+        },
+        {
+          "path": "generated/ui/icons/star.svg",
+          "sha256": "bedb501df031d99e79c0b0d26aca55a299a1168cb6e0e51b070c75f5a5c8696e"
+        },
+        {
+          "path": "generated/ui/icons/sun-192.png",
+          "sha256": "4cb6599d2c48e054cc779d185e5260cbf70ff33f1a285680462866130eb09aee"
+        },
+        {
+          "path": "generated/ui/icons/sun-96.png",
+          "sha256": "f789ce3688d96956d0c1105b68f48ea3ad9c6de9716880cfee9feead2e801d69"
+        },
+        {
+          "path": "generated/ui/icons/sun.svg",
+          "sha256": "c0818cfe4ed9951925e304a35394edf20490884cd98c2e6f3c61b01fa5384fd4"
+        },
+        {
+          "path": "generated/ui/icons/tab-buildings-192.png",
+          "sha256": "9448f7a60f4fb22827845e20b67b057750c47a4bf8510aa0cdc68283d2db1076"
+        },
+        {
+          "path": "generated/ui/icons/tab-buildings-96.png",
+          "sha256": "8f1ad6a1c30d74c866557fcb377f77f287915b6b21350defc6298c6023dba47d"
+        },
+        {
+          "path": "generated/ui/icons/tab-buildings.svg",
+          "sha256": "5ec1a59c23461cb7126a5817a2f2c6e8166b15dacd2d1748a634ed362b65e426"
+        },
+        {
+          "path": "generated/ui/icons/tab-camera-192.png",
+          "sha256": "4cc4275151e5b89dbcda2e1b603fff878ff0f36e60c6c0ce12decc9518579893"
+        },
+        {
+          "path": "generated/ui/icons/tab-camera-96.png",
+          "sha256": "ff37ceeb6672e770ecacad78d02b10d6c0d256fdca8544160d1c0d75c04533de"
+        },
+        {
+          "path": "generated/ui/icons/tab-camera.svg",
+          "sha256": "d2921a9c97d17a9086931db0a26d369c0c0e8d1163d431c3e56d44e437db9977"
+        },
+        {
+          "path": "generated/ui/icons/tab-economy-192.png",
+          "sha256": "4d789c354c0644744490001f9d2ce5b6c385afd7925a00f850b0db8e958ee0e1"
+        },
+        {
+          "path": "generated/ui/icons/tab-economy-96.png",
+          "sha256": "5998f85cb5de936662ec5d7964e95a2b3172749b5655da2ece2a0e81dfd1f3e1"
+        },
+        {
+          "path": "generated/ui/icons/tab-economy.svg",
+          "sha256": "05d5a15c9c7f3fe0479d912326d78f3efeb48b7e5157986ddfb453fd0ca97ece"
+        },
+        {
+          "path": "generated/ui/icons/tab-laws-192.png",
+          "sha256": "1e3261b75d335001d53521e579314fcae5d54588c3b56d66b36408015a803e19"
+        },
+        {
+          "path": "generated/ui/icons/tab-laws-96.png",
+          "sha256": "b872885942fcd553db7972a33eb4be4d53222abfd7f2536578bdf9dd5a9d4a05"
+        },
+        {
+          "path": "generated/ui/icons/tab-laws.svg",
+          "sha256": "1e02915d218d41714c3b79dac3a7989b1846186a8d4811d2d2d6fd111a632c58"
+        },
+        {
+          "path": "generated/ui/icons/tab-people-192.png",
+          "sha256": "18fe07fe0f3d3ca994c765ed967e29d2cfea94d71104cffdbca4fcd9946ef668"
+        },
+        {
+          "path": "generated/ui/icons/tab-people-96.png",
+          "sha256": "52f2371baa6951cbb7df75e35ad907a0a91021d1b1a41219d4b22a787e5c50d7"
+        },
+        {
+          "path": "generated/ui/icons/tab-people.svg",
+          "sha256": "d0755947b67f3c1d50996d7b145c12069008de0c8b12fdb7ea533bedcf0d3fda"
+        },
+        {
+          "path": "generated/ui/icons/tab-settings-192.png",
+          "sha256": "3182a4a52c0aa500546f86c076d70483a0a8cfb733d9b8196b8e2394e0d56441"
+        },
+        {
+          "path": "generated/ui/icons/tab-settings-96.png",
+          "sha256": "6909df9286874da1aaf7ca354bf73e1d84294c1a70231e9cdd0ff386f813bc59"
+        },
+        {
+          "path": "generated/ui/icons/tab-settings.svg",
+          "sha256": "4a63f5d2f2984faac582a0c93375bf577a572def3cf7057d127d264737a7e398"
+        },
+        {
+          "path": "generated/ui/icons/tab-terrain-192.png",
+          "sha256": "179de36665696a950816ddebb8b451b0e5cb61ca818709d6c1a41538366f599b"
+        },
+        {
+          "path": "generated/ui/icons/tab-terrain-96.png",
+          "sha256": "00f9b44297c493072490f0fffb292be1ffb3613ae70ca1c1aada38be813e5817"
+        },
+        {
+          "path": "generated/ui/icons/tab-terrain.svg",
+          "sha256": "7f147883fdbc15279d0d2e79e3d35d58325736c69986bad033289f7a2bb937f3"
+        },
+        {
+          "path": "generated/ui/icons/tab-world-192.png",
+          "sha256": "9e8a5e42c1c9ec9d23fff2f96d1c89dec283c9ad021cf4878828994ff8d9849d"
+        },
+        {
+          "path": "generated/ui/icons/tab-world-96.png",
+          "sha256": "c184d9749da18101b148377405ef0211c06278a547197fc8a8b256cfd744bfb0"
+        },
+        {
+          "path": "generated/ui/icons/tab-world.svg",
+          "sha256": "e2952ccc09d2d91aecaefaa2143b45faf8ee00f0989482a40948a3e3517ba49e"
+        },
+        {
+          "path": "generated/ui/icons/terrain-192.png",
+          "sha256": "179de36665696a950816ddebb8b451b0e5cb61ca818709d6c1a41538366f599b"
+        },
+        {
+          "path": "generated/ui/icons/terrain-96.png",
+          "sha256": "00f9b44297c493072490f0fffb292be1ffb3613ae70ca1c1aada38be813e5817"
+        },
+        {
+          "path": "generated/ui/icons/terrain.svg",
+          "sha256": "7f147883fdbc15279d0d2e79e3d35d58325736c69986bad033289f7a2bb937f3"
+        },
+        {
+          "path": "generated/ui/icons/tools-192.png",
+          "sha256": "e013ce76672a86b2b05991db52bad5d98426aaa7f34ac812e978287b124e3231"
+        },
+        {
+          "path": "generated/ui/icons/tools-96.png",
+          "sha256": "2de6063993eb80e5fd4e1fd6005ddc99f442820ad23a7034d8a0e8546da036e6"
+        },
+        {
+          "path": "generated/ui/icons/tools.svg",
+          "sha256": "afdd5812add45c481cdc55ab0dcc50225a518a74076299c767ac30b9c6998a0e"
+        },
+        {
+          "path": "generated/ui/icons/world-192.png",
+          "sha256": "9e8a5e42c1c9ec9d23fff2f96d1c89dec283c9ad021cf4878828994ff8d9849d"
+        },
+        {
+          "path": "generated/ui/icons/world-96.png",
+          "sha256": "c184d9749da18101b148377405ef0211c06278a547197fc8a8b256cfd744bfb0"
+        },
+        {
+          "path": "generated/ui/icons/world.svg",
+          "sha256": "e2952ccc09d2d91aecaefaa2143b45faf8ee00f0989482a40948a3e3517ba49e"
+        },
+        {
+          "path": "generated/ui/icons/zoom-in-192.png",
+          "sha256": "a16dc9932a71605885e5984b7e7630b7c6e75f33601d4764a4f98425d4f00a89"
+        },
+        {
+          "path": "generated/ui/icons/zoom-in-96.png",
+          "sha256": "43c05e767910352d8ebbfd90f2938e5665be4d9b53a40a9ba31593ebc6645841"
+        },
+        {
+          "path": "generated/ui/icons/zoom-in.svg",
+          "sha256": "f25f3d09d3e1c9290d0c098d8814e748c43e14a310353264c7f5966c7c3c3b42"
+        },
+        {
+          "path": "generated/ui/icons/zoom-out-192.png",
+          "sha256": "17b71661a10be0e214b0eac5cfed15ce8385443f9d057f93202d02512362de41"
+        },
+        {
+          "path": "generated/ui/icons/zoom-out-96.png",
+          "sha256": "0dd42c88f68a5ab0eea8ddb5afa278a2493d6016446443d56e05e4d2f51d91f9"
+        },
+        {
+          "path": "generated/ui/icons/zoom-out.svg",
+          "sha256": "0dde0fdb79adf7b9fc198757f0ecb573a22b921e4c5241c945fc8de13d2d02c6"
+        },
+        {
+          "path": "generated/ui/materials/brass.png",
+          "sha256": "b02247ab5d379dc2d8dfb86210cc4b2f479f481d9d7a31c32dd6a487d4f62db3"
+        },
+        {
+          "path": "generated/ui/materials/crimson.png",
+          "sha256": "3e6e567ba613151194555eb28640aaf4137cf61b933c14a2d6b004e7284cdd86"
+        },
+        {
+          "path": "generated/ui/materials/enamel.png",
+          "sha256": "354f0db6db41a41134a89509f182be07bb3778743731e575c0f849b24c6452cb"
+        },
+        {
+          "path": "generated/ui/materials/iron.png",
+          "sha256": "63aa32576f358693d778bf4fa60058c2ea65f78c14fc9659540b17490ceb1ebb"
+        },
+        {
+          "path": "generated/ui/materials/leather.png",
+          "sha256": "a57fa4c79457cd3386824c58f81466c92951ed75efb34391c2901f667bf995e2"
+        },
+        {
+          "path": "generated/ui/materials/marble.png",
+          "sha256": "9e8cbab77aa2712cff248d334f56419eda11b12b2c090203b0c9004636019c2c"
+        },
+        {
+          "path": "generated/ui/materials/obsidian.png",
+          "sha256": "67a65154afcb050364389bec7726955b4142ecc4045bc9d0b16f53ebe5f4b01c"
+        },
+        {
+          "path": "generated/ui/materials/parchment.png",
+          "sha256": "ac8accc6b77018fefc46668808a5ca20baf0064dde70fef54f3ef0c03a6852b5"
+        },
+        {
+          "path": "generated/ui/materials/wood.png",
+          "sha256": "68109c2e811f136dfb99e786d4facce07eb9f6e90c6c016abb6a06cddc960f1b"
+        },
+        {
+          "path": "recipes/generate_ui_materials.py",
+          "sha256": "5c5eb801c929c696f3dfb763b840eb0ab47cdb0b02750fc1551f0bcacc8aef63"
+        },
+        {
+          "path": "recipes/generate_visual_assets.py",
+          "sha256": "8322436b12a6d23a4988bf57606b4bab119042dbc59b983227601305ba3a5446"
+        },
+        {
+          "path": "recipes/original_ui_icons.json",
+          "sha256": "ba984f31217f1d7d487d4fa9c70f2f9ce1c858af20fa7368ce52c48f819d1db9"
+        },
+        {
+          "path": "recipes/original_ui_materials.json",
+          "sha256": "1c8d9f885cdaafc3a81598c19510d2fbfc9ebf27768e082e01206b79b63e75f9"
+        },
+        {
+          "path": "recipes/pixel_surfaces.cpp",
+          "sha256": "fca29d59e45d529f195e4ccd76b10c8c2f494b5aa97883ce0e1443057fa833d7"
+        },
+        {
+          "path": "shader-source/common.sh",
+          "sha256": "898a0c49d37ed230b1bd78b812bf603d834185bd576bcb684e66ba13b0d86e02"
+        },
+        {
+          "path": "shader-source/shadow.fs.sc",
+          "sha256": "889f9e162b323b055e54292ee269aa60ec94a7cf35752b15084c47dc80c726a5"
+        },
+        {
+          "path": "shader-source/shadow.vs.sc",
+          "sha256": "94410a6484f25caa0ffb868bd5bf99eb324efc649e9b9beff046131697b937dd"
+        },
+        {
+          "path": "shader-source/sky.fs.sc",
+          "sha256": "427b9192d8142e924e8cfd441e58854df69cfbb0e758ada08a68e758feeb4671"
+        },
+        {
+          "path": "shader-source/sky.vs.sc",
+          "sha256": "1e42f47fa8fc675c3f88ee16fbc5c3ae0ba84da3598db0e9dd920a4ad072c3f0"
+        },
+        {
+          "path": "shader-source/surface.sh",
+          "sha256": "c98562911e824fcc399d63daf3c2043acd41c9dc76ce256ffe0001d12b19feac"
+        },
+        {
+          "path": "shader-source/ui.fs.sc",
+          "sha256": "cbacaa7fdf8b99f240e4215965f7aa379309b5a0158e5f2ded406eef234a14d8"
+        },
+        {
+          "path": "shader-source/ui.vs.sc",
+          "sha256": "5f607d6d65d90705f44bac007698eb5e07d42a53a59787322ddf076c7d58d060"
+        },
+        {
+          "path": "shader-source/varying.def.sc",
+          "sha256": "a5a2cb446b80bc10c4cf2a109a10a1bfee7dbf9df7ed12c82bd6fccf972bb0e0"
+        },
+        {
+          "path": "shader-source/water.fs.sc",
+          "sha256": "7186846e7634c64c514ec0f339bdb75dcddbed27939e436dcd8d3dc8ff4bcaf0"
+        },
+        {
+          "path": "shader-source/world.fs.sc",
+          "sha256": "9a4479930b55939423c9ef00c8fd61088efa6854aeaeef8f5ca0ac5928de05d4"
+        },
+        {
+          "path": "shader-source/world.vs.sc",
+          "sha256": "cc8c7cd3a918a180f0b02d474a65b979b2d62befe53cae2d75c2d5eba56680d3"
+        },
+        {
+          "path": "ui/application.rcss",
+          "sha256": "5d60a1061ef6974736bae064f67a3b299b20b85136ccb72256a20b0961dd1423"
+        },
+        {
+          "path": "ui/application.rml",
+          "sha256": "bd46ddcb8accea653e858975e056b2e3af3462b6095955b6fc47f5dfa1d90450"
+        },
+        {
+          "path": "ui/locales.tsv",
+          "sha256": "b15dbb9d49e87372c43fb098f2baa5cfee70a618e23078666b9eb1ea348f478d"
+        }
+      ],
+      "format": "SonnAssets1"
+    }
+  },
+  "build_log_sha256": "034be08f2fda03e8a7a5163f95784bbeaf437a3856b5497f10107f71b85ae899",
+  "captures": [
+    {
+      "name": "blank-oblique.tga",
+      "sha256": "56fbd0a2fad936501ad6a2de3521afc1a08a9cd8000b364525f475bf37c98f46",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "blank-preview.tga",
+      "sha256": "ad379e4d7f88ed3388f72ecedab28280c214580469cacb69e138a793ed71e311",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "blank-world.tga",
+      "sha256": "2e915652c4dcf1e4e83d4ea0dda02b7ee2986312f7089937f5cc77e481177969",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-centered.tga",
+      "sha256": "2517362a96673647c2f6854de0ff339aa191689bae96b3a5d3a3b548877e6ab1",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-error.tga",
+      "sha256": "d03c281ec4107004598e7e5102150657e6907db71617127c9ac4a4b633031f55",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-options-centered.tga",
+      "sha256": "82892123253d98ae6e3d10a0aa9390cbe74894f38e25ba84a411b4095f681c41",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "darkness.tga",
+      "sha256": "1a038e27b28ab746099b7e30501d01ff52c29b5d9fe4874a0b7f71e97bbbf686",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "land-preview.tga",
+      "sha256": "833980ab176a12e50d8917a0a66c44d0a7cfebfeb4e76e41365c86af6c9f80c4",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "loaded-world.tga",
+      "sha256": "4b5191cf626c07c3949c9ba032f6a06cd2b43c50f86fae37e98a7891139ddd1b",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-frozen-a.tga",
+      "sha256": "ff9a589028b7f05ce4398084b92e4b144d7d6a6eb71dc070c5c06dcc56295af6",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-frozen-b.tga",
+      "sha256": "ff9a589028b7f05ce4398084b92e4b144d7d6a6eb71dc070c5c06dcc56295af6",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-motion.tga",
+      "sha256": "ff9a589028b7f05ce4398084b92e4b144d7d6a6eb71dc070c5c06dcc56295af6",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu.tga",
+      "sha256": "3599bcde218535c35841ac60acd14560e0092f557b0f8d7b502154341b89d3fd",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "physical-help.tga",
+      "sha256": "4c20fbb17af9ef18e716b7daa32b8ed751aaa878abbc30ad9f0d73ac63c46398",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "physical-save-ledger.tga",
+      "sha256": "1830f5196935734f11b36c5341cba38aa225b6a42abf7c7dec586da5245b704c",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-darkness.tga",
+      "sha256": "f512bf239db5ea7c0436dd0d3237f145027ca5acf2d69857b9d805bd24d307e6",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-full.tga",
+      "sha256": "bfbc5cf0bdf37161077124646fe797d4072e68ebe3502726bc933b6333ef8dde",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-light.tga",
+      "sha256": "bfbc5cf0bdf37161077124646fe797d4072e68ebe3502726bc933b6333ef8dde",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-mean-base.tga",
+      "sha256": "bf3f6cfacb17a1a1575dc756c105990782aca45571c167ce939af4a25c4c75d6",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "sea-preview.tga",
+      "sha256": "1b23b8d7f4708e1cd0e7d2ffb45bbf3cfe6fb4d4bce99c038c89e8a488e80e73",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-de.tga",
+      "sha256": "ad6b04132ef332a733933aca19f25f25154e4e39207baee844acb826e5706d11",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-en.tga",
+      "sha256": "c60ab4db010cb7ed1806b618fd00ca722035e9257867d2b2da66d2c4c498d157",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-zh.tga",
+      "sha256": "fc2bb259b951c15616d5e38a6f486a424f4bab29124d10b3370be338a12259c6",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-civilization.tga",
+      "sha256": "01d7c5905afcca872b231670b7b1c4665518d77d12fafa2ba497cf6c37d00994",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-construction.tga",
+      "sha256": "dc88932af010acde591370ab230ef97e2ef5bed45061d78b46b41ed33fc398c4",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-economy.tga",
+      "sha256": "c9fb85a9cef3e2e85f19d972deb353fb8e6e8e791cfed0ed1e16eb6fd1754697",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-life.tga",
+      "sha256": "dd43b6c3df8ef4e4e850a085c5af81fc54efc494de710942cb076e09914b4520",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-observe.tga",
+      "sha256": "13727273415c8d311d34038880edb38cec46904009ae997cbc451cbdbcaac7f4",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-settings.tga",
+      "sha256": "e66b32e36ee4b69e6094de2b7519ba50630e04013df35197b01d484526381d1d",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-terrain.tga",
+      "sha256": "25cfcbcbf6b16e596ddd65de6d9831470c424d627c8f7c34bfb88270db4b2202",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "toolbar-world.tga",
+      "sha256": "c95d1bac8096776acf03fbcdf30f62916f17b2d0780461be6ec311a31a0e208d",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "world-name-consequences.tga",
+      "sha256": "a975bc1db450f624ecb8c4a69e9a514599d52ef31f05562785fcfc92a3c44273",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    }
+  ],
+  "offline_asset_atlas": {
+    "path": "docs/evidence/physical-pixel/icon-atlas.png",
+    "source": "original_asset_contact_sheet_not_native_gameplay"
+  },
+  "published_evidence": [
+    {
+      "path": "docs/evidence/physical-pixel/acceptance.log",
+      "sha256": "b32b6347093d4d4257248c7fd09a84bfe3848f3e0d78fc8da0a041551066e76c",
+      "bytes": 9187
+    },
+    {
+      "path": "docs/evidence/physical-pixel/blank-oblique.png",
+      "sha256": "ce2ec09867e12953668bf4a6922f37691b0c66ff5045fc35e1c3aaca60bbb93d",
+      "bytes": 1667132
+    },
+    {
+      "path": "docs/evidence/physical-pixel/camera-input.json",
+      "sha256": "44b2bd09287e0998a694bc1fe81e5f980747989b63cc4f588ebd0f9f7c212c68",
+      "bytes": 428
+    },
+    {
+      "path": "docs/evidence/physical-pixel/creation-centered.png",
+      "sha256": "97e4508751cc81e8530ce67a08e9af499be820c629ec6a03efb7572f516c3337",
+      "bytes": 99023
+    },
+    {
+      "path": "docs/evidence/physical-pixel/creation-error.png",
+      "sha256": "5ad7933f2110b094110f1df4f30f8a2ead33266beb6dab5df53575fe8c63487b",
+      "bytes": 81276
+    },
+    {
+      "path": "docs/evidence/physical-pixel/creation-ui.json",
+      "sha256": "33aa0fa21eafec790499b177e5a11d71a238e46e64422685c9949ec45fbf334c",
+      "bytes": 272
+    },
+    {
+      "path": "docs/evidence/physical-pixel/ctest.log",
+      "sha256": "f25270bb76019f209da12e151bad0bd182594b9372848b15f30d95d6d00bbb0c",
+      "bytes": 3455
+    },
+    {
+      "path": "docs/evidence/physical-pixel/error-layer.json",
+      "sha256": "308341a9fcdf4856249a1c60dae76a893d52d591ef88d665da53dd87844672d1",
+      "bytes": 174
+    },
+    {
+      "path": "docs/evidence/physical-pixel/gpu-world.json",
+      "sha256": "ba1be111717c0c3978e68f6b3ee3332e3f548664699ca2904bee2df8a44561b7",
+      "bytes": 2307
+    },
+    {
+      "path": "docs/evidence/physical-pixel/gpu.json",
+      "sha256": "55d3a404d1a0e149e6ff321c87feb49406d49c2b10b1b42e883eabeb36e6f070",
+      "bytes": 2268
+    },
+    {
+      "path": "docs/evidence/physical-pixel/icon-atlas.png",
+      "sha256": "10a1545f3e3cbabd8c065a4ce086b69a2b12a342baa5886d2965cc743e681001",
+      "bytes": 39230
+    },
+    {
+      "path": "docs/evidence/physical-pixel/large-world-gpu.json",
+      "sha256": "b8daf058251997149b0c015bb70483e19e36299fb74b2d31f18be67c355779aa",
+      "bytes": 2330
+    },
+    {
+      "path": "docs/evidence/physical-pixel/large-world.json",
+      "sha256": "c0b0b405a2de1ac4b9133d77002675e6b696bb3fb31344703cbb1ecf7d1a6324",
+      "bytes": 458
+    },
+    {
+      "path": "docs/evidence/physical-pixel/main-menu.png",
+      "sha256": "377a5be1c12db1b6f40b8df8ef1374fe86a63b96ea252f2a6b8dc746c791f03e",
+      "bytes": 54406
+    },
+    {
+      "path": "docs/evidence/physical-pixel/native-flow.json",
+      "sha256": "f82eafc59b12178a5ba25e30192ab144535383a55d435da68755afe213438ad5",
+      "bytes": 2521
+    },
+    {
+      "path": "docs/evidence/physical-pixel/physical-help.png",
+      "sha256": "ef8856596b86ef40c5b2b9d8cea2c774dddc21ed6d86164f087260f10385c362",
+      "bytes": 742677
+    },
+    {
+      "path": "docs/evidence/physical-pixel/physical-save-ledger.png",
+      "sha256": "d153806de1549ebed29e0e9e7af21dee5b502516692b7b22bb8fb3ad692f3e43",
+      "bytes": 105369
+    },
+    {
+      "path": "docs/evidence/physical-pixel/physical-ui-gpu.json",
+      "sha256": "6185a28bca7fb23a3a1c7f24950126784e022d643b325187bf44c2eccc0c22b8",
+      "bytes": 2313
+    },
+    {
+      "path": "docs/evidence/physical-pixel/presentation-motion.json",
+      "sha256": "f1af761849ac78991a4245cc0322d48952d1e9bc99d3bd373e0c35d7061b687e",
+      "bytes": 334
+    },
+    {
+      "path": "docs/evidence/physical-pixel/settings-de.png",
+      "sha256": "f96d4498d55038ee26f3673af1de77792c0b5931410f2fdbc90845cf797b3c26",
+      "bytes": 610109
+    },
+    {
+      "path": "docs/evidence/physical-pixel/settings-zh.png",
+      "sha256": "d12aedd6bc59e8c69da664570640f1b68503f69cb73ca624dbbf679cdbbcaef5",
+      "bytes": 611197
+    },
+    {
+      "path": "docs/evidence/physical-pixel/toolbar-detail.png",
+      "sha256": "c20bb046d39a34dc3cb58516b8507084fe904126bfd4ef965e1a4711a5ae0633",
+      "bytes": 318922
+    },
+    {
+      "path": "docs/evidence/physical-pixel/world-name-consequences.png",
+      "sha256": "e781cd516c9ce3a406fd4f18d087c295074d082cc97eef8b2f7206269292fae9",
+      "bytes": 1046705
+    }
+  ],
+  "limitations": [
+    "Current world remains 0 population and 0 buildings; production Godterrain/ramp/life/buildings/civilization are later stages.",
+    "Original art is code-authored; no external AI image or borrowed game asset used.",
+    "Existing saves are preserved; exact definition/asset validation remains, no arbitrary old-package migration.",
+    "Development Metal GPU evidence and Windows compilation CI do not prove Windows GPU or Steam installation."
+  ],
+  "repair_audit": {
+    "initial_compilation": "Four UI test type/aggregate initialization errors repaired together before the first complete CTest.",
+    "initial_ui_acceptance": "ASan/UBSan caught direct uppercase font-family lookup returning a null handle; all direct queries now use the locked provider lowercase name and validate engine/face before glyph measurement.",
+    "final_all_and_complete_ctest": "pass",
+    "failed_local_logs_sha256": {
+      "physical-pixel-initial-build-failure.log": "7da81c87dbb648ca825aabe02113f9e5759f473ccb1e9893edb91f9b06b7805a",
+      "physical-pixel-initial-ui-failure.log": "81e2547ff53d49b038aefc492e9e075d79163ee1f88a19d5dc73aecf6b443d25"
+    }
+  }
+}

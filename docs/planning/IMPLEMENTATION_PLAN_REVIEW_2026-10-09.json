@@ -1,0 +1,960 @@
+{
+  "date": "2026-10-09",
+  "purpose": "implementation_sequence_replacement_document_review_only",
+  "baseline_commit": "d77b8053f212d5ddb59843d80877239e78261064",
+  "plan": "docs/planning/IMPLEMENTATION_PLAN.md",
+  "plan_sha256": "82dc36750554f1561a0caafaf373502e2008385437833a151baaa26f7ffdbfc2",
+  "production_stages": [
+    {
+      "id": "S00",
+      "status": "not_started"
+    },
+    {
+      "id": "S01",
+      "status": "not_started"
+    },
+    {
+      "id": "S02",
+      "status": "not_started"
+    },
+    {
+      "id": "S03",
+      "status": "not_started"
+    },
+    {
+      "id": "S04",
+      "status": "not_started"
+    },
+    {
+      "id": "S05",
+      "status": "not_started"
+    },
+    {
+      "id": "S06",
+      "status": "not_started"
+    },
+    {
+      "id": "S07",
+      "status": "not_started"
+    },
+    {
+      "id": "S08",
+      "status": "not_started"
+    },
+    {
+      "id": "S09",
+      "status": "not_started"
+    },
+    {
+      "id": "S10",
+      "status": "not_started"
+    },
+    {
+      "id": "S11",
+      "status": "not_started"
+    },
+    {
+      "id": "S12",
+      "status": "not_started"
+    }
+  ],
+  "review_method": "Two independent subagents reviewed physical/political/military and life/economy/technology dependency chains; root reviewed complete current total design and settlement/civic/emergence architecture. JSON packages were fully parsed and dependency/authority/acceptance fields reviewed. This is document consistency and coverage evidence, not simulation execution.",
+  "architecture_documents": [
+    "docs/architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md",
+    "docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md",
+    "docs/architecture/DECISION_CORE_PERSONALITY_AND_INFORMATION.md",
+    "docs/architecture/DETERMINISTIC_WORLD_AND_RUNTIME.md",
+    "docs/architecture/ECONOMIC_DECISIONS_AND_MARKETS.md",
+    "docs/architecture/EMERGENT_CULTURE_LANGUAGE_AND_LINEAGES.md",
+    "docs/architecture/EXECUTABLE_CONTENT_AND_BOOTSTRAP.md",
+    "docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
+    "docs/architecture/GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md",
+    "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+    "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+    "docs/architecture/POLICY_AND_POLITICAL_DECISIONS.md",
+    "docs/architecture/SETTLEMENT_LIFECYCLE_AND_EXPANSION.md",
+    "docs/architecture/SOCIAL_ECOLOGICAL_AND_RESEARCH_DECISIONS.md",
+    "docs/architecture/TYPED_INTERACTION_AND_INPUT.md",
+    "docs/architecture/VEGETATION_GENERATOR_AND_DENSITY.md",
+    "docs/architecture/WAR_STRATEGY_AND_TACTICAL_DECISIONS.md"
+  ],
+  "scope_counts": {
+    "pages": 70,
+    "editable_fields": 173,
+    "domain_commands": 78,
+    "supplementary_commands": 13,
+    "draft_commands": 2,
+    "tools": 100,
+    "sections": 8,
+    "species": 19,
+    "trait_consumers": 61,
+    "goods": 116,
+    "recipes": 165,
+    "building_functions": 24,
+    "industries": 13,
+    "operation_targets": 132,
+    "technology_nodes": 408
+  },
+  "local_links_checked": 92,
+  "checks": [
+    {
+      "check": "planned_document_changes_only",
+      "result": "passed",
+      "detail": [
+        "AGENTS.md",
+        "README.md",
+        "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "docs/planning/IMPLEMENTATION_PLAN.md"
+      ]
+    },
+    {
+      "check": "thirteen_unique_ordered_production_stages",
+      "result": "passed",
+      "detail": [
+        "S00",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12"
+      ]
+    },
+    {
+      "check": "thirteen_explicit_stage_exit_conditions",
+      "result": "passed",
+      "detail": 13
+    },
+    {
+      "check": "all_eighteen_contracts_and_four_content_packs_mapped",
+      "result": "passed",
+      "detail": [
+        "data/contracts/pixel_world.json",
+        "data/contracts/surface_ecology.json",
+        "data/contracts/life_genetics_v1.json",
+        "data/contracts/terrain_access_v1.json",
+        "data/contracts/civic_control_v1.json",
+        "data/contracts/tool_registry_v1.json",
+        "data/contracts/settlement_lifecycle_v1.json",
+        "data/contracts/natural_action_v1.json",
+        "data/contracts/god_control_v1.json",
+        "data/contracts/vegetation_generator_v1.json",
+        "data/contracts/decision_core_v1.json",
+        "data/contracts/political_decisions_v1.json",
+        "data/contracts/economic_decisions_v1.json",
+        "data/contracts/warfare_decisions_v1.json",
+        "data/contracts/social_decisions_v1.json",
+        "data/contracts/runtime_foundation_v1.json",
+        "data/contracts/emergence_algorithms_v1.json",
+        "data/contracts/interaction_runtime_v1.json",
+        "data/content/life_profiles_v1.json",
+        "data/content/combat_profiles_v1.json",
+        "data/content/economy_content_v1.json",
+        "data/content/technology_runtime_v1.json"
+      ]
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/decisions/0018-fixed-terrain-and-executable-game-specification.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/architecture/DETERMINISTIC_WORLD_AND_RUNTIME.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/architecture/EMERGENT_CULTURE_LANGUAGE_AND_LINEAGES.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/architecture/EXECUTABLE_CONTENT_AND_BOOTSTRAP.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/architecture/TYPED_INTERACTION_AND_INPUT.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "data/contracts/game_v0_9.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/planning/IMPLEMENTATION_PLAN.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/planning/VALIDATION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/planning/DESIGN_AUDIT_ADR0018.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/design/Sonnheide_Complete_Design_v0.6.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "OWNERSHIP.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "README.md",
+        "target": "THIRD_PARTY_NOTICES.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "target": "../../data/contracts/natural_action_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "target": "../design/Sonnheide_Design_v0.8_Living_Pixel_World.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "target": "GENETICS_ANIMALS_AND_UPLIFT.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "target": "ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "target": "CIVIC_CONTROL_AND_SUCCESSION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md",
+        "target": "../planning/IMPLEMENTATION_PLAN.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "../design/Sonnheide_Design_v0.9_Executable_Rules.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "../planning/IMPLEMENTATION_PLAN.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "SETTLEMENT_LIFECYCLE_AND_EXPANSION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "NATURAL_BEHAVIOR_AND_LOCOMOTION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "VEGETATION_GENERATOR_AND_DENSITY.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "DECISION_CORE_PERSONALITY_AND_INFORMATION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "DETERMINISTIC_WORLD_AND_RUNTIME.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+        "target": "../../data/contracts/runtime_foundation_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../decisions/0015-settlements-natural-actions-and-god-control.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../decisions/0016-contextual-decisions-policy-economy-and-war.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "Sonnheide_Complete_Design_v0.6.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../research/WORLDBOX_ADOPTION_v0.8.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../decisions/0017-preserve-living-actor-carried-items-on-geography-change.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/VEGETATION_GENERATOR_AND_DENSITY.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/contracts/surface_ecology.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/GENETICS_ANIMALS_AND_UPLIFT.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/DECISION_CORE_PERSONALITY_AND_INFORMATION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/SOCIAL_ECOLOGICAL_AND_RESEARCH_DECISIONS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/CIVIC_CONTROL_AND_SUCCESSION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/POLICY_AND_POLITICAL_DECISIONS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/SETTLEMENT_LIFECYCLE_AND_EXPANSION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/ECONOMIC_DECISIONS_AND_MARKETS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/WAR_STRATEGY_AND_TACTICAL_DECISIONS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/GOD_CONTROL_AND_GEOGRAPHY_MUTATIONS.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/NATURAL_BEHAVIOR_AND_LOCOMOTION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/PIXEL_GAME_ARCHITECTURE.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../planning/IMPLEMENTATION_PLAN.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../planning/VALIDATION.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../planning/DESIGN_RETIREMENT.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/contracts/runtime_foundation_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/DETERMINISTIC_WORLD_AND_RUNTIME.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/contracts/emergence_algorithms_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/EMERGENT_CULTURE_LANGUAGE_AND_LINEAGES.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/content/life_profiles_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/content/combat_profiles_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/content/economy_content_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/EXECUTABLE_CONTENT_AND_BOOTSTRAP.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/content/technology_runtime_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../../data/contracts/interaction_runtime_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+        "target": "../architecture/TYPED_INTERACTION_AND_INPUT.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../design/Sonnheide_Design_v0.9_Executable_Rules.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/game_v0_9.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../research/WORLDBOX_ADOPTION_v0.8.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/native_dependencies.lock.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../architecture/PIXEL_GAME_ARCHITECTURE.md"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/runtime_foundation_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/pixel_world.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/terrain_access_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/tool_registry_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/interaction_runtime_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/god_control_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/natural_action_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/vegetation_generator_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/surface_ecology.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/life_genetics_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/content/life_profiles_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/decision_core_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/economic_decisions_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/content/economy_content_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/social_decisions_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/settlement_lifecycle_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/emergence_algorithms_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/civic_control_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/political_decisions_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/contracts/warfare_decisions_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/content/combat_profiles_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "../../data/content/technology_runtime_v1.json"
+      }
+    },
+    {
+      "check": "local_link_exists",
+      "result": "passed",
+      "detail": {
+        "document": "docs/planning/IMPLEMENTATION_PLAN.md",
+        "target": "VALIDATION.md"
+      }
+    },
+    {
+      "check": "scope_counts_match_current_definitions",
+      "result": "passed",
+      "detail": {
+        "pages": 70,
+        "editable_fields": 173,
+        "domain_commands": 78,
+        "supplementary_commands": 13,
+        "draft_commands": 2,
+        "tools": 100,
+        "sections": 8,
+        "species": 19,
+        "trait_consumers": 61,
+        "goods": 116,
+        "recipes": 165,
+        "building_functions": 24,
+        "industries": 13,
+        "operation_targets": 132,
+        "technology_nodes": 408
+      }
+    },
+    {
+      "check": "all_twenty_eight_design_sections_assigned",
+      "result": "passed",
+      "detail": null
+    },
+    {
+      "check": "critical_technology_and_production_gates_explicit",
+      "result": "passed",
+      "detail": null
+    },
+    {
+      "check": "production_status_remains_unimplemented",
+      "result": "passed",
+      "detail": null
+    },
+    {
+      "check": "no_changed_runtime_definition_or_source_asset",
+      "result": "passed",
+      "detail": null
+    },
+    {
+      "check": "git_diff_whitespace",
+      "result": "passed",
+      "detail": null
+    }
+  ],
+  "not_executed": [
+    "C++ build",
+    "CTest",
+    "sanitizer",
+    "unchanged Python reference models",
+    "GPU run",
+    "Windows device run",
+    "Steam installation"
+  ],
+  "contract_data_changed": false,
+  "source_assets_changed": false,
+  "historical_reports_rewritten": false,
+  "production_complete": false
+}

@@ -1,0 +1,5893 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-09",
+  "design_version": "0.8",
+  "type": "design_contract_and_source_audit_not_runtime_test",
+  "passed": true,
+  "check_count": 1169,
+  "preserved_source_asset_files": 95,
+  "current_local_markdown_links": 587,
+  "coverage": {
+    "worldbox_research_rows": 248,
+    "genetic_traits": 61,
+    "species": 19,
+    "animal_species": 18,
+    "typed_pages": 70,
+    "typed_relations": 466,
+    "world_rules": 28,
+    "global_bottom_tools": 92,
+    "civic_commands": 52,
+    "terrain_future_scenarios": 22
+  },
+  "source_sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+  "source_asset_hash_baseline_commit": "d0f79d1d7c014c6f42faccc1ce7ecb477da48046",
+  "matrix_counts": {
+    "adopt": 102,
+    "adapt": 59,
+    "retain": 63,
+    "exclude": 15,
+    "evidence_boundary": 9
+  },
+  "checks": [
+    {
+      "id": "unique_current_contract_ids",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "not_implemented_pixel_world",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "not_implemented_surface_ecology",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "not_implemented_life_genetics_v1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "not_implemented_terrain_access_v1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "not_implemented_civic_control_v1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "not_implemented_tool_registry_v1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "original_user_source_exact",
+      "passed": true,
+      "detail": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6"
+    },
+    {
+      "id": "source_exists_assets/generated/buildings/civic_hall_graybox.gltf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/generated/buildings/civic_hall_graybox.gltf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/generated/buildings/port_graybox.gltf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/generated/buildings/port_graybox.gltf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/generated/buildings/residence_graybox.gltf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/generated/buildings/residence_graybox.gltf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/civic_hall_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/civic_hall_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/ground_sky_runtime.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/ground_sky_runtime.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/ground_sky_sources.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/ground_sky_sources.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/interface_assets.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/interface_assets.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/makehuman_candidates.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/makehuman_candidates.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/makehuman_sources.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/makehuman_sources.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/menu_paintings.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/menu_paintings.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/native_fonts.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/native_fonts.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/port_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/port_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/manifests/residence_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/manifests/residence_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/buildings/civic_hall_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/buildings/civic_hall_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/buildings/port_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/buildings/port_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/buildings/residence_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/buildings/residence_graybox.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/NOTICE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/NOTICE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/jean_shorts.mhmat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/jean_shorts.mhmat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/jean_shorts.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/pants01/clothes/cortu_jeans_shorts/jean_shorts.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/crude_male_shirt.mhmat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/crude_male_shirt.mhmat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/crude_male_shirt.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/crude_male_shirt.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/shirts01/clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/crudefemaletshirt.mhmat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/crudefemaletshirt.mhmat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/crudefemaletshirt.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/crudefemaletshirt.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/clothes/shirts01/clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/core/LICENSE.ASSETS.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/core/LICENSE.ASSETS.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/core/LICENSE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/core/LICENSE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/core/makehuman/data/3dobjs/base.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/core/makehuman/data/3dobjs/base.obj",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/core/makehuman/data/rigs/default.mhskel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/core/makehuman/data/rigs/default.mhskel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/makehuman/core/makehuman/data/rigs/default_weights.mhw",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/makehuman/core/makehuman/data/rigs/default_weights.mhw",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/poly_haven/CC0-1.0.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/poly_haven/CC0-1.0.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/third_party/poly_haven/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/third_party/poly_haven/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/branding/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/branding/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/branding/sonnreich-compass.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/branding/sonnreich-compass.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/branding/sonnreich_logo_transparent_fullsize.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/branding/sonnreich_logo_transparent_fullsize.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/fonts/Cinzel-METADATA.pb",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/fonts/Cinzel-METADATA.pb",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/fonts/Cinzel.ttf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/fonts/Cinzel.ttf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/fonts/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/fonts/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/fonts/OFL-Cinzel.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/fonts/OFL-Cinzel.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/fonts/noto-serif-cjk-sc/NOTICE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/fonts/noto-serif-cjk-sc/NOTICE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/fonts/noto-serif-cjk-sc/OFL.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/fonts/noto-serif-cjk-sc/OFL.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/paintings/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/paintings/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/paintings/painting-01.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/paintings/painting-01.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/paintings/painting-02.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/paintings/painting-02.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/paintings/painting-03.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/paintings/painting-03.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/paintings/painting-04.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/paintings/painting-04.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_assets/source/ui/paintings/painting-05.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_assets/source/ui/paintings/painting-05.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/catalogs/businesses.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/catalogs/businesses.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/catalogs/commands.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/catalogs/commands.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/catalogs/design_source.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/catalogs/design_source.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/catalogs/laws.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/catalogs/laws.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/catalogs/technology.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/catalogs/technology.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/etopo2022_alps_sample.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/etopo2022_alps_sample.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/gshhg_sources.lock.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/gshhg_sources.lock.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/CC0-1.0.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/CC0-1.0.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/etopo2022_n60e000_tile201.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/etopo2022_n60e000_tile201.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/etopo2022_noaa_metadata.xml",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/etopo2022_noaa_metadata.xml",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/gshhg/COPYING.LESSERv3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/gshhg/COPYING.LESSERv3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/gshhg/COPYINGv3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/gshhg/COPYINGv3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/gshhg/LICENSE.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/gshhg/LICENSE.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_data/geo/sources/gshhg/README.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_data/geo/sources/gshhg/README.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/abyssal-ocean/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/abyssal-ocean/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/abyssal-ocean/README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/abyssal-ocean/README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/abyssal-ocean/UPSTREAM.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/abyssal-ocean/UPSTREAM.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/abyssal-ocean/index.html",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/abyssal-ocean/index.html",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/hextile/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/hextile/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/hextile/UPSTREAM.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/hextile/UPSTREAM.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/hextile/hextiling.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/hextile/hextiling.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/hextile/hextiling_rws.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/hextile/hextiling_rws.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/hextile/surfgrad_framework.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/hextile/surfgrad_framework.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bgfx-cmake/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bgfx-cmake/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bgfx/3rdparty/metal-cpp/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bgfx/3rdparty/metal-cpp/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bgfx/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bgfx/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bimg/3rdparty/astc-encoder/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bimg/3rdparty/astc-encoder/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bimg/3rdparty/lodepng/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bimg/3rdparty/lodepng/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bimg/3rdparty/lodepng/lodepng.cpp.NOTICE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bimg/3rdparty/lodepng/lodepng.cpp.NOTICE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bimg/3rdparty/lodepng/lodepng.h.NOTICE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bimg/3rdparty/lodepng/lodepng.h.NOTICE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bimg/3rdparty/stb/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bimg/3rdparty/stb/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bimg/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bimg/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/bx/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/bx/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/FTL.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/FTL.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/GPLv2.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/GPLv2.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/LICENSE.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/LICENSE.TXT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/README",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/README",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/include/freetype/internal/fthash.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/include/freetype/internal/fthash.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/src/autofit/ft-hb.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/src/autofit/ft-hb.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/src/autofit/ft-hb.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/src/autofit/ft-hb.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/src/base/fthash.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/src/base/fthash.c",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/freetype/src/gzip/zlib.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/freetype/src/gzip/zlib.h",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/rmlui/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/rmlui/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/sdl/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/sdl/LICENSE.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/sdl/src/hidapi/LICENSE-bsd.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/sdl/src/hidapi/LICENSE-bsd.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_exists_third_party/native/sdl/src/video/yuv2rgb/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "source_bytes_third_party/native/sdl/src/video/yuv2rgb/LICENSE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "complete_248_disposition",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "no_missing_or_duplicate_research_id",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "all_dispositions_reviewable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "matrix_counts_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "excluded_user_scope",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "exact_horse_technology_retirement",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "trait_61",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "trait_unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "trait_body_temperature_metabolism_sleep_pain_present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "trait_no_species_escape_no_reset",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "trait_three_locales",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "immutable_species",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "human_age_source",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rabbit_and_cow_distinction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_human",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_rabbit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_cow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_sheep",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_goat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_deer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_horse",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_dog",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_wolf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_fox",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_bear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_boar",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_chicken",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_duck",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_eagle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_turtle",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_frog",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_carp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "species_bounds_bee",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "no_animal_genesis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "double_energy_save",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "positive_profile_quantum",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "coarse_quantum_cannot_be_car_ramp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "actual_96m_car_ramp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "actual_40m_walk_ramp",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "eight_bottom_sections",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "92_unique_tools",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "tool_three_locales_and_bottom_only",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "no_button_border_and_menu_icons",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "70_unique_pages",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "all_page_relationships_resolve",
+      "passed": true,
+      "detail": 466
+    },
+    {
+      "id": "all_pages_three_locales",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "28_unique_world_rules",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "all_life_rule_refs_resolve",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "ecology_regrowth_rule_resolves",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "thermal_rule_resolves",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_civ_reproduction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_animal_reproduction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_aging",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_hunger_consequences",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_thermal_consequences",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_infection_spread",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_new_wars",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_diplomatic_plans",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_rebellions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_border_claims",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_recruitment",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_settlement_founding",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_ai_public_construction",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_human_cultural_genesis",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_human_language_divergence",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_wild_vegetation_recovery",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_natural_biome_spread",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_natural_mineral_regeneration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_god_terrain_enabled",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_metacontrol_scope_strict",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_metacontrol_fog",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_restrict_god_tools_during_metacontrol",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_diplomacy_requires_discovery",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_actor_population_limit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_species_population_limits",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_subspecies_catalogue_limit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_animal_predation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "rule_no_catchup_subspecies_population_limits",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "tool_page_routes_resolve",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "tool_command_routes_resolve",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "tool_routes_not_claimed_connected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "grant_foundation_version_frozen",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "clock_calendar_360_and_motion_units_explicit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "command_unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "command_no_arbitrary_fact_edit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/research/WORLDBOX_ADOPTION_v0.8.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/planning/IMPLEMENTATION_PLAN.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/planning/VALIDATION.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/planning/DESIGN_RETIREMENT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/design/Sonnheide_Complete_Design_v0.6.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/research/IMPLEMENTATION_RESET_2026-10-09.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_docs/research/WORLDBOX_FULL_COMPARISON_2026-10-09.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_OWNERSHIP.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_README.md_THIRD_PARTY_NOTICES.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_Sonnheide_Complete_Design_v0.6.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../research/WORLDBOX_ADOPTION_v0.8.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../../data/contracts/surface_ecology.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../architecture/CIVIC_CONTROL_AND_SUCCESSION.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../architecture/PIXEL_GAME_ARCHITECTURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../planning/IMPLEMENTATION_PLAN.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../planning/VALIDATION.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/design/Sonnheide_Design_v0.8_Living_Pixel_World.md_../planning/DESIGN_RETIREMENT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/PIXEL_GAME_ARCHITECTURE.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_CIVIC_CONTROL_AND_SUCCESSION.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md_../research/WORLDBOX_FULL_COMPARISON_2026-10-09.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md_../design/Sonnheide_Complete_Design_v0.6.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md_GENETICS_ANIMALS_AND_UPLIFT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md_../design/Sonnheide_Complete_Design_v0.6.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md_../research/WORLDBOX_FULL_COMPARISON_2026-10-09.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md_GENETICS_ANIMALS_AND_UPLIFT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/architecture/CIVIC_CONTROL_AND_SUCCESSION.md_ALTITUDE_RAMPS_AND_THERMAL_EXPOSURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/planning/DESIGN_RETIREMENT.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md_../architecture/PIXEL_GAME_ARCHITECTURE.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md_../planning/IMPLEMENTATION_PLAN.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_WORLDBOX_FULL_COMPARISON_2026-10-09.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/game_v0_8.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/terrain_access_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/civic_control_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../design/Sonnheide_Design_v0.8_Living_Pixel_World.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "design_anchor_D09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "current_link_docs/research/WORLDBOX_ADOPTION_v0.8.md_../../data/contracts/life_genetics_v1.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "old_files_retired",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "no_runtime_or_empty_skeleton_created",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "id": "new_stages_not_claimed_complete",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "does_not_prove": [
+    "gameplay_implemented",
+    "gpu_rendering",
+    "physics_runtime",
+    "economy_balance",
+    "genetics_runtime",
+    "save_fault_injection_runtime",
+    "Windows_Steam_runtime",
+    "capacity_or_frame_rate"
+  ],
+  "build_or_CTest_run": false,
+  "reason_no_compile": "no production source or build entry exists after user-authorized reset",
+  "scope_status": "historical_pre_ADR0015_design_audit",
+  "audited_design_snapshot_commit": "9cd3bbfb1980ebac9a8e2ec1a5044a7a67518a92",
+  "current_amendment_audit": "docs/planning/DESIGN_AUDIT_ADR0015.json"
+}

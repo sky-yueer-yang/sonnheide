@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "contract_id": "emergence_algorithms_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/EMERGENT_CULTURE_LANGUAGE_AND_LINEAGES.md",
+  "interfaces": {
+    "life": "data/contracts/life_genetics_v1.json",
+    "social": "data/contracts/social_decisions_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "decision": "data/contracts/decision_core_v1.json",
+    "time": "data/content/life_profiles_v1.json"
+  },
+  "fixed_arithmetic": {
+    "Q": 10000,
+    "nonnegative_division": "floor numerator/positive denominator with saved remainder when integrated",
+    "signed_division": "truncate toward zero, never implementation-specific negative division",
+    "days": "12000 raw ticks, dayIndex=floor(tick/12000)",
+    "random": "data/contracts/runtime_foundation_v1.json.counter_rng exact SHA256 SONNRNG1 fixed preimage/uniform rejection algorithm; culturefield stream domain culture.field NodeRef dayIndex eventCounter; previews no draw",
+    "tie": "earlier actual evidence tick, then stable Ref ascending; no worker/frame order"
+  },
+  "evidence_graph": {
+    "edge_record": [
+      "endpointActorRefs_sorted",
+      "forward_cooperation_day_bits90",
+      "reverse_cooperation_day_bits90",
+      "shared_practice_q8",
+      "actualRootReceiptRefs bounded16",
+      "lastContactTick",
+      "sourceRevision"
+    ],
+    "supported_event_categories": [
+      "completed_cooperative_work",
+      "actual_shared_food_or_care",
+      "mutually_accepted_teaching",
+      "actual_joint_recovery_or_defense",
+      "actual_collective_deliberation",
+      "contextual_spoken_meaning_transfer"
+    ],
+    "excluded_events": [
+      "GodForcedMembership",
+      "paintColor",
+      "UIQuery",
+      "copyMap",
+      "geneEdit",
+      "mereProximity",
+      "oneWayOrder",
+      "uncompletedWork"
+    ],
+    "source_dedup": "unique immutable(rootEffectId,orderedActorPair,canonicalActualCategory,calendarDay); caller cannot reclassify root category or claim crossdomain echo as newsource",
+    "partners_per_actor_max": 12,
+    "eviction": "keep highest(reciprocal_days90,actual_contact_days90,lastContactTick), stable pairRef ascending; evicted aggregate does not trigger origin or fabricate contact",
+    "day_window": 90,
+    "practice_features": [
+      "shared_food_practice",
+      "care_obligation",
+      "work_exchange",
+      "resource_sharing",
+      "conflict_resolution",
+      "collective_ritual",
+      "teaching_practice",
+      "symbol_meaning_context"
+    ],
+    "pair_reciprocal_q": "min(10000,1000*min(count(forward_days90),count(reverse_days90)))",
+    "pair_practice_agreement_q": "10000-sum(abs(ApracticeQ[k]-BpracticeQ[k]))//actualCommonKnownFeatureCount; unknown excluded, common known featureCount>=3",
+    "edge_eligible": "both alive present/reachable in same real community; actual contact >=4 different days90 and reciprocity>=3000; all cross-domain source receipts unique",
+    "primitive_meaning_context": "bounded16 meaning identifiers on actual scene/gesture/fulfilled exchange/teaching receipts with real speaker/receiver acceptance; no implicit all16 by eventcategory; no formalLanguageRef created beforePrimary"
+  },
+  "culture": {
+    "node_limit_per_settlement": {
+      "primary": 1,
+      "secondary": 4
+    },
+    "candidate_creation": "strict eligible living qualified human-induced cooperative subgraph; primary allnucleus CultureAffinities empty and LanguageSkills empty; secondary existingculture/formallanguage participants; animal maintenance edges cannot bridge otherwise disconnected human nuclei; >=6 actualhuman nucleus,1IsCivilAdult founder,2actualcategories,>=3common knownpractices",
+    "member_capacity_per_node": 128,
+    "large_component": "persist bounded representative roster by actual participation days and fair rotating cursor; remainder participants referenced in component membership index; no deletion/artificial person quota",
+    "candidate_identity": "reuse maximal real old participant overlap; match threshold intersection/max(old,new)>=6000Q; tie oldestNode thenRef; unmatched starts dormant node if slot; splitting retains oldest overlap successor; merging no duplicate culture receipt",
+    "coherence_q": "mean eligible edge practice_agreement_q over actual nucleus edges; reciprocity_q=mean(pair_reciprocal_q); isolation_q=10000*internal_actual_contact_work//max(1,internal+external_actual_contact_work)",
+    "mu_q": "clamp(6000-coherence_q-reciprocity_q//2-joint_recovery_q//4+unresolved_conflict_q//4,-10000,10000)",
+    "field": "readiness_q=max(0,-mu_q); noise_coeff=trunc((2000+reciprocity_q//2)*coherence_q*readiness_q/100000000); phi_next=clamp(trunc(9000*phi/10000)+actual_event_pulse+trunc(noise_coeff*noise[-400,400]/10000),-10000,10000); without actualpulse maxnoise<=280 =>steady absphi<2800, so no noise-only4000origin",
+    "event_pulse": "for each valid immutable actualEventCategory, signed amount=trunc(basePulseQ*min(10000,actualQuantity*10000//positiveFrozenTarget)*qualityQ/100000000); target<=0 unknown/mismatched units/unreceived/uncompleted excludes; unique node-root-category canonical once; each category maxabs1000/node/day, signed sum clamp[-2000,2000]; God event roots excluded; ordinary repeated contacts no pulse",
+    "daily_steps": "fixed calendar daily recurrence; idle lazy computation must integrate all omitted dayIndex draws/receipt changes before publish, not one larger-dt random step",
+    "qualify_enter": "human_nucleus>=6, actual day evidence>=4 per participant, coherence>=6500,reciprocity>=6000,mu<0 and event categories>=2; actual sustained qualifying history30days, qualifying counter resets if these fail (does not advance absent new practice day on at least3 nucleus edges)",
+    "qualify_hold": "coherence>=5500,reciprocity>=4500,at least4 living human participants; below hold for10actual days dormancy; no new nucleus genesis while unqualified",
+    "nucleation": "qualified actualevidence history +mu<0 +abs(phi)>=4000 + recentpositive sum>=1000 across2actualrootEvents + actual consented humanorigin session + known primitiveMeaningContexts required; unique NodeRevision/NucleationReceipt, not noise-alone; origin_session root_language_work actual completed required, no1tick genesis",
+    "founder_selection": "actual agreed willing human nominees -> greatest unique completed participating days90 -> fulfilled shared teaching/care receipts -> earliest actual nominationTick ->ActorRef; preference affects consenting/nomination, not forced founder",
+    "primary": "founder cultures empty AND formal language skills empty; one transaction Culture+RootLanguage+root semantic kernel based on already shared practices+participant accepted first membership+founder name seed; participants only acquired basic transmitted kernel, language proficiency not magically10000",
+    "primary_language_bootstrap": "all16 root Meaning definitions require actual founder and>=3nucleus humans mutuallyrecognized primitiveMeaningContext receipts in>=3different evidence days; unknown requiredmeaning rejects GENESIS_MEANING_CONTEXT_MISSING, never fabricated vocabulary knowledge. During paid actualorigin session, accepted terms transmitted to actualfirstmembers at basicQ3000, onlyacquired meaningcontext terms; no full fluency/technical knowledge. Rootword form generation only afterall contexts known. Paid session exact work/admission/proficiency in origin_session; only completed actual learners gain basic skills.",
+    "secondary": "founder and nucleus use existing cultures/languages; stable practice_distance(parent prototype)>=2500Q and isolation>=6000 for90 actual evidence days; newCulture only, existing LanguageRefs unchanged; origin_session.formalization_work actual completed required",
+    "membership": "each Actor at most8 active CultureAffinities; actual exposures/practice accepted q update=(7*old+3*actualPracticeQ)//10, decay20q/day only inactive once/day; culture join>=3000 with actual consent +basic knownLanguage context; below1500 sustain30days may leave, no citizenship overwrite; old Ref history persists",
+    "no_clock_or_population_alone": true,
+    "human_only_origin": true,
+    "animal_existing_maintenance": true,
+    "no_auto_state_city_promotion": "origin only permits lawful formalization proposal; civic actual consent/functional requirements remain",
+    "node_limit_policy": "bounded candidate limit admits fair rotating actual due queue, never deletes committed Culture or excludes source validation; no forced culture if all slots dormant",
+    "node_identity": "Settlement-linked cooperative group NodeRef; relocations may carry actual member/evidence graph with origin history, never geometry color or natural sea/mountain identity",
+    "unknown_practice": "both endpoints at least3 common actuallyknown practices, otherwise no eligibleedge; do not zero-fill unknown",
+    "event_pulse_table": [
+      {
+        "category": "fulfilled_collective_project",
+        "base_pulse_q": 800,
+        "quantity": "accepted actual task output in frozen project output unit",
+        "target": "approved intended output same unit",
+        "quality": "actual accepted qualityQ"
+      },
+      {
+        "category": "completed_shared_recovery",
+        "base_pulse_q": 1000,
+        "quantity": "actual formerly unsafe nucleus actors now safe after paid rescue/care",
+        "target": "actual pre-event eligible endangered nucleus actors",
+        "quality": "actual safe supportandbreathing successQ"
+      },
+      {
+        "category": "durable_common_institution",
+        "base_pulse_q": 600,
+        "quantity": "actually fulfilled charter obligations this closed service period",
+        "target": "real due authorized obligations same period",
+        "quality": "actual acceptanceQ; one root institution-period"
+      },
+      {
+        "category": "resolved_internal_conflict",
+        "base_pulse_q": 700,
+        "quantity": "actual completed accepted repair/compensation measures",
+        "target": "real frozen mutually acknowledged resolution measures",
+        "quality": "actual bothparty acceptanceQ"
+      },
+      {
+        "category": "unresolved_internal_conflict",
+        "base_pulse_q": -1000,
+        "quantity": "actual breached rights/violence affected nucleus actors",
+        "target": "live actuallyparticipating nucleus actors",
+        "quality": "known evidenceconfidenceQ; not hiddenWorldTruth"
+      },
+      {
+        "category": "shared_actual_loss",
+        "base_pulse_q": -800,
+        "quantity": "known actual lost authorized objective quantity",
+        "target": "actual preloss committed objective quantity",
+        "quality": "known confirmed receiptQ"
+      },
+      {
+        "category": "fulfilled_intergroup_exchange",
+        "base_pulse_q": 300,
+        "quantity": "actual delivered and accepted exchange quantity",
+        "target": "frozen actual matched contract quantity",
+        "quality": "accepted qualityQ"
+      }
+    ],
+    "pulse_reservoirs": {
+      "joint_recovery_q": "clamp(old*9500//10000 +sum(actual completed_shared_recovery positive amounts),0,10000) daily",
+      "unresolved_conflict_q": "clamp(old*9800//10000 +sum(abs(actual unresolved_internal_conflict negative amounts))-sum(actual resolved_internal_conflict positive amounts),0,10000) daily",
+      "recent_positive_window": "30calendarDay circular actual positivePulse root amounts; no retroactive fill/doubleecho; sum>=1000 and>=2distinct fulfilled positive roots needed fororigin"
+    }
+  },
+  "language": {
+    "semantic_meanings": [
+      "greet",
+      "food",
+      "water",
+      "care",
+      "shelter",
+      "trade",
+      "person",
+      "place",
+      "group",
+      "yes",
+      "no",
+      "count",
+      "tool",
+      "danger",
+      "go",
+      "return"
+    ],
+    "feature_dimensions": [
+      "onset_place",
+      "voicing",
+      "vowel_height",
+      "ending_class"
+    ],
+    "variant_values_per_feature": 4,
+    "person_active_languages_max": 4,
+    "per_person_sparse_terms_max": 64,
+    "community_candidates_per_parent_max": 8,
+    "community_partner_graph": "actual accepted spoken-meaning transfer and teaching edges, no territory/culture join edges",
+    "root_generation": "counter seed selects one of8 fixed phoneme palettes C={m,n,p,t,k,s,l,r}|{b,d,g,f,v,z,h,w}|... authored short palettes in contract; 16 meanings each construct CV(C) from meaning index and seed, resolve duplicates by second syllable in ascending meaning index; no NLP/real ancient-language claims",
+    "root_phoneme_palettes": [
+      {
+        "C": "mnptkslr",
+        "V": "aeiou"
+      },
+      {
+        "C": "bdgfvzhw",
+        "V": "aeiou"
+      },
+      {
+        "C": "klmnrstv",
+        "V": "aeo"
+      },
+      {
+        "C": "ptkmnsch",
+        "V": "aiu"
+      },
+      {
+        "C": "fhlmnrsz",
+        "V": "aeiou"
+      },
+      {
+        "C": "dgklmnrv",
+        "V": "aei"
+      },
+      {
+        "C": "hkmnpstw",
+        "V": "aou"
+      },
+      {
+        "C": "bflnrstv",
+        "V": "eiu"
+      }
+    ],
+    "usage_record": "SpeechReceipt unique speaker/learner/meaning/rootEffect: real same communication space or delivered actual message, speaker knows meaning and context, recipient pays actual learn work; each language-term feature stores4 integer frequency counts sum10000",
+    "convergence": "for actual recognized valid token receiver feature frequencies n_j=(old_j*(10000-alpha_q)+observed_one_hot_j*alpha_q)//10000; distribute lost floor remainder to observed variant then variantId ascending; alpha_q=min(1200,actualLearningWork*learning_efficiency_q//10000); no unknown truth",
+    "speaker_use": "draw pronunciation from own saved feature frequencies with speech-domain counter once actual utterance; actual speaker competence gates context; absent language may use primitive gesture but cannot create LanguageRef",
+    "isolation_drift": "every180 actual evidenced usage days (not idle elapsed calendar days) qualified community can propose one word-feature innovation through actual human practice; saved proposer draw max1000Q; actual teaching required to spread",
+    "drift_transfer": "individual innovation only spreads through actual SpeechReceipt; community prototype is actual weighted token usage, not immediate rewrite of all speakers",
+    "mutual_intelligibility_q": "per known shared meaning and4features sum_j min(freqA_j,freqB_j), average all16*4 entries; unrecognized meaning contributes0; derived error gate contexts, not ethnic/culture score",
+    "branch_enter": "parent intelligibility<=6000Q + stable actual speech component>=6 mature human participants +isolation>=6500Q +two distinct learner cohorts from actual teaching over>=360days +human organizer actual consent; same16meanings at least12 actuallyused and3 distinct changed features",
+    "branch_hold": "hold until intelligibility>7500Q or human participation<4 or contact isolation<5000Q for60actual evidence days; enter evidence freezes snapshot for human origin session; no species override",
+    "formalization": "newLanguage parent existingRef(s), unique branch receipt, actual human organizer, accepted speakers; recorded compatible SoundChange rules finite ordered once/version; no retroactive renaming/destroy original texts; no new Culture automatically; origin_session.formalization_work actual completed required",
+    "animal_rule": "sapient animals may speak/learn/teach/converge/maintain existing Language, but animal-only innovation never creates root/formal branch and animals do not fill human origin nucleus",
+    "presentation": "root/branch names derived from actual chosen human/community vocabulary; UI zh/en/de separate. No natural mountain/sea/lake language-named objects"
+  },
+  "subspecies": {
+    "founder_source": "existing sameSpecies Actors only; no reproduction or mutation on reclassification",
+    "traits_for_distance": [
+      "cold_tolerance",
+      "heat_tolerance",
+      "basal_efficiency",
+      "strength",
+      "ground_speed",
+      "swim_capacity",
+      "flight_endurance",
+      "immune_resistance",
+      "fertility",
+      "lifespan_potential",
+      "energy_storage_capacity",
+      "nutrient_absorption"
+    ],
+    "representation": "perActor12 inherited allele scores_q =5*(raw_alleleA0..1000+raw_alleleB0..1000) in0..10000 before shared profile expression; immutable SpeciesRef; no sharedSubspeciesProfile/color/personality/nationality terms",
+    "distance_q": "sum_k abs(actor_allele_q[k]-prototype_q[k])//12; prototype component-wise median with lower-middle deterministic tie",
+    "prototypes_per_species_max": 8,
+    "candidate_seed": "eligible mature alive members with actual same-species reproduction/parentage/contact network; deterministic farthest-point seeding current prototypes, actual max-distance candidate tiebirthTick/ActorRef; limited fair sample64 per candidate snapshot, full membership validation before publishing branch",
+    "gene_cluster_enter_distance_q": 2500,
+    "cluster_keep_distance_q": 1500,
+    "candidate_members_min": 8,
+    "admitted_cluster_radius_max_q": 1800,
+    "reproduction_graph": "last720days actual legal births + same-parent edges; at least2 completed reproductive episodes from4 distinct mature actors; measuredWithinBirthQ=10000*internal_crossings//max(1,internal+external crossings); require>=6500",
+    "persistence": "enter cluster has >=8 actual member actors and median difference>=2500 fromparent, reproductive isolation>=6500Q and at least90actual evidence days; qualifying only evidence days with actual birth/contact cohort renewal, not wall clock; maintain1500..2500 distance gap without oscillating",
+    "mixed_gene_admission": "closest prototype ifdistance<=1800 and not within500ofsecond; uncertain stays parent SubspeciesRef while full ancestry/genome preserved, not new hybrid species; genuine birth uses saved parent branch; later lawful cluster membership update may move existing actor",
+    "hold_or_dormancy": "memberCount<6 or reproductive isolation<5000Q or prototype distance<1500Q for30actual evidence days => dormant candidate; existing published branch never deleted/merged just because mixed births, archival only zero live+no committed birth reservations",
+    "first_profile": "copy parent shared expression and all supported constraints; genotype stays same; first branch classification cannot improve capacities; only explicit later typed shared-profile edits change future capacities",
+    "species_caps_and_high_peak_preserved": true,
+    "sapience_genesis_or_free_people": false
+  },
+  "runtime_budget": {
+    "high_level_work": "shared decision_core quota; no additional global budget; stable due/evidence age/cursor",
+    "mandatory_origin_validation": "full actual founder/member/role/alive/support/consent/source set before one publish; search quota cannot truncate lawful checks",
+    "no_population_cross_product": "Actor max12graphpartners/8CultureAffinities/4LanguageSkills; community<=5cultureNodes; species<=8prototypes; total sparse indexes stable and eviction disclosed"
+  },
+  "persistence": [
+    "unique_receipts",
+    "graph_day_bits_and_practice",
+    "node_id_member_index_phi_mu_due_cursor",
+    "each actual evidence counter not elapsed time",
+    "origin histories",
+    "language feature counts speech counters communities learner cohorts",
+    "prototype median snapshots stable cluster reservations",
+    "profile revisions"
+  ],
+  "acceptance_cases": [
+    {
+      "id": "EM01",
+      "assert": "same population/time without reciprocal actual practice never nucleates"
+    },
+    {
+      "id": "EM02",
+      "assert": "reciprocal cooperative nucleus and actual pulse can qualify while no fake formal-language gift"
+    },
+    {
+      "id": "EM03",
+      "assert": "animal-only practiced group never creates Culture/Language but can maintain learned"
+    },
+    {
+      "id": "EM04",
+      "assert": "isolated pronunciation repeated actual human transmission branches, reconnect convergence preserves oldRef/history"
+    },
+    {
+      "id": "EM05",
+      "assert": "same same-species genotype real reproductive cohort branches without any capacity change"
+    },
+    {
+      "id": "EM06",
+      "assert": "uniform genotypes changed nationality or color never branch"
+    },
+    {
+      "id": "EM07",
+      "assert": "mixed membership nearest prototype ambiguity staysparent no capacity reward"
+    },
+    {
+      "id": "EM08",
+      "assert": "duplicate actual root receipt no second cooperation/teaching/pulse"
+    }
+  ],
+  "origin_session": {
+    "communication": "actual unobstructed same communication space within8000mm or actual delivered speech message; only living mature consenting human organizer can initiate; no Godspeak or offline meeting",
+    "root_language_work": "16already known mutuallyrecognized primitive meanings; each meaning3 actual recognized teaching/usage receipts of100 dedicated actual work ticks per learner plus100 ticks organizer group work (max4 simultaneous real learner actors); total4800 actual learner work ticks, group teacher4800tick, no perparticipant free work; task availability and real metabolic/work energy ledger once",
+    "formalization_work": "secondary Culture or formal Language branch needs600actual dedicated organizer/participant communication work ticks each of organizer+at least3mature consenting human nucleus participants; actual accepted currentpractice/terms; no root-vocabulary teaching shortcut",
+    "minimum_root_participants": "organizer+at least3 mature nucleus humans each completed all16meaning work with actual knowledge/context/proficiency; remaining nucleus members do not automatically get LanguageSkills3000 or membership",
+    "proficiency": "completed primitive-known meaning3*100 work tick recognized practice=>basic meaning proficiencyQ3000 (10Q/work unit capped3000 forinitial session); formal pronunciation initialized from actually transmitted founder word feature variants; no full fluency/tech",
+    "state": "OriginSessionRef candidateRevision, participants, accepted meaning/term receipts, work remainder,availability claims, actual energy source; save all. Interrupted work resumes only same valid meaning context/session, no clock-only completion. Commit all newRefs once after revalidate human nucleus/session evidence; failure preserves actual spent work and no entities; retries no double teaching."
+  },
+  "candidate_ref_kind": "genesis_node for real persistent Culture/Language genesis candidates, not culture_node page alias; natural subspecies proposals use existing persistent genesis candidate records"
+}

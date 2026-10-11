@@ -1,0 +1,873 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_surface_ecology_v0_8",
+  "decision": "docs/decisions/0014-living-pixel-world-and-worldbox-adoption.md",
+  "design_base": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+  "architecture": "docs/architecture/GENETICS_ANIMALS_AND_UPLIFT.md",
+  "assets": "docs/architecture/PIXEL_GAME_ARCHITECTURE.md",
+  "planned_only": true,
+  "production_implemented": false,
+  "replaces": "previous_ten_natural_biomes_and_unadopted_fourteen_profile_proposal",
+  "layers": {
+    "ground": {
+      "authority": "TerrainWorld_surface_style_and_current_height",
+      "changes_geometry_by_color": false
+    },
+    "small_plants": {
+      "authority": "saved_decoration_recipe_density_seed_and_clear_mask",
+      "decorative_only": true,
+      "independent_entity_ids": false,
+      "inventory": false,
+      "harvest_tasks": false,
+      "growth_jobs": false,
+      "collision": false,
+      "navigation_cost": false,
+      "food_or_fiber_output": false
+    },
+    "trees": {
+      "authority": "single_writer_TreeRef_and_attached_stocks",
+      "stable_identity": true,
+      "harvestable": true,
+      "occupancy_and_clearance": true,
+      "clock": "SimTick",
+      "renderer_may_mutate": false
+    }
+  },
+  "surface_profiles": [
+    {
+      "id": "snowfield",
+      "labels": {
+        "zh-CN": "雪原",
+        "en": "Snowfield",
+        "de": "Schneefeld"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "snow_blue_gray",
+      "decorative_small_plants": [
+        "sparse_snow_decor"
+      ],
+      "new_tree_pool": [
+        "pine"
+      ],
+      "effects": [],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "flower_meadow",
+      "labels": {
+        "zh-CN": "花甸",
+        "en": "Flower Meadow",
+        "de": "Blumenwiese"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "fresh_green_meadow",
+      "decorative_small_plants": [
+        "clustered_tropical_flowers",
+        "low_decorative_grass"
+      ],
+      "new_tree_pool": [
+        "apple_tree",
+        "pear_tree",
+        "peach_tree",
+        "orange_tree",
+        "mango_tree",
+        "pomegranate_tree"
+      ],
+      "effects": [
+        "progressive_visible_fruit"
+      ],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "maple_field",
+      "labels": {
+        "zh-CN": "枫原",
+        "en": "Maple Plain",
+        "de": "Ahornland"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "warm_soil_leaf_litter",
+      "decorative_small_plants": [
+        "red_decorative_leaf_litter",
+        "sparse_low_grass"
+      ],
+      "new_tree_pool": [
+        "maple"
+      ],
+      "effects": [],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "cherry_field",
+      "labels": {
+        "zh-CN": "樱野",
+        "en": "Cherry Blossom Field",
+        "de": "Kirschblütenfeld"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "muted_pink_green",
+      "decorative_small_plants": [
+        "deep_green_grass"
+      ],
+      "new_tree_pool": [
+        "cherry_blossom"
+      ],
+      "effects": [
+        "sparse_falling_petals"
+      ],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "wetland",
+      "labels": {
+        "zh-CN": "湿地",
+        "en": "Wetland",
+        "de": "Feuchtgebiet"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "dark_moist_ground",
+      "decorative_small_plants": [
+        "decorative_reeds"
+      ],
+      "new_tree_pool": [
+        "bodhi"
+      ],
+      "effects": [],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "savanna",
+      "labels": {
+        "zh-CN": "荒原",
+        "en": "Savanna",
+        "de": "Savanne"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "ochre_bare_ground",
+      "decorative_small_plants": [
+        "decorative_dry_grass"
+      ],
+      "new_tree_pool": [
+        "huyang_poplar"
+      ],
+      "effects": [],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "sonnheide_sacred",
+      "labels": {
+        "zh-CN": "Sonnheide圣原",
+        "en": "Sonnheide Sacred Plain",
+        "de": "Sonnheide-Heilige Ebene"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "deep_sacred_ground",
+      "decorative_small_plants": [
+        "pale_gold_blue_decor"
+      ],
+      "new_tree_pool": [
+        "sacred_tree"
+      ],
+      "effects": [
+        "intrinsic_tree_glow"
+      ],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "volcanic",
+      "labels": {
+        "zh-CN": "炎地",
+        "en": "Emberland",
+        "de": "Glutland"
+      },
+      "kind": "soil_theme",
+      "status": "specified_not_implemented",
+      "ground_style": "dark_volcanic_rock",
+      "decorative_small_plants": [],
+      "new_tree_pool": [
+        "dead_tree"
+      ],
+      "effects": [
+        "bounded_static_lava_visual"
+      ],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    },
+    {
+      "id": "sand",
+      "labels": {
+        "zh-CN": "沙地",
+        "en": "Sand",
+        "de": "Sand"
+      },
+      "kind": "substrate_habitat",
+      "status": "specified_not_implemented",
+      "ground_style": "sand",
+      "decorative_small_plants": [],
+      "new_tree_pool": [
+        "coconut_palm"
+      ],
+      "effects": [
+        "progressive_visible_fruit"
+      ],
+      "paint_resets_existing_trees_or_fruit": false,
+      "changes_height_or_water": false,
+      "grants_inventory": false
+    }
+  ],
+  "theme_ids": [
+    "snowfield",
+    "flower_meadow",
+    "maple_field",
+    "cherry_field",
+    "wetland",
+    "savanna",
+    "sonnheide_sacred",
+    "volcanic"
+  ],
+  "tree_species": [
+    {
+      "id": "pine",
+      "labels": {
+        "zh-CN": "松树",
+        "en": "Pine",
+        "de": "Kiefer"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "apple_tree",
+      "labels": {
+        "zh-CN": "苹果树",
+        "en": "Apple Tree",
+        "de": "Apfelbaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "apple",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "pear_tree",
+      "labels": {
+        "zh-CN": "梨树",
+        "en": "Pear Tree",
+        "de": "Birnbaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "pear",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "peach_tree",
+      "labels": {
+        "zh-CN": "桃树",
+        "en": "Peach Tree",
+        "de": "Pfirsichbaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "peach",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "orange_tree",
+      "labels": {
+        "zh-CN": "橙树",
+        "en": "Orange Tree",
+        "de": "Orangenbaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "orange",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "mango_tree",
+      "labels": {
+        "zh-CN": "芒果树",
+        "en": "Mango Tree",
+        "de": "Mangobaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "mango",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "pomegranate_tree",
+      "labels": {
+        "zh-CN": "石榴树",
+        "en": "Pomegranate Tree",
+        "de": "Granatapfelbaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "pomegranate",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "maple",
+      "labels": {
+        "zh-CN": "枫树",
+        "en": "Maple",
+        "de": "Ahorn"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "timber",
+      "same_tree_identity_across_lod": true,
+      "leaf_palette_policy": "red_only_including_all_growth_stages_lod_and_litter",
+      "leaf_palette": [
+        "deep_crimson",
+        "red",
+        "bright_red"
+      ]
+    },
+    {
+      "id": "cherry_blossom",
+      "labels": {
+        "zh-CN": "樱花树",
+        "en": "Cherry Blossom Tree",
+        "de": "Kirschblütenbaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "bodhi",
+      "labels": {
+        "zh-CN": "菩提树",
+        "en": "Bodhi Tree",
+        "de": "Bodhibaum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "huyang_poplar",
+      "labels": {
+        "zh-CN": "胡杨树",
+        "en": "Desert Poplar",
+        "de": "Wüstenpappel"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "sacred_tree",
+      "labels": {
+        "zh-CN": "圣树",
+        "en": "Sacred Tree",
+        "de": "Heiliger Baum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": "tree_intrinsic",
+      "primary_role": "luminous_timber_tree",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "coconut_palm",
+      "labels": {
+        "zh-CN": "椰子树",
+        "en": "Coconut Palm",
+        "de": "Kokospalme"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": "coconut",
+      "fruiting": true,
+      "light_source": null,
+      "primary_role": "fruit_and_timber",
+      "same_tree_identity_across_lod": true
+    },
+    {
+      "id": "dead_tree",
+      "labels": {
+        "zh-CN": "枯树",
+        "en": "Dead Tree",
+        "de": "Abgestorbener Baum"
+      },
+      "status": "planned_original_asset_and_gameplay",
+      "ownership": "original",
+      "harvestable_timber": true,
+      "fruit_type": null,
+      "fruiting": false,
+      "light_source": null,
+      "primary_role": "existing_deadwood_recovery_or_clearance",
+      "same_tree_identity_across_lod": true,
+      "kind": "deadwood_placement_archetype_not_biological_species",
+      "initial_life_state": "dead",
+      "growth_enabled": false,
+      "natural_recruitment_allowed": false,
+      "civic_seed_planting_allowed": false
+    }
+  ],
+  "fruit_types": [
+    {
+      "id": "apple",
+      "labels": {
+        "zh-CN": "苹果",
+        "en": "Apple",
+        "de": "Apfel"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "muted_green",
+        "apple_red"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    },
+    {
+      "id": "pear",
+      "labels": {
+        "zh-CN": "梨",
+        "en": "Pear",
+        "de": "Birne"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "green",
+        "warm_yellow"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    },
+    {
+      "id": "peach",
+      "labels": {
+        "zh-CN": "桃",
+        "en": "Peach",
+        "de": "Pfirsich"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "green",
+        "pink_gold"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    },
+    {
+      "id": "orange",
+      "labels": {
+        "zh-CN": "橙",
+        "en": "Orange",
+        "de": "Orange"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "green",
+        "orange"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    },
+    {
+      "id": "mango",
+      "labels": {
+        "zh-CN": "芒果",
+        "en": "Mango",
+        "de": "Mango"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "green",
+        "yellow_orange_blush"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    },
+    {
+      "id": "pomegranate",
+      "labels": {
+        "zh-CN": "石榴",
+        "en": "Pomegranate",
+        "de": "Granatapfel"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "green",
+        "deep_red"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    },
+    {
+      "id": "coconut",
+      "labels": {
+        "zh-CN": "椰子",
+        "en": "Coconut",
+        "de": "Kokosnuss"
+      },
+      "status": "candidate_first_art_sample_not_final_yield_balance",
+      "food_family": "existing_food",
+      "palette_ends": [
+        "green",
+        "warm_brown"
+      ],
+      "edible_when": "mature_and_actual_harvested_quantity",
+      "per_fruit_entity_required": false
+    }
+  ],
+  "habitat_resolution": {
+    "dry_sand_priority": "actual_dry_root_support_footprint_has_sand_material",
+    "other_dry_cell": "selected_theme_or_neutral",
+    "paint_sand_does_not_raise_height": true,
+    "sand_has_small_decorations": false,
+    "old_biome_provenance_not_erased_by_sand": true,
+    "existing_tree_species_auto_swap": false,
+    "neutral_ground_is_extra_required_theme": false,
+    "wet_support_footprint": "no_terrestrial_new_tree_if_actual_root_support_footprint_intersects_wet_polygon",
+    "mixed_ramp_cell": "query_actual_surface_triangles_and_LocalWetRegion_not_whole_cell_wet_boolean",
+    "tree_and_forage_root_support": "stable_support_binding_with_actual_height_water_and_thermal_versions"
+  },
+  "agriculture": {
+    "separate_from_small_surface_plants": true,
+    "production_and_fiber_rules_retained": true,
+    "farm_batches_not_decoration": true
+  },
+  "editing": {
+    "writer": "single",
+    "theme_paint_changes": [
+      "ground_style",
+      "small_decoration_recipe",
+      "future_new_tree_pool"
+    ],
+    "theme_paint_grants_mature_tree_or_fruit": false,
+    "new_tree_creation": "bounded_GodVegetationSource_or_real_CivicPlanting_or_trusted_WildRecruitment",
+    "default_new_tree_stage": "young",
+    "planting_revalidates": [
+      "terrain_revision",
+      "root_support",
+      "current_habitat",
+      "mature_growth_envelope",
+      "land_use",
+      "protected_access",
+      "rights",
+      "capacity",
+      "expected_tree_revision"
+    ],
+    "existing_tree_fields_preserved": [
+      "id",
+      "species",
+      "age",
+      "owner",
+      "custodian",
+      "position",
+      "condition",
+      "woody_biomass",
+      "fruit_cohorts",
+      "reservations",
+      "history"
+    ],
+    "template_copies_trees_or_fruit": false,
+    "protected_land_use": [
+      "building",
+      "road",
+      "entrance",
+      "garage_approach",
+      "delivery_apron",
+      "construction_site",
+      "farmland",
+      "port_berth"
+    ],
+    "clear_small_plants": "decoration_mask_only_no_goods_no_tree_delete",
+    "new_tree_initial_harvestable_quantity": {
+      "timber": "finite_frozen_structural_biomass_for_GOD_VEGETATION_only;actual_species_growth_reserve_for_other_sources",
+      "fruit": 0
+    },
+    "planting_authority_modes": {
+      "divine": "explicit_player_ecology_capability_bounded_Plant_biomass_source_not_warehouse_inventory",
+      "civic": "real_actor_seed_or_propagule_labor_rights_and_path",
+      "wild": "trusted_bounded_regrowth_scheduler_and_rule_revision"
+    },
+    "default_new_tree_stage_applies_to": "living_species_only",
+    "new_tree_stage_overrides": {
+      "dead_tree": "dead"
+    },
+    "geography_kind_change": "wipe_hit_Plants_entire_root_support_and_fruit_reserves_no_Actor_direct_erase",
+    "theme_change_is_geography_kind_change": false,
+    "density_and_dose": "vegetation_generator_v1_incremental_new_input_no_blocked_credit"
+  },
+  "regrowth": {
+    "rule_key": "wild_vegetation_recovery",
+    "controls": "new_wild_tree_candidates_and_spread_only",
+    "existing_tree_growth_and_fruiting_continue_when_off": true,
+    "agriculture_continues_when_off": true,
+    "decorative_plants_do_not_enter_rule_scheduler": true,
+    "catch_up_wild_spawns_when_reenabled": false,
+    "wall_time_or_visibility_changes_growth": false,
+    "bounded_candidate_queue": true,
+    "spawn_identity_and_source_recorded": true,
+    "excluded_archetypes": [
+      "dead_tree"
+    ]
+  },
+  "fruiting": {
+    "model": "bounded_attached_cohorts_per_tree",
+    "stages": [
+      "forming",
+      "growing",
+      "ripe"
+    ],
+    "new_fruit_quantity": "incremental_periodic_with_saved_fractional_work",
+    "capacity": "species_profile_versioned_finite_cap",
+    "full_tree_stops_new_fruit": true,
+    "growing_fruit_not_harvestable": true,
+    "ripeness_drives_size_and_color": true,
+    "visual_instance_count_derived_from_actual_quantity": true,
+    "palette_change_is_not_new_inventory": true,
+    "harvest_ripe_quantity_only": true,
+    "harvest_requires_actual_path_labor_and_capacity": true,
+    "stock_transfer": "tree_attachment_to_carrier_or_ground_batch_before_food_consumption",
+    "direct_eating_uses_existing_consumption_ledger": true,
+    "felling_and_picking_share_tree_revision_and_reservations": true,
+    "repaint_load_lod_resets_fruit": false,
+    "fruit_creation_or_harvest_by_particle": false,
+    "decoration_flowers_create_fruit": false,
+    "no_season_or_solar_dependency": true,
+    "maximum_cohorts": "bounded_per_species_profile_not_one_entity_per_texel_or_fruit",
+    "ripe_fruit_loss_and_ground_recovery_uses_real_quantities": true,
+    "quantity_is_absolute_not_maturity_fraction_times_current_yield": true,
+    "saved_formed_mature_expiry_ticks": true,
+    "cut_pick_same_tree_exclusive_use_permit": true,
+    "full_capacity_accrues_future_formation_credit": false,
+    "cohort_cap_merges_distinct_mature_or_expiry_ticks": false,
+    "last_tick_advances_while_full": true
+  },
+  "presentation": {
+    "cherry_petals": {
+      "source": "actual_live_cherry_tree_render_proxy",
+      "rate": "sparse_and_bounded",
+      "decorative_only": true,
+      "persistent_particle_entities": false,
+      "world_rng_consumed": false,
+      "spawn_by_world_clock_to_change_gameplay": false,
+      "pause_hide_or_reduce_motion_stops_animation": true,
+      "no_actual_fruit_or_wood": true,
+      "lod_culling_changes_tree_stock": false
+    },
+    "sacred_glow": {
+      "source": "actual_live_sacred_tree_intrinsic_emission",
+      "emissive_tree_parts": true,
+      "bounded_local_tree_lighting": true,
+      "light_proxy_lod_changes_tree_state": false,
+      "steady_soft_bloom_no_strobe": true,
+      "low_settings_keep_visible_emissive": true,
+      "grants_lamp_energy_religion_or_stat_buffs": false,
+      "life_felling_state_controls_emission": true,
+      "death_gate_precedes_lod_hysteresis_and_aggregation": true
+    },
+    "volcanic_lava": {
+      "mode": "bounded_static_visual_patches_and_cracks",
+      "fluid_simulation": false,
+      "world_water_body": false,
+      "resource_output": false,
+      "damage_or_fire_by_shader": false,
+      "automatic_eruption_or_random_disaster": false,
+      "default_tree_pool_empty": false,
+      "default_small_plant_pool_empty": true,
+      "tree_pool": [
+        "dead_tree"
+      ]
+    },
+    "all_layers": "true_3d_pixel_assets_top_side_and_360_degree_readable",
+    "approved_menu_unchanged": true
+  },
+  "persistence": {
+    "save": [
+      "profile_and_species_definition_versions",
+      "theme_and_current_surface_fields",
+      "decoration_seed_density_clear_mask",
+      "tree_identity_species_ownership_location_age_condition",
+      "growth_last_tick_and_fractional_remainders",
+      "fruit_cohorts_age_quantity_ripeness_and_reservations",
+      "due_jobs_and_regrowth_candidate_budget",
+      "harvest_felling_receipts_stock_transfer_and_loss_history",
+      "GodVegetation_creation_event_definition_hash_biomass",
+      "generation_dose_realized_rejected_cursor_subunit_credit",
+      "sampling_epoch_density_clear_revision"
+    ],
+    "reconstruct_only": [
+      "decorative_instances",
+      "petals",
+      "gpu_lights",
+      "tree_mesh_lod",
+      "fruit_visual_instances"
+    ],
+    "load_restocks_or_resurrects": false,
+    "same_tick_save_reload_equals_continuous": true
+  },
+  "acceptance_scenarios": [
+    "eight_user_themes_exact_tree_pools",
+    "dry_sand_coconut_no_small_plants",
+    "underwater_sand_no_palm_spawn",
+    "decoration_clear_no_economy_or_path_effect",
+    "incremental_fruit_growth_size_color",
+    "ripe_only_partial_pick_actual_food_transfer",
+    "picking_felling_stale_preview_and_duplicate_receipts",
+    "repaint_no_species_swap_or_fruit_reset",
+    "wild_regrowth_off_existing_fruit_continues",
+    "road_farm_entrance_growth_exclusion",
+    "tree_root_buried_or_flooded_fruit_loss_preserved",
+    "sacred_tree_felling_emission_stops",
+    "sparse_petals_reduced_motion_no_world_rng",
+    "volcanic_visual_no_unrequested_fluid_damage",
+    "save_at_growth_boundary_camera_independent_replay",
+    "red_maple_all_stages_and_cherry_deep_green_only",
+    "deadwood_zero_growth_no_divine_goods_initial_stock_conserved",
+    "volcanic_repaint_no_kill_and_no_deadwood_recruitment"
+  ],
+  "evidence_boundary": "design_registry_validation_not_tree_behavior_or_gpu_evidence",
+  "tree_inspector": {
+    "domain_kind": "plant",
+    "subtype": "tree",
+    "reference_alias": "TreeRef_is_PlantRef_tree_subtype",
+    "new_entity_kind": false,
+    "harvest_command": "HarvestPlant",
+    "harvest_modes": [
+      "fruit",
+      "fell"
+    ],
+    "quantity_maturity_age_read_only": true,
+    "decorations_have_entity_page": false,
+    "linked_output_kind": "stock_batch"
+  },
+  "deadwood": {
+    "configuration": "dead_tree",
+    "initial_life_state": "dead",
+    "growth_or_fruit_increase": false,
+    "death_can_be_undone_by_theme_or_load": false,
+    "natural_recruitment": false,
+    "civic_seed_planting": false,
+    "divine_initial_wood": "finite_frozen_GodVegetationSource_deadwood_biomass_not_ItemBatch",
+    "divine_initial_fruit": 0,
+    "initial_world_stock": "explicit_bounded_initial_ecology_in_highest_preview_and_first_save_only",
+    "existing_dead_tree_species_identity_and_remaining_wood_preserved": true,
+    "felling_requires_real_rights_path_labor_capacity_and_actual_remaining_wood": true,
+    "zero_wood_felling_generates_stock_batch": false,
+    "paint_volcanic_kills_existing_trees": false,
+    "repaint_or_load_refills_deadwood": false,
+    "life_state_and_felling_work_state_separate": true
+  },
+  "art_refinements": {
+    "decision_date": "2026-10-09",
+    "maple_leaves": "red_only_all_stages_lod_and_litter",
+    "cherry_small_plants": [
+      "deep_green_grass"
+    ],
+    "volcanic_small_plants": []
+  },
+  "design_version": "0.9",
+  "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+  "animal_food_interface": {
+    "decor_edible": false,
+    "real_forage_and_nectar": "GroundResourceRef_ForagePatch_or_real_Tree_bloom_reserve_or_Farm_StockBatch_single_unique_reserve_never_decor",
+    "pollination": "bounded_real_actor_colony_service_to_mechanical_Plant_or_Farm",
+    "theme_changes_generate_food_or_animals": false,
+    "high_peak": "moving_actor_exclusion_not_a_Plant_navigation_rule_plant_uses_actual_temperature_habitat",
+    "life_contract": "data/contracts/life_genetics_v1.json",
+    "double_count_prevention": "source_reserve_ref_consumed_exactly_once_not_copied_into_ground_inventory",
+    "forage_source": "GroundResourceRef_ForagePatch_actual_absolute_reserve",
+    "nectar_and_pollen_source": "original_Tree_actual_bloom_reserve_or_Farm_batch_not_mirrored_into_GroundResource",
+    "forage_regeneration": "existing_ForagePatch_has_bounded_real_reserves_and_its_own_ecological_time_budget_wild_vegetation_recovery_only_controls_new_wild_seedlings"
+  },
+  "algorithm_decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
+  "generator_contract": "data/contracts/vegetation_generator_v1.json",
+  "geography_mutation_contract": "data/contracts/god_control_v1.json",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
+}

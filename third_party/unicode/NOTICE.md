@@ -1,0 +1,1 @@
+Unicode canonical normalization tables in src/core/unicode_tables.inc are derived from Python 3.9.6 unicodedata, Unicode 13.0.0. The generator and committed tables freeze that version; no runtime Python dependency. Unicode data is covered by the unmodified Unicode license beside this notice. Official license: https://www.unicode.org/license.txt
