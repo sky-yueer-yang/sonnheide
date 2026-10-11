@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Original dark pixel UI materials. Reproducible Python 3.9+ standard library.
+"""Original pixel UI materials. Reproducible Python 3.9+ standard library.
 
 The 512 x 512 texel tiles are artwork, not simulation state. Continuous noise
 is evaluated only by this offline recipe, then reduced to a finite pigment
@@ -19,7 +19,7 @@ OUT = ROOT / 'assets/generated/ui/materials'
 MANIFEST = ROOT / 'assets/manifests/original_ui_materials.json'
 SIZE = 512
 PALETTES = {
-    'marble': ('#0a1013', '#10181b', '#151e20', '#1b2527', '#222c2d', '#293334', '#34403e', '#424b44', '#555747', '#686447', '#7b7252'),
+    'rock': ('#cbc2ab', '#d0c7af', '#d5ccb4', '#d9d0b9', '#ddd5bf', '#e1d9c4'),
     'brass': ('#1c1004', '#281a06', '#3b2407', '#503109', '#6a400b', '#824d0e', '#9a5c11', '#b07417', '#c68b25', '#d69b31', '#e4ab43'),
     'crimson': ('#220605', '#330c08', '#45120b', '#5b1a0f', '#712312', '#8b2b17', '#a4361c', '#ba4825', '#ce5a2e', '#dc723b'),
     'obsidian': ('#030507', '#050a0e', '#080f16', '#0b1620', '#0f1d29', '#152635', '#203243', '#304458'),
@@ -29,7 +29,11 @@ PALETTES = {
     'iron': ('#090e12', '#111a21', '#1a2630', '#27333d', '#36434b', '#49565c', '#606d70', '#7a8584'),
     'enamel': ('#040b18', '#06172c', '#08223d', '#0b2f52', '#123f6a', '#195380', '#21659a', '#2c78ae', '#4090c2'),
 }
-SEEDS = {name: 0x534f4e00 + i * 137 for i, name in enumerate(PALETTES)}
+# Explicit pins keep every existing material byte-identical when a family is
+# replaced or reordered. Rock replaces only the original first family's seed.
+SEEDS = {'rock': 1397706240, 'brass': 1397706377, 'crimson': 1397706514,
+         'obsidian': 1397706651, 'wood': 1397706788, 'parchment': 1397706925,
+         'leather': 1397707062, 'iron': 1397707199, 'enamel': 1397707336}
 
 
 def rgb(value):
@@ -40,9 +44,9 @@ def chunk(kind, body):
     return struct.pack('>I', len(body)) + kind + body + struct.pack('>I', zlib.crc32(kind + body) & 0xffffffff)
 
 
-def png(data):
-    raw = b''.join(b'\0' + data[y * SIZE * 4:(y + 1) * SIZE * 4] for y in range(SIZE))
-    return b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', SIZE, SIZE, 8, 6, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(raw, 9)) + chunk(b'IEND', b'')
+def png(data, width=SIZE, height=SIZE):
+    raw = b''.join(b'\0' + data[y * width * 4:(y + 1) * width * 4] for y in range(height))
+    return b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 6, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(raw, 9)) + chunk(b'IEND', b'')
 
 
 def noise_grid(rng, cells):
@@ -73,7 +77,81 @@ def draw_line(cells, points, pigment, thickness=1):
                     cells[(y + oy) % SIZE][(x + ox) % SIZE] = pigment
 
 
+def pigments(cells, palette):
+    rgba = bytearray()
+    histogram = {}
+    for row in cells:
+        for index in row:
+            pigment = palette[index]
+            histogram[pigment] = histogram.get(pigment, 0) + 1
+            rgba.extend((*rgb(pigment), 255))
+    return bytes(rgba), histogram
+
+
+def pale_stone_metrics(cells, histogram):
+    """Brightness and calmness measured from the actual finite-palette face."""
+    palette = PALETTES['rock']
+    colors = [rgb(pigment) for pigment in palette]
+    luminance = [.2126 * red + .7152 * green + .0722 * blue for red, green, blue in colors]
+    total = SIZE * SIZE
+    weights = [histogram.get(pigment, 0) for pigment in palette]
+    mean = sum(value * count for value, count in zip(luminance, weights)) / total
+    deviation = math.sqrt(sum((value - mean) ** 2 * count for value, count in zip(luminance, weights)) / total)
+    deltas, axis_means = [], []
+    for vertical in (False, True):
+        axis = []
+        for y in range(SIZE):
+            for x in range(SIZE):
+                other = cells[(y + 1) % SIZE][x] if vertical else cells[y][(x + 1) % SIZE]
+                axis.append(abs(luminance[cells[y][x]] - luminance[other]))
+        axis_means.append(round(sum(axis) / len(axis), 6))
+        deltas.extend(axis)
+    deltas.sort()
+    used = [luminance[i] for i, count in enumerate(weights) if count]
+    return {'luminance_basis': 'encoded RGB weighted 0.2126R + 0.7152G + 0.0722B',
+            'mean_rgb': [round(sum(color[channel] * count for color, count in zip(colors, weights)) / total, 6) for channel in range(3)],
+            'luminance_mean': round(mean, 6), 'luminance_standard_deviation': round(deviation, 6),
+            'luminance_minimum': round(min(used), 6), 'luminance_maximum': round(max(used), 6),
+            'mean_saturation': round(sum((max(color) - min(color)) / max(color) * count for color, count in zip(colors, weights)) / total, 6),
+            'horizontal_neighbor_delta_mean': axis_means[0], 'vertical_neighbor_delta_mean': axis_means[1],
+            'neighbor_delta_p95': round(deltas[int((len(deltas) - 1) * .95)], 6),
+            'neighbor_delta_over_12_fraction': round(sum(delta > 12 for delta in deltas) / len(deltas), 6),
+            'texels_below_luminance_160': sum(count for value, count in zip(luminance, weights) if value < 160)}
+
+
+def rock_material():
+    """One unbroken pale limestone face with restrained powdery pixel grain.
+
+    The entire face stays close to cream-yellow ground pigments #d5ccb4 and
+    #ddd5bf. Periodic low-amplitude tone fields and sparse shallow grain only
+    alter a few encoded RGB levels. There is no block partition, vein, stripe,
+    or crack: boundary chips and inward cracks belong to actual UI geometry.
+    """
+    rng = random.Random(SEEDS['rock'])
+    grids = [noise_grid(rng, n) for n in (4, 24, 128)]
+    cells = []
+    for y in range(SIZE):
+        row = []
+        for x in range(SIZE):
+            broad = noise(grids[0], x, y)
+            middle = noise(grids[1], x, y)
+            fine = noise(grids[2], x, y)
+            value = 2.7 + (broad - .5) * .6 + (middle - .5) * .42 + (fine - .5) * .36
+            grain = rng.random()
+            if grain < .035:
+                value -= 1
+            elif grain > .985:
+                value += 1
+            row.append(max(1, min(4, int(value))))
+        cells.append(row)
+    data, histogram = pigments(cells, PALETTES['rock'])
+    return data, histogram, pale_stone_metrics(cells, histogram)
+
+
 def material(name):
+    if name == 'rock':
+        data, histogram, _ = rock_material()
+        return data, histogram
     rng = random.Random(SEEDS[name])
     grids = [noise_grid(rng, n) for n in (4, 12, 40)]
     palette = PALETTES[name]
@@ -85,9 +163,7 @@ def material(name):
             middle = noise(grids[1], x, y)
             fine = noise(grids[2], x, y)
             cloud = broad * .58 + middle * .3 + fine * .12
-            if name == 'marble':
-                value = 1 + cloud * 4.3
-            elif name == 'brass':
+            if name == 'brass':
                 # Hammered alloy, warm rather than shiny yellow plastic.
                 value = 2.2 + cloud * 3.7 + (fine > .78) * .6
             elif name == 'crimson':
@@ -108,38 +184,7 @@ def material(name):
                 value = 1.8 + cloud * 3.8
             row.append(max(0, min(len(palette) - 1, int(value))))
         cells.append(row)
-    if name == 'marble':
-        for vein in range(7):
-            origin_x = rng.randrange(SIZE)
-            points = []
-            phase = rng.random() * math.tau
-            second_phase = rng.random() * math.tau
-            winding = vein % 2
-            jitter = [rng.randint(-7, 7) for _ in range(SIZE // 8)]
-            for y in range(-32, SIZE + 33, 8):
-                # Integer torus winding plus periodic harmonics joins the
-                # tile's opposite boundaries. Fractures never visibly stop
-                # at an arbitrary texture edge on a tall material panel.
-                x = origin_x + winding * y + round(math.sin(y * math.tau / SIZE + phase) * 43 + math.sin(y * math.tau * 3 / SIZE + second_phase) * 17) + jitter[(y // 8) % len(jitter)]
-                points.append((x, y))
-            draw_line(cells, points, 5 + vein % 3, 3)
-            draw_line(cells, [(x - 1, y) for x, y in points], 8 + vein % 2)
-            # Secondary fractures branch organically from the large vein.
-            for branch in range(3):
-                bx, by = points[rng.randrange(8, len(points) - 8)]
-                direction = -1 if branch % 2 else 1
-                branch_points = [(bx, by)]
-                for _ in range(rng.randint(7, 16)):
-                    bx += direction * rng.randint(3, 9)
-                    by += rng.randint(1, 7)
-                    branch_points.append((bx, by))
-                draw_line(cells, branch_points, 6 + branch % 2)
-        # Sparse calcite facets are 1–3 texel clusters, not white noise.
-        for _ in range(90):
-            x, y = rng.randrange(SIZE), rng.randrange(SIZE)
-            for i in range(rng.randint(1, 3)):
-                cells[y][(x + i) % SIZE] = 6
-    elif name in ('brass', 'iron', 'enamel', 'crimson', 'obsidian'):
+    if name in ('brass', 'iron', 'enamel', 'crimson', 'obsidian'):
         for scratch in range(24 if name in ('brass', 'iron') else 10):
             x, y = rng.randrange(SIZE), rng.randrange(SIZE)
             length = rng.randint(8, 36)
@@ -161,35 +206,67 @@ def material(name):
         for _ in range(55):
             x, y = rng.randrange(SIZE), rng.randrange(SIZE)
             draw_line(cells, [(x, y), (x + 4, y + 1), (x + 7, y)], 2)
-    rgba = bytearray()
-    histogram = {}
-    for row in cells:
-        for index in row:
-            pigment = palette[index]
-            histogram[pigment] = histogram.get(pigment, 0) + 1
-            rgba.extend((*rgb(pigment), 255))
-    return bytes(rgba), histogram
+    return pigments(cells, palette)
 
 
 def generated():
     outputs = {}
     records = []
     for name in PALETTES:
-        data, histogram = material(name)
+        if name == 'rock':
+            data, histogram, metrics = rock_material()
+        else:
+            data, histogram = material(name)
         body = png(data)
         path = OUT / (name + '.png')
         outputs[path] = body
-        records.append({'name': name, 'path': path.relative_to(ROOT).as_posix(), 'sha256': hashlib.sha256(body).hexdigest(), 'width': SIZE, 'height': SIZE, 'seed': SEEDS[name], 'palette': list(PALETTES[name]), 'histogram': histogram})
-    manifest = {'format': 'SonnOriginalUiMaterials1', 'author': 'Sonnheide project', 'license': 'Original project artwork; no public license granted', 'recipe': 'tools/generate_ui_materials.py', 'recipe_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'logical_texel_dp': 1, 'sampling': 'nearest', 'alpha': 'opaque', 'default_dark_rim_dp': 3, 'default_dark_depth_dp': 3, 'color_direction': 'dark saturated pigments without pale white-tinted enamel, crimson or brass', 'runtime': 'cached textured quads; fixed logical texel scale; no per-texel runtime geometry', 'outputs': records}
+        record = {'name': name, 'path': path.relative_to(ROOT).as_posix(), 'sha256': hashlib.sha256(body).hexdigest(), 'width': SIZE, 'height': SIZE, 'seed': SEEDS[name], 'palette': list(PALETTES[name]), 'histogram': histogram}
+        if name == 'rock':
+            record['surface_recipe'] = {'algorithm': 'continuous pale limestone tablet face',
+                                        'ground_pigments': ['#d5ccb4', '#ddd5bf'],
+                                        'tone': 'very light low-saturation cream-yellow',
+                                        'detail': 'restrained powder grain and very low-contrast tone variation',
+                                        'periodicity': 'toroidal tone fields; pixel grain has no lines or seams',
+                                        'antialiasing': False, 'interior_cracks': False,
+                                        'block_partition': False, 'horizontal_stripes': False,
+                                        'edge_damage_owner': 'actual control boundary geometry'}
+            record['pale_stone_face'] = metrics
+        records.append(record)
+    manifest = {'format': 'SonnOriginalUiMaterials1', 'author': 'Sonnheide project', 'license': 'Original project artwork; no public license granted', 'recipe': 'tools/generate_ui_materials.py', 'recipe_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'logical_texel_dp': 1, 'sampling': 'nearest', 'alpha': 'opaque', 'default_dark_rim_dp': 3, 'default_dark_depth_dp': 3, 'color_direction': 'very light cream limestone face; other eight dark saturated pigments unchanged', 'runtime': 'cached textured quads; fixed logical texel scale; no per-texel runtime geometry', 'outputs': records}
     outputs[MANIFEST] = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     return outputs
+
+
+def contact_sheet(data):
+    """Actual tile, 2x powder-grain detail, and 2x2 repeat with point reduction."""
+    width, height = SIZE * 3, SIZE
+    result = bytearray(width * height * 4)
+    for y in range(height):
+        for x in range(width):
+            if x < SIZE:
+                sx, sy = x, y
+            elif x < SIZE * 2:
+                sx, sy = (x - SIZE) // 2 + 128, y // 2 + 128
+            else:
+                sx, sy = ((x - SIZE * 2) * 2) % SIZE, (y * 2) % SIZE
+            source = (sy * SIZE + sx) * 4
+            target = (y * width + x) * 4
+            result[target:target + 4] = data[source:source + 4]
+    return png(result, width, height)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true', help='Verify exact cached artwork and manifest without writing.')
+    parser.add_argument('--preview', type=Path, help='Write an optional rock tile/detail/repeat QA contact sheet.')
     args = parser.parse_args()
     mismatches = []
+    obsolete = OUT / 'marble.png'
+    if obsolete.exists():
+        if args.check:
+            mismatches.append(obsolete.relative_to(ROOT).as_posix() + ' (obsolete)')
+        else:
+            obsolete.unlink()
     for path, body in generated().items():
         matches = path.is_file() and path.read_bytes() == body
         if not matches:
@@ -200,7 +277,11 @@ def main():
                 path.write_bytes(body)
     if mismatches:
         raise SystemExit('Material cache differs from original recipe: ' + ', '.join(mismatches))
-    print('Original pixel materials: 9 dark finite-palette 512 x 512 tiles' + (' verified' if args.check else ' ready'))
+    if args.preview:
+        data, _, _ = rock_material()
+        args.preview.parent.mkdir(parents=True, exist_ok=True)
+        args.preview.write_bytes(contact_sheet(data))
+    print('Original pixel materials: 9 finite-palette 512 x 512 tiles' + (' verified' if args.check else ' ready'))
 
 
 if __name__ == '__main__':

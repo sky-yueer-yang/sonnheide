@@ -269,21 +269,24 @@ void Ui::layout() {
     // resolving dp. Resolve our logical widths here into physical whole pixels,
     // including every heading and the wordmark's inheriting inline spans.
     if(outline_density_!=density || outline_compact_!=narrow) {
-        const auto apply=[&](auto&& self,Rml::Element* element,bool topbar)->void {
+        const auto apply=[&](auto&& self,Rml::Element* element,bool topbar,bool stone_panel)->void {
             topbar=topbar || element->IsClassSet("topbar");
+            stone_panel=stone_panel || element->GetId()=="creation-controls" || element->GetId()=="world-panel";
             const bool title=element->GetId()=="main-title";
             if(title || element->GetTagName()=="h2" || element->GetId()=="world-name") {
-                if(topbar && narrow) element->SetProperty("font-effect","none");
+                const int pigment=std::clamp(static_cast<int>(std::round(density)),1,16);
+                if(stone_panel && element->GetTagName()=="h2")
+                    element->SetProperty("font-effect","pixel-bold("+std::to_string(pigment)+"px #7b2d22)");
+                else if(topbar && narrow) element->SetProperty("font-effect","none");
                 else {
                     const int outer=std::clamp(static_cast<int>(std::round(2.f*density)),1,16);
-                    const int pigment=std::clamp(static_cast<int>(std::round(density)),1,16);
                     const std::string colour=element->IsClassSet("danger-heading")?"#c83a29":"#d99100";
                     element->SetProperty("font-effect","pixel-outline("+std::to_string(outer)+"px #ffffff), "+std::string(title?"pixel-outline":"pixel-bold")+"("+std::to_string(pigment)+"px "+colour+")");
                 }
             }
-            for(int i=0;i<element->GetNumChildren();++i) self(self,element->GetChild(i),topbar);
+            for(int i=0;i<element->GetNumChildren();++i) self(self,element->GetChild(i),topbar,stone_panel);
         };
-        apply(apply,document_,false);
+        apply(apply,document_,false,false);
         outline_density_=density;outline_compact_=narrow;
     }
 
@@ -334,9 +337,8 @@ void Ui::layout() {
             button->SetProperty("width",std::to_string(tab_width)+"dp");
         }
     }
-    // The six-pixel join faces occupy a genuine gap in the panel top ring.
-    // Neither a later panel draw nor alpha overdraw may close the tab necks.
-    document_->GetElementById("bottom-bar-frame")->SetProperty("decorator","physical-material(marble #ffffffff 3dp 2dp 3dp 8dp "+std::to_string(tab_width*8.f)+"dp)");
+    // The tabs end above the dock's continuous carved stone lip. Its full
+    // width stays visible; no per-tab gap or neck paints over the ledge.
     // Three physical instrument groups share one row where they actually fit.
     // At small widths the flex wrapper uses two real rows rather than reserving
     // a permanently oversized empty toolbar on every screen.

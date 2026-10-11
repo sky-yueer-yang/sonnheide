@@ -16,9 +16,16 @@ PixelMesh pixel_tab_mesh(float width,float height,float edge,float shoulder,floa
 // UVs are split at tile boundaries instead of stretching a tiny flat picture.
 struct PhysicalMaterialDefinition { const char* name; const char* texture_source; int width,height; };
 const std::array<PhysicalMaterialDefinition,9>& physical_material_definitions();
-// For tabs `depth` is the open marble neck height. Dock gaps remove the full
-// six-dp neck, independently of their three-dp dark rim, so paint occurs once.
+// Generic carved faces retain the eight non-stone material silhouettes.
 PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,float gap_start=0,float gap_width=0);
+// A pale stone face has sparse physical edge chips and short fractures rooted
+// at its actual upper edge. `lip` adds a continuous six-dp raised top ledge
+// followed by a two-dp warm shadow; attached tabs end above that ledge.
+PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,bool lip=false);
+// Only the open tab neck shares the dock's texture coordinates. texture_origin
+// is the rounded tab padding origin relative to the rounded dock padding
+// origin, in physical pixels. Faces keep their original local coordinates.
+PixelMesh pixel_material_neck_mesh(float width,float height,float texel_scale,float neck,Rml::Vector2f texture_origin,Rml::Colourb tint);
 void pixel_glyph_dilate(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph,int radius);
 void pixel_glyph_bolden(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph,int width);
 void register_pixel_decorator();

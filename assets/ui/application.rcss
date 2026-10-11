@@ -1,7 +1,8 @@
-/* Original high-resolution pixel objects: veined marble, enamel switches,
+/* Original high-resolution pixel objects: clean cream stone with worn edges, enamel switches,
    brass seals, dark wood ledgers, leather instruments and folded parchment.
    Material pixels are authored in code, finite-palette and nearest sampled.
-   Only important glyphs use a limited white contour; objects use heavy dark edges. */
+   Dark objects retain their heavy edges and limited white glyph contours.
+   Light stone carries dark ink and short edge damage instead of face-wide cracks. */
 body, section, div, nav, h1, h2, h3, p, label { display: block; }
 body { margin: 0; width: 100%; height: 100%; font-family: Sonn Arcade; font-size: 12dp; line-height: 18dp; font-weight: normal; color: #dce6ec; }
 h1, h2, h3, p { margin: 0; font-weight: normal; }
@@ -26,7 +27,7 @@ selectarrow { width: 16dp; height: 12dp; decorator: pixel-down(#ffffff); }
 selectbox { padding: 6dp; decorator: physical-material(wood); }
 option { display: block; min-height: 40dp; padding: 6dp 8dp; font-size: 24dp; color: #dce6ec; }
 option:hover, option:checked { decorator: physical-material(brass); }
-.panel { decorator: physical-material(marble); }
+.panel { decorator: physical-material(rock); }
 .setting-block { padding: 0 4dp 4dp; margin-top: 6dp; }
 .setting-block label:first-child { margin-top: 4dp; }
 #main-screen, #creation-screen, #world-screen, #load-screen { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
@@ -48,7 +49,10 @@ option:hover, option:checked { decorator: physical-material(brass); }
 .compact .topbar button img { margin-right: 0; }
 .compact .topbar h2 { font-size: 12dp; font-effect: none; }
 .quiet { color: #b7c9d4; }
-#creation-controls { decorator: physical-material(marble); z-index: 2; position: absolute; box-sizing: border-box; padding: 16dp; overflow-y: auto; }
+#creation-controls { decorator: physical-material(rock); z-index: 2; position: absolute; box-sizing: border-box; padding: 16dp; overflow-y: auto; }
+#creation-controls, #world-panel, #busy-indicator, #bottom-bar-frame { color: #49361f; }
+#creation-controls label, #world-panel label { color: #49361f; }
+#creation-controls h2, #world-panel h2 { color: #7b2d22; font-effect: pixel-bold(1px #7b2d22); }
 .input-pair { display: flex; width: 100%; }
 .input-pair div { width: 50%; box-sizing: border-box; padding-right: 4dp; flex-shrink: 0; }
 .input-pair div:last-child { padding-right: 0; padding-left: 4dp; }
@@ -74,7 +78,7 @@ option:hover, option:checked { decorator: physical-material(brass); }
 #create:hover, #create:focus, #settings-close:hover, #settings-close:focus, #load-selected:hover, #load-selected:focus, #rename-commit:hover, #rename-commit:focus { decorator: physical-material(brass); }
 #create:disabled, #rename-commit:disabled, #load-selected:disabled { decorator: physical-material(iron); color: #8aa8ba; }
 #creation-population { font-size: 12dp; line-height: 18dp; padding: 0 4dp; }
-#creation-scale { font-size: 12dp; line-height: 18dp; margin: 4dp 0; color: #b7c9d4; }
+#creation-scale { font-size: 12dp; line-height: 18dp; margin: 4dp 0; color: #6b5437; }
 #scene-viewport { position: absolute; background-color: transparent; }
 #preview-caption { position: absolute; top: 76dp; margin: 0; font-size: 12dp; line-height: 18dp; padding: 8dp 12dp; decorator: physical-material(parchment); }
 #world-status { position: absolute; top: 12dp; left: 12dp; max-width: 85%; box-sizing: border-box; padding: 8dp; decorator: physical-material(leather); }
@@ -85,15 +89,15 @@ option:hover, option:checked { decorator: physical-material(brass); }
 /* Raised tabs are outside the tool panel. A plain absolute block hosts two
    normal flow children, so the RmlUi5 flex row has a supported block parent. */
 #bottom-dock { position: absolute; bottom: 0; left: 0; width: 100%; box-sizing: border-box; }
-#section-tabs { position: relative; z-index: 3; height: 56dp; padding: 0 8dp; box-sizing: border-box; }
+#section-tabs { position: relative; z-index: 3; height: 62dp; padding: 0 8dp; box-sizing: border-box; }
 #bottom-bar { display: flex; flex-wrap: nowrap; width: 100%; height: 62dp; box-sizing: border-box; padding: 0; text-align: center; }
-#bottom-bar button { height: 58dp; min-height: 58dp; flex-shrink: 0; padding: 3dp 4dp; margin: 4dp 0 0; font-size: 12dp; decorator: physical-tab(marble); }
+#bottom-bar button { height: 58dp; min-height: 58dp; flex-shrink: 0; padding: 3dp 4dp; margin: 4dp 0 0; font-size: 12dp; decorator: physical-tab(rock); }
 #bottom-bar button.selected { height: 62dp; min-height: 62dp; margin-top: 0; padding-top: 7dp; decorator: physical-tab(brass); }
 #bottom-bar button:hover, #bottom-bar button:focus { decorator: physical-tab(brass); }
 #bottom-bar button.selected:hover, #bottom-bar button.selected:focus { decorator: physical-tab(brass); }
 #bottom-bar button span { display: none; }
 #bottom-bar img { display: block; width: 48dp; height: 48dp; margin: 0 auto; }
-#bottom-bar-frame { position: relative; z-index: 1; width: 100%; box-sizing: border-box; padding: 8dp; decorator: physical-material(marble); }
+#bottom-bar-frame { position: relative; z-index: 1; width: 100%; box-sizing: border-box; padding: 8dp; decorator: physical-dock(rock); }
 .toolbar { position: relative; width: 100%; box-sizing: border-box; padding: 4dp; overflow-y: auto; }
 .toolbar button { width: 60dp; min-width: 60dp; height: 60dp; min-height: 60dp; padding: 6dp; margin: 0 2dp 4dp 0; font-size: 12dp; text-align: center; flex-shrink: 0; }
 .toolbar button img { display: block; width: 48dp; height: 48dp; margin: 0; }
@@ -103,7 +107,7 @@ option:hover, option:checked { decorator: physical-material(brass); }
 .clock-row { margin-right: 8dp; }
 .world-actions { margin-right: 8dp; }
 #age-tools { margin-top: 0; }
-.future-tools span { margin-left: 8dp; color: #b2d2e8; }
+.future-tools span { margin-left: 8dp; color: #49361f; }
 #save-panel { decorator: physical-material(wood); position: absolute; padding: 16dp; box-sizing: border-box; overflow-y: auto; }
 .save-entry { decorator: physical-material(leather); font-size: 24dp; line-height: 28dp; display: block; width: 100%; text-align: left; padding: 10dp 12dp; margin-bottom: 6dp; }
 .save-entry span { display: block; word-break: break-word; }

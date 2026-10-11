@@ -36,11 +36,11 @@ struct System final:Rml::SystemInterface {
     std::vector<Rml::String> layout_rejections;
 };
 struct Render final:Rml::RenderInterface {
-    void RenderGeometry(Rml::Vertex* vertices,int count,int*,int,Rml::TextureHandle texture,const Rml::Vector2f& translation) override{
+    void RenderGeometry(Rml::Vertex* vertices,int count,int* indices,int index_count,Rml::TextureHandle texture,const Rml::Vector2f& translation) override{
         const auto material=material_textures.find(texture);
         if(material!=material_textures.end()) {
             materials_drawn.insert(material->second);
-            material_draws.push_back({material->second,translation});
+            material_draws.push_back({material->second,translation,std::vector<Rml::Vertex>(vertices,vertices+count),std::vector<int>(indices,indices+index_count)});
             // Material pixels are not stretched colour blocks: native geometry
             // supplies bounded UVs to the admitted finite-palette texture.
             for(int i=0;i<count;++i) require(vertices[i].tex_coord.x>=0 && vertices[i].tex_coord.x<=1 && vertices[i].tex_coord.y>=0 && vertices[i].tex_coord.y<=1,"Actual physical material UVs must address their admitted pixel tile");
@@ -58,6 +58,20 @@ struct Render final:Rml::RenderInterface {
             for(int i=0;i<count;++i) untinted=untinted && vertices[i].colour.red==255 && vertices[i].colour.green==255 && vertices[i].colour.blue==255 && vertices[i].colour.alpha==255;
             if(untinted) full_colour_sprite=true;
         }
+    }
+    Rml::CompiledGeometryHandle CompileGeometry(Rml::Vertex* vertices,int count,int* indices,int index_count,Rml::TextureHandle texture) override {
+        const auto handle=++next_geometry;
+        compiled_geometry.emplace(handle,CompiledGeometry{std::vector<Rml::Vertex>(vertices,vertices+count),std::vector<int>(indices,indices+index_count),texture});
+        return handle;
+    }
+    void RenderCompiledGeometry(Rml::CompiledGeometryHandle handle,const Rml::Vector2f& translation) override {
+        auto found=compiled_geometry.find(handle);require(found!=compiled_geometry.end(),"Native rendering must not reuse a released material geometry handle");
+        auto& geometry=found->second;
+        RenderGeometry(geometry.vertices.data(),static_cast<int>(geometry.vertices.size()),geometry.indices.data(),static_cast<int>(geometry.indices.size()),geometry.texture,translation);
+        ++compiled_draws;
+    }
+    void ReleaseCompiledGeometry(Rml::CompiledGeometryHandle handle) override {
+        require(compiled_geometry.erase(handle)==1,"Native geometry cache release must own one live compiled handle");
     }
     void EnableScissorRegion(bool) override{}
     void SetScissorRegion(int,int,int,int) override{}
@@ -84,8 +98,37 @@ struct Render final:Rml::RenderInterface {
     std::map<Rml::TextureHandle,std::string> material_textures;
     std::set<Rml::TextureHandle> icon_textures;
     std::set<std::string> materials_drawn;
-    struct MaterialDraw {std::string family;Rml::Vector2f position;};
+    struct CompiledGeometry {std::vector<Rml::Vertex> vertices;std::vector<int> indices;Rml::TextureHandle texture;};
+    Rml::CompiledGeometryHandle next_geometry=0;
+    std::map<Rml::CompiledGeometryHandle,CompiledGeometry> compiled_geometry;
+    std::size_t compiled_draws=0;
+    struct MaterialDraw {std::string family;Rml::Vector2f position;std::vector<Rml::Vertex> vertices;std::vector<int> indices;};
     std::vector<MaterialDraw> material_draws;
+    struct MaterialSample {Rml::Vector2f uv;Rml::byte alpha;};
+    std::vector<MaterialSample> material_samples(const char* family,Rml::Vector2f screen_point) const {
+        std::vector<MaterialSample> samples;
+        const auto cross=[](Rml::Vector2f a,Rml::Vector2f b){return a.x*b.y-a.y*b.x;};
+        for(const auto& draw:material_draws) {
+            if(draw.family!=family) continue;
+            const auto point=screen_point-draw.position;
+            for(std::size_t i=0;i+2<draw.indices.size();i+=3) {
+                const auto& a=draw.vertices.at(static_cast<std::size_t>(draw.indices[i]));
+                const auto& b=draw.vertices.at(static_cast<std::size_t>(draw.indices[i+1]));
+                const auto& c=draw.vertices.at(static_cast<std::size_t>(draw.indices[i+2]));
+                const float area=cross(b.position-a.position,c.position-a.position);
+                if(std::abs(area)<.0001f) continue;
+                const float wb=cross(point-a.position,c.position-a.position)/area;
+                const float wc=cross(b.position-a.position,point-a.position)/area;
+                const float wa=1.f-wb-wc;
+                if(wa<-.0001f || wb<-.0001f || wc<-.0001f) continue;
+                samples.push_back({a.tex_coord*wa+b.tex_coord*wb+c.tex_coord*wc,static_cast<Rml::byte>(std::round(a.colour.alpha*wa+b.colour.alpha*wb+c.colour.alpha*wc))});
+                // One triangle can share its edge with another in this draw.
+                // Count a draw once; separate overlapping draws still count.
+                break;
+            }
+        }
+        return samples;
+    }
     bool material_at(const char* family,Rml::Vector2f position) const {
         for(const auto& draw:material_draws)if(draw.family==family && draw.position==position)return true;
         return false;
@@ -185,11 +228,25 @@ void material_geometry_contract() {
         }
         require(centre_layers==1,"Material colour at the centre must be painted once, without a hidden repeated opacity shell");
         for(const auto& v:panel.vertices) require(v.position.x==std::round(v.position.x) && v.position.y==std::round(v.position.y) && v.tex_coord.x>=0 && v.tex_coord.x<=1 && v.tex_coord.y>=0 && v.tex_coord.y<=1,"Material silhouette and tile seams must retain exact whole raster edges and admitted UV bounds");
-        const auto tab=pixel_material_mesh(72*density,62*density,density,3*density,2*density,6*density,{255,255,255,255},true);
-        const auto dock=pixel_material_mesh(1280*density,88*density,density,3*density,2*density,3*density,{255,255,255,255},false,8*density,576*density);
-        require(!covers(tab,3*density,3*density) && covers(tab,10*density,3*density) && covers(tab,36*density,59*density),"Carved tabs need stepped shoulders and a full real marble foot");
-        for(float y:{.5f,2.5f,5.5f}) require(!covers(dock,44*density,y*density),"The actual thin-rim marble dock must remove the entire six-dp neck interval; no tab overpaint is allowed");
-        require(covers(dock,44*density,6.5f*density) && covers(dock,1200*density,2.5f*density),"Only the exact join is absent; marble outside/below it must remain real geometry");
+        const auto tab=pixel_stone_mesh(72*density,62*density,density,3*density,2*density,6*density,{255,255,255,255},true);
+        const auto dock=pixel_stone_mesh(1280*density,88*density,density,3*density,2*density,3*density,{255,255,255,255},false,true);
+        require(!covers(tab,3*density,3*density) && covers(tab,10*density,3*density) && covers(tab,36*density,59*density),"Carved tabs need stepped shoulders and a full real rock foot");
+        for(float x=.5f;x<1280;x+=8) require(covers(dock,x*density,4.5f*density),"The projecting stone ledge must retain its full visible span beneath all eight tablets");
+        require(covers(dock,.5f*density,3.5f*density) && !covers(dock,.5f*density,10.5f*density),"The stone lip must actually project beyond the two-dp body inset, rather than paint a flat line");
+        const auto stone=pixel_stone_mesh(1280*density,800*density,density,3*density,2*density,3*density,{255,255,255,255});
+        require(!stone.vertices.empty() && stone.vertices.size()<4096,"Stone edge damage must use bounded carved geometry rather than per-texel face geometry");
+        int clean_layers=0;
+        for(std::size_t i=0;i+3<stone.vertices.size();i+=4) {
+            const auto& a=stone.vertices[i];const auto& b=stone.vertices[i+2];
+            if(a.position.x<640*density && b.position.x>640*density && a.position.y<400*density && b.position.y>400*density) {
+                ++clean_layers;require(a.colour.red==255 && a.colour.green==255 && a.colour.blue==255,"The centre of a light stone tablet must remain clean cream, without dark face-wide fissures");
+            }
+            if(a.colour.red<210 && b.position.x>12*density && a.position.x<1268*density && b.position.y>24*density && a.position.y<776*density)
+                require(false,"Deep stone damage must stay within the physical edge band instead of repeating inside the slab");
+            require(std::abs((b.tex_coord.x-a.tex_coord.x)*512.f*density-(b.position.x-a.position.x))<.01f && std::abs((b.tex_coord.y-a.tex_coord.y)*512.f*density-(b.position.y-a.position.y))<.01f,"Cream stone texture must retain one logical texel per dp under its carved geometry");
+        }
+        require(clean_layers==1,"The clean stone centre must be shaded once");
+        require(!covers(stone,75.5f*density,.5f*density) && covers(stone,75.5f*density,3.5f*density),"A worn stone chip must remove actual edge geometry while preserving the face below it");
     }
     std::set<std::string> families;
     for(const auto& definition:physical_material_definitions()) {
@@ -204,6 +261,79 @@ Rect rect(Ui& ui,const char* id,float density,Rml::Box::Area area=Rml::Box::BORD
     const auto p=el->GetAbsoluteOffset(area),s=el->GetBox().GetSize(area);
     return{p.x/density,p.y/density,s.x/density,s.y/density};
 }
+Render::MaterialSample material_sample(const Render& render,const char* family,Rml::Vector2f point) {
+    const auto samples=render.material_samples(family,point);
+    require(samples.size()==1,"A real material probe must be painted exactly once, without a missing neck or overlapping dock");
+    require(samples[0].alpha==255,"The stone object must retain opaque alpha rather than hide its layered relation with blending");
+    return samples[0];
+}
+void rock_neck_probe(Ui& ui,const Render& render,const char* id,float density) {
+    auto* doc=ui.context().GetDocument(0);
+    auto* dock=doc->GetElementById("bottom-bar-frame");auto* tab=doc->GetElementById(id);
+    const auto anchor=dock->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+    const auto origin=tab->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+    const auto size=tab->GetBox().GetSize(Rml::Box::PADDING).Round();
+    const float span=512.f*density;
+    const Rml::Vector2f foot_point{origin.x+size.x*.5f,origin.y+size.y-2.5f*density};
+    require(origin.y+size.y<=anchor.y+.15f,"A carved tablet must stand above the continuous lip, never occupy or paint over the ledge");
+    const Rml::Vector2f dock_point{foot_point.x,anchor.y+4.5f*density};
+    const auto foot=material_sample(render,"rock",foot_point),body=material_sample(render,"rock",dock_point);
+    require(std::abs(std::remainder((foot.uv.x-body.uv.x)*span-(foot_point.x-dock_point.x),span))<.04f &&
+            std::abs(std::remainder((foot.uv.y-body.uv.y)*span-(foot_point.y-dock_point.y),span))<.04f,
+            "Compiled stone feet must retain the current dock grain phase while remaining geometrically above the visible lip");
+    const char* family=tab->IsClassSet("selected") || tab->IsPseudoClassSet("hover") || tab->IsPseudoClassSet("focus")?"brass":"rock";
+    const Rml::Vector2f face_point{origin.x+size.x*.5f,origin.y+20.5f*density};
+    const auto face=material_sample(render,family,face_point);
+    require(std::abs(std::remainder(face.uv.x*span-(face_point.x-origin.x),span))<.04f &&
+            std::abs(std::remainder(face.uv.y*span-(face_point.y-origin.y),span))<.04f,
+            "The brass and cream stone tablet faces must preserve their original local UVs");
+}
+void rock_join_contract(Ui& ui,Render& render,float density) {
+    render.reset_draws();ui.render();
+    const std::array<const char*,8> tabs={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
+    auto* doc=ui.context().GetDocument(0);auto* dock=doc->GetElementById("bottom-bar-frame");
+    const auto anchor=dock->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+    const float span=512.f*density;
+    const auto horizontal_join=[&](float x) {
+        const Rml::Vector2f left{x-.5f*density,anchor.y+4.5f*density},right{x+.5f*density,anchor.y+4.5f*density};
+        const auto a=material_sample(render,"rock",left),b=material_sample(render,"rock",right);
+        require(std::abs(std::remainder((b.uv.x-a.uv.x)*span-density,span))<.04f &&
+                std::abs(std::remainder((b.uv.y-a.uv.y)*span,span))<.04f,
+                "The uninterrupted real stone lip must advance one texel across tablet boundaries and512-texel tile seams");
+    };
+    for(std::size_t i=0;i<tabs.size();++i) {
+        rock_neck_probe(ui,render,tabs[i],density);
+        if(i)horizontal_join(doc->GetElementById(tabs[i])->GetAbsoluteOffset(Rml::Box::PADDING).Round().x);
+    }
+    auto* last=doc->GetElementById(tabs.back());
+    const float last_right=last->GetAbsoluteOffset(Rml::Box::PADDING).Round().x+last->GetBox().GetSize(Rml::Box::PADDING).Round().x;
+    if(anchor.x+span<last_right-.5f*density) horizontal_join(anchor.x+span);
+    const float dock_width=dock->GetBox().GetSize(Rml::Box::PADDING).Round().x;
+    for(float x=.5f*density;x<dock_width;x+=8.f*density)material_sample(render,"rock",{anchor.x+x,anchor.y+4.5f*density});
+    require(render.compiled_draws>0,"Stone lip probes must include actual compiled geometry rendering, not only the immediate fallback path");
+}
+void rock_neck_cache_contract(Ui& ui,Render& render,int width,int height,float density) {
+    rock_join_contract(ui,render,density);
+    const auto compiled_before=render.next_geometry;
+    rock_join_contract(ui,render,density);
+    require(render.next_geometry==compiled_before,"An unchanged dock phase must reuse its existing compiled material cache");
+    auto* doc=ui.context().GetDocument(0);auto* tab=doc->GetElementById("tab-observe");auto* dock=doc->GetElementById("bottom-bar-frame");
+    const auto before=tab->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+    tab->SetProperty("position","relative");tab->SetProperty("left","13dp");tab->SetProperty("top","-2dp");ui.update();
+    const auto moved=tab->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+    require(std::abs(moved.x-before.x-13.f*density)<.15f && std::abs(moved.y-before.y+2.f*density)<.15f,"Cache invalidation probe must actually translate an existing tab relative to its dock");
+    render.reset_draws();ui.render();rock_neck_probe(ui,render,"tab-observe",density);
+    dock->SetProperty("left","17dp");ui.update();
+    render.reset_draws();ui.render();rock_neck_probe(ui,render,"tab-observe",density);
+    dock->RemoveProperty("left");tab->RemoveProperty("position");tab->RemoveProperty("left");tab->RemoveProperty("top");ui.update();
+    rock_join_contract(ui,render,density);
+    const int alternate_width=width==1280?640:1280;
+    ui.resize(static_cast<int>(alternate_width*density),static_cast<int>((height+16)*density),density);ui.update();
+    rock_join_contract(ui,render,density);
+    ui.resize(static_cast<int>(width*density),static_cast<int>(height*density),density);ui.update();
+    rock_join_contract(ui,render,density);
+    require(ui.take_actions().empty(),"Material phase maintenance, movement and resize must never become a World command");
+}
 std::string visible_text(Rml::Element* element) {
     if(element->GetComputedValues().display()==Rml::Style::Display::None)return {};
     if(auto* text=dynamic_cast<Rml::ElementText*>(element))return text->GetText();
@@ -216,6 +346,23 @@ float actual_glyph_width(Rml::Element* element,const std::string& value,float de
     auto* engine=Rml::GetFontEngineInterface();require(engine!=nullptr,"Actual glyph measurement needs the native font engine");
     const auto face=element->GetFontFaceHandle();require(face!=0,"Actual glyph measurement must never query a missing native face");
     return engine->GetStringWidth(face,value)/density;
+}
+void ink_contract(Rml::Element* element,int red,int green,int blue) {
+    require(element!=nullptr,"Readable material text requires a real native element");
+    const auto colour=element->GetComputedValues().color();
+    require(colour.red==red && colour.green==green && colour.blue==blue && colour.alpha==255,"Text must use the actual contrasting ink assigned to its light stone or dark control surface");
+}
+void stone_heading_contract(Rml::Element* element,float density) {
+    ink_contract(element,123,45,34);
+    require(element->GetComputedValues().font_size()==24*density,"Light stone headings retain the real large24dp typeface");
+    const auto effects=element->GetProperty<Rml::FontEffectsPtr>("font-effect");
+    require(effects && effects->list.size()==1,"A cream stone heading must use solid dark pigment without a bright yellow or white silhouette");
+    const auto pigment=effects->list[0]->GetColour();
+    require(pigment.red==123 && pigment.green==45 && pigment.blue==34 && pigment.alpha==255,"The actual stone heading weight must carry the same deep red ink as its glyphs");
+    Rml::FontGlyph glyph;Rml::Vector2i origin{0,0},size{1,1};
+    require(effects->list[0]->GetGlyphMetrics(origin,size,glyph) && origin.x==0 && origin.y==0 &&
+            size.x==1+static_cast<int>(std::round(density)) && size.y==1,
+            "The single dark stone pigment must have actual density-scaled directional weight while preserving character counters");
 }
 void filled_action_contract(Ui& ui,const char* id,float density) {
     auto* element=ui.context().GetDocument(0)->GetElementById(id);
@@ -396,6 +543,12 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(dialog.x>=15.5f && dialog.y>=15.5f && dialog.x+dialog.w<=width-15.5f && dialog.y+dialog.h<=height-15.5f,"Centered creation dialog must respect viewport safe margins and real scrolling");
         require(ui.blocks_world_input(),"Centered creation form must shield background camera actions");
         auto* form=ui.context().GetDocument(0)->GetElementById("creation-controls");
+        stone_heading_contract(ui.context().GetDocument(0)->GetElementById("creation-heading")->GetChild(0),density);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-population"),73,54,31);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-scale"),107,84,55);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-theme-label"),73,54,31);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-name"),220,230,236);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("preview"),220,230,236);
         if(height<=480) require(form->GetScrollHeight()>form->GetClientHeight()+.5f,"The complete centered creation form must retain real scrolling in a short viewport");
         const auto scene=ui.viewport();require(scene.x==0 && scene.y==0 && std::abs(scene.width-width)<.15f && std::abs(scene.height-height)<.15f,"Blank creation uses the complete 3D scene behind its dialog");
         auto* doc=ui.context().GetDocument(0);
@@ -411,7 +564,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(ancestor!=nullptr,"Creation keyboard focus must remain inside the actual centered dialog");
     }
     render.reset_draws();ui.render();
-    require(render.materials_drawn.count("marble") && render.materials_drawn.count("obsidian"),"Creation controls must actually draw their veined marble and recessed obsidian materials");
+    require(render.materials_drawn.count("rock") && render.materials_drawn.count("obsidian"),"Creation controls must actually draw their clean cream stone and recessed obsidian materials");
     view.creation.can_select_theme=true;view.creation.theme="maple_field";ui.set_view(view);ui.update();
     require(ui.take_actions().empty(),"Snapshot/theme synchronization must not issue a player action or invalidate its preview");
     auto* theme=dynamic_cast<Rml::ElementFormControlSelect*>(ui.context().GetDocument(0)->GetElementById("creation-theme"));
@@ -470,14 +623,15 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     const std::array<const char*,8> tabs={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
         view.locale=locale;ui.set_view(view);ui.update();layout_contract(ui);
+        rock_join_contract(ui,render,density);
         const auto bar=rect(ui,"bottom-bar",density,Rml::Box::CONTENT);
         const float pixel_tolerance=1.1f/density;
         const auto outer_bar=rect(ui,"bottom-bar-frame",density);
         require(std::abs(outer_bar.y+outer_bar.h-height)<pixel_tolerance,"Bottom section toolbar must remain anchored to the viewport edge through its absolute wrapper");
         for(int i=0;i<8;++i) {
             const auto button=rect(ui,tabs[i],density),row=rect(ui,"section-tabs",density);
-            require(button.y>=row.y-.15f && button.y+button.h<=outer_bar.y+6.15f,"Folder tabs may overlap the panel by their six-pixel join neck only");
-            require(std::abs(button.y+button.h-outer_bar.y-6.f)<.15f && button.h<=62.15f,"Tabs must be low58/62dp stone faces with a real six-pixel join, never tall standalone blocks");
+            require(button.y>=row.y-.15f && button.y+button.h<=outer_bar.y+.15f,"Tablets must sit above the continuous projecting stone ledge without overpainting it");
+            require(std::abs(button.y+button.h-outer_bar.y)<.15f && button.h<=62.15f,"Low58/62dp tablets must end exactly at the ledge top, leaving its full six-dp face visible");
             auto* panel=ui.context().GetDocument(0)->GetElementById("bottom-bar-frame");
             auto* parent=ui.context().GetDocument(0)->GetElementById(tabs[i]);
             while(parent && parent!=panel) parent=parent->GetParentNode();
@@ -491,12 +645,13 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
             require(!element->GetAttribute<Rml::String>("data-tooltip-key","").empty(),"Short toolbar labels require their complete localized name tooltip");
             object_icon_contract(ui,tabs[i],density,.77f);
             const auto image_offset=element->GetChild(0)->GetAbsoluteOffset(Rml::Box::BORDER);
-            require(image_offset.y/density+48.f<=button.y+button.h-6.f+.15f,"Actual48px category illustration must fit wholly on its carved face, never across the six-dp marble neck");
+            require(image_offset.y/density+48.f<=button.y+button.h-6.f+.15f,"Actual48px category illustration must fit wholly on its carved face, never across the six-dp rock neck");
             require(std::abs(button.h-(element->IsClassSet("selected")?62.f:58.f))<.15f,"Selected and ordinary carved page dimensions must be actual62/58dp native geometry");
 
         }
         require(ui.take_actions().empty(),"Layout/localization queries must not emit commands");
     }
+    rock_neck_cache_contract(ui,render,width,height,density);
     const auto observe_panel=rect(ui,"section-tools",density),camera=rect(ui,"camera-home",density),help=rect(ui,"camera-help",density);
     require(observe_panel.w<=width+.15f && std::abs(camera.w-60)<.15f && std::abs(help.w-60)<.15f && std::abs(camera.y-help.y)<.15f,"Observe tools must occupy60dp physical slots with48dp object silhouettes");
     object_icon_contract(ui,"camera-home",density);object_icon_contract(ui,"camera-help",density);
@@ -516,11 +671,13 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     const std::array<const char*,5> future_buttons={"terrain-pending","life-pending","civilization-pending","construction-pending","economy-pending"};
     for(std::size_t i=0;i<future_tabs.size();++i) {
         click(ui,future_tabs[i],density);require(single(ui,ActionKind::SelectBottomSection).a==static_cast<int>(i)+1,"Every category is navigable and emits one actual section selection");
+        rock_join_contract(ui,render,density);
         for(std::size_t j=0;j<future_panels.size();++j) require((ui.context().GetDocument(0)->GetElementById(future_panels[j])->GetComputedValues().display()!=Rml::Style::Display::None)==(j==i),"Only the selected section contents may occupy the toolbar body");
+        ink_contract(ui.context().GetDocument(0)->GetElementById(future_panels[i])->GetChild(1),73,54,31);
         click(ui,future_buttons[i],density);require(ui.take_actions().empty(),"Unavailable future tools stay visibly disabled without claiming a World edit");
     }
     click(ui,"tab-observe",density);single(ui,ActionKind::SelectBottomSection);
-    render.reset_draws();ui.render();require(render.materials_drawn.count("leather") && render.materials_drawn.count("marble"),"Real RmlUi must draw the leatherHUD and veined marble dock materials");
+    render.reset_draws();ui.render();require(render.materials_drawn.count("leather") && render.materials_drawn.count("rock"),"Real RmlUi must draw the leatherHUD and complete cream stone dock with its projecting ledge");
     auto* world_info=ui.context().GetDocument(0)->GetElementById("world-info");
     ui.context().ProcessMouseMove(0,0,0);world_info->Focus();ui.update();render.reset_draws();ui.render();
     require(world_info->IsPseudoClassSet("focus") && render.material_at("brass",world_info->GetAbsoluteOffset(Rml::Box::PADDING).Round()),"Actual keyboard focus must draw brass specifically at the world-info plaque, rather than pass because another selected tab happens to use brass");
@@ -576,6 +733,10 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     click(ui,"speed-sixtyfour",density);require(single(ui,ActionKind::SetSpeed).a==64,"Only approved clock multipliers are exposed");
     click(ui,"age-darkness",density);require(single(ui,ActionKind::SetAgeDarkness).generation==44,"Age intent belongs to current session");
     click(ui,"world-info",density);single(ui,ActionKind::OpenWorldInspector);layout_contract(ui);
+    stone_heading_contract(ui.context().GetDocument(0)->GetElementById("world-panel")->GetChild(0)->GetChild(0),density);
+    ink_contract(ui.context().GetDocument(0)->GetElementById("world-facts"),73,54,31);
+    ink_contract(ui.context().GetDocument(0)->GetElementById("rename-consequences"),73,54,31);
+    ink_contract(ui.context().GetDocument(0)->GetElementById("world-name-draft"),220,230,236);
     require(ui.blocks_world_input(),"World inspector must block camera input independently of pointer hover");
     hit_layer_contract(ui,"tab-world","world-overlay",density);
     auto* name=dynamic_cast<Rml::ElementFormControl*>(ui.context().GetDocument(0)->GetElementById("world-name-draft"));require(name!=nullptr,"World name must use a real editable native control");
@@ -612,6 +773,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         auto* settings=ui.context().GetDocument(0)->GetElementById("settings-panel");
         if(settings->GetScrollHeight()>settings->GetClientHeight()+.5f) require(settings->GetScrollTop()>0,"Overflowing localized settings must genuinely scroll to their final action");
         view.error_key="CREATION_DIMENSIONS";view.error_detail="core width 32..4096";view.busy=true;ui.set_view(view);ui.update();
+        ink_contract(ui.context().GetDocument(0)->GetElementById("busy-label"),73,54,31);
         error_layer_contract(ui,density);
         hit_layer_contract(ui,"tab-settings","error-overlay",density);
         hit_layer_contract(ui,"busy-indicator","error-overlay",density);

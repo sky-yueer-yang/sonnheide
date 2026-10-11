@@ -3,6 +3,7 @@
 #include <RmlUi/Core/DecoratorInstancer.h>
 #include <RmlUi/Core/ComputedValues.h>
 #include <RmlUi/Core/Element.h>
+#include <RmlUi/Core/ElementDocument.h>
 #include <RmlUi/Core/ElementUtilities.h>
 #include <RmlUi/Core/Factory.h>
 #include <RmlUi/Core/Geometry.h>
@@ -111,13 +112,24 @@ public:
 private:Rml::PropertyId fill_,outline_,shade_,edge_,corner_,depth_,gap_start_,gap_width_;
 };
 
+struct MaterialNeckState {
+    Rml::Vector2f size{},texture_origin{};
+    float scale=0,neck=0;
+    Rml::Colourb tint{};
+    bool Matches(const MaterialNeckState& other) const {
+        return size==other.size && texture_origin==other.texture_origin && scale==other.scale && neck==other.neck &&
+            tint.red==other.tint.red && tint.green==other.tint.green && tint.blue==other.tint.blue && tint.alpha==other.tint.alpha;
+    }
+};
 struct MaterialGeometry {
     explicit MaterialGeometry(Rml::Element* element):face(element),neck(element) {}
     Rml::Geometry face,neck;
+    MaterialNeckState neck_state;
+    bool neck_ready=false;
 };
 class MaterialDecorator final:public Rml::Decorator {
 public:
-    MaterialDecorator(int material,Rml::Colourb tint,Rml::Property edge,Rml::Property corner,Rml::Property depth,Rml::Property gap_start,Rml::Property gap_width,bool tab):tint_(tint),edge_(std::move(edge)),corner_(std::move(corner)),depth_(std::move(depth)),gap_start_(std::move(gap_start)),gap_width_(std::move(gap_width)),tab_(tab) {
+    MaterialDecorator(int material,Rml::Colourb tint,Rml::Property edge,Rml::Property corner,Rml::Property depth,Rml::Property gap_start,Rml::Property gap_width,bool tab,bool lip):tint_(tint),edge_(std::move(edge)),corner_(std::move(corner)),depth_(std::move(depth)),gap_start_(std::move(gap_start)),gap_width_(std::move(gap_width)),tab_(tab),lip_(lip),stone_(material==0) {
         const auto& definitions=physical_material_definitions();
         // These sources are deliberately relative to the admitted runtime
         // resource root. Inline dock sizing has no RCSS PropertySource path.
@@ -131,36 +143,61 @@ public:
         const float scale=Rml::ElementUtilities::GetDensityIndependentPixelRatio(element);
         auto tint=tint_;tint.alpha=static_cast<Rml::byte>(tint.alpha*element->GetComputedValues().opacity());
         const float depth=value(depth_);
-        auto mesh=pixel_material_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,value(gap_start_),value(gap_width_));
+        auto mesh=stone_?pixel_stone_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,lip_):pixel_material_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,value(gap_start_),value(gap_width_));
         auto* geometry=new MaterialGeometry(element);
         geometry->face.SetTexture(GetTexture(face_texture_));geometry->neck.SetTexture(GetTexture(neck_texture_));
         const float neck_top=std::round(size.y)-std::clamp(std::round(depth),0.f,std::max(0.f,std::round(size.y)-1));
-        // Tabs are a carved face attached to a continuous marble foot. The
-        // foot uses the dock's material even when the selected face is brass.
+        // Tabs have their own stone foot above the uninterrupted dock ledge.
+        // The foot retains stone even when the selected face is brass.
         for(std::size_t i=0;i+3<mesh.vertices.size();i+=4) {
-            auto& part=tab_ && mesh.vertices[i].position.y>=neck_top?geometry->neck:geometry->face;
+            // Generate the foot separately in dock coordinates; copying the
+            // local face UVs would restart the quiet stone grain at each tab.
+            if(tab_ && mesh.vertices[i].position.y>=neck_top)continue;
+            auto& part=geometry->face;
             const int offset=static_cast<int>(part.GetVertices().size());
             for(std::size_t v=0;v<4;++v)part.GetVertices().push_back(mesh.vertices[i+v]);
             for(int index:{0,1,2,0,2,3})part.GetIndices().push_back(offset+index);
         }
+        if(tab_)UpdateNeck(element,*geometry);
         return reinterpret_cast<Rml::DecoratorDataHandle>(geometry);
     }
     void ReleaseElementData(Rml::DecoratorDataHandle data) const override {delete reinterpret_cast<MaterialGeometry*>(data);}
     void RenderElement(Rml::Element* element,Rml::DecoratorDataHandle data) const override {
         if(auto* geometry=reinterpret_cast<MaterialGeometry*>(data)) {
+            // RmlUi can translate existing compiled geometry without marking
+            // its decorator data dirty. Recheck the relative dock phase here
+            // and rebuild only when pure neck parameters actually changed.
+            if(tab_)UpdateNeck(element,*geometry);
             const auto offset=element->GetAbsoluteOffset(Rml::Box::PADDING).Round();
             if(geometry->face)geometry->face.Render(offset);
             if(geometry->neck)geometry->neck.Render(offset);
         }
     }
 private:
+    void UpdateNeck(Rml::Element* element,MaterialGeometry& geometry) const {
+        MaterialNeckState state;
+        state.size=element->GetBox().GetSize(Rml::Box::PADDING).Round();
+        state.scale=Rml::ElementUtilities::GetDensityIndependentPixelRatio(element);
+        state.neck=element->ResolveNumericProperty(&depth_,0);
+        state.tint=tint_;state.tint.alpha=static_cast<Rml::byte>(state.tint.alpha*element->GetComputedValues().opacity());
+        if(auto* document=element->GetOwnerDocument())if(auto* dock=document->GetElementById("bottom-bar-frame"))
+            state.texture_origin=element->GetAbsoluteOffset(Rml::Box::PADDING).Round()-dock->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+        if(geometry.neck_ready && geometry.neck_state.Matches(state))return;
+        auto mesh=pixel_material_neck_mesh(state.size.x,state.size.y,state.scale,state.neck,state.texture_origin,state.tint);
+        // Compiled geometry may no longer retain its local vertex buffers.
+        // Release before replacing them, and rebuild from the state above.
+        geometry.neck.Release();
+        geometry.neck.GetVertices()=std::move(mesh.vertices);
+        geometry.neck.GetIndices()=std::move(mesh.indices);
+        geometry.neck_state=state;geometry.neck_ready=true;
+    }
     Rml::Colourb tint_;Rml::Property edge_,corner_,depth_,gap_start_,gap_width_;
-    bool tab_;int face_texture_=-1,neck_texture_=-1;
+    bool tab_,lip_,stone_;int face_texture_=-1,neck_texture_=-1;
 };
 class MaterialInstancer final:public Rml::DecoratorInstancer {
 public:
-    explicit MaterialInstancer(bool tab):tab_(tab) {
-        material_=RegisterProperty("material","marble").AddParser("keyword","marble, brass, crimson, obsidian, wood, parchment, leather, iron, enamel").GetId();
+    explicit MaterialInstancer(bool tab,bool lip=false):tab_(tab),lip_(lip) {
+        material_=RegisterProperty("material","rock").AddParser("keyword","rock, brass, crimson, obsidian, wood, parchment, leather, iron, enamel").GetId();
         tint_=RegisterProperty("tint","#ffffffff").AddParser("color").GetId();
         edge_=RegisterProperty("edge","3dp").AddParser("length").GetId();
         corner_=RegisterProperty("corner","2dp").AddParser("length").GetId();
@@ -172,10 +209,10 @@ public:
     Rml::SharedPtr<Rml::Decorator> InstanceDecorator(const Rml::String&,const Rml::PropertyDictionary& properties,const Rml::DecoratorInstancerInterface&) override {
         const int material=properties.GetProperty(material_)->Get<int>();
         if(material<0 || material>=static_cast<int>(physical_material_definitions().size()))return nullptr;
-        return Rml::MakeShared<MaterialDecorator>(material,properties.GetProperty(tint_)->Get<Rml::Colourb>(),*properties.GetProperty(edge_),*properties.GetProperty(corner_),*properties.GetProperty(depth_),*properties.GetProperty(gap_start_),*properties.GetProperty(gap_width_),tab_);
+        return Rml::MakeShared<MaterialDecorator>(material,properties.GetProperty(tint_)->Get<Rml::Colourb>(),*properties.GetProperty(edge_),*properties.GetProperty(corner_),*properties.GetProperty(depth_),*properties.GetProperty(gap_start_),*properties.GetProperty(gap_width_),tab_,lip_);
     }
 private:
-    bool tab_;Rml::PropertyId material_,tint_,edge_,corner_,depth_,gap_start_,gap_width_;
+    bool tab_,lip_;Rml::PropertyId material_,tint_,edge_,corner_,depth_,gap_start_,gap_width_;
 };
 
 class PixelOutline final:public Rml::FontEffect {
@@ -273,7 +310,7 @@ PixelMesh pixel_tab_mesh(float width,float height,float edge,float shoulder,floa
     return mesh;
 }
 const std::array<PhysicalMaterialDefinition,9>& physical_material_definitions() {
-    static const std::array<PhysicalMaterialDefinition,9> definitions={{{"marble","generated/ui/materials/marble.png",512,512},{"brass","generated/ui/materials/brass.png",512,512},{"crimson","generated/ui/materials/crimson.png",512,512},{"obsidian","generated/ui/materials/obsidian.png",512,512},{"wood","generated/ui/materials/wood.png",512,512},{"parchment","generated/ui/materials/parchment.png",512,512},{"leather","generated/ui/materials/leather.png",512,512},{"iron","generated/ui/materials/iron.png",512,512},{"enamel","generated/ui/materials/enamel.png",512,512}}};
+    static const std::array<PhysicalMaterialDefinition,9> definitions={{{"rock","generated/ui/materials/rock.png",512,512},{"brass","generated/ui/materials/brass.png",512,512},{"crimson","generated/ui/materials/crimson.png",512,512},{"obsidian","generated/ui/materials/obsidian.png",512,512},{"wood","generated/ui/materials/wood.png",512,512},{"parchment","generated/ui/materials/parchment.png",512,512},{"leather","generated/ui/materials/leather.png",512,512},{"iron","generated/ui/materials/iron.png",512,512},{"enamel","generated/ui/materials/enamel.png",512,512}}};
     return definitions;
 }
 PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab,float gap_start,float gap_width) {
@@ -324,6 +361,138 @@ PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float e
     }
     return result;
 }
+PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab,bool lip) {
+    PixelMesh result;
+    if(!std::isfinite(width)||!std::isfinite(height)||!std::isfinite(texel_scale)||width<=0||height<=0||texel_scale<=0||texel_scale>32768||width>32768||height>32768||tint.alpha==0)return result;
+    width=std::round(width);height=std::round(height);
+    if(width<=0||height<=0)return result;
+    const auto finite=[](float value){return std::isfinite(value)?value:0.f;};
+    edge=finite(edge);corner=finite(corner);depth=finite(depth);
+    const auto dp=[&](float value){return std::round(value*texel_scale);};
+    const auto pigment=[&](int value){return Rml::Colourb(static_cast<Rml::byte>(tint.red*value/255),static_cast<Rml::byte>(tint.green*value/255),static_cast<Rml::byte>(tint.blue*value/255),tint.alpha);};
+    PixelMesh regions;
+    const float neck=tab?std::clamp(std::round(depth),0.f,std::max(0.f,height-1)):0.f;
+    if(tab) {
+        regions=pixel_tab_mesh(width,height-neck,edge,corner,0,tint,pigment(207),tint);
+        quad(regions,0,height-neck,width,neck,tint);
+    } else if(lip && height>dp(12) && width>dp(12)) {
+        // The two-dp body inset makes this a slightly projecting stone ledge,
+        // not a bright painted line. Its complete span belongs to the dock;
+        // tabs terminate above it and cannot remove or overpaint any segment.
+        const float inset=dp(2),ledge=dp(6),under=dp(2);
+        auto body=pixel_rim_mesh(width-2*inset,height-ledge-under,edge,corner,depth,tint,pigment(213),pigment(186));
+        for(auto& vertex:body.vertices){vertex.position.x+=inset;vertex.position.y+=ledge+under;}
+        regions=std::move(body);
+        quad(regions,dp(1),0,width-dp(2),dp(1),pigment(250));
+        quad(regions,0,dp(1),width,dp(3),tint);
+        quad(regions,0,dp(4),width,dp(2),pigment(225));
+        quad(regions,inset,ledge,width-2*inset,under,pigment(184));
+    } else regions=pixel_rim_mesh(width,height,edge,corner,depth,tint,pigment(213),pigment(186));
+
+    // Replace intersected rectangles instead of layering dark marks over an
+    // existing translucent surface. Every surviving point is shaded once;
+    // a chip actually removes geometry and exposes the scene behind it.
+    const auto replace=[&](float x,float y,float w,float h,Rml::Colourb colour) {
+        if(w<=0||h<=0)return;
+        PixelMesh next;
+        for(std::size_t i=0;i+3<regions.vertices.size();i+=4) {
+            const auto& a=regions.vertices[i];const auto& b=regions.vertices[i+2];
+            const float left=a.position.x,top=a.position.y,right=b.position.x,bottom=b.position.y;
+            const float cut_left=std::max(left,x),cut_top=std::max(top,y),cut_right=std::min(right,x+w),cut_bottom=std::min(bottom,y+h);
+            if(cut_left>=cut_right||cut_top>=cut_bottom){quad(next,left,top,right-left,bottom-top,a.colour);continue;}
+            quad(next,left,top,right-left,cut_top-top,a.colour);
+            quad(next,left,cut_bottom,right-left,bottom-cut_bottom,a.colour);
+            quad(next,left,cut_top,cut_left-left,cut_bottom-cut_top,a.colour);
+            quad(next,cut_right,cut_top,right-cut_right,cut_bottom-cut_top,a.colour);
+            quad(next,cut_left,cut_top,cut_right-cut_left,cut_bottom-cut_top,colour);
+        }
+        regions=std::move(next);
+    };
+    const Rml::Colourb absent{0,0,0,0};
+    if(!lip)replace(0,0,width,std::max(1.f,std::round(edge)),pigment(240));
+    // Small tablets retain an unbroken face. Larger slabs receive only a
+    // handful of edge losses, independent of texture tiles and screen area.
+    if(!tab && width>=dp(120) && height>=dp(40)) {
+        const float chip_x=std::round(std::min(width*.19f,dp(74)));
+        replace(chip_x,0,dp(5),dp(1),absent);
+        replace(chip_x+dp(1),0,dp(2),dp(2),absent);
+        const float side_y=std::round(std::min(height*.38f,dp(93)));
+        // The ledge itself stays full-width below its tiny top-edge chip.
+        const float side=lip?dp(2):0;
+        replace(side,side_y,dp(1),dp(5),absent);
+        replace(side,side_y+dp(2),dp(2),dp(2),absent);
+        if(height>dp(180))replace(width-dp(2),height-dp(41),dp(2),dp(4),absent);
+
+        // A single short fracture enters from the physical upper edge near
+        // the unused right margin. It never repeats at 512-texel boundaries
+        // or crosses the broad central area reserved for text and controls.
+        const float crack_x=width-dp(12),crack_y=0;
+        replace(crack_x,0,dp(2),dp(2),absent);
+        replace(crack_x-dp(1),crack_y+dp(2),dp(4),dp(4),pigment(210));
+        replace(crack_x,crack_y+dp(2),dp(2),dp(5),pigment(152));
+        replace(crack_x+dp(1),crack_y+dp(7),dp(3),dp(5),pigment(210));
+        replace(crack_x+dp(1),crack_y+dp(7),dp(1),dp(5),pigment(166));
+        replace(crack_x,crack_y+dp(12),dp(1),dp(4),pigment(183));
+        replace(crack_x-dp(1),crack_y+dp(16),dp(1),dp(3),pigment(202));
+        if(width>dp(700)) {
+            const float small_x=std::round(width*.71f);
+            replace(small_x,0,dp(2),dp(1),absent);
+            replace(small_x,dp(1),dp(2),dp(4),pigment(174));
+            replace(small_x+dp(1),dp(5),dp(1),dp(4),pigment(195));
+        }
+    }
+
+    const float tile_span=std::max(1.f,std::round(512.f*texel_scale));
+    if(!std::isfinite(tile_span))return result;
+    for(std::size_t i=0;i+3<regions.vertices.size();i+=4) {
+        const auto& a=regions.vertices[i];const auto& b=regions.vertices[i+2];
+        for(float y=a.position.y;y<b.position.y;) {
+            const float origin_y=std::floor(y/tile_span)*tile_span,bottom=std::min(b.position.y,origin_y+tile_span);
+            for(float x=a.position.x;x<b.position.x;) {
+                const float origin_x=std::floor(x/tile_span)*tile_span,right=std::min(b.position.x,origin_x+tile_span);
+                const int n=static_cast<int>(result.vertices.size());
+                const Rml::Vector2f uv0{(x-origin_x)/tile_span,(y-origin_y)/tile_span},uv1{(right-origin_x)/tile_span,(bottom-origin_y)/tile_span};
+                result.vertices.push_back({{x,y},a.colour,uv0});result.vertices.push_back({{right,y},a.colour,{uv1.x,uv0.y}});
+                result.vertices.push_back({{right,bottom},a.colour,uv1});result.vertices.push_back({{x,bottom},a.colour,{uv0.x,uv1.y}});
+                for(int index:{0,1,2,0,2,3})result.indices.push_back(n+index);
+                x=right;
+            }
+            y=bottom;
+        }
+    }
+    return result;
+}
+PixelMesh pixel_material_neck_mesh(float width,float height,float texel_scale,float neck,Rml::Vector2f texture_origin,Rml::Colourb tint) {
+    PixelMesh result;
+    if(!std::isfinite(width)||!std::isfinite(height)||!std::isfinite(texel_scale)||!std::isfinite(neck)||
+       !std::isfinite(texture_origin.x)||!std::isfinite(texture_origin.y)||width<=0||height<=0||texel_scale<=0||width>32768||height>32768||tint.alpha==0)return result;
+    width=std::round(width);height=std::round(height);
+    if(width<=0||height<=0)return result;
+    neck=std::clamp(std::round(neck),0.f,std::max(0.f,height-1));
+    if(neck<=0)return result;
+    const float tile_span=std::max(1.f,std::round(512.f*texel_scale));
+    if(!std::isfinite(tile_span))return result;
+    const auto phase=[&](float value){const float wrapped=std::fmod(std::round(value),tile_span);return wrapped<0?wrapped+tile_span:wrapped;};
+    const float phase_x=phase(texture_origin.x),phase_y=phase(texture_origin.y);
+    // Local positions cover exactly the existing neck. Only its UV origin
+    // changes, and every crossed 512-texel boundary starts a separate quad.
+    for(float y=height-neck;y<height;) {
+        const float origin_y=std::floor((y+phase_y)/tile_span)*tile_span-phase_y;
+        const float bottom=std::min(height,origin_y+tile_span);
+        for(float x=0;x<width;) {
+            const float origin_x=std::floor((x+phase_x)/tile_span)*tile_span-phase_x;
+            const float right=std::min(width,origin_x+tile_span);
+            const int n=static_cast<int>(result.vertices.size());
+            const Rml::Vector2f uv0{(x-origin_x)/tile_span,(y-origin_y)/tile_span},uv1{(right-origin_x)/tile_span,(bottom-origin_y)/tile_span};
+            result.vertices.push_back({{x,y},tint,uv0});result.vertices.push_back({{right,y},tint,{uv1.x,uv0.y}});
+            result.vertices.push_back({{right,bottom},tint,uv1});result.vertices.push_back({{x,bottom},tint,{uv0.x,uv1.y}});
+            for(int index:{0,1,2,0,2,3})result.indices.push_back(n+index);
+            x=right;
+        }
+        y=bottom;
+    }
+    return result;
+}
 void pixel_glyph_dilate(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph,int radius) {
     if(!destination || size.x<=0 || size.y<=0 || stride<size.x*4 || radius<1 || radius>16) return;
     const bool rgba=glyph.color_format==Rml::ColorFormat::RGBA8;
@@ -365,7 +534,7 @@ void register_pixel_decorator() {
     static PixelInstancer instancer;
     static PixelOutlineInstancer outline;
     static RimInstancer rim;
-    static MaterialInstancer material(false),material_tab(true);
+    static MaterialInstancer material(false),material_tab(true),material_dock(false,true);
     Rml::Factory::RegisterDecoratorInstancer("pixel",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-down",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-up",&instancer);
@@ -373,6 +542,7 @@ void register_pixel_decorator() {
     Rml::Factory::RegisterDecoratorInstancer("pixel-tab",&rim);
     Rml::Factory::RegisterDecoratorInstancer("physical-material",&material);
     Rml::Factory::RegisterDecoratorInstancer("physical-tab",&material_tab);
+    Rml::Factory::RegisterDecoratorInstancer("physical-dock",&material_dock);
     Rml::Factory::RegisterFontEffectInstancer("pixel-outline",&outline);
     Rml::Factory::RegisterFontEffectInstancer("pixel-bold",&outline);
 }

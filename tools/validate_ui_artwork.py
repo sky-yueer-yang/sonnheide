@@ -101,10 +101,11 @@ def validate():
                 reconstructed[offset:offset + 4] = bytes.fromhex(cell.attrib['fill'][1:]) + b'\xff'
         check(bytes(reconstructed) == logical, 'SVG is not identical to the runtime icon: ' + name)
     materials = admit('original_ui_materials.json')
-    expected = {'marble', 'brass', 'crimson', 'obsidian', 'wood', 'parchment', 'leather', 'iron', 'enamel'}
+    expected = {'rock', 'brass', 'crimson', 'obsidian', 'wood', 'parchment', 'leather', 'iron', 'enamel'}
     check(materials['format'] == 'SonnOriginalUiMaterials1' and materials['sampling'] == 'nearest' and materials['logical_texel_dp'] == 1, 'Native point-sampled material direction')
     check(materials['default_dark_rim_dp'] == 3 and materials['default_dark_depth_dp'] == 3, 'Heavy physical material geometry')
     check({item['name'] for item in materials['outputs']} == expected and len(materials['outputs']) == 9, 'Complete original physical materials')
+    check(not (ROOT / 'assets/generated/ui/materials/marble.png').exists(), 'Historical marble must not remain in production artwork')
     for item in materials['outputs']:
         width, height, raw = rgba_png(ROOT / item['path'])
         check(width == height == item['width'] == item['height'] == 512, 'Fixed material texel dimensions')
@@ -116,7 +117,14 @@ def validate():
             histogram[colour] = histogram.get(colour, 0) + 1
         check(histogram == item['histogram'] and len(histogram) >= 4, 'Real finite-palette material texture required')
         average = sum(sum(int(colour[i:i + 2], 16) for i in (1, 3, 5)) * n for colour, n in histogram.items()) / (width * height * 3)
-        check(average < 110, 'UI material face must remain dark')
+        if item['name'] == 'rock':
+            channels = [sum(int(colour[i:i + 2], 16) * n for colour, n in histogram.items()) / (width * height) for i in (1, 3, 5)]
+            check(175 <= average <= 225, 'The complete stone tablet must be pale, not the rejected dark ochre rubble')
+            check(2 <= channels[0] - channels[1] <= 20 and 5 <= channels[1] - channels[2] <= 35, 'Stone tablet must be only slightly yellowed, not vivid yellow or grey marble')
+            lightness = [sum(raw[i:i + 3]) / 3 for i in range(0, len(raw), 4)]
+            check(max(lightness) - min(lightness) <= 45, 'Stone face must stay quiet; edge fractures belong to control geometry, not a tiled crack network')
+        else:
+            check(average < 110, 'The other eight material faces retain their dark pigments')
     # Exact non-mutating author recipe replay detects a self-consistently edited
     # manifest/PNG pair, not just an individual stale hash.
     spec = importlib.util.spec_from_file_location('sonn_original_materials', ROOT / materials['recipe'])
@@ -131,6 +139,6 @@ def validate():
     markup = (ROOT / 'assets/ui/application.rml').read_text(encoding='utf-8')
     for source in re.findall(r'src="\.\./generated/ui/icons/([^\"]+)"', markup):
         check((ROOT / 'assets/generated/ui/icons' / source).is_file(), 'Referenced production icon missing: ' + source)
-    print('PASS 41 filled pixel objects: matching transparent SVG/96/192 PNG; nine dark physical textures and exact recipe replay')
+    print('PASS 41 filled pixel objects: matching transparent SVG/96/192 PNG; pale stone plus eight dark textures and exact recipe replay')
 
 if __name__ == '__main__': validate()

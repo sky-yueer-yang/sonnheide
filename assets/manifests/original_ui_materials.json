@@ -3,45 +3,68 @@
   "author": "Sonnheide project",
   "license": "Original project artwork; no public license granted",
   "recipe": "tools/generate_ui_materials.py",
-  "recipe_sha256": "5c5eb801c929c696f3dfb763b840eb0ab47cdb0b02750fc1551f0bcacc8aef63",
+  "recipe_sha256": "a9537f0cfc62c9eaa920065318ebec97eefe3328f9a5a5981d7aadcb4494af32",
   "logical_texel_dp": 1,
   "sampling": "nearest",
   "alpha": "opaque",
   "default_dark_rim_dp": 3,
   "default_dark_depth_dp": 3,
-  "color_direction": "dark saturated pigments without pale white-tinted enamel, crimson or brass",
+  "color_direction": "very light cream limestone face; other eight dark saturated pigments unchanged",
   "runtime": "cached textured quads; fixed logical texel scale; no per-texel runtime geometry",
   "outputs": [
     {
-      "name": "marble",
-      "path": "assets/generated/ui/materials/marble.png",
-      "sha256": "9e8cbab77aa2712cff248d334f56419eda11b12b2c090203b0c9004636019c2c",
+      "name": "rock",
+      "path": "assets/generated/ui/materials/rock.png",
+      "sha256": "a60ddd251ca46b9a43c9d9b5869f81d8532addcca7f0f89892df17cbe2f242e7",
       "width": 512,
       "height": 512,
       "seed": 1397706240,
       "palette": [
-        "#0a1013",
-        "#10181b",
-        "#151e20",
-        "#1b2527",
-        "#222c2d",
-        "#293334",
-        "#34403e",
-        "#424b44",
-        "#555747",
-        "#686447",
-        "#7b7252"
+        "#cbc2ab",
+        "#d0c7af",
+        "#d5ccb4",
+        "#d9d0b9",
+        "#ddd5bf",
+        "#e1d9c4"
       ],
       "histogram": {
-        "#222c2d": 59509,
-        "#555747": 2258,
-        "#34403e": 5024,
-        "#1b2527": 131692,
-        "#424b44": 4434,
-        "#686447": 2046,
-        "#293334": 5666,
-        "#151e20": 48954,
-        "#10181b": 2561
+        "#d9d0b9": 27901,
+        "#d5ccb4": 225599,
+        "#d0c7af": 8276,
+        "#ddd5bf": 368
+      },
+      "surface_recipe": {
+        "algorithm": "continuous pale limestone tablet face",
+        "ground_pigments": [
+          "#d5ccb4",
+          "#ddd5bf"
+        ],
+        "tone": "very light low-saturation cream-yellow",
+        "detail": "restrained powder grain and very low-contrast tone variation",
+        "periodicity": "toroidal tone fields; pixel grain has no lines or seams",
+        "antialiasing": false,
+        "interior_cracks": false,
+        "block_partition": false,
+        "horizontal_stripes": false,
+        "edge_damage_owner": "actual control boundary geometry"
+      },
+      "pale_stone_face": {
+        "luminance_basis": "encoded RGB weighted 0.2126R + 0.7152G + 0.0722B",
+        "mean_rgb": [
+          213.279114,
+          204.280518,
+          180.389759
+        ],
+        "luminance_mean": 204.468706,
+        "luminance_standard_deviation": 1.60724,
+        "luminance_minimum": 199.1806,
+        "luminance_maximum": 213.1124,
+        "mean_saturation": 0.154226,
+        "horizontal_neighbor_delta_mean": 0.566988,
+        "vertical_neighbor_delta_mean": 0.568945,
+        "neighbor_delta_p95": 5.0,
+        "neighbor_delta_over_12_fraction": 1.3e-05,
+        "texels_below_luminance_160": 0
       }
     },
     {

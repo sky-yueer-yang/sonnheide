@@ -1,5 +1,7 @@
 # Sonnheide engineering constraints
 
+最新覆盖：2026-10-10 / ADR0024。用户纠正为微微泛黄的浅奶黄完整石碑：大面干净，边缘少量毛糙缺口或从上缘向内短裂纹，禁止暗赭黄碎岩/满面分块裂纹。原件仅浅石面，损耗按真实控件边缘制作；工具台连续6dp凸石沿+2dp温灰阴面，页签脚恰接沿顶、不挖沿不重叠。浅石文字深棕、标题深红实粗体，禁止黄白描边；其它8材质与41图标原件字节不变。见docs/decisions/0024-pale-stone-tablet-interface.md；本批ALL/完整CTest3/3、ASan/UBSan、66操作/32真实GPU帧已通过；证据见docs/planning/STONE_TABLET_DELIVERY.md/json。下方石材和旧暗底文字规则仅历史，其余世界与交互约束有效。
+
 最新追加：用户要求重新生成，分辨率保留但物件外缘、结构线和刻纹必须粗重；鲜艳色保持饱和且稍暗，禁止大面积发白或明亮浅黄。图标采用至少两逻辑像素深墨外缘及厚结构刻纹；实体UI使用3dp暗材质边与3dp厚度。重要颜色由登记原色派生darkgold/warmred，白色只作可读字与有限材质亮点。SonnOriginalIcons9及本批实际开发GPU验收通过：ALL/CTest3/3、71,101核心检查、ASan/UBSan、66原生操作/32读回帧，九材质实际上传。证据见docs/planning/PHYSICAL_PIXEL_DELIVERY.md/json；Windows GPU/Steam实机仍待验。上一轮未发布的薄边图案不作最终素材。
 
 最新覆盖：2026-10-10 / ADR0023。用户确定所有UI为真实实物，高分辨率完全像素风、背景深色、物件饱满高饱和。深裂纹大理石工具台/窗口、搭接石牌、珐琅/黄铜动作、黑曜石槽、暗木/皮革/羊皮纸/铁牌；取消ADR0022全图标白轮廓和统一厚框默认。41原创48²像素物件、透明SVG与96/192PNG同源；9原创512²材质纹理，最近点采样、缓存UV分段几何。常用执行字24dp，按真实三语字宽排版，禁止大牌面小内容。完整生产UI一起交付，不只首页。空白创建、八分区、微地表、事务和存载不变量沿ADR0022/0021。见docs/decisions/0023-physical-pixel-interface.md与docs/design/FRONTEND_ART_DIRECTION.md；本批验收以docs/planning/PHYSICAL_PIXEL_DELIVERY.md真实结果为准。
