@@ -79,3 +79,7 @@ docs/evidence/large-world-micro/*.png -filter -diff -merge -text
 docs/evidence/heavy-arcade/*.png -filter -diff -merge -text
 # Raw tool logs preserve upstream whitespace as recorded evidence.
 docs/evidence/heavy-arcade/*.log -text -whitespace
+
+# Bounded native GPU proof images and raw logs for unified dark stone surfaces.
+docs/evidence/dark-stone/*.png -filter -diff -merge -text
+docs/evidence/dark-stone/*.log -text -whitespace

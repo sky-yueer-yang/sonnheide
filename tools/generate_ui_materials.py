@@ -19,7 +19,7 @@ OUT = ROOT / 'assets/generated/ui/materials'
 MANIFEST = ROOT / 'assets/manifests/original_ui_materials.json'
 SIZE = 512
 PALETTES = {
-    'rock': ('#cbc2ab', '#d0c7af', '#d5ccb4', '#d9d0b9', '#ddd5bf', '#e1d9c4'),
+    'rock': ('#24272a', '#282b2e', '#2c2f32', '#303336', '#34373a', '#383b3e'),
     'brass': ('#1c1004', '#281a06', '#3b2407', '#503109', '#6a400b', '#824d0e', '#9a5c11', '#b07417', '#c68b25', '#d69b31', '#e4ab43'),
     'crimson': ('#220605', '#330c08', '#45120b', '#5b1a0f', '#712312', '#8b2b17', '#a4361c', '#ba4825', '#ce5a2e', '#dc723b'),
     'obsidian': ('#030507', '#050a0e', '#080f16', '#0b1620', '#0f1d29', '#152635', '#203243', '#304458'),
@@ -88,7 +88,7 @@ def pigments(cells, palette):
     return bytes(rgba), histogram
 
 
-def pale_stone_metrics(cells, histogram):
+def dark_stone_metrics(cells, histogram):
     """Brightness and calmness measured from the actual finite-palette face."""
     palette = PALETTES['rock']
     colors = [rgb(pigment) for pigment in palette]
@@ -116,14 +116,15 @@ def pale_stone_metrics(cells, histogram):
             'horizontal_neighbor_delta_mean': axis_means[0], 'vertical_neighbor_delta_mean': axis_means[1],
             'neighbor_delta_p95': round(deltas[int((len(deltas) - 1) * .95)], 6),
             'neighbor_delta_over_12_fraction': round(sum(delta > 12 for delta in deltas) / len(deltas), 6),
-            'texels_below_luminance_160': sum(count for value, count in zip(luminance, weights) if value < 160)}
+            'texels_below_luminance_20': sum(count for value, count in zip(luminance, weights) if value < 20),
+            'texels_above_luminance_80': sum(count for value, count in zip(luminance, weights) if value > 80)}
 
 
 def rock_material():
-    """One unbroken pale limestone face with restrained powdery pixel grain.
+    """One unbroken deep grey stone face with restrained mineral pixel grain.
 
-    The entire face stays close to cream-yellow ground pigments #d5ccb4 and
-    #ddd5bf. Periodic low-amplitude tone fields and sparse shallow grain only
+    The entire face stays close to neutral, slightly cool #2c2f32 ground and
+    #303336 mineral pigments. Periodic low-amplitude fields and sparse grain
     alter a few encoded RGB levels. There is no block partition, vein, stripe,
     or crack: boundary chips and inward cracks belong to actual UI geometry.
     """
@@ -145,7 +146,7 @@ def rock_material():
             row.append(max(1, min(4, int(value))))
         cells.append(row)
     data, histogram = pigments(cells, PALETTES['rock'])
-    return data, histogram, pale_stone_metrics(cells, histogram)
+    return data, histogram, dark_stone_metrics(cells, histogram)
 
 
 def material(name):
@@ -222,23 +223,23 @@ def generated():
         outputs[path] = body
         record = {'name': name, 'path': path.relative_to(ROOT).as_posix(), 'sha256': hashlib.sha256(body).hexdigest(), 'width': SIZE, 'height': SIZE, 'seed': SEEDS[name], 'palette': list(PALETTES[name]), 'histogram': histogram}
         if name == 'rock':
-            record['surface_recipe'] = {'algorithm': 'continuous pale limestone tablet face',
-                                        'ground_pigments': ['#d5ccb4', '#ddd5bf'],
-                                        'tone': 'very light low-saturation cream-yellow',
-                                        'detail': 'restrained powder grain and very low-contrast tone variation',
+            record['surface_recipe'] = {'algorithm': 'continuous deep grey stone slab face',
+                                        'ground_pigments': ['#2c2f32', '#303336'],
+                                        'tone': 'very dark neutral slightly cool grey',
+                                        'detail': 'restrained fine mineral grain and very low-contrast tone variation',
                                         'periodicity': 'toroidal tone fields; pixel grain has no lines or seams',
                                         'antialiasing': False, 'interior_cracks': False,
                                         'block_partition': False, 'horizontal_stripes': False,
                                         'edge_damage_owner': 'actual control boundary geometry'}
-            record['pale_stone_face'] = metrics
+            record['dark_stone_face'] = metrics
         records.append(record)
-    manifest = {'format': 'SonnOriginalUiMaterials1', 'author': 'Sonnheide project', 'license': 'Original project artwork; no public license granted', 'recipe': 'tools/generate_ui_materials.py', 'recipe_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'logical_texel_dp': 1, 'sampling': 'nearest', 'alpha': 'opaque', 'default_dark_rim_dp': 3, 'default_dark_depth_dp': 3, 'color_direction': 'very light cream limestone face; other eight dark saturated pigments unchanged', 'runtime': 'cached textured quads; fixed logical texel scale; no per-texel runtime geometry', 'outputs': records}
+    manifest = {'format': 'SonnOriginalUiMaterials1', 'author': 'Sonnheide project', 'license': 'Original project artwork; no public license granted', 'recipe': 'tools/generate_ui_materials.py', 'recipe_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'logical_texel_dp': 1, 'sampling': 'nearest', 'alpha': 'opaque', 'default_dark_rim_dp': 3, 'default_dark_depth_dp': 3, 'color_direction': 'very dark neutral slightly cool grey stone; other eight dark saturated pigments unchanged', 'runtime': 'cached textured quads; fixed logical texel scale; no per-texel runtime geometry', 'outputs': records}
     outputs[MANIFEST] = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     return outputs
 
 
 def contact_sheet(data):
-    """Actual tile, 2x powder-grain detail, and 2x2 repeat with point reduction."""
+    """Actual tile, 2x mineral-grain detail, and 2x2 repeat with point reduction."""
     width, height = SIZE * 3, SIZE
     result = bytearray(width * height * 4)
     for y in range(height):

@@ -132,7 +132,7 @@ public:
     MaterialDecorator(int material,Rml::Colourb tint,Rml::Property edge,Rml::Property corner,Rml::Property depth,Rml::Property gap_start,Rml::Property gap_width,bool tab,bool lip):tint_(tint),edge_(std::move(edge)),corner_(std::move(corner)),depth_(std::move(depth)),gap_start_(std::move(gap_start)),gap_width_(std::move(gap_width)),tab_(tab),lip_(lip),stone_(material==0) {
         const auto& definitions=physical_material_definitions();
         // These sources are deliberately relative to the admitted runtime
-        // resource root. Inline dock sizing has no RCSS PropertySource path.
+        // resource root, for both RCSS and inline decorator declarations.
         Rml::Texture texture;texture.Set(definitions[material].texture_source);
         face_texture_=AddTexture(texture);
         texture.Set(definitions[0].texture_source);neck_texture_=AddTexture(texture);
@@ -143,12 +143,14 @@ public:
         const float scale=Rml::ElementUtilities::GetDensityIndependentPixelRatio(element);
         auto tint=tint_;tint.alpha=static_cast<Rml::byte>(tint.alpha*element->GetComputedValues().opacity());
         const float depth=value(depth_);
-        auto mesh=stone_?pixel_stone_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,lip_):pixel_material_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,value(gap_start_),value(gap_width_));
+        unsigned detail_seed=2166136261u;
+        for(const auto character:element->GetId()){detail_seed^=static_cast<unsigned char>(character);detail_seed*=16777619u;}
+        auto mesh=stone_?pixel_stone_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,lip_,detail_seed):pixel_material_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,value(gap_start_),value(gap_width_));
         auto* geometry=new MaterialGeometry(element);
         geometry->face.SetTexture(GetTexture(face_texture_));geometry->neck.SetTexture(GetTexture(neck_texture_));
         const float neck_top=std::round(size.y)-std::clamp(std::round(depth),0.f,std::max(0.f,std::round(size.y)-1));
         // Tabs have their own stone foot above the uninterrupted dock ledge.
-        // The foot retains stone even when the selected face is brass.
+        // Face and foot both retain the actual state tint and opacity.
         for(std::size_t i=0;i+3<mesh.vertices.size();i+=4) {
             // Generate the foot separately in dock coordinates; copying the
             // local face UVs would restart the quiet stone grain at each tab.
@@ -361,7 +363,7 @@ PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float e
     }
     return result;
 }
-PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab,bool lip) {
+PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab,bool lip,unsigned detail_seed) {
     PixelMesh result;
     if(!std::isfinite(width)||!std::isfinite(height)||!std::isfinite(texel_scale)||width<=0||height<=0||texel_scale<=0||texel_scale>32768||width>32768||height>32768||tint.alpha==0)return result;
     width=std::round(width);height=std::round(height);
@@ -373,21 +375,21 @@ PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge
     PixelMesh regions;
     const float neck=tab?std::clamp(std::round(depth),0.f,std::max(0.f,height-1)):0.f;
     if(tab) {
-        regions=pixel_tab_mesh(width,height-neck,edge,corner,0,tint,pigment(207),tint);
+        regions=pixel_tab_mesh(width,height-neck,edge,corner,0,pigment(232),pigment(207),tint);
         quad(regions,0,height-neck,width,neck,tint);
     } else if(lip && height>dp(12) && width>dp(12)) {
         // The two-dp body inset makes this a slightly projecting stone ledge,
         // not a bright painted line. Its complete span belongs to the dock;
         // tabs terminate above it and cannot remove or overpaint any segment.
         const float inset=dp(2),ledge=dp(6),under=dp(2);
-        auto body=pixel_rim_mesh(width-2*inset,height-ledge-under,edge,corner,depth,tint,pigment(213),pigment(186));
+        auto body=pixel_rim_mesh(width-2*inset,height-ledge-under,edge,corner,depth,pigment(232),pigment(213),pigment(186));
         for(auto& vertex:body.vertices){vertex.position.x+=inset;vertex.position.y+=ledge+under;}
         regions=std::move(body);
         quad(regions,dp(1),0,width-dp(2),dp(1),pigment(250));
         quad(regions,0,dp(1),width,dp(3),tint);
         quad(regions,0,dp(4),width,dp(2),pigment(225));
         quad(regions,inset,ledge,width-2*inset,under,pigment(184));
-    } else regions=pixel_rim_mesh(width,height,edge,corner,depth,tint,pigment(213),pigment(186));
+    } else regions=pixel_rim_mesh(width,height,edge,corner,depth,pigment(232),pigment(213),pigment(186));
 
     // Replace intersected rectangles instead of layering dark marks over an
     // existing translucent surface. Every surviving point is shaded once;
@@ -410,9 +412,9 @@ PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge
     };
     const Rml::Colourb absent{0,0,0,0};
     if(!lip)replace(0,0,width,std::max(1.f,std::round(edge)),pigment(240));
-    // Small tablets retain an unbroken face. Larger slabs receive only a
-    // handful of edge losses, independent of texture tiles and screen area.
-    if(!tab && width>=dp(120) && height>=dp(40)) {
+    // Larger slabs receive only a handful of edge losses, independent of
+    // texture tiles and screen area. Their centre remains clean dark stone.
+    if(!tab && width>=dp(120) && height>=dp(80)) {
         const float chip_x=std::round(std::min(width*.19f,dp(74)));
         replace(chip_x,0,dp(5),dp(1),absent);
         replace(chip_x+dp(1),0,dp(2),dp(2),absent);
@@ -428,18 +430,38 @@ PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge
         // or crosses the broad central area reserved for text and controls.
         const float crack_x=width-dp(12),crack_y=0;
         replace(crack_x,0,dp(2),dp(2),absent);
-        replace(crack_x-dp(1),crack_y+dp(2),dp(4),dp(4),pigment(210));
-        replace(crack_x,crack_y+dp(2),dp(2),dp(5),pigment(152));
-        replace(crack_x+dp(1),crack_y+dp(7),dp(3),dp(5),pigment(210));
-        replace(crack_x+dp(1),crack_y+dp(7),dp(1),dp(5),pigment(166));
-        replace(crack_x,crack_y+dp(12),dp(1),dp(4),pigment(183));
-        replace(crack_x-dp(1),crack_y+dp(16),dp(1),dp(3),pigment(202));
+        replace(crack_x-dp(1),crack_y+dp(2),dp(4),dp(4),tint);
+        replace(crack_x,crack_y+dp(2),dp(2),dp(5),pigment(98));
+        replace(crack_x+dp(1),crack_y+dp(7),dp(3),dp(5),tint);
+        replace(crack_x+dp(1),crack_y+dp(7),dp(1),dp(5),pigment(118));
+        replace(crack_x,crack_y+dp(11),dp(2),dp(1),pigment(126));
+        replace(crack_x,crack_y+dp(12),dp(1),dp(4),pigment(143));
+        replace(crack_x-dp(1),crack_y+dp(15),dp(2),dp(1),pigment(159));
+        replace(crack_x-dp(1),crack_y+dp(16),dp(1),dp(3),pigment(175));
         if(width>dp(700)) {
             const float small_x=std::round(width*.71f);
             replace(small_x,0,dp(2),dp(1),absent);
-            replace(small_x,dp(1),dp(2),dp(4),pigment(174));
-            replace(small_x+dp(1),dp(5),dp(1),dp(4),pigment(195));
+            replace(small_x+dp(2),dp(1),dp(1),dp(4),tint);
+            replace(small_x,dp(1),dp(2),dp(4),pigment(122));
+            replace(small_x+dp(2),dp(5),dp(1),dp(4),tint);
+            replace(small_x+dp(1),dp(5),dp(1),dp(4),pigment(159));
         }
+    } else if(!lip && width>=dp(32) && height>=dp(28)) {
+        // A short, asymmetric edge fracture reads on small actions and tabs
+        // without running behind their centred glyphs. The stable element
+        // identity varies the shoulder, so adjacent buttons do not repeat a
+        // tiled scratch. A slightly exposed cut face uses at most the original
+        // tint: no byte overflow, emissive white mark or additional alpha pass.
+        const float inset=dp(9+static_cast<float>(detail_seed%3));
+        const float crack_x=(detail_seed&1u)?inset:width-inset-dp(2);
+        const float tail=dp((detail_seed&2u)?3:2);
+        replace(crack_x,0,dp(1),dp(1),absent);
+        replace(crack_x+dp(2),dp(1),dp(1),dp(4),tint);
+        replace(crack_x,dp(1),dp(2),dp(3),pigment(108));
+        replace(crack_x+dp(1),dp(4),dp(1),dp(3),pigment(133));
+        replace(crack_x+dp(2),dp(5),dp(1),dp(2),tint);
+        replace(crack_x,dp(6),dp(2),dp(1),pigment(149));
+        replace(crack_x,dp(7),dp(1),tail,pigment(169));
     }
 
     const float tile_span=std::max(1.f,std::round(512.f*texel_scale));

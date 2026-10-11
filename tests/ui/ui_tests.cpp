@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <initializer_list>
 #include <iterator>
 #include <map>
 #include <set>
@@ -104,12 +105,12 @@ struct Render final:Rml::RenderInterface {
     std::size_t compiled_draws=0;
     struct MaterialDraw {std::string family;Rml::Vector2f position;std::vector<Rml::Vertex> vertices;std::vector<int> indices;};
     std::vector<MaterialDraw> material_draws;
-    struct MaterialSample {Rml::Vector2f uv;Rml::byte alpha;};
-    std::vector<MaterialSample> material_samples(const char* family,Rml::Vector2f screen_point) const {
+    struct MaterialSample {Rml::Vector2f uv;Rml::byte alpha;Rml::Colourb tint;};
+    std::vector<MaterialSample> material_samples(const char* family,Rml::Vector2f screen_point,const Rml::Vector2f* draw_origin=nullptr) const {
         std::vector<MaterialSample> samples;
         const auto cross=[](Rml::Vector2f a,Rml::Vector2f b){return a.x*b.y-a.y*b.x;};
         for(const auto& draw:material_draws) {
-            if(draw.family!=family) continue;
+            if(draw.family!=family || (draw_origin && draw.position!=*draw_origin)) continue;
             const auto point=screen_point-draw.position;
             for(std::size_t i=0;i+2<draw.indices.size();i+=3) {
                 const auto& a=draw.vertices.at(static_cast<std::size_t>(draw.indices[i]));
@@ -121,7 +122,7 @@ struct Render final:Rml::RenderInterface {
                 const float wc=cross(b.position-a.position,point-a.position)/area;
                 const float wa=1.f-wb-wc;
                 if(wa<-.0001f || wb<-.0001f || wc<-.0001f) continue;
-                samples.push_back({a.tex_coord*wa+b.tex_coord*wb+c.tex_coord*wc,static_cast<Rml::byte>(std::round(a.colour.alpha*wa+b.colour.alpha*wb+c.colour.alpha*wc))});
+                samples.push_back({a.tex_coord*wa+b.tex_coord*wb+c.tex_coord*wc,static_cast<Rml::byte>(std::round(a.colour.alpha*wa+b.colour.alpha*wb+c.colour.alpha*wc)),a.colour});
                 // One triangle can share its edge with another in this draw.
                 // Count a draw once; separate overlapping draws still count.
                 break;
@@ -239,14 +240,29 @@ void material_geometry_contract() {
         for(std::size_t i=0;i+3<stone.vertices.size();i+=4) {
             const auto& a=stone.vertices[i];const auto& b=stone.vertices[i+2];
             if(a.position.x<640*density && b.position.x>640*density && a.position.y<400*density && b.position.y>400*density) {
-                ++clean_layers;require(a.colour.red==255 && a.colour.green==255 && a.colour.blue==255,"The centre of a light stone tablet must remain clean cream, without dark face-wide fissures");
+                ++clean_layers;require(a.colour.red==232 && a.colour.green==232 && a.colour.blue==232,"The centre of a dark stone tablet must retain its flat material face shading without face-wide damage");
             }
-            if(a.colour.red<210 && b.position.x>12*density && a.position.x<1268*density && b.position.y>24*density && a.position.y<776*density)
+            if(a.colour.red<180 && b.position.x>12*density && a.position.x<1268*density && b.position.y>24*density && a.position.y<776*density)
                 require(false,"Deep stone damage must stay within the physical edge band instead of repeating inside the slab");
-            require(std::abs((b.tex_coord.x-a.tex_coord.x)*512.f*density-(b.position.x-a.position.x))<.01f && std::abs((b.tex_coord.y-a.tex_coord.y)*512.f*density-(b.position.y-a.position.y))<.01f,"Cream stone texture must retain one logical texel per dp under its carved geometry");
+            require(std::abs((b.tex_coord.x-a.tex_coord.x)*512.f*density-(b.position.x-a.position.x))<.01f && std::abs((b.tex_coord.y-a.tex_coord.y)*512.f*density-(b.position.y-a.position.y))<.01f,"Dark stone texture must retain one logical texel per dp under its carved geometry");
         }
-        require(clean_layers==1,"The clean stone centre must be shaded once");
+        require(clean_layers==1,"The dark stone centre must be shaded once");
         require(!covers(stone,75.5f*density,.5f*density) && covers(stone,75.5f*density,3.5f*density),"A worn stone chip must remove actual edge geometry while preserving the face below it");
+        // Small physical buttons and tablets also need a genuine upper-edge
+        // fracture. Their icon/text centre stays clean; the crack is confined
+        // to the shoulder rather than repeated across the material tile.
+        for(bool small_tab:{false,true}) for(unsigned seed:{0u,1u}) {
+            const float w=(small_tab?72.f:60.f)*density,h=(small_tab?62.f:60.f)*density;
+            const auto control=pixel_stone_mesh(w,h,density,3*density,2*density,(small_tab?6.f:3.f)*density,{255,255,255,255},small_tab,false,seed);
+            require(pigment_at(control,w*.5f+.5f*density,h*.5f+.5f*density)==232,"Small stone actions must retain a clean shaded centre beneath their artwork or text");
+            bool groove=false,open_crack=false;
+            for(std::size_t i=0;i+3<control.vertices.size();i+=4) {
+                const auto& a=control.vertices[i];const auto& b=control.vertices[i+2];
+                if(a.colour.red<180 && a.position.x>6*density && b.position.x<w-6*density && a.position.y>=density && b.position.y<=10*density)groove=true;
+            }
+            for(float x=8.5f*density;x<w-8*density;x+=density) if(!covers(control,x,.5f*density) && covers(control,x,12.5f*density))open_crack=true;
+            require(groove && open_crack,"Each small stone control must have actual dark fracture geometry entering a missing top-edge cell, rather than a flat grey recolour");
+        }
     }
     std::set<std::string> families;
     for(const auto& definition:physical_material_definitions()) {
@@ -281,12 +297,16 @@ void rock_neck_probe(Ui& ui,const Render& render,const char* id,float density) {
     require(std::abs(std::remainder((foot.uv.x-body.uv.x)*span-(foot_point.x-dock_point.x),span))<.04f &&
             std::abs(std::remainder((foot.uv.y-body.uv.y)*span-(foot_point.y-dock_point.y),span))<.04f,
             "Compiled stone feet must retain the current dock grain phase while remaining geometrically above the visible lip");
-    const char* family=tab->IsClassSet("selected") || tab->IsPseudoClassSet("hover") || tab->IsPseudoClassSet("focus")?"brass":"rock";
+    const int state_tint=tab->IsPseudoClassSet("hover") || tab->IsPseudoClassSet("focus")?255:tab->IsClassSet("selected")?238:187;
+    require(foot.tint.red==state_tint && foot.tint.green==state_tint && foot.tint.blue==state_tint,
+            "The actual stone tab foot must inherit the selected or focused face brightness rather than keep a stale pale foot");
     const Rml::Vector2f face_point{origin.x+size.x*.5f,origin.y+20.5f*density};
-    const auto face=material_sample(render,family,face_point);
+    const auto face=material_sample(render,"rock",face_point);
+    require(face.tint.red==state_tint*232/255 && face.tint.green==face.tint.red && face.tint.blue==face.tint.red,
+            "Every actual tab state must draw the same stone family with its own measurable neutral brightness");
     require(std::abs(std::remainder(face.uv.x*span-(face_point.x-origin.x),span))<.04f &&
             std::abs(std::remainder(face.uv.y*span-(face_point.y-origin.y),span))<.04f,
-            "The brass and cream stone tablet faces must preserve their original local UVs");
+            "Every dark stone tablet state must preserve its original local face UVs");
 }
 void rock_join_contract(Ui& ui,Render& render,float density) {
     render.reset_draws();ui.render();
@@ -350,19 +370,38 @@ float actual_glyph_width(Rml::Element* element,const std::string& value,float de
 void ink_contract(Rml::Element* element,int red,int green,int blue) {
     require(element!=nullptr,"Readable material text requires a real native element");
     const auto colour=element->GetComputedValues().color();
-    require(colour.red==red && colour.green==green && colour.blue==blue && colour.alpha==255,"Text must use the actual contrasting ink assigned to its light stone or dark control surface");
+    require(colour.red==red && colour.green==green && colour.blue==blue && colour.alpha==255,"Text must use the actual warm grey ink assigned to its dark stone or recessed control surface");
 }
 void stone_heading_contract(Rml::Element* element,float density) {
-    ink_contract(element,123,45,34);
-    require(element->GetComputedValues().font_size()==24*density,"Light stone headings retain the real large24dp typeface");
+    ink_contract(element,238,234,224);
+    require(element->GetComputedValues().font_size()==24*density,"Dark stone headings retain the real large24dp typeface");
     const auto effects=element->GetProperty<Rml::FontEffectsPtr>("font-effect");
-    require(effects && effects->list.size()==1,"A cream stone heading must use solid dark pigment without a bright yellow or white silhouette");
+    require(effects && effects->list.size()==1,"A dark stone heading must use solid warm grey pigment without a white or yellow outline");
     const auto pigment=effects->list[0]->GetColour();
-    require(pigment.red==123 && pigment.green==45 && pigment.blue==34 && pigment.alpha==255,"The actual stone heading weight must carry the same deep red ink as its glyphs");
+    require(pigment.red==238 && pigment.green==234 && pigment.blue==224 && pigment.alpha==255,"The actual stone heading weight must carry the same bright warm grey as its glyphs");
     Rml::FontGlyph glyph;Rml::Vector2i origin{0,0},size{1,1};
     require(effects->list[0]->GetGlyphMetrics(origin,size,glyph) && origin.x==0 && origin.y==0 &&
             size.x==1+static_cast<int>(std::round(density)) && size.y==1,
-            "The single dark stone pigment must have actual density-scaled directional weight while preserving character counters");
+            "The single warm grey stone pigment must have actual density-scaled directional weight while preserving character counters");
+}
+int stone_element_tint(Ui& ui,const Render& render,const char* id,float density) {
+    auto* element=ui.context().GetDocument(0)->GetElementById(id);
+    const auto origin=element->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+    const auto size=element->GetBox().GetSize(Rml::Box::PADDING).Round();
+    const auto samples=render.material_samples("rock",{origin.x+size.x*.5f,origin.y+size.y*.5f},&origin);
+    require(samples.size()==1,"The particular native control must actually draw stone, independently of its stone parent or another selected control");
+    const auto tint=samples[0].tint;
+    require(tint.red==tint.green && tint.green==tint.blue,"Stone control states must use neutral material brightness rather than coloured plaques");
+    require(size.y>20*density,"Stone control probe must address a real formatted control");
+    return tint.red;
+}
+void stone_surface_contract(Ui& ui,const Render& render,std::initializer_list<const char*> ids) {
+    for(const char* id:ids) {
+        auto* element=ui.context().GetDocument(0)->GetElementById(id);
+        require(element && element->IsVisible(true),"Stone surface proof requires the actual visible native object");
+        require(render.material_at("rock",element->GetAbsoluteOffset(Rml::Box::PADDING).Round()),"Every particular visible panel or control must submit its own stone material geometry, independently of other stone objects");
+    }
+    for(const auto& family:render.materials_drawn) require(family=="rock" || family=="obsidian","Visible surfaces must use shared dark stone or recessed obsidian, never the previous coloured plaque families");
 }
 void filled_action_contract(Ui& ui,const char* id,float density) {
     auto* element=ui.context().GetDocument(0)->GetElementById(id);
@@ -405,7 +444,7 @@ void layout_contract(Ui& ui) {
     };
     visit(visit,ui.context().GetDocument(0));
 }
-void click(Ui& ui,const char* id,float density) {
+void click(Ui& ui,const char* id,float density,Render* state_render=nullptr) {
     auto* element=ui.context().GetDocument(0)->GetElementById(id);
     require(element!=nullptr,"Real pointer target must exist");
     element->ScrollIntoView(false);ui.update();layout_contract(ui);
@@ -418,7 +457,18 @@ void click(Ui& ui,const char* id,float density) {
     while(hit && hit!=element) hit=hit->GetParentNode();
     require(hit==element,"The visible button centre must actually hit the intended native control");
     ui.context().ProcessMouseMove(static_cast<int>(point.x),static_cast<int>(point.y),0);
-    ui.context().ProcessMouseButtonDown(0,0);ui.context().ProcessMouseButtonUp(0,0);ui.update();layout_contract(ui);
+    ui.context().ProcessMouseButtonDown(0,0);
+    if(state_render) {
+        ui.update();state_render->reset_draws();ui.render();
+        require(element->IsPseudoClassSet("active") && stone_element_tint(ui,*state_render,id,density)==140*232/255,
+                "A real pointer press must darken the same stone for ordinary, primary and selected tab controls");
+    }
+    ui.context().ProcessMouseButtonUp(0,0);ui.update();layout_contract(ui);
+    if(state_render) {
+        state_render->reset_draws();ui.render();
+        require(!element->IsPseudoClassSet("active") && stone_element_tint(ui,*state_render,id,density)==232,
+                "Pointer release must restore the brighter focused stone rather than leave the pressed or coloured plaque state");
+    }
 }
 void hit_layer_contract(Ui& ui,const char* point_id,const char* layer_id,float density) {
     auto* layer=ui.context().GetDocument(0)->GetElementById(layer_id);
@@ -522,7 +572,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         for(int i=0;i<title->GetNumChildren();++i) if(title->GetChild(i)->GetTagName()=="span") outline_contract(title->GetChild(i),density,true);
         const float word_width=actual_glyph_width(title,"SONNHEIDE",density)+6.f;
         require(word_width<=rect(ui,"main-menu",density,Rml::Box::CONTENT).w,"Actual36dp wordmark advances and white glyph edge must fit its menu content width");
-
+        render.reset_draws();ui.render();stone_surface_contract(ui,render,{"main-menu","new-world","continue-world","load","settings-main","exit"});
 
     }
     render.reset_draws();ui.render();require(render.bold_pigment && render.white_glyph_outline,"Native important titles must submit actual yellow bold glyph and white outline geometry");
@@ -532,7 +582,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     click(ui,"new-world",density);single(ui,ActionKind::NewWorld);
     view.screen=Screen::Creation;ui.set_view(view);ui.update();
     for(int size:{256,512,1024,2048,4096}) {
-        const auto id="size-"+std::to_string(size);click(ui,id.c_str(),density);
+        const auto id="size-"+std::to_string(size);click(ui,id.c_str(),density,size==4096?&render:nullptr);
         const auto preset=single(ui,ActionKind::SetCreationSize);
         require(preset.a==size && preset.b==size && preset.generation==17,"A physical-size preset must emit one generation-bound real width/length intent");
     }
@@ -544,11 +594,11 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(ui.blocks_world_input(),"Centered creation form must shield background camera actions");
         auto* form=ui.context().GetDocument(0)->GetElementById("creation-controls");
         stone_heading_contract(ui.context().GetDocument(0)->GetElementById("creation-heading")->GetChild(0),density);
-        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-population"),73,54,31);
-        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-scale"),107,84,55);
-        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-theme-label"),73,54,31);
-        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-name"),220,230,236);
-        ink_contract(ui.context().GetDocument(0)->GetElementById("preview"),220,230,236);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-population"),222,219,212);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-scale"),181,179,173);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-theme-label"),222,219,212);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("creation-name"),222,219,212);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("preview"),222,219,212);
         if(height<=480) require(form->GetScrollHeight()>form->GetClientHeight()+.5f,"The complete centered creation form must retain real scrolling in a short viewport");
         const auto scene=ui.viewport();require(scene.x==0 && scene.y==0 && std::abs(scene.width-width)<.15f && std::abs(scene.height-height)<.15f,"Blank creation uses the complete 3D scene behind its dialog");
         auto* doc=ui.context().GetDocument(0);
@@ -564,7 +614,8 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(ancestor!=nullptr,"Creation keyboard focus must remain inside the actual centered dialog");
     }
     render.reset_draws();ui.render();
-    require(render.materials_drawn.count("rock") && render.materials_drawn.count("obsidian"),"Creation controls must actually draw their clean cream stone and recessed obsidian materials");
+    require(render.materials_drawn==std::set<std::string>{"obsidian","rock"},"Actual creation must use only dark stone surfaces with recessed obsidian inputs");
+    stone_surface_contract(ui,render,{"creation-controls"});
     view.creation.can_select_theme=true;view.creation.theme="maple_field";ui.set_view(view);ui.update();
     require(ui.take_actions().empty(),"Snapshot/theme synchronization must not issue a player action or invalidate its preview");
     auto* theme=dynamic_cast<Rml::ElementFormControlSelect*>(ui.context().GetDocument(0)->GetElementById("creation-theme"));
@@ -617,9 +668,11 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     view.creation.preview_ready=false;ui.set_view(view);ui.update();require(ui.blocks_world_input(),"Invalidating a preview must retain the centered editable form");
     view.creation.preview_ready=true;ui.set_view(view);ui.update();
     preview_tray_contract(ui,density);
-    click(ui,"create",density);const auto create=single(ui,ActionKind::CreateWorld);require(create.generation==17 && create.token==23,"Create must commit the displayed preview only");
+    render.reset_draws();ui.render();stone_surface_contract(ui,render,{"creation-controls","preview-caption","create"});
+    click(ui,"create",density,&render);const auto create=single(ui,ActionKind::CreateWorld);require(create.generation==17 && create.token==23,"Create must commit the displayed preview only");
     ui.activate("cancel-create");single(ui,ActionKind::CancelCreation);
     view.screen=Screen::World;view.world.session=44;view.world.name="世界 <new>";view.world.cells=16384;view.world.dry_cells=100;ui.set_view(view);ui.update();
+    click(ui,"tab-observe",density,&render);single(ui,ActionKind::SelectBottomSection);
     const std::array<const char*,8> tabs={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
         view.locale=locale;ui.set_view(view);ui.update();layout_contract(ui);
@@ -662,7 +715,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     require(tooltip->GetComputedValues().display()!=Rml::Style::Display::None && tooltip->GetInnerRML().find("Zivilisation und Institutionen")!=std::string::npos,"Short German toolbar label must expose its real full name on native hover");
     const auto tip=rect(ui,"tool-tooltip",density);
     require(tip.x>=0 && tip.y>=0 && tip.x+tip.w<=width+.15 && tip.y+tip.h<=height+.15,"Native full-name tooltip must stay inside the viewport");
-    render.reset_draws();ui.render();require(render.materials_drawn.count("parchment"),"Native full-name tooltip must actually draw its dark parchment material");
+    render.reset_draws();ui.render();require(render.material_at("rock",tooltip->GetAbsoluteOffset(Rml::Box::PADDING).Round()),"Native full-name tooltip must actually draw the shared dark stone material at its own panel");
     require(ui.take_actions().empty(),"Tooltip presentation must never become a World command");
     ui.context().ProcessMouseMove(0,0,0);ui.update();
     require(tooltip->GetComputedValues().display()==Rml::Style::Display::None,"Leaving a tool must dismiss its informational tooltip");
@@ -673,23 +726,26 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         click(ui,future_tabs[i],density);require(single(ui,ActionKind::SelectBottomSection).a==static_cast<int>(i)+1,"Every category is navigable and emits one actual section selection");
         rock_join_contract(ui,render,density);
         for(std::size_t j=0;j<future_panels.size();++j) require((ui.context().GetDocument(0)->GetElementById(future_panels[j])->GetComputedValues().display()!=Rml::Style::Display::None)==(j==i),"Only the selected section contents may occupy the toolbar body");
-        ink_contract(ui.context().GetDocument(0)->GetElementById(future_panels[i])->GetChild(1),73,54,31);
+        ink_contract(ui.context().GetDocument(0)->GetElementById(future_panels[i])->GetChild(1),222,219,212);
         click(ui,future_buttons[i],density);require(ui.take_actions().empty(),"Unavailable future tools stay visibly disabled without claiming a World edit");
     }
     click(ui,"tab-observe",density);single(ui,ActionKind::SelectBottomSection);
-    render.reset_draws();ui.render();require(render.materials_drawn.count("leather") && render.materials_drawn.count("rock"),"Real RmlUi must draw the leatherHUD and complete cream stone dock with its projecting ledge");
+    render.reset_draws();ui.render();require(render.materials_drawn==std::set<std::string>{"rock"},"Real world HUD and projecting dock must draw the same dark stone without old coloured materials");
+    stone_surface_contract(ui,render,{"world-status","bottom-bar-frame","world-info","camera-home","camera-help"});
     auto* world_info=ui.context().GetDocument(0)->GetElementById("world-info");
-    ui.context().ProcessMouseMove(0,0,0);world_info->Focus();ui.update();render.reset_draws();ui.render();
-    require(world_info->IsPseudoClassSet("focus") && render.material_at("brass",world_info->GetAbsoluteOffset(Rml::Box::PADDING).Round()),"Actual keyboard focus must draw brass specifically at the world-info plaque, rather than pass because another selected tab happens to use brass");
+    ui.context().ProcessMouseMove(0,0,0);ui.context().GetDocument(0)->GetElementById("camera-home")->Focus();ui.update();render.reset_draws();ui.render();
+    const int plain_world_tint=stone_element_tint(ui,render,"world-info",density);
+    world_info->Focus();ui.update();render.reset_draws();ui.render();
+    require(world_info->IsPseudoClassSet("focus") && stone_element_tint(ui,render,"world-info",density)==232 && 232>plain_world_tint+40,"Actual keyboard focus must visibly brighten the specific world-info stone plaque rather than pass because another selected surface is stone");
     require(ui.take_actions().empty(),"Focusing an instrument must not emit a World edit");
     view.presentation_darkness=true;ui.set_view(view);ui.update();
     ui.context().ProcessMouseMove(0,0,0);
     ui.context().GetDocument(0)->GetElementById("tab-observe")->Focus();
     ui.update();render.reset_draws();ui.render();
-    require(render.materials_drawn.count("leather") && render.materials_drawn.count("brass"),"World Age must preserve physical materials and distinct brass keyboard focus");
+    require(render.materials_drawn==std::set<std::string>{"rock"} && stone_element_tint(ui,render,"tab-observe",density)==232,"World Age must preserve shared stone surfaces and the actual brighter keyboard focused tab");
     ui.context().GetDocument(0)->GetElementById("camera-home")->Focus();
     ui.update();render.reset_draws();ui.render();
-    require(render.materials_drawn.count("leather") && render.materials_drawn.count("brass"),"Selected physical tab remains distinguishable independently of keyboard focus and world Age");
+    require(render.materials_drawn==std::set<std::string>{"rock"} && stone_element_tint(ui,render,"tab-observe",density)==238*232/255,"The selected stone tab must keep its own brightness when keyboard focus moves to another control");
     require(render.full_colour_sprite,"Native colour sprites must be submitted without monochrome tint");
     require(ui.context().GetDocument(0)->GetElementById("camera-home")->GetChild(0)->GetAttribute<Rml::String>("src","")=="../generated/ui/icons/camera-96.png","World Age must not replace the individually coloured icon artwork with a global theme");
     require(ui.take_actions().empty(),"Age presentation synchronization must not mutate World or issue commands");
@@ -727,16 +783,17 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     const auto short_tip=rect(ui,"tool-tooltip",density);
     auto* short_tooltip=ui.context().GetDocument(0)->GetElementById("tool-tooltip");
     const float save_word_width=actual_glyph_width(short_tooltip,"Save",density);
-    require(short_tooltip->IsVisible(true) && short_tip.w<128.f && std::abs(short_tip.w-std::max(56.f,std::ceil(save_word_width+24.f)))<.6f,"Short Save tooltip must actually fit its parchment label rather than reserve a272dp empty plaque");
-    require(short_tip.x>=0 && short_tip.y>=0 && short_tip.x+short_tip.w<=width+.15f && short_tip.y+short_tip.h<=height+.15f,"Sized short parchment tooltip must preserve its actual bounded native anchor");
+    require(short_tooltip->IsVisible(true) && short_tip.w<128.f && std::abs(short_tip.w-std::max(56.f,std::ceil(save_word_width+24.f)))<.6f,"Short Save tooltip must actually fit its stone label rather than reserve a272dp empty plaque");
+    require(short_tip.x>=0 && short_tip.y>=0 && short_tip.x+short_tip.w<=width+.15f && short_tip.y+short_tip.h<=height+.15f,"Sized short stone tooltip must preserve its actual bounded native anchor");
     ui.context().ProcessMouseMove(0,0,0);ui.update();
     click(ui,"speed-sixtyfour",density);require(single(ui,ActionKind::SetSpeed).a==64,"Only approved clock multipliers are exposed");
     click(ui,"age-darkness",density);require(single(ui,ActionKind::SetAgeDarkness).generation==44,"Age intent belongs to current session");
     click(ui,"world-info",density);single(ui,ActionKind::OpenWorldInspector);layout_contract(ui);
     stone_heading_contract(ui.context().GetDocument(0)->GetElementById("world-panel")->GetChild(0)->GetChild(0),density);
-    ink_contract(ui.context().GetDocument(0)->GetElementById("world-facts"),73,54,31);
-    ink_contract(ui.context().GetDocument(0)->GetElementById("rename-consequences"),73,54,31);
-    ink_contract(ui.context().GetDocument(0)->GetElementById("world-name-draft"),220,230,236);
+    render.reset_draws();ui.render();stone_surface_contract(ui,render,{"world-panel","world-close"});
+    ink_contract(ui.context().GetDocument(0)->GetElementById("world-facts"),222,219,212);
+    ink_contract(ui.context().GetDocument(0)->GetElementById("rename-consequences"),222,219,212);
+    ink_contract(ui.context().GetDocument(0)->GetElementById("world-name-draft"),222,219,212);
     require(ui.blocks_world_input(),"World inspector must block camera input independently of pointer hover");
     hit_layer_contract(ui,"tab-world","world-overlay",density);
     auto* name=dynamic_cast<Rml::ElementFormControl*>(ui.context().GetDocument(0)->GetElementById("world-name-draft"));require(name!=nullptr,"World name must use a real editable native control");
@@ -755,6 +812,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     click(ui,"tab-observe",density);single(ui,ActionKind::SelectBottomSection);
     click(ui,"camera-help",density);single(ui,ActionKind::OpenHelp);layout_contract(ui);require(ui.blocks_world_input(),"Camera help is a modal input barrier");
     hit_layer_contract(ui,"tab-observe","help-overlay",density);
+    render.reset_draws();ui.render();stone_surface_contract(ui,render,{"help-panel","help-dismiss","help-close"});
     click(ui,"help-close",density);single(ui,ActionKind::CloseHelp);require(!ui.blocks_world_input(),"Closing help releases camera input");
     click(ui,"tab-settings",density);require(single(ui,ActionKind::SelectBottomSection).a==7,"The eighth raised category must navigate to settings tools just like the other seven");
     require(!ui.blocks_world_input(),"Selecting settings tools alone must preserve the world view without prematurely opening a modal");
@@ -764,7 +822,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     require(ui.context().GetDocument(0)->GetElementById("tab-settings")->IsClassSet("selected"),"Settings must select its raised category before opening its local modal");
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
         view.locale=locale;ui.set_view(view);ui.update();layout_contract(ui);
-        auto* settings_heading=ui.context().GetDocument(0)->GetElementById("settings-panel")->GetChild(0)->GetChild(0);outline_contract(settings_heading,density);
+        auto* settings_heading=ui.context().GetDocument(0)->GetElementById("settings-panel")->GetChild(0)->GetChild(0);stone_heading_contract(settings_heading,density);
         const auto panel=rect(ui,"settings-panel",density);require(panel.x>=0 && panel.x+panel.w<=width+.1 && panel.y>=0 && panel.y+panel.h<=height+.1,"Native settings panel clips outside viewport");
         const auto volume=rect(ui,"audio-volume",density);require(volume.y>panel.y+100,"Settings business rows must be block layout, not one inline run");
         auto* close=ui.context().GetDocument(0)->GetElementById("settings-close");close->ScrollIntoView(false);ui.update();
@@ -772,11 +830,13 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(close_rect.y>=panel.y-.15 && close_rect.y+close_rect.h<=panel.y+panel.h+.15,"The last control of long localized settings must be reachable through real native scrolling");
         auto* settings=ui.context().GetDocument(0)->GetElementById("settings-panel");
         if(settings->GetScrollHeight()>settings->GetClientHeight()+.5f) require(settings->GetScrollTop()>0,"Overflowing localized settings must genuinely scroll to their final action");
+        render.reset_draws();ui.render();stone_surface_contract(ui,render,{"settings-panel","settings-close"});
         view.error_key="CREATION_DIMENSIONS";view.error_detail="core width 32..4096";view.busy=true;ui.set_view(view);ui.update();
-        ink_contract(ui.context().GetDocument(0)->GetElementById("busy-label"),73,54,31);
+        ink_contract(ui.context().GetDocument(0)->GetElementById("busy-label"),222,219,212);
         error_layer_contract(ui,density);
         hit_layer_contract(ui,"tab-settings","error-overlay",density);
         hit_layer_contract(ui,"busy-indicator","error-overlay",density);
+        render.reset_draws();ui.render();stone_surface_contract(ui,render,{"error-panel","error-dismiss","busy-indicator"});
         click(ui,"error-dismiss",density);single(ui,ActionKind::DismissError);
         auto* acknowledged=ui.context().GetFocusElement();
         require(acknowledged && acknowledged->GetId()=="error-dismiss","Core error remains the keyboard barrier until its authoritative acknowledgement completes");
@@ -791,6 +851,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     view.screen=Screen::Load;view.saves={{"save1","Original world",""}};view.selected_save="save1";ui.set_view(view);ui.update();layout_contract(ui);click(ui,"load-selected",density);require(single(ui,ActionKind::LoadSelected).text=="save1","Load must reference selected real save");
     const auto save=rect(ui,"save-entry-0",density),save_content=rect(ui,"save-panel",density,Rml::Box::CONTENT);
     require(save.x>=save_content.x-.15 && save.x+save.w<=save_content.x+save_content.w+.15,"Save entry percentage width must include its horizontal padding");
+    render.reset_draws();ui.render();stone_surface_contract(ui,render,{"save-panel","save-entry-0","load-selected","back-load"});
     click(ui,"back-load",density);single(ui,ActionKind::CancelLoad);
     view.error_key="CREATION_DIMENSIONS";view.error_detail="core width 32..4096";
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
@@ -798,7 +859,8 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(ui.blocks_world_input(),"Business errors must block world camera input");
         error_layer_contract(ui,density);
         auto* document=ui.context().GetDocument(0);
-        outline_contract(document->GetElementById("error-panel")->GetChild(0),density,false,true);
+        stone_heading_contract(document->GetElementById("error-panel")->GetChild(0),density);
+        render.reset_draws();ui.render();stone_surface_contract(ui,render,{"error-panel","error-dismiss"});
         require(document->GetElementById("error-message")->GetInnerRML().find("32–4096")!=std::string::npos,"Creation dimensions must have a localized business reason in all three languages");
         require(document->GetElementById("error-detail")->GetComputedValues().display()==Rml::Style::Display::None,"Raw technical details must remain hidden by default");
     }

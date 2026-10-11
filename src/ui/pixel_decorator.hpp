@@ -18,10 +18,11 @@ struct PhysicalMaterialDefinition { const char* name; const char* texture_source
 const std::array<PhysicalMaterialDefinition,9>& physical_material_definitions();
 // Generic carved faces retain the eight non-stone material silhouettes.
 PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,float gap_start=0,float gap_width=0);
-// A pale stone face has sparse physical edge chips and short fractures rooted
+// A dark stone face has sparse physical edge chips and short fractures rooted
 // at its actual upper edge. `lip` adds a continuous six-dp raised top ledge
-// followed by a two-dp warm shadow; attached tabs end above that ledge.
-PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,bool lip=false);
+// followed by a two-dp shadow; attached tabs end above that ledge. detail_seed
+// only chooses small edge details and never consumes simulation randomness.
+PixelMesh pixel_stone_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab=false,bool lip=false,unsigned detail_seed=0);
 // Only the open tab neck shares the dock's texture coordinates. texture_origin
 // is the rounded tab padding origin relative to the rounded dock padding
 // origin, in physical pixels. Faces keep their original local coordinates.

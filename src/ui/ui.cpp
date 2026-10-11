@@ -269,24 +269,21 @@ void Ui::layout() {
     // resolving dp. Resolve our logical widths here into physical whole pixels,
     // including every heading and the wordmark's inheriting inline spans.
     if(outline_density_!=density || outline_compact_!=narrow) {
-        const auto apply=[&](auto&& self,Rml::Element* element,bool topbar,bool stone_panel)->void {
+        const auto apply=[&](auto&& self,Rml::Element* element,bool topbar)->void {
             topbar=topbar || element->IsClassSet("topbar");
-            stone_panel=stone_panel || element->GetId()=="creation-controls" || element->GetId()=="world-panel";
             const bool title=element->GetId()=="main-title";
             if(title || element->GetTagName()=="h2" || element->GetId()=="world-name") {
                 const int pigment=std::clamp(static_cast<int>(std::round(density)),1,16);
-                if(stone_panel && element->GetTagName()=="h2")
-                    element->SetProperty("font-effect","pixel-bold("+std::to_string(pigment)+"px #7b2d22)");
-                else if(topbar && narrow) element->SetProperty("font-effect","none");
-                else {
+                if(title) {
                     const int outer=std::clamp(static_cast<int>(std::round(2.f*density)),1,16);
-                    const std::string colour=element->IsClassSet("danger-heading")?"#c83a29":"#d99100";
-                    element->SetProperty("font-effect","pixel-outline("+std::to_string(outer)+"px #ffffff), "+std::string(title?"pixel-outline":"pixel-bold")+"("+std::to_string(pigment)+"px "+colour+")");
+                    element->SetProperty("font-effect","pixel-outline("+std::to_string(outer)+"px #ffffff), pixel-outline("+std::to_string(pigment)+"px #d99100)");
                 }
+                else if(topbar && narrow) element->SetProperty("font-effect","none");
+                else element->SetProperty("font-effect","pixel-bold("+std::to_string(pigment)+"px #eeeae0)");
             }
-            for(int i=0;i<element->GetNumChildren();++i) self(self,element->GetChild(i),topbar,stone_panel);
+            for(int i=0;i<element->GetNumChildren();++i) self(self,element->GetChild(i),topbar);
         };
-        apply(apply,document_,false,false);
+        apply(apply,document_,false);
         outline_density_=density;outline_compact_=narrow;
     }
 

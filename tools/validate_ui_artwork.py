@@ -2,6 +2,7 @@
 import hashlib
 import importlib.util
 import json
+import math
 from pathlib import Path
 import re
 import struct
@@ -37,6 +38,35 @@ def admit(manifest_name):
         path = ROOT / output['path']
         check(path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == output['sha256'], 'Artwork output changed: ' + str(path))
     return manifest
+
+def dark_stone_face_metrics(raw, width, height):
+    # Derive admission measurements from decoded production pixels rather
+    # than trusting the author's recipe parameters or manifest statistics.
+    pixels = [tuple(raw[i:i + 3]) for i in range(0, len(raw), 4)]
+    luminance = [.2126 * red + .7152 * green + .0722 * blue for red, green, blue in pixels]
+    total = width * height
+    mean = sum(luminance) / total
+    deltas, axis_means = [], []
+    for vertical in (False, True):
+        axis = []
+        for y in range(height):
+            for x in range(width):
+                other = ((y + 1) % height) * width + x if vertical else y * width + (x + 1) % width
+                axis.append(abs(luminance[y * width + x] - luminance[other]))
+        axis_means.append(round(sum(axis) / len(axis), 6))
+        deltas.extend(axis)
+    deltas.sort()
+    return {'luminance_basis': 'encoded RGB weighted 0.2126R + 0.7152G + 0.0722B',
+            'mean_rgb': [round(sum(pixel[channel] for pixel in pixels) / total, 6) for channel in range(3)],
+            'luminance_mean': round(mean, 6),
+            'luminance_standard_deviation': round(math.sqrt(sum((value - mean) ** 2 for value in luminance) / total), 6),
+            'luminance_minimum': round(min(luminance), 6), 'luminance_maximum': round(max(luminance), 6),
+            'mean_saturation': round(sum((max(pixel) - min(pixel)) / max(1, max(pixel)) for pixel in pixels) / total, 6),
+            'horizontal_neighbor_delta_mean': axis_means[0], 'vertical_neighbor_delta_mean': axis_means[1],
+            'neighbor_delta_p95': round(deltas[int((len(deltas) - 1) * .95)], 6),
+            'neighbor_delta_over_12_fraction': round(sum(delta > 12 for delta in deltas) / len(deltas), 6),
+            'texels_below_luminance_20': sum(value < 20 for value in luminance),
+            'texels_above_luminance_80': sum(value > 80 for value in luminance)}
 
 def validate():
     icons = admit('original_ui_icons.json')
@@ -119,10 +149,25 @@ def validate():
         average = sum(sum(int(colour[i:i + 2], 16) for i in (1, 3, 5)) * n for colour, n in histogram.items()) / (width * height * 3)
         if item['name'] == 'rock':
             channels = [sum(int(colour[i:i + 2], 16) * n for colour, n in histogram.items()) / (width * height) for i in (1, 3, 5)]
-            check(175 <= average <= 225, 'The complete stone tablet must be pale, not the rejected dark ochre rubble')
-            check(2 <= channels[0] - channels[1] <= 20 and 5 <= channels[1] - channels[2] <= 35, 'Stone tablet must be only slightly yellowed, not vivid yellow or grey marble')
-            lightness = [sum(raw[i:i + 3]) / 3 for i in range(0, len(raw), 4)]
-            check(max(lightness) - min(lightness) <= 45, 'Stone face must stay quiet; edge fractures belong to control geometry, not a tiled crack network')
+            check(all(40 <= channel <= 55 for channel in channels), 'Stone slab must have a very dark grey40–55RGB face')
+            check(0 <= channels[1] - channels[0] <= 5 and 0 <= channels[2] - channels[1] <= 5 and channels[2] - channels[0] <= 8, 'Stone must be neutral slightly cool grey, without brown/yellow or vivid blue tint')
+            for colour in item['palette']:
+                pigment = [int(colour[i:i + 2], 16) for i in (1, 3, 5)]
+                check(all(30 <= channel <= 70 for channel in pigment) and max(pigment) - min(pigment) <= 8, 'Stone palette must contain only dark low-saturation mineral greys')
+            check('dark_stone_face' in item and 'pale_stone_face' not in item and 'fracture_metrics' not in item, 'Dark stone face needs current actual-pixel metrics, with obsolete style metrics removed')
+            actual = dark_stone_face_metrics(raw, width, height)
+            check(set(actual) == set(item['dark_stone_face']), 'Complete actual dark stone metric schema')
+            for key, value in actual.items():
+                claimed = item['dark_stone_face'][key]
+                if isinstance(value, list):
+                    check(len(claimed) == len(value) and all(abs(a - b) < .000002 for a, b in zip(value, claimed)), 'Stone actual-pixel metric differs: ' + key)
+                elif isinstance(value, (int, float)):
+                    check(abs(value - claimed) < .000002, 'Stone actual-pixel metric differs: ' + key)
+                else:
+                    check(value == claimed, 'Stone actual-pixel metric differs: ' + key)
+            check(actual['luminance_standard_deviation'] <= 5 and actual['luminance_maximum'] - actual['luminance_minimum'] <= 25, 'Stone face must retain fine quiet grain rather than broad tiled cracks or contrasting blocks')
+            check(actual['neighbor_delta_p95'] <= 8 and max(actual['horizontal_neighbor_delta_mean'], actual['vertical_neighbor_delta_mean']) <= 2, 'Stone mineral grain must stay restrained at the actual1dp texel scale')
+            check(actual['texels_below_luminance_20'] == actual['texels_above_luminance_80'] == 0, 'Texture must not add black crack networks or bright mineral stripes; edge damage belongs to control geometry')
         else:
             check(average < 110, 'The other eight material faces retain their dark pigments')
     # Exact non-mutating author recipe replay detects a self-consistently edited
@@ -139,6 +184,6 @@ def validate():
     markup = (ROOT / 'assets/ui/application.rml').read_text(encoding='utf-8')
     for source in re.findall(r'src="\.\./generated/ui/icons/([^\"]+)"', markup):
         check((ROOT / 'assets/generated/ui/icons' / source).is_file(), 'Referenced production icon missing: ' + source)
-    print('PASS 41 filled pixel objects: matching transparent SVG/96/192 PNG; pale stone plus eight dark textures and exact recipe replay')
+    print('PASS 41 filled pixel objects: matching transparent SVG/96/192 PNG; deep grey stone plus eight unchanged dark textures and exact recipe replay')
 
 if __name__ == '__main__': validate()

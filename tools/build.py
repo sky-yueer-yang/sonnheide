@@ -113,7 +113,8 @@ def main():
         required += ['physical-help','physical-save-ledger']
         if any(not (evidence/(name+'.tga')).is_file() for name in required):raise SystemExit('Native screenshot evidence is incomplete: '+str(evidence))
         physical=json.loads((evidence/'physical-ui-gpu.json').read_text(encoding='utf-8'))
-        if (physical.get('ui_material_textures_uploaded')!=9 or physical.get('ui_icon_textures_uploaded',0)<20 or
+        if (physical.get('ui_material_textures_uploaded')!=2 or physical.get('ui_material_families')!=['obsidian','rock'] or
+            physical.get('ui_icon_textures_uploaded',0)<20 or
             physical.get('ui_material_sampling')!='nearest' or physical.get('ui_icon_sampling')!='nearest' or physical.get('minimum_logical_size')!=[480,480]):
             raise SystemExit('Actual native texture upload and point sampling acceptance missing.')
         camera=evidence/'camera-input.json'
