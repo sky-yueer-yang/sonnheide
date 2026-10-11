@@ -5,11 +5,15 @@
 #include <RmlUi/Core/Elements/ElementFormControl.h>
 #include <RmlUi/Core/Elements/ElementFormControlSelect.h>
 #include <array>
+#include <algorithm>
 #include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <map>
+#include <set>
+#include <RmlUi/Core/ElementText.h>
 #include <stdexcept>
 #include <vector>
 
@@ -32,40 +36,64 @@ struct System final:Rml::SystemInterface {
     std::vector<Rml::String> layout_rejections;
 };
 struct Render final:Rml::RenderInterface {
-    void RenderGeometry(Rml::Vertex* vertices,int count,int*,int,Rml::TextureHandle texture,const Rml::Vector2f&) override{
+    void RenderGeometry(Rml::Vertex* vertices,int count,int*,int,Rml::TextureHandle texture,const Rml::Vector2f& translation) override{
+        const auto material=material_textures.find(texture);
+        if(material!=material_textures.end()) {
+            materials_drawn.insert(material->second);
+            material_draws.push_back({material->second,translation});
+            // Material pixels are not stretched colour blocks: native geometry
+            // supplies bounded UVs to the admitted finite-palette texture.
+            for(int i=0;i<count;++i) require(vertices[i].tex_coord.x>=0 && vertices[i].tex_coord.x<=1 && vertices[i].tex_coord.y>=0 && vertices[i].tex_coord.y<=1,"Actual physical material UVs must address their admitted pixel tile");
+            return;
+        }
         if(texture!=0 && count>4) {
             for(int i=0;i<count;++i) {
                 const auto c=vertices[i].colour;
-                if(c.red==255 && c.green==170 && c.blue==0 && c.alpha==255) bold_pigment=true;
+                if(c.red==217 && c.green==145 && c.blue==0 && c.alpha==255) bold_pigment=true;
                 if(c.red==255 && c.green==255 && c.blue==255 && c.alpha==255) white_glyph_outline=true;
             }
         }
-        if(texture!=0 && count==4) {
+        if(icon_textures.count(texture) && count==4) {
             bool untinted=true;
             for(int i=0;i<count;++i) untinted=untinted && vertices[i].colour.red==255 && vertices[i].colour.green==255 && vertices[i].colour.blue==255 && vertices[i].colour.alpha==255;
             if(untinted) full_colour_sprite=true;
         }
-        if(texture!=0 || count<4) return;
-        ++pixel_draws;
-        for(int i=0;i<count;++i) {
-            const auto c=vertices[i].colour;
-            if(c.red==4 && c.green==37 && c.blue==55 && c.alpha==204) translucent_panel=true;
-            if(c.red==7 && c.green==45 && c.blue==88 && c.alpha==208) translucent_dock=true;
-            if(c.red==4 && c.green==28 && c.blue==50 && c.alpha==176) recessed_input=true;
-            if(c.red==4 && c.green==31 && c.blue==58 && c.alpha==232) tooltip_fill=true;
-            if(c.red==190 && c.green==63 && c.blue==37 && c.alpha==232) selected_fill=true;
-            if(c.red==218 && c.green==77 && c.blue==43 && c.alpha==240) selected_focus=true;
-        }
     }
     void EnableScissorRegion(bool) override{}
     void SetScissorRegion(int,int,int,int) override{}
-    bool LoadTexture(Rml::TextureHandle& texture,Rml::Vector2i& size,const Rml::String&) override{texture=++next;size={96,96};return true;}
+    bool LoadTexture(Rml::TextureHandle& texture,Rml::Vector2i& size,const Rml::String& source) override{
+        texture=++next;size={96,96};
+        for(const auto& definition:physical_material_definitions()) {
+            if(source.find(definition.texture_source)!=Rml::String::npos) {
+                material_textures[texture]=definition.name;size={definition.width,definition.height};
+                auto path=std::filesystem::path(source);
+                if(!path.is_absolute()) path=resource_root/path;
+                std::ifstream input(path,std::ios::binary);require(input.good(),"Actual physical material texture file must exist");
+                std::array<unsigned char,24> png{};input.read(reinterpret_cast<char*>(png.data()),png.size());
+                const auto dimension=[&](int offset){return (static_cast<int>(png[offset])<<24)|(static_cast<int>(png[offset+1])<<16)|(static_cast<int>(png[offset+2])<<8)|png[offset+3];};
+                require(png[0]==137 && png[1]=='P' && png[2]=='N' && png[3]=='G' && dimension(16)==definition.width && dimension(20)==definition.height,"Production material file must match the exact admitted texture dimensions");
+                break;
+            }
+        }
+        if(source.find("/icons/")!=Rml::String::npos) icon_textures.insert(texture);
+        return true;
+    }
     bool GenerateTexture(Rml::TextureHandle& texture,const Rml::byte*,const Rml::Vector2i&) override{texture=++next;return true;}
     Rml::TextureHandle next=0;
-    int pixel_draws=0;
-    bool translucent_panel=false,translucent_dock=false,recessed_input=false,tooltip_fill=false,selected_fill=false,selected_focus=false,full_colour_sprite=false,bold_pigment=false,white_glyph_outline=false;
-    void reset_draws(){pixel_draws=0;translucent_panel=translucent_dock=recessed_input=tooltip_fill=selected_fill=selected_focus=full_colour_sprite=bold_pigment=white_glyph_outline=false;}
+    std::filesystem::path resource_root;
+    std::map<Rml::TextureHandle,std::string> material_textures;
+    std::set<Rml::TextureHandle> icon_textures;
+    std::set<std::string> materials_drawn;
+    struct MaterialDraw {std::string family;Rml::Vector2f position;};
+    std::vector<MaterialDraw> material_draws;
+    bool material_at(const char* family,Rml::Vector2f position) const {
+        for(const auto& draw:material_draws)if(draw.family==family && draw.position==position)return true;
+        return false;
+    }
+    bool full_colour_sprite=false,bold_pigment=false,white_glyph_outline=false;
+    void reset_draws(){materials_drawn.clear();material_draws.clear();full_colour_sprite=bold_pigment=white_glyph_outline=false;}
 };
+
 bool covers(const PixelMesh& mesh,float x,float y) {
     const auto cross=[](Rml::Vector2f a,Rml::Vector2f b,Rml::Vector2f p){return(b.x-a.x)*(p.y-a.y)-(b.y-a.y)*(p.x-a.x);};
     for(std::size_t i=0;i+2<mesh.indices.size();i+=3) {
@@ -135,11 +163,83 @@ void pixel_geometry_contract() {
     require(bold[3]==255 && bold[7]==255 && bold[11]==0 && bold[15]==255 && bold[19]==255 && bold[23]==0,"Actual emboldening must add pigment while preserving a narrow character counter");
 
 }
+void material_geometry_contract() {
+    for(float density:{1.f,2.f}) {
+        const auto panel=pixel_material_mesh(1280*density,800*density,density,3*density,2*density,3*density,{255,255,255,255});
+        require(!panel.vertices.empty() && panel.vertices.size()<1024,"Full physical windows must use a bounded tiled mesh, not one quad per raster pixel");
+        require(covers(panel,640*density,400*density) && !covers(panel,.5f*density,.5f*density),"Real material windows retain their centre and small cut-corner object silhouette");
+        const auto pigment_at=[](const PixelMesh& mesh,float x,float y) {
+            for(std::size_t i=0;i+3<mesh.vertices.size();i+=4) {
+                const auto& a=mesh.vertices[i];const auto& c=mesh.vertices[i+2];
+                if(x>a.position.x && x<c.position.x && y>a.position.y && y<c.position.y)return a.colour.red;
+            }
+            return Rml::byte{0};
+        };
+        require(pigment_at(panel,40.5f*density,2.5f*density)==105 && pigment_at(panel,40.5f*density,4.5f*density)==255,"Physical window must have a genuine3dp heavy dark rim before its material face begins");
+        require(pigment_at(panel,40.5f*density,795.5f*density)==152 && pigment_at(panel,40.5f*density,792.5f*density)==255,"Physical depth must be a genuine3dp dark lower edge rather than a white highlight");
+        int centre_layers=0;
+        for(std::size_t i=0;i+3<panel.vertices.size();i+=4) {
+            const auto& a=panel.vertices[i];const auto& c=panel.vertices[i+2];
+            if(a.position.x<639.5f*density && c.position.x>639.5f*density && a.position.y<399.5f*density && c.position.y>399.5f*density) ++centre_layers;
+            require(std::abs((c.tex_coord.x-a.tex_coord.x)*512.f*density-(c.position.x-a.position.x))<.01f && std::abs((c.tex_coord.y-a.tex_coord.y)*512.f*density-(c.position.y-a.position.y))<.01f,"Every production material texel retains its actual dp scale across wide panels and high DPI");
+        }
+        require(centre_layers==1,"Material colour at the centre must be painted once, without a hidden repeated opacity shell");
+        for(const auto& v:panel.vertices) require(v.position.x==std::round(v.position.x) && v.position.y==std::round(v.position.y) && v.tex_coord.x>=0 && v.tex_coord.x<=1 && v.tex_coord.y>=0 && v.tex_coord.y<=1,"Material silhouette and tile seams must retain exact whole raster edges and admitted UV bounds");
+        const auto tab=pixel_material_mesh(72*density,62*density,density,3*density,2*density,6*density,{255,255,255,255},true);
+        const auto dock=pixel_material_mesh(1280*density,88*density,density,3*density,2*density,3*density,{255,255,255,255},false,8*density,576*density);
+        require(!covers(tab,3*density,3*density) && covers(tab,10*density,3*density) && covers(tab,36*density,59*density),"Carved tabs need stepped shoulders and a full real marble foot");
+        for(float y:{.5f,2.5f,5.5f}) require(!covers(dock,44*density,y*density),"The actual thin-rim marble dock must remove the entire six-dp neck interval; no tab overpaint is allowed");
+        require(covers(dock,44*density,6.5f*density) && covers(dock,1200*density,2.5f*density),"Only the exact join is absent; marble outside/below it must remain real geometry");
+    }
+    std::set<std::string> families;
+    for(const auto& definition:physical_material_definitions()) {
+        require(definition.width==512 && definition.height==512 && std::string(definition.texture_source).find("generated/ui/materials/")==0,"Every physical object must use the exact admitted original high-resolution pixel material path");
+        require(families.insert(definition.name).second,"Physical object material families must be distinct");
+    }
+    require(families.size()==9,"Nine concrete real-object materials must exist rather than aliases of one generic slab");
+}
 struct Rect {float x,y,w,h;};
 Rect rect(Ui& ui,const char* id,float density,Rml::Box::Area area=Rml::Box::BORDER) {
     auto* el=ui.context().GetDocument(0)->GetElementById(id); require(el!=nullptr,"Required native element missing");
     const auto p=el->GetAbsoluteOffset(area),s=el->GetBox().GetSize(area);
     return{p.x/density,p.y/density,s.x/density,s.y/density};
+}
+std::string visible_text(Rml::Element* element) {
+    if(element->GetComputedValues().display()==Rml::Style::Display::None)return {};
+    if(auto* text=dynamic_cast<Rml::ElementText*>(element))return text->GetText();
+    std::string value;
+    for(int i=0;i<element->GetNumChildren();++i)value+=visible_text(element->GetChild(i));
+    return value;
+}
+float actual_glyph_width(Rml::Element* element,const std::string& value,float density) {
+    require(element!=nullptr,"Actual glyph measurement needs a native element");
+    auto* engine=Rml::GetFontEngineInterface();require(engine!=nullptr,"Actual glyph measurement needs the native font engine");
+    const auto face=element->GetFontFaceHandle();require(face!=0,"Actual glyph measurement must never query a missing native face");
+    return engine->GetStringWidth(face,value)/density;
+}
+void filled_action_contract(Ui& ui,const char* id,float density) {
+    auto* element=ui.context().GetDocument(0)->GetElementById(id);
+    require(element && element->IsVisible(true),"Filled action must be a real visible native control");
+    const auto box=rect(ui,id,density),content=rect(ui,id,density,Rml::Box::CONTENT);
+    const float font=element->GetComputedValues().font_size()/density;
+    require(font==24 && font/box.h>=.34f,"Important execution words must actually use large doubled pixel glyphs and occupy their plaque height");
+    float icon_width=0,icon_margin=0;
+    for(int i=0;i<element->GetNumChildren();++i) if(element->GetChild(i)->GetTagName()=="img") {
+        auto* image=element->GetChild(i);const auto size=image->GetBox().GetSize(Rml::Box::BORDER);
+        require(std::abs(size.x/density-48)<.15f && std::abs(size.y/density-48)<.15f,"Action must render its actual48px original object silhouette at exact integer density");
+        icon_width=size.x/density;icon_margin=image->GetBox().GetEdge(Rml::Box::MARGIN,Rml::Box::RIGHT)/density;
+    }
+    const float glyph_width=actual_glyph_width(element,visible_text(element),density);
+    require(glyph_width>0 && glyph_width+icon_width+icon_margin<=content.w+.6f,"Actual localized glyph advances and object artwork must fit their painted plaque content; CSS image size alone is insufficient");
+    require(content.x>=box.x+3.f-.15f && content.y>=box.y+3.f-.15f && content.x+content.w<=box.x+box.w-3.f+.15f,"Action content must clear its genuine carved material rim");
+}
+void object_icon_contract(Ui& ui,const char* id,float density,float minimum_fill=.75f) {
+    auto* element=ui.context().GetDocument(0)->GetElementById(id);
+    auto* icon=element->GetChild(0);require(icon && icon->GetTagName()=="img","Object tool must contain its actual original pixel illustration");
+    const auto box=rect(ui,id,density);
+    const auto position=icon->GetAbsoluteOffset(Rml::Box::BORDER),size=icon->GetBox().GetSize(Rml::Box::BORDER);
+    require(std::abs(size.x/density-48)<.15f && std::abs(size.y/density-48)<.15f && size.y/density/box.h>=minimum_fill,"Tool artwork must fill its painted hit object instead of floating in an oversized empty square");
+    require(position.x/density>=box.x-.15f && position.y/density>=box.y-.15f && (position.x+size.x)/density<=box.x+box.w+.15f && (position.y+size.y)/density<=box.y+box.h+.15f,"Actual native object sprite must stay inside its physical painted control at every density");
 }
 void layout_contract(Ui& ui) {
     const auto visit=[&](auto&& self,Rml::Element* element)->void {
@@ -211,6 +311,12 @@ void preview_tray_contract(Ui& ui,float density) {
     }
     const auto content=rect(ui,"creation-controls",density,Rml::Box::CONTENT),create=rect(ui,"create",density);
     require(create.x>=content.x-.15f && create.y>=content.y-.15f && create.x+create.w<=content.x+content.w+.15f && create.y+create.h<=content.y+content.h+.15f,"Entire preview Create button must fit inside tray content without clipping its label or icon");
+    auto* action=ui.context().GetDocument(0)->GetElementById("create");
+    const float glyph_width=actual_glyph_width(action,visible_text(action),density);
+    const auto tray=rect(ui,"creation-controls",density);const float viewport_width=ui.context().GetDimensions().x/density;
+    const float expected_width=std::min(std::clamp(std::ceil((glyph_width+100.f)/8.f)*8.f,208.f,480.f),viewport_width-32.f);
+    require(std::abs(tray.w-expected_width)<.15f && (glyph_width+48.f+8.f)/create.w>=.55f,"Collapsed physical creation tray must fit its actual large localized words and object icon without a huge empty plaque");
+    filled_action_contract(ui,"create",density);
     hit_layer_contract(ui,"create","create",density);
 }
 Action single(Ui& ui,ActionKind expected) {
@@ -220,15 +326,35 @@ void outline_contract(Rml::Element* element,float density,bool title=false,bool 
     require(element!=nullptr,"Important heading must exist");
     const auto effects=element->GetProperty<Rml::FontEffectsPtr>("font-effect");
     require(effects && effects->list.size()==2,"Actual heading must have separate white silhouette and bold pigment layers");
-    const std::array<int,2> radii={static_cast<int>(std::round((title?3.f:2.f)*density)),static_cast<int>(std::round(density))};
+    const std::array<int,2> radii={static_cast<int>(std::round(2.f*density)),static_cast<int>(std::round(density))};
     for(std::size_t i=0;i<2;++i) {
         Rml::FontGlyph glyph;Rml::Vector2i origin{0,0},size{1,1};
         require(effects->list[i]->GetGlyphMetrics(origin,size,glyph),"Instanced glyph effect must provide actual expanded bitmap metrics");
         if(i==1 && !title) require(origin.x==0 && origin.y==0 && size.x==1+radii[i] && size.y==1,"Actual heading pigment must use density-scaled one-sided emboldening that preserves CJK counters");
         else require(origin.x==-radii[i] && origin.y==-radii[i] && size.x==1+2*radii[i] && size.y==1+2*radii[i],"Native effect radius must scale in physical whole pixels at each display density");
         const auto color=effects->list[i]->GetColour();
-        require(color.alpha==255 && (i==0?(color.red==255 && color.green==255 && color.blue==255):red?(color.red==222 && color.green==64 && color.blue==45):(color.red==255 && color.green==170 && color.blue==0)),"Bold pigment and white outer edge must retain their distinct actual glyph layer colors");
+        require(color.alpha==255 && (i==0?(color.red==255 && color.green==255 && color.blue==255):red?(color.red==200 && color.green==58 && color.blue==41):(color.red==217 && color.green==145 && color.blue==0)),"Bold pigment and white outer edge must retain their distinct actual glyph layer colors");
     }
+    // Metrics alone can pass while equal-size pigment completely hides the
+    // white layer. Compose the actual instanced masks in their shared glyph
+    // coordinates and require a genuinely visible, limited outer contour.
+    const Rml::byte ink=255;Rml::FontGlyph glyph;
+    glyph.bitmap_data=&ink;glyph.bitmap_dimensions={1,1};glyph.color_format=Rml::ColorFormat::A8;
+    std::array<Rml::Vector2i,2> origins{{Rml::Vector2i(0,0),Rml::Vector2i(0,0)}};
+    std::array<Rml::Vector2i,2> dimensions{{Rml::Vector2i(1,1),Rml::Vector2i(1,1)}};
+    std::array<std::vector<Rml::byte>,2> masks;
+    for(int i=0;i<2;++i) {
+        require(effects->list[i]->GetGlyphMetrics(origins[i],dimensions[i],glyph),"Actual glyph mask metrics must instantiate");
+        masks[i].resize(static_cast<std::size_t>(dimensions[i].x*dimensions[i].y*4));
+        effects->list[i]->GenerateGlyphTexture(masks[i].data(),dimensions[i],dimensions[i].x*4,glyph);
+    }
+    int visible_white=0;
+    for(int y=0;y<dimensions[0].y;++y)for(int x=0;x<dimensions[0].x;++x) {
+        const int px=origins[0].x+x-origins[1].x,py=origins[0].y+y-origins[1].y;
+        const bool pigment=px>=0 && py>=0 && px<dimensions[1].x && py<dimensions[1].y && masks[1][static_cast<std::size_t>((py*dimensions[1].x+px)*4+3)]>=128;
+        if(masks[0][static_cast<std::size_t>((y*dimensions[0].x+x)*4+3)]>=128 && !pigment)++visible_white;
+    }
+    require(visible_white>0,"Important glyph contour must remain visibly outside the shaded pigment, not be hidden by equal-radius layers");
 }
 void scenario(const std::filesystem::path& root,int width,int height,float density,Render& render) {
     Ui ui(root);std::string error;require(ui.initialize(static_cast<int>(width*density),static_cast<int>(height*density),density,error),"Native UI initialization failed");
@@ -240,13 +366,14 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(first.h>=40 && last.h>=40 && first.y>=heading.y+heading.h+8,"Compact home keeps accessible controls and a separate title band");
         require(last.y+last.h<=height+.15,"All five home operations must be immediately visible even at minimum resolution");
         require(second.y>first.y && std::abs(second.x-first.x)<.15,"Home keeps a compact five-operation column across locales and viewports");
+        for(const auto* id:{"new-world","continue-world","load","settings-main","exit"}) filled_action_contract(ui,id,density);
         require(ui.context().GetDocument(0)->GetProperty<Rml::String>("font-family")=="Sonn Arcade","Every language must use the admitted arcade font family");
-        require(ui.context().GetDocument(0)->GetElementById("new-world")->GetComputedValues().font_size()==12*density,"Home actions must use the compact admitted 12dp pixel face");
+        require(ui.context().GetDocument(0)->GetElementById("new-world")->GetComputedValues().font_size()==24*density,"Home actions must use actual doubled 24dp pixel glyphs");
         require(ui.context().GetDocument(0)->GetElementById("main-title")->GetComputedValues().font_size()==36*density,"Main hierarchy uses a real three-times pixel font size");
         require(ui.context().GetDocument(0)->GetElementById("main-title")->GetComputedValues().font_weight()==Rml::Style::FontWeight::Normal,"Actual glyph emboldening must keep the real Regular face, with independent pigment and outline effects");
         auto* title=ui.context().GetDocument(0)->GetElementById("main-title");outline_contract(title,density,true);
         for(int i=0;i<title->GetNumChildren();++i) if(title->GetChild(i)->GetTagName()=="span") outline_contract(title->GetChild(i),density,true);
-        const float word_width=Rml::GetFontEngineInterface()->GetStringWidth(title->GetFontFaceHandle(),"SONNHEIDE")/density+6.f;
+        const float word_width=actual_glyph_width(title,"SONNHEIDE",density)+6.f;
         require(word_width<=rect(ui,"main-menu",density,Rml::Box::CONTENT).w,"Actual36dp wordmark advances and white glyph edge must fit its menu content width");
 
 
@@ -272,6 +399,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         if(height<=480) require(form->GetScrollHeight()>form->GetClientHeight()+.5f,"The complete centered creation form must retain real scrolling in a short viewport");
         const auto scene=ui.viewport();require(scene.x==0 && scene.y==0 && std::abs(scene.width-width)<.15f && std::abs(scene.height-height)<.15f,"Blank creation uses the complete 3D scene behind its dialog");
         auto* doc=ui.context().GetDocument(0);
+        for(const auto* id:{"preview","create"}) filled_action_contract(ui,id,density);
         for(const auto* removed:{"earth-mode","earth-controls","earth-selection","map-controls","map-in","earth-west"}) require(doc->GetElementById(removed)==nullptr,"World-map entry, controls and selection must be removed rather than hidden");
     }
     auto* creation_name=ui.context().GetDocument(0)->GetElementById("creation-name");creation_name->Focus();
@@ -283,7 +411,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         require(ancestor!=nullptr,"Creation keyboard focus must remain inside the actual centered dialog");
     }
     render.reset_draws();ui.render();
-    require(render.translucent_panel && render.recessed_input,"Creation controls must submit true navy panel alpha 204 and recessed input alpha 176");
+    require(render.materials_drawn.count("marble") && render.materials_drawn.count("obsidian"),"Creation controls must actually draw their veined marble and recessed obsidian materials");
     view.creation.can_select_theme=true;view.creation.theme="maple_field";ui.set_view(view);ui.update();
     require(ui.take_actions().empty(),"Snapshot/theme synchronization must not issue a player action or invalidate its preview");
     auto* theme=dynamic_cast<Rml::ElementFormControlSelect*>(ui.context().GetDocument(0)->GetElementById("creation-theme"));
@@ -349,24 +477,29 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         for(int i=0;i<8;++i) {
             const auto button=rect(ui,tabs[i],density),row=rect(ui,"section-tabs",density);
             require(button.y>=row.y-.15f && button.y+button.h<=outer_bar.y+6.15f,"Folder tabs may overlap the panel by their six-pixel join neck only");
-            require(std::abs(button.y+button.h-outer_bar.y-6.f)<.15f && button.h<=44.15f,"Tabs must be low40/44dp folder faces with a real six-pixel join, never tall standalone blocks");
+            require(std::abs(button.y+button.h-outer_bar.y-6.f)<.15f && button.h<=62.15f,"Tabs must be low58/62dp stone faces with a real six-pixel join, never tall standalone blocks");
             auto* panel=ui.context().GetDocument(0)->GetElementById("bottom-bar-frame");
             auto* parent=ui.context().GetDocument(0)->GetElementById(tabs[i]);
             while(parent && parent!=panel) parent=parent->GetParentNode();
             require(parent!=panel,"Categories must be separate protrusions, never contained inside the decorated toolbar panel");
             require(button.x>=bar.x-pixel_tolerance && button.x+button.w<=bar.x+bar.w+pixel_tolerance && button.y+button.h<=height+pixel_tolerance,"Bottom button padding must not overflow the viewport or content row");
-            require(button.w>=58-pixel_tolerance && button.w<=68+pixel_tolerance,"All eight protruding categories must have substantial bounded slots that fit the viewport");
+            require(button.w>=58-pixel_tolerance && button.w<=72+pixel_tolerance,"All eight protruding categories must have substantial bounded slots that fit the viewport");
             auto* element=ui.context().GetDocument(0)->GetElementById(tabs[i]);
             const auto icon=element->GetChild(0)->GetBox().GetSize(Rml::Box::BORDER);
-            require(std::abs(icon.x/density-32)<.15 && std::abs(icon.y/density-32)<.15,"Category silhouettes must use whole 32dp logical pixels");
+            require(std::abs(icon.x/density-48)<.15 && std::abs(icon.y/density-48)<.15,"Category silhouettes must render every actual48px logical cell at whole1×/2× scale");
             require(element->GetComputedValues().font_size()==12*density,"Bottom text remains a real compact 12dp pixel font at every DPI");
             require(!element->GetAttribute<Rml::String>("data-tooltip-key","").empty(),"Short toolbar labels require their complete localized name tooltip");
+            object_icon_contract(ui,tabs[i],density,.77f);
+            const auto image_offset=element->GetChild(0)->GetAbsoluteOffset(Rml::Box::BORDER);
+            require(image_offset.y/density+48.f<=button.y+button.h-6.f+.15f,"Actual48px category illustration must fit wholly on its carved face, never across the six-dp marble neck");
+            require(std::abs(button.h-(element->IsClassSet("selected")?62.f:58.f))<.15f,"Selected and ordinary carved page dimensions must be actual62/58dp native geometry");
 
         }
         require(ui.take_actions().empty(),"Layout/localization queries must not emit commands");
     }
     const auto observe_panel=rect(ui,"section-tools",density),camera=rect(ui,"camera-home",density),help=rect(ui,"camera-help",density);
-    require(observe_panel.w<=width+.15f && std::abs(camera.w-48)<.15f && std::abs(help.w-48)<.15f && std::abs(camera.y-help.y)<.15f,"Observe tools must occupy compact 48dp tool slots beneath the category row");
+    require(observe_panel.w<=width+.15f && std::abs(camera.w-60)<.15f && std::abs(help.w-60)<.15f && std::abs(camera.y-help.y)<.15f,"Observe tools must occupy60dp physical slots with48dp object silhouettes");
+    object_icon_contract(ui,"camera-home",density);object_icon_contract(ui,"camera-help",density);
     const auto civil=rect(ui,"tab-civilization",density);
     ui.context().ProcessMouseMove(static_cast<int>((civil.x+civil.w/2)*density),static_cast<int>((civil.y+civil.h/2)*density),0);
     ui.update();
@@ -374,7 +507,7 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     require(tooltip->GetComputedValues().display()!=Rml::Style::Display::None && tooltip->GetInnerRML().find("Zivilisation und Institutionen")!=std::string::npos,"Short German toolbar label must expose its real full name on native hover");
     const auto tip=rect(ui,"tool-tooltip",density);
     require(tip.x>=0 && tip.y>=0 && tip.x+tip.w<=width+.15 && tip.y+tip.h<=height+.15,"Native full-name tooltip must stay inside the viewport");
-    render.reset_draws();ui.render();require(render.tooltip_fill,"Native full-name tooltip must submit its inset dark material at true alpha 232");
+    render.reset_draws();ui.render();require(render.materials_drawn.count("parchment"),"Native full-name tooltip must actually draw its dark parchment material");
     require(ui.take_actions().empty(),"Tooltip presentation must never become a World command");
     ui.context().ProcessMouseMove(0,0,0);ui.update();
     require(tooltip->GetComputedValues().display()==Rml::Style::Display::None,"Leaving a tool must dismiss its informational tooltip");
@@ -387,15 +520,19 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         click(ui,future_buttons[i],density);require(ui.take_actions().empty(),"Unavailable future tools stay visibly disabled without claiming a World edit");
     }
     click(ui,"tab-observe",density);single(ui,ActionKind::SelectBottomSection);
-    render.reset_draws();ui.render();require(render.pixel_draws>0 && render.translucent_panel && render.translucent_dock,"Real RmlUi must submit true navy panel alpha204 and dock alpha208");
+    render.reset_draws();ui.render();require(render.materials_drawn.count("leather") && render.materials_drawn.count("marble"),"Real RmlUi must draw the leatherHUD and veined marble dock materials");
+    auto* world_info=ui.context().GetDocument(0)->GetElementById("world-info");
+    ui.context().ProcessMouseMove(0,0,0);world_info->Focus();ui.update();render.reset_draws();ui.render();
+    require(world_info->IsPseudoClassSet("focus") && render.material_at("brass",world_info->GetAbsoluteOffset(Rml::Box::PADDING).Round()),"Actual keyboard focus must draw brass specifically at the world-info plaque, rather than pass because another selected tab happens to use brass");
+    require(ui.take_actions().empty(),"Focusing an instrument must not emit a World edit");
     view.presentation_darkness=true;ui.set_view(view);ui.update();
     ui.context().ProcessMouseMove(0,0,0);
     ui.context().GetDocument(0)->GetElementById("tab-observe")->Focus();
     ui.update();render.reset_draws();ui.render();
-    require(render.translucent_panel && render.selected_focus,"World Age must preserve translucent panels and visible red keyboard focus");
+    require(render.materials_drawn.count("leather") && render.materials_drawn.count("brass"),"World Age must preserve physical materials and distinct brass keyboard focus");
     ui.context().GetDocument(0)->GetElementById("camera-home")->Focus();
     ui.update();render.reset_draws();ui.render();
-    require(render.translucent_panel && render.selected_fill,"Selection remains distinguishable independently of keyboard focus and world Age");
+    require(render.materials_drawn.count("leather") && render.materials_drawn.count("brass"),"Selected physical tab remains distinguishable independently of keyboard focus and world Age");
     require(render.full_colour_sprite,"Native colour sprites must be submitted without monochrome tint");
     require(ui.context().GetDocument(0)->GetElementById("camera-home")->GetChild(0)->GetAttribute<Rml::String>("src","")=="../generated/ui/icons/camera-96.png","World Age must not replace the individually coloured icon artwork with a global theme");
     require(ui.take_actions().empty(),"Age presentation synchronization must not mutate World or issue commands");
@@ -403,7 +540,9 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
     for(const auto locale:{Locale::Chinese,Locale::English,Locale::German}) {
         view.locale=locale;ui.set_view(view);ui.update();layout_contract(ui);
         const auto world_tools=rect(ui,"section-tools",density),save=rect(ui,"save",density),load=rect(ui,"world-load",density),menu=rect(ui,"return-menu",density);
-        require(world_tools.w<=width+.15f && std::abs(save.w-48)<.15f && std::abs(load.w-48)<.15f && std::abs(menu.w-48)<.15f,"World tools must use 48dp individual slots in the lower tool dock");
+        require(world_tools.h<=(width>=792?72.2f:136.2f),"Physical world instruments must share one compact real row when they fit, rather than reserve an empty double-height dock");
+        for(const auto* id:{"save","world-load","return-menu","age-light","age-darkness","age-auto","age-manual"}) object_icon_contract(ui,id,density);
+        require(world_tools.w<=width+.15f && std::abs(save.w-60)<.15f && std::abs(load.w-60)<.15f && std::abs(menu.w-60)<.15f,"World tools must use60dp individual physical slots in the lower tool dock");
         require(std::abs(save.y-load.y)<.15f && std::abs(save.y-menu.y)<.15f,"Save, load and menu controls must share a native flex row in all three locales");
         const auto clock_group=rect(ui,"world-clock-group",density),save_group=rect(ui,"world-save-group",density),category=rect(ui,"bottom-bar",density);
         require(clock_group.h>=48 && save_group.h>=48 && clock_group.y>=category.y+category.h-.15f,"Tool groups must have real nonzero layout beneath the category row");
@@ -411,20 +550,29 @@ void scenario(const std::filesystem::path& root,int width,int height,float densi
         float previous_right=clock_group.x;
         for(const auto* id:clock_buttons) {
             const auto slot=rect(ui,id,density);
-            require(slot.h>=47.85f && slot.w>=47.85f && std::abs(slot.y-clock_group.y)<.15f,"Every time control must have real 48dp geometry in its clock row");
+            require(slot.h>=59.85f && slot.w>=59.85f && std::abs(slot.y-clock_group.y)<.15f,"Every time control must have real60dp geometry in its clock row");
             require(slot.x>=previous_right-.15f && slot.x+slot.w<=clock_group.x+clock_group.w+.15f && slot.y+slot.h<=height+.15f,"Clock controls must occupy separate visible slots within their block wrapper");
             previous_right=slot.x+slot.w;
         }
         previous_right=save_group.x;
         for(const auto* id:{"save","world-load","return-menu"}) {
             const auto slot=rect(ui,id,density);
-            require(slot.h>=47.85f && slot.x>=previous_right-.15f && slot.x+slot.w<=save_group.x+save_group.w+.15f && slot.y>=save_group.y-.15f && slot.y+slot.h<=save_group.y+save_group.h+.15f,"Every save/menu action must have nonzero visible geometry inside its own block wrapper");
+            require(slot.h>=59.85f && slot.x>=previous_right-.15f && slot.x+slot.w<=save_group.x+save_group.w+.15f && slot.y>=save_group.y-.15f && slot.y+slot.h<=save_group.y+save_group.h+.15f,"Every save/menu action must have nonzero visible geometry inside its own block wrapper");
             previous_right=slot.x+slot.w;
         }
         const auto light=rect(ui,"age-light",density),dark=rect(ui,"age-darkness",density);
-        require(std::abs(light.w-48)<.15f && std::abs(dark.w-48)<.15f && std::abs(light.y-dark.y)<.15f,"Age tools must occupy two compact neighbouring 48dp slots");
+        require(std::abs(light.w-60)<.15f && std::abs(dark.w-60)<.15f && std::abs(light.y-dark.y)<.15f,"Age tools must occupy two neighbouring60dp physical slots");
         require(ui.take_actions().empty(),"Responsive tool layout and locale changes must not produce intents");
     }
+    view.locale=Locale::English;ui.set_view(view);ui.update();
+    const auto save_target=rect(ui,"save",density);
+    ui.context().ProcessMouseMove(static_cast<int>((save_target.x+save_target.w/2)*density),static_cast<int>((save_target.y+save_target.h/2)*density),0);ui.update();
+    const auto short_tip=rect(ui,"tool-tooltip",density);
+    auto* short_tooltip=ui.context().GetDocument(0)->GetElementById("tool-tooltip");
+    const float save_word_width=actual_glyph_width(short_tooltip,"Save",density);
+    require(short_tooltip->IsVisible(true) && short_tip.w<128.f && std::abs(short_tip.w-std::max(56.f,std::ceil(save_word_width+24.f)))<.6f,"Short Save tooltip must actually fit its parchment label rather than reserve a272dp empty plaque");
+    require(short_tip.x>=0 && short_tip.y>=0 && short_tip.x+short_tip.w<=width+.15f && short_tip.y+short_tip.h<=height+.15f,"Sized short parchment tooltip must preserve its actual bounded native anchor");
+    ui.context().ProcessMouseMove(0,0,0);ui.update();
     click(ui,"speed-sixtyfour",density);require(single(ui,ActionKind::SetSpeed).a==64,"Only approved clock multipliers are exposed");
     click(ui,"age-darkness",density);require(single(ui,ActionKind::SetAgeDarkness).generation==44,"Age intent belongs to current session");
     click(ui,"world-info",density);single(ui,ActionKind::OpenWorldInspector);layout_contract(ui);
@@ -503,14 +651,15 @@ int main(int argc,char** argv) {
     if(argc!=2) {std::cerr<<"Pass runtime resource directory\n";return 1;}
     System system;Render render;Rml::SetSystemInterface(&system);Rml::SetRenderInterface(&render);if(!Rml::Initialise())return 1;int result=0;
     std::vector<Rml::byte> font_bytes;
-    try { const std::filesystem::path root=argv[1];
+    try { const std::filesystem::path root=argv[1];render.resource_root=root;
         std::ifstream font(root/"fonts/fusion-pixel-12px-proportional-zh_hans.otf",std::ios::binary);
         require(font.good(),"Admitted arcade font file missing");
         font_bytes.assign(std::istreambuf_iterator<char>(font),std::istreambuf_iterator<char>());
         require(!font_bytes.empty() && Rml::LoadFontFace(font_bytes.data(),static_cast<int>(font_bytes.size()),"Sonn Arcade",Rml::Style::FontStyle::Normal,Rml::Style::FontWeight::Normal,true),"Arcade font alias registration failed");
         pixel_geometry_contract();
+        material_geometry_contract();
         for(float density:{1.f,2.f}) {
-            for(const auto dimensions:{std::array<int,2>{1280,800},std::array<int,2>{480,640},std::array<int,2>{640,480}}) {
+            for(const auto dimensions:{std::array<int,2>{1280,800},std::array<int,2>{480,640},std::array<int,2>{640,480},std::array<int,2>{480,480}}) {
                 scenario(root,dimensions[0],dimensions[1],density,render);
                 if(!system.layout_rejections.empty()) throw std::runtime_error("Native RmlUi layout rejection: "+system.layout_rejections.front());
             }

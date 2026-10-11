@@ -55,6 +55,10 @@ data/geo/sources/gshhg/** -text
 
 # Bounded original UI icons ship in Git; their author recipe and hashes are tracked.
 assets/generated/ui/icons/*.png -filter -diff -merge -text
+# Nine bounded original UI material tiles and lossless native batch evidence.
+assets/generated/ui/materials/*.png -filter -diff -merge -text
+docs/evidence/physical-pixel/*.png -filter -diff -merge -text
+docs/evidence/physical-pixel/*.log -text -whitespace
 *.tsv text eol=lf
 *.inc text eol=lf
 third_party/unicode/LICENSE.txt -text

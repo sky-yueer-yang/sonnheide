@@ -89,7 +89,26 @@ def copy_verified(src, dst, expected):
     ds = dst.stat()
     receipt.write_text(json.dumps({'hash': expected, 'source_mtime': ss.st_mtime_ns, 'mtime': ds.st_mtime_ns, 'size': ds.st_size}), encoding="utf-8")
 
+def admit_original_ui_art():
+    # Generated artwork is immutable admitted input, not a runtime generator.
+    # Never silently regenerate altered art during a build or skip recipe locks.
+    for filename, prefix in [('original_ui_icons.json', 'assets/generated/ui/icons/'),
+                             ('original_ui_materials.json', 'assets/generated/ui/materials/')]:
+        manifest = json.loads((ROOT / 'assets/manifests' / filename).read_text(encoding='utf-8'))
+        recipe = ROOT / manifest['recipe']
+        if digest(recipe) != manifest['recipe_sha256']:
+            raise ValueError('Original UI recipe changed without artwork: ' + filename)
+        seen = set()
+        for item in manifest['outputs']:
+            path = item['path']
+            if not path.startswith(prefix) or '..' in PurePosixPath(path).parts or path in seen:
+                raise ValueError('Invalid original UI artwork path: ' + path)
+            seen.add(path)
+            if digest(ROOT / path) != item['sha256']:
+                raise ValueError('Original UI artwork hash mismatch: ' + path)
+
 def prepare():
+    admit_original_ui_art()
     lock = json.loads((ROOT / 'data/native_dependencies.lock.json').read_text(encoding="utf-8"))
     for s in lock['dependencies']:
         p = locked_file(s, HIST / 'native-archives')

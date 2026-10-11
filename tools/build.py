@@ -38,6 +38,12 @@ def runtime():
     for p in (ROOT/'assets/shaders').glob('*'):
         if p.is_file():copy_changed(p,BUILD/'runtime/shader-source'/p.name)
     copy_changed(ROOT/'src/client/client.cpp',BUILD/'runtime/recipes/pixel_surfaces.cpp')
+    # Offline author recipes and material/icon manifests accompany the runtime
+    # pack. They remain presentation inputs, separate from World definitions.
+    for filename in ['generate_visual_assets.py','generate_ui_materials.py']:
+        copy_changed(ROOT/'tools'/filename,BUILD/'runtime/recipes'/filename)
+    for filename in ['original_ui_icons.json','original_ui_materials.json']:
+        copy_changed(ROOT/'assets/manifests'/filename,BUILD/'runtime/recipes'/filename)
     # Immutable presentation pack is separate from authoritative definition hash.
     asset_files=[]
     for directory in ['ui','generated','fonts','shader-source','recipes']:
@@ -94,13 +100,22 @@ def main():
     if a.native_smoke:
         exe=(BUILD/'package/Sonnheide'/('sonnheide.exe' if os.name=='nt' else 'sonnheide')) if a.bundle else BUILD/'native'/('RelWithDebInfo/sonnheide.exe' if os.name=='nt' else 'sonnheide')
         evidence=BUILD/'evidence'/('native-'+uuid.uuid4().hex[:12])
-        call([exe,'--smoke-test','--saves',BUILD/'evidence'/('smoke-saves-'+uuid.uuid4().hex[:12]),'--evidence',evidence])
+        # Exercise relative CLI resources in the real packaged flow. The app
+        # normalizes its root once before RmlUi resolves documents and textures.
+        resources=(exe.parent/'runtime') if a.bundle else BUILD/'runtime'
+        call([exe,'--resources',resources.relative_to(ROOT),'--smoke-test','--saves',BUILD/'evidence'/('smoke-saves-'+uuid.uuid4().hex[:12]),'--evidence',evidence])
         report=evidence/'native-flow.json'
         if not report.is_file():raise SystemExit('Native GPU flow did not produce a completion report: '+str(evidence))
         flow=json.loads(report.read_text(encoding="utf-8"))
         if flow.get('status')!='pass' or 'exit-durable-readback' not in flow.get('actions',[]):raise SystemExit('Native flow did not prove the final exit checkpoint.')
         required=['main-menu','main-menu-motion','main-menu-frozen-a','main-menu-frozen-b','blank-preview','blank-oblique','darkness','settings-zh','settings-en','settings-de','creation-centered','creation-options-centered','sea-preview','land-preview','blank-world','pixel-near-full','pixel-near-mean-base','pixel-near-darkness','pixel-near-light','world-name-consequences','creation-error','loaded-world']
+        required += ['toolbar-'+name for name in ['observe','terrain','life','civilization','construction','economy','world','settings']]
+        required += ['physical-help','physical-save-ledger']
         if any(not (evidence/(name+'.tga')).is_file() for name in required):raise SystemExit('Native screenshot evidence is incomplete: '+str(evidence))
+        physical=json.loads((evidence/'physical-ui-gpu.json').read_text(encoding='utf-8'))
+        if (physical.get('ui_material_textures_uploaded')!=9 or physical.get('ui_icon_textures_uploaded',0)<20 or
+            physical.get('ui_material_sampling')!='nearest' or physical.get('ui_icon_sampling')!='nearest' or physical.get('minimum_logical_size')!=[480,480]):
+            raise SystemExit('Actual native texture upload and point sampling acceptance missing.')
         camera=evidence/'camera-input.json'
         if not camera.is_file() or json.loads(camera.read_text(encoding="utf-8")).get('status')!='pass':raise SystemExit('Actual SDL camera and core pick acceptance missing.')
         creation=json.loads((evidence/'creation-ui.json').read_text(encoding='utf-8'))

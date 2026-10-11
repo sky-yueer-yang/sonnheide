@@ -5,6 +5,7 @@
 #include <RmlUi/Core/Element.h>
 #include <RmlUi/Core/ElementDocument.h>
 #include <RmlUi/Core/Event.h>
+#include <RmlUi/Core/FontEngineInterface.h>
 #include <RmlUi/Core/Input.h>
 #include <RmlUi/Core/Elements/ElementFormControl.h>
 #include <RmlUi/Core/Elements/ElementFormControlSelect.h>
@@ -47,6 +48,18 @@ bool parse_number(std::string value,double& result) {
 std::string input_text(Rml::ElementDocument* doc,const char* id) {
     if(auto* input=dynamic_cast<Rml::ElementFormControl*>(doc->GetElementById(id))) return input->GetValue();
     return {};
+}
+Rml::FontEngineInterface& admitted_font_engine() {
+    auto* engine=Rml::GetFontEngineInterface();
+    if(!engine) throw std::runtime_error("UI_FONT_ENGINE: native font engine is unavailable");
+    return *engine;
+}
+Rml::FontFaceHandle admitted_arcade_face(Rml::FontEngineInterface& engine,int pixels) {
+    // The locked native FontProvider explicitly requires a lowercase family
+    // for direct queries. RCSS normalizes its own names, this API does not.
+    const auto face=engine.GetFontFaceHandle("sonn arcade",Rml::Style::FontStyle::Normal,Rml::Style::FontWeight::Normal,pixels);
+    if(!face) throw std::runtime_error("UI_FONT_MISSING: admitted Sonn Arcade face is unavailable at "+std::to_string(pixels)+"px");
+    return face;
 }
 }
 const char* locale_code(Locale locale) { return locale==Locale::English?"en":locale==Locale::German?"de":"zh-CN"; }
@@ -192,7 +205,7 @@ void Ui::refresh() {
     input_value(context_,document_,"audio-volume",std::to_string(view_.audio_volume));
     const char* tabs[]={"tab-observe","tab-terrain","tab-life","tab-civilization","tab-construction","tab-economy","tab-world","tab-settings"};
     for(int i=0;i<8;++i) { choice(document_,tabs[i],i==static_cast<int>(section_)); enable(document_,tabs[i],true); }
-    show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World,"flex"); show(document_,"age-tools",section_==BottomSection::World,"flex");
+    show(document_,"observe-tools",section_==BottomSection::Observe,"flex"); show(document_,"world-tools",section_==BottomSection::World,"flex"); show(document_,"world-age-group",section_==BottomSection::World); show(document_,"age-tools",section_==BottomSection::World,"flex");
     const char* future_panels[]={"terrain-tools","life-tools","civilization-tools","construction-tools","economy-tools"};
     for(int i=0;i<5;++i) show(document_,future_panels[i],static_cast<int>(section_)==i+1,"flex");
     show(document_,"settings-tools",section_==BottomSection::Settings,"flex");
@@ -226,7 +239,7 @@ void Ui::refresh() {
     label(document_,"error-details",text(error_details_open_?"hide-details":"technical-details"));
     show(document_,"error-details",!view_.error_detail.empty(),"inline-block");
     show(document_,"error-detail",error_details_open_ && !view_.error_detail.empty());
-    const auto icons=[this](auto&& self,Rml::Element* element)->void {
+    const auto icons=[](auto&& self,Rml::Element* element)->void {
         if(element->GetTagName()=="img") {
             auto icon=element->GetAttribute<Rml::String>("data-icon","");
             if(icon.empty()) {
@@ -262,9 +275,9 @@ void Ui::layout() {
             if(title || element->GetTagName()=="h2" || element->GetId()=="world-name") {
                 if(topbar && narrow) element->SetProperty("font-effect","none");
                 else {
-                    const int outer=std::clamp(static_cast<int>(std::round((title?3.f:2.f)*density)),1,16);
+                    const int outer=std::clamp(static_cast<int>(std::round(2.f*density)),1,16);
                     const int pigment=std::clamp(static_cast<int>(std::round(density)),1,16);
-                    const std::string colour=element->IsClassSet("danger-heading")?"#de402d":"#ffaa00";
+                    const std::string colour=element->IsClassSet("danger-heading")?"#c83a29":"#d99100";
                     element->SetProperty("font-effect","pixel-outline("+std::to_string(outer)+"px #ffffff), "+std::string(title?"pixel-outline":"pixel-bold")+"("+std::to_string(pigment)+"px "+colour+")");
                 }
             }
@@ -274,10 +287,19 @@ void Ui::layout() {
         outline_density_=density;outline_compact_=narrow;
     }
 
-    const float menu_width=grid(std::min(304.f,w-32));
+    // Size the physical menu ledger from actual admitted glyph advances.  The
+    // actions use the true doubled pixel face, rather than leaving small words
+    // floating inside an arbitrarily wide plaque.
+    auto& font_engine=admitted_font_engine();
+    const auto action_face=admitted_arcade_face(font_engine,static_cast<int>(std::round(24.f*density)));
+    const auto title_face=admitted_arcade_face(font_engine,static_cast<int>(std::round(36.f*density)));
+    const auto action_width=[&](const char* key) { return font_engine.GetStringWidth(action_face,text(key))/density; };
+    float menu_need=font_engine.GetStringWidth(title_face,"SONNHEIDE")/density+38.f;
+    for(const char* key:{"new","continue","load","settings","exit"}) menu_need=std::max(menu_need,action_width(key)+116.f);
+    const float menu_width=std::min(std::ceil(std::max(304.f,menu_need)/8.f)*8.f,w-32.f);
     property("main-menu","width",menu_width);
     property("main-menu","left",grid((w-menu_width)/2));
-    property("main-menu","top",grid(std::max(16.f,(h-324.f)/2)));
+    property("main-menu","top",grid(std::max(16.f,(h-432.f)/2)));
     property("main-menu","max-height",std::max(160.f,h-32));
     const bool editing=controls_open_ || !view_.creation.preview_ready;
     show(document_,"creation-topbar",!editing);
@@ -285,8 +307,11 @@ void Ui::layout() {
     show(document_,"creation-heading",editing,"flex");
     show(document_,"preview",editing,"inline-block");
     document_->GetElementById("creation-controls")->SetClass("preview-tray",!editing);
-    const float creation_width=std::min(editing?608.f:480.f,w-32.f);
-    const float creation_height=std::min(editing?648.f:96.f,h-32.f);
+    const float tray_width=std::clamp(std::ceil((action_width("create")+100.f)/8.f)*8.f,208.f,480.f);
+    const float creation_width=std::min(editing?608.f:tray_width,w-32.f);
+    const float half_action_width=(creation_width-32.f)/2.f-12.f;
+    document_->SetClass("stacked-actions",narrow || std::max(action_width("preview"),action_width("create"))+56.f>half_action_width);
+    const float creation_height=std::min(editing?704.f:96.f,h-32.f);
     property("creation-controls","width",creation_width);
     property("creation-controls","height",creation_height);
     property("creation-controls","left",std::round((w-creation_width)/2));
@@ -303,7 +328,7 @@ void Ui::layout() {
         property(id,"top",top);property(id,"max-height",grid(std::max(128.f,h-top-24)));
         property(id,"padding-left",16);property(id,"padding-right",16);
     }
-    const float tab_width=std::floor(std::min(68.f,(w-16.f)/8.f));
+    const float tab_width=std::floor(std::min(72.f,(w-16.f)/8.f));
     if(auto* bar=document_->GetElementById("bottom-bar")) {
         for(int i=0;i<bar->GetNumChildren();++i) if(auto* button=bar->GetChild(i)) {
             button->SetProperty("width",std::to_string(tab_width)+"dp");
@@ -311,9 +336,13 @@ void Ui::layout() {
     }
     // The six-pixel join faces occupy a genuine gap in the panel top ring.
     // Neither a later panel draw nor alpha overdraw may close the tab necks.
-    document_->GetElementById("bottom-bar-frame")->SetProperty("decorator","pixel-rim(#072d58d0 #010c20ff #010b20d0 6dp 3dp 2dp 8dp "+std::to_string(tab_width*8.f)+"dp)");
-    property("section-tools","min-height",section_==BottomSection::World?124:64);
-    property("section-tools","max-height",std::max(124.f,std::min(192.f,h*.4f)));
+    document_->GetElementById("bottom-bar-frame")->SetProperty("decorator","physical-material(marble #ffffffff 3dp 2dp 3dp 8dp "+std::to_string(tab_width*8.f)+"dp)");
+    // Three physical instrument groups share one row where they actually fit.
+    // At small widths the flex wrapper uses two real rows rather than reserving
+    // a permanently oversized empty toolbar on every screen.
+    const float tool_height=section_==BottomSection::World?(w-24.f>=768.f?72.f:136.f):72.f;
+    property("section-tools","min-height",tool_height);
+    property("section-tools","max-height",std::max(tool_height,std::min(208.f,h*.45f)));
     property("preview-caption","left",16);property("preview-caption","max-width",w-32.f);
 
 }
@@ -346,7 +375,11 @@ void Ui::update() {
         const auto dimensions=context_->GetDimensions();
         const float w=dimensions.x/density,h=dimensions.y/density;
         const auto offset=hovered->GetAbsoluteOffset(Rml::Box::BORDER),size=hovered->GetBox().GetSize(Rml::Box::BORDER);
-        const float width=std::min(272.f,w-24);
+        auto& font_engine=admitted_font_engine();
+        const auto tooltip_face=admitted_arcade_face(font_engine,static_cast<int>(std::round(12.f*density)));
+        const auto tooltip_text=text(tooltip_key)+(hovered->IsPseudoClassSet("disabled")?" · "+text("not-available"):"");
+        const float content_width=font_engine.GetStringWidth(tooltip_face,tooltip_text)/density;
+        const float width=std::min(std::min(272.f,w-24.f),std::max(56.f,std::ceil(content_width+24.f)));
         tooltip->SetProperty("width",std::to_string(width)+"dp");
         tooltip->SetProperty("left",std::to_string(std::clamp((offset.x+size.x/2)/density-width/2,12.f,std::max(12.f,w-width-12)))+"dp");
         context_->Update();

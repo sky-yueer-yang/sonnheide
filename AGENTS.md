@@ -1,5 +1,10 @@
 # Sonnheide engineering constraints
 
+最新追加：用户要求重新生成，分辨率保留但物件外缘、结构线和刻纹必须粗重；鲜艳色保持饱和且稍暗，禁止大面积发白或明亮浅黄。图标采用至少两逻辑像素深墨外缘及厚结构刻纹；实体UI使用3dp暗材质边与3dp厚度。重要颜色由登记原色派生darkgold/warmred，白色只作可读字与有限材质亮点。SonnOriginalIcons9及本批实际开发GPU验收通过：ALL/CTest3/3、71,101核心检查、ASan/UBSan、66原生操作/32读回帧，九材质实际上传。证据见docs/planning/PHYSICAL_PIXEL_DELIVERY.md/json；Windows GPU/Steam实机仍待验。上一轮未发布的薄边图案不作最终素材。
+
+最新覆盖：2026-10-10 / ADR0023。用户确定所有UI为真实实物，高分辨率完全像素风、背景深色、物件饱满高饱和。深裂纹大理石工具台/窗口、搭接石牌、珐琅/黄铜动作、黑曜石槽、暗木/皮革/羊皮纸/铁牌；取消ADR0022全图标白轮廓和统一厚框默认。41原创48²像素物件、透明SVG与96/192PNG同源；9原创512²材质纹理，最近点采样、缓存UV分段几何。常用执行字24dp，按真实三语字宽排版，禁止大牌面小内容。完整生产UI一起交付，不只首页。空白创建、八分区、微地表、事务和存载不变量沿ADR0022/0021。见docs/decisions/0023-physical-pixel-interface.md与docs/design/FRONTEND_ART_DIRECTION.md；本批验收以docs/planning/PHYSICAL_PIXEL_DELIVERY.md真实结果为准。
+
+历史ADR0022（视觉已由ADR0023覆盖；空白创建与世界规格继续有效）：
 最新覆盖：2026-10-10 / ADR0022。用户移除世界地图/地球选区；新建仅空白平土或全海，创建窗正中有界可滚动。生产启动/runtime/便携包不加载或携带GSHHG，来源与核心历史回归在测试资源保留。所有框深色半透明；UI主色蓝白红黄，偏青深蓝背景，边缘深色表现厚度、饱满平面彩图标；重要红/黄字与图标使用全周均匀纯白描边，禁止白色斜面/定向高光。中文实际方向加粗保字腔。八分区为顶窄底宽、开放底口、搭接栏上沿的低矮阶梯梯形页签，点击后栏内仅该分区工具；未实现工具明确禁用而非假成功。保留ADR0021的2m管理格/31.25mm独立微地表、五档尺寸、共面soil/sand/水面及完整事务/存载不变量。旧Earth创建与旧视觉仅历史，不覆盖本条。见docs/decisions/0022-blank-world-and-heavy-arcade-ui.md；当前批次开发验收已通过，见 docs/planning/HEAVY_ARCADE_DELIVERY.md；Windows GPU/Steam实机仍待验。
 
 历史ADR0021：本轮用户取消所有此前前端规范，改为参考WorldBox的紧凑双层工具栏、深色半透明像素窗口、地图创建尺寸选择与连续框选；不再执行旧颜色、边框、图标尺寸、主页位置限制。工程转ADR0021：2m管理/占地格与独立64²微地表（31.25mm）分离，RLE均匀区＋稀疏压缩微片；新soil/sand顶面与统一水面均0m，水深/海床独立，湿干由真实kind/微覆盖决定。五档512m至8.192km、默认2.048km，长宽独立；创建/预算/保存/碰撞/拾取/渲染同源，不能以视觉噪声或缩小贴图代替细几何。部分格填海只补水面微片，保已有陆地完整kind/theme/revision。本批开发机统一验收通过，见docs/planning/LARGE_WORLD_MICRO_SURFACE_DELIVERY.md；Windows GPU/Steam实机仍待验。旧250mm/252m口径仅历史。

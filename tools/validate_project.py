@@ -21,25 +21,10 @@ def main():
     # Validate actual native pixel geometry and admitted source files. User
     # appearance preferences belong to the current art direction, not hard
     # coded bans from superseded UI designs.
-    icons=json.loads((ROOT/'assets/manifests/original_ui_icons.json').read_text(encoding="utf-8"))
-    check(icons['logical_grid']==32 and icons['scaling']=='nearest_integer' and icons['alpha']=='binary','Icons must be genuine crisp pixel art')
-    check(re.fullmatch(r'#[0-9a-fA-F]{6}',icons['yellow_base']) is not None,'Declared icon yellow base must be an RGB colour')
-    for item in icons['outputs']:
-        p=ROOT/item['path'];check(p.is_file(),'Missing icon '+str(p));check(hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256'],'Changed icon '+str(p))
-        if item['format']=='png':
-            body=p.read_bytes();check(body[:8]==b'\x89PNG\r\n\x1a\n','Icon PNG signature')
-            width,height,depth,colour,_,_,interlace=struct.unpack('>IIBBBBB',body[16:29]);check(width==height==item['pixels'] and depth==8 and colour==6 and interlace==0,'Icon pixel format')
-            compressed=b'';offset=8
-            while offset<len(body):
-                length=struct.unpack('>I',body[offset:offset+4])[0]
-                if body[offset+4:offset+8]==b'IDAT':compressed+=body[offset+8:offset+8+length]
-                offset+=length+12
-            raw=zlib.decompress(compressed);stride=width*4+1;scale=width//icons['logical_grid']
-            check(len(raw)==height*stride and all(raw[y*stride]==0 for y in range(height)),'Icon raster scanlines')
-            check(all(raw[y*stride+1+x*4+3] in (0,255) for y in range(height) for x in range(width)),'Antialiased icon alpha forbidden')
-            check(all(raw[y*stride+1+x*4:y*stride+5+x*4]==raw[(y//scale*scale)*stride+1+(x//scale*scale)*4:(y//scale*scale)*stride+5+(x//scale*scale)*4] for y in range(height) for x in range(width)),'Icon pixels must replicate exact logical cells')
-    check('pixel_decorator.cpp' in (ROOT/'CMakeLists.txt').read_text(encoding="utf-8"),'Native pixel silhouettes must be linked')
-    check('decorator: pixel(' in css,'Actual native pixel geometry missing')
+    from validate_ui_artwork import validate as validate_artwork
+    validate_artwork()
+    check('pixel_decorator.cpp' in (ROOT/'CMakeLists.txt').read_text(encoding='utf-8'),'Native material geometry must be linked')
+    check('decorator: physical-material(' in css and 'decorator: physical-tab(' in css,'Actual native physical UI missing')
     check('Sonn Arcade' in css and 'Cinzel' not in css and 'Noto Serif' not in css,'Entire interface must use the actual arcade pixel face')
     font=json.loads((ROOT/'assets/manifests/arcade_fonts.json').read_text(encoding="utf-8"))
     packed=(ROOT/font['project_path']).read_bytes();check(hashlib.sha256(packed).hexdigest()==font['compressed_sha256'],'Pixel font packed source hash')

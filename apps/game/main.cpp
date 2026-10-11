@@ -59,7 +59,7 @@ class App {
  sonn::Bytes arcade_font_;
  client::Client client_;
  std::unique_ptr<ui::Ui> ui_;
- bool smoke_=false,smoke_creation_captured_=false,smoke_sea_captured_=false,smoke_land_options_open_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
+ bool smoke_=false,smoke_creation_captured_=false,smoke_sea_captured_=false,smoke_land_options_open_=false,smoke_load_captured_=false; int smoke_stage_=0,smoke_camera_stage_=0,smoke_menu_phase_=0,smoke_material_phase_=0;double smoke_menu_live_seconds_=0,smoke_menu_frozen_seconds_=0; Clock::time_point smoke_start_=Clock::now();
  client::Camera smoke_camera_before_{};
  sonn::Hash smoke_camera_world_{},smoke_large_surface_{};
  fs::path evidence_;
@@ -115,6 +115,7 @@ public:
    sonn::Json::Array steps;for(auto& x:completed_actions_)steps.emplace_back(x);steps.emplace_back("exit-durable-readback");
    std::ofstream report(evidence_/"native-flow.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"actions",steps},{"renderer",client_.renderer_name()},{"world_hash",sonn::hex(durable->deterministic_hash())},{"world",durable->query()},{"status","pass"}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Acceptance report could not be written");
   }
+  if(smoke_){std::ofstream material_gpu(evidence_/"physical-ui-gpu.json");material_gpu<<client_.gpu_parameters_json();material_gpu.flush();if(!material_gpu)throw sonn::Error("SMOKE_REPORT","Physical UI GPU report could not be written");}
   persist_settings();return 0;
  }
 private:
@@ -289,7 +290,17 @@ private:
    smoke_large_surface_=t.surface_hash();
    std::ofstream report(evidence_/"large-world.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","created"},{"core_width_cells",4096},{"core_height_cells",4096},{"physical_width_mm",8192000},{"physical_height_mm",8192000},{"management_cell_mm",t.cell_mm},{"micro_side",t.micro_divisions()},{"micro_size_um",31250},{"actual_geometry_bytes",static_cast<std::int64_t>(t.storage_bytes())},{"geometry_budget_bytes",static_cast<std::int64_t>(t.storage_budget_bytes)},{"surface_hash",sonn::hex(smoke_large_surface_)},{"zero_plane_land_pick_mm",t.height_for(sonn::TerrainKind::Soil)}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Largest world report write failed");
    client_.camera().yaw_deg=155;client_.camera().pitch_deg=18;client_.camera().distance_m=80;ui_->activate("tab-world");step("native-camera-pick-and-near-light");}break;
-  case 5:client_.request_screenshot(evidence_/"blank-oblique");step("oblique-gpu");break;
+  case 5:{
+   static constexpr const char* sections[]={"observe","terrain","life","civilization","construction","economy","world","settings"};
+   if(smoke_material_phase_<16){const auto section=sections[smoke_material_phase_/2];
+    if(smoke_material_phase_%2==0)ui_->activate(std::string("tab-")+section);
+    else {client_.request_screenshot(evidence_/(std::string("toolbar-")+section));completed_actions_.push_back(std::string("physical-toolbar-")+section);}
+    ++smoke_material_phase_;frame_count=0;stage_time=Clock::now();break;}
+   if(smoke_material_phase_==16){ui_->activate("tab-observe");ui_->activate("camera-help");++smoke_material_phase_;frame_count=0;break;}
+   if(smoke_material_phase_==17){client_.request_screenshot(evidence_/"physical-help");completed_actions_.push_back("physical-help-gpu");++smoke_material_phase_;frame_count=0;break;}
+   if(smoke_material_phase_==18){ui_->activate("help-close");ui_->activate("tab-world");++smoke_material_phase_;frame_count=0;break;}
+   client_.request_screenshot(evidence_/"blank-oblique");step("oblique-gpu");break;
+  }
   case 6:ui_->activate("age-darkness");step("set-darkness");break;
   case 7:client_.request_screenshot(evidence_/"darkness");step("dark-gpu");break;
   case 8:ui_->activate("save");ui_->activate("return-menu");step("save-return");break;
@@ -343,7 +354,9 @@ private:
    std::ofstream report(evidence_/"error-layer.json");report<<sonn::canonical_json(sonn::Json(sonn::Json::Object{{"status","pass"},{"screen","creation"},{"topmost_action_hit",true},{"native_pointer_acknowledged",true},{"path","SDL_PushEvent -> App routing -> RmlUi pointer hit -> error dismiss"}}));report.flush();if(!report)throw sonn::Error("SMOKE_REPORT","Modal layer report write failed");
    ui_->activate("cancel-create");step("cancel-invalid-draft");break;}
   case 47:if(view_.screen==ui::Screen::World){act({ui::ActionKind::OpenLoad});act({ui::ActionKind::OpenLoad});if(load_origin_!=ui::Screen::World)throw sonn::Error("SMOKE_LOAD_ORIGIN","Duplicate load lost its return destination");step("selected-load-open-twice");}break;
-  case 48:if(view_.screen==ui::Screen::Load&&!view_.saves.empty()){ui_->activate("save-entry-0");step("selected-checkpoint");}break;
+  case 48:if(view_.screen==ui::Screen::Load&&!view_.saves.empty()){
+   if(!smoke_load_captured_){client_.request_screenshot(evidence_/"physical-save-ledger");smoke_load_captured_=true;completed_actions_.push_back("physical-save-ledger-gpu");frame_count=0;break;}
+   ui_->activate("save-entry-0");step("selected-checkpoint");}break;
   case 49:ui_->activate("load-selected");step("selected-load");break;
   case 50:if(view_.screen==ui::Screen::World){client_.request_screenshot(evidence_/"loaded-world");act({ui::ActionKind::SaveWorld});step("loaded-world-gpu");}break;
   case 51:ui_->activate("world-info");step("exit-rename-open");break;
@@ -355,6 +368,7 @@ private:
 };
 static int app_main(int argc,char** argv){try{fs::path resources=utf8_file(SONN_RESOURCE_ROOT);if(const char* base=SDL_GetBasePath()){auto packaged=utf8_file(base)/"runtime";if(fs::is_regular_file(packaged/"definitions.json"))resources=std::move(packaged);}fs::path saves;fs::path evidence=".build/evidence/native";bool smoke=false;
  for(int i=1;i<argc;i++){std::string a=argv[i];if(a=="--smoke-test")smoke=true;else if(a=="--resources"&&i+1<argc)resources=utf8_file(argv[++i]);else if(a=="--saves"&&i+1<argc)saves=utf8_file(argv[++i]);else if(a=="--evidence"&&i+1<argc)evidence=utf8_file(argv[++i]);else throw sonn::Error("ARGUMENT","Unknown argument: "+a);}
+ resources=fs::absolute(resources).lexically_normal();
  if(saves.empty()){char* p=SDL_GetPrefPath("Sonnreich","Sonnheide");if(!p)throw sonn::Error("SAVE_ROOT",SDL_GetError());saves=utf8_file(p);SDL_free(p);}App app(resources,saves,smoke,evidence);return app.run();
 }catch(const std::exception& e){std::cerr<<"Sonnheide: "<<e.what()<<'\n';return 1;}}
 

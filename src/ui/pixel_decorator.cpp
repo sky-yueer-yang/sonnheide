@@ -3,6 +3,7 @@
 #include <RmlUi/Core/DecoratorInstancer.h>
 #include <RmlUi/Core/ComputedValues.h>
 #include <RmlUi/Core/Element.h>
+#include <RmlUi/Core/ElementUtilities.h>
 #include <RmlUi/Core/Factory.h>
 #include <RmlUi/Core/Geometry.h>
 #include <RmlUi/Core/FontEffect.h>
@@ -110,6 +111,73 @@ public:
 private:Rml::PropertyId fill_,outline_,shade_,edge_,corner_,depth_,gap_start_,gap_width_;
 };
 
+struct MaterialGeometry {
+    explicit MaterialGeometry(Rml::Element* element):face(element),neck(element) {}
+    Rml::Geometry face,neck;
+};
+class MaterialDecorator final:public Rml::Decorator {
+public:
+    MaterialDecorator(int material,Rml::Colourb tint,Rml::Property edge,Rml::Property corner,Rml::Property depth,Rml::Property gap_start,Rml::Property gap_width,bool tab):tint_(tint),edge_(std::move(edge)),corner_(std::move(corner)),depth_(std::move(depth)),gap_start_(std::move(gap_start)),gap_width_(std::move(gap_width)),tab_(tab) {
+        const auto& definitions=physical_material_definitions();
+        // These sources are deliberately relative to the admitted runtime
+        // resource root. Inline dock sizing has no RCSS PropertySource path.
+        Rml::Texture texture;texture.Set(definitions[material].texture_source);
+        face_texture_=AddTexture(texture);
+        texture.Set(definitions[0].texture_source);neck_texture_=AddTexture(texture);
+    }
+    Rml::DecoratorDataHandle GenerateElementData(Rml::Element* element) const override {
+        const auto size=element->GetBox().GetSize(Rml::Box::PADDING);
+        const auto value=[&](const Rml::Property& property){return element->ResolveNumericProperty(&property,0);};
+        const float scale=Rml::ElementUtilities::GetDensityIndependentPixelRatio(element);
+        auto tint=tint_;tint.alpha=static_cast<Rml::byte>(tint.alpha*element->GetComputedValues().opacity());
+        const float depth=value(depth_);
+        auto mesh=pixel_material_mesh(std::round(size.x),std::round(size.y),scale,value(edge_),value(corner_),depth,tint,tab_,value(gap_start_),value(gap_width_));
+        auto* geometry=new MaterialGeometry(element);
+        geometry->face.SetTexture(GetTexture(face_texture_));geometry->neck.SetTexture(GetTexture(neck_texture_));
+        const float neck_top=std::round(size.y)-std::clamp(std::round(depth),0.f,std::max(0.f,std::round(size.y)-1));
+        // Tabs are a carved face attached to a continuous marble foot. The
+        // foot uses the dock's material even when the selected face is brass.
+        for(std::size_t i=0;i+3<mesh.vertices.size();i+=4) {
+            auto& part=tab_ && mesh.vertices[i].position.y>=neck_top?geometry->neck:geometry->face;
+            const int offset=static_cast<int>(part.GetVertices().size());
+            for(std::size_t v=0;v<4;++v)part.GetVertices().push_back(mesh.vertices[i+v]);
+            for(int index:{0,1,2,0,2,3})part.GetIndices().push_back(offset+index);
+        }
+        return reinterpret_cast<Rml::DecoratorDataHandle>(geometry);
+    }
+    void ReleaseElementData(Rml::DecoratorDataHandle data) const override {delete reinterpret_cast<MaterialGeometry*>(data);}
+    void RenderElement(Rml::Element* element,Rml::DecoratorDataHandle data) const override {
+        if(auto* geometry=reinterpret_cast<MaterialGeometry*>(data)) {
+            const auto offset=element->GetAbsoluteOffset(Rml::Box::PADDING).Round();
+            if(geometry->face)geometry->face.Render(offset);
+            if(geometry->neck)geometry->neck.Render(offset);
+        }
+    }
+private:
+    Rml::Colourb tint_;Rml::Property edge_,corner_,depth_,gap_start_,gap_width_;
+    bool tab_;int face_texture_=-1,neck_texture_=-1;
+};
+class MaterialInstancer final:public Rml::DecoratorInstancer {
+public:
+    explicit MaterialInstancer(bool tab):tab_(tab) {
+        material_=RegisterProperty("material","marble").AddParser("keyword","marble, brass, crimson, obsidian, wood, parchment, leather, iron, enamel").GetId();
+        tint_=RegisterProperty("tint","#ffffffff").AddParser("color").GetId();
+        edge_=RegisterProperty("edge","3dp").AddParser("length").GetId();
+        corner_=RegisterProperty("corner","2dp").AddParser("length").GetId();
+        depth_=RegisterProperty("depth",tab?"6dp":"3dp").AddParser("length").GetId();
+        gap_start_=RegisterProperty("gap-start","0dp").AddParser("length").GetId();
+        gap_width_=RegisterProperty("gap-width","0dp").AddParser("length").GetId();
+        RegisterShorthand("decorator","material, tint, edge, corner, depth, gap-start, gap-width",Rml::ShorthandType::FallThrough);
+    }
+    Rml::SharedPtr<Rml::Decorator> InstanceDecorator(const Rml::String&,const Rml::PropertyDictionary& properties,const Rml::DecoratorInstancerInterface&) override {
+        const int material=properties.GetProperty(material_)->Get<int>();
+        if(material<0 || material>=static_cast<int>(physical_material_definitions().size()))return nullptr;
+        return Rml::MakeShared<MaterialDecorator>(material,properties.GetProperty(tint_)->Get<Rml::Colourb>(),*properties.GetProperty(edge_),*properties.GetProperty(corner_),*properties.GetProperty(depth_),*properties.GetProperty(gap_start_),*properties.GetProperty(gap_width_),tab_);
+    }
+private:
+    bool tab_;Rml::PropertyId material_,tint_,edge_,corner_,depth_,gap_start_,gap_width_;
+};
+
 class PixelOutline final:public Rml::FontEffect {
 public:
     explicit PixelOutline(int radius,bool pigment=false):radius_(radius),pigment_(pigment) { SetLayer(Layer::Back); }
@@ -204,6 +272,58 @@ PixelMesh pixel_tab_mesh(float width,float height,float edge,float shoulder,floa
     }
     return mesh;
 }
+const std::array<PhysicalMaterialDefinition,9>& physical_material_definitions() {
+    static const std::array<PhysicalMaterialDefinition,9> definitions={{{"marble","generated/ui/materials/marble.png",512,512},{"brass","generated/ui/materials/brass.png",512,512},{"crimson","generated/ui/materials/crimson.png",512,512},{"obsidian","generated/ui/materials/obsidian.png",512,512},{"wood","generated/ui/materials/wood.png",512,512},{"parchment","generated/ui/materials/parchment.png",512,512},{"leather","generated/ui/materials/leather.png",512,512},{"iron","generated/ui/materials/iron.png",512,512},{"enamel","generated/ui/materials/enamel.png",512,512}}};
+    return definitions;
+}
+PixelMesh pixel_material_mesh(float width,float height,float texel_scale,float edge,float corner,float depth,Rml::Colourb tint,bool tab,float gap_start,float gap_width) {
+    PixelMesh result;
+    if(!std::isfinite(width)||!std::isfinite(height)||!std::isfinite(texel_scale)||width<=0||height<=0||texel_scale<=0||width>32768||height>32768)return result;
+    width=std::round(width);height=std::round(height);
+    if(width<=0||height<=0)return result;
+    const auto finite=[](float value){return std::isfinite(value)?value:0.f;};
+    edge=finite(edge);corner=finite(corner);depth=finite(depth);gap_start=finite(gap_start);gap_width=finite(gap_width);
+    const auto dim=[&](int pigment){return Rml::Colourb(static_cast<Rml::byte>(tint.red*pigment/255),static_cast<Rml::byte>(tint.green*pigment/255),static_cast<Rml::byte>(tint.blue*pigment/255),tint.alpha);};
+    PixelMesh regions;
+    if(tab) {
+        const float neck=std::clamp(std::round(depth),0.f,std::max(0.f,height-1));
+        regions=pixel_tab_mesh(width,height-neck,edge,corner,0,tint,dim(105),tint);
+        quad(regions,0,height-neck,width,neck,tint);
+    } else regions=pixel_rim_mesh(width,height,edge,corner,depth,tint,dim(105),dim(152));
+    const float tile_span=std::max(1.f,std::round(512.f*texel_scale));
+    const float gap_left=std::clamp(std::round(gap_start),0.f,width),gap_right=std::clamp(std::round(gap_start+std::max(0.f,gap_width)),0.f,width);
+    const float gap_bottom=std::min(height,std::max(1.f,std::round(6.f*texel_scale)));
+    const auto tiled=[&](float x,float y,float w,float h,Rml::Colourb color) {
+        if(w<=0||h<=0||color.alpha==0)return;
+        const float right=x+w,bottom=y+h;
+        for(float ty=y;ty<bottom;) {
+            const float origin_y=std::floor(ty/tile_span)*tile_span,end_y=std::min(bottom,origin_y+tile_span);
+            for(float tx=x;tx<right;) {
+                const float origin_x=std::floor(tx/tile_span)*tile_span,end_x=std::min(right,origin_x+tile_span);
+                const int n=static_cast<int>(result.vertices.size());
+                const Rml::Vector2f uv0{(tx-origin_x)/tile_span,(ty-origin_y)/tile_span},uv1{(end_x-origin_x)/tile_span,(end_y-origin_y)/tile_span};
+                result.vertices.push_back({{tx,ty},color,uv0});result.vertices.push_back({{end_x,ty},color,{uv1.x,uv0.y}});
+                result.vertices.push_back({{end_x,end_y},color,uv1});result.vertices.push_back({{tx,end_y},color,{uv0.x,uv1.y}});
+                for(int index:{0,1,2,0,2,3})result.indices.push_back(n+index);
+                tx=end_x;
+            }
+            ty=end_y;
+        }
+    };
+    for(std::size_t i=0;i+3<regions.vertices.size();i+=4) {
+        const auto& a=regions.vertices[i];const auto& b=regions.vertices[i+2];
+        const float x=a.position.x,y=a.position.y,right=b.position.x,bottom=b.position.y;
+        if(tab||gap_right<=gap_left||y>=gap_bottom||right<=gap_left||x>=gap_right)tiled(x,y,right-x,bottom-y,a.colour);
+        else {
+            const float clipped_bottom=std::min(bottom,gap_bottom);
+            tiled(x,y,std::max(0.f,std::min(right,gap_left)-x),clipped_bottom-y,a.colour);
+            const float clipped_right=std::max(x,gap_right);
+            tiled(clipped_right,y,std::max(0.f,right-clipped_right),clipped_bottom-y,a.colour);
+            if(bottom>gap_bottom)tiled(x,gap_bottom,right-x,bottom-gap_bottom,a.colour);
+        }
+    }
+    return result;
+}
 void pixel_glyph_dilate(Rml::byte* destination,Rml::Vector2i size,int stride,const Rml::FontGlyph& glyph,int radius) {
     if(!destination || size.x<=0 || size.y<=0 || stride<size.x*4 || radius<1 || radius>16) return;
     const bool rgba=glyph.color_format==Rml::ColorFormat::RGBA8;
@@ -245,11 +365,14 @@ void register_pixel_decorator() {
     static PixelInstancer instancer;
     static PixelOutlineInstancer outline;
     static RimInstancer rim;
+    static MaterialInstancer material(false),material_tab(true);
     Rml::Factory::RegisterDecoratorInstancer("pixel",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-down",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-up",&instancer);
     Rml::Factory::RegisterDecoratorInstancer("pixel-rim",&rim);
     Rml::Factory::RegisterDecoratorInstancer("pixel-tab",&rim);
+    Rml::Factory::RegisterDecoratorInstancer("physical-material",&material);
+    Rml::Factory::RegisterDecoratorInstancer("physical-tab",&material_tab);
     Rml::Factory::RegisterFontEffectInstancer("pixel-outline",&outline);
     Rml::Factory::RegisterFontEffectInstancer("pixel-bold",&outline);
 }

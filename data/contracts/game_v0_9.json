@@ -42,7 +42,7 @@
     "python_tools": "3.9+_standard_library_default",
     "current_runtime_exists": true,
     "implemented_slice": "S00_S01_blank_creation_native_pixel_foundation_and_arcade_UI",
-    "verification_record": "docs/planning/HEAVY_ARCADE_DELIVERY.md"
+    "verification_record": "docs/planning/PHYSICAL_PIXEL_DELIVERY.md"
   },
   "scope": {
     "world_creation": [
@@ -335,5 +335,5 @@
     "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
     "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
   },
-  "latest_frontend_decision": "docs/decisions/0022-blank-world-and-heavy-arcade-ui.md"
+  "latest_frontend_decision": "docs/decisions/0023-physical-pixel-interface.md"
 }
