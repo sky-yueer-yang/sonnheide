@@ -1,0 +1,274 @@
+{
+  "format": "SonnOriginalUiMaterials1",
+  "author": "Sonnheide project",
+  "license": "Original project artwork; no public license granted",
+  "recipe": "tools/generate_ui_materials.py",
+  "recipe_sha256": "3a17aac8e6372b3cc310b52f1029f69c1a6e5a52303a606c7e458ee4d364f462",
+  "logical_texel_dp": 1,
+  "sampling": "nearest",
+  "alpha": "opaque",
+  "default_dark_rim_dp": 3,
+  "default_dark_depth_dp": 3,
+  "color_direction": "very dark neutral slightly cool grey stone; other eight dark saturated pigments unchanged",
+  "runtime": "cached textured quads; fixed logical texel scale; no per-texel runtime geometry",
+  "outputs": [
+    {
+      "name": "rock",
+      "path": "assets/generated/ui/materials/rock.png",
+      "sha256": "599d9a08cca99c59dbb3e6165c514a6596302a4b689254cf3a2025428b2c9e0e",
+      "width": 512,
+      "height": 512,
+      "seed": 1397706240,
+      "palette": [
+        "#24272a",
+        "#282b2e",
+        "#2c2f32",
+        "#303336",
+        "#34373a",
+        "#383b3e"
+      ],
+      "histogram": {
+        "#303336": 27901,
+        "#2c2f32": 225599,
+        "#282b2e": 8276,
+        "#34373a": 368
+      },
+      "surface_recipe": {
+        "algorithm": "continuous deep grey stone slab face",
+        "ground_pigments": [
+          "#2c2f32",
+          "#303336"
+        ],
+        "tone": "very dark neutral slightly cool grey",
+        "detail": "restrained fine mineral grain and very low-contrast tone variation",
+        "periodicity": "toroidal tone fields; pixel grain has no lines or seams",
+        "antialiasing": false,
+        "interior_cracks": false,
+        "block_partition": false,
+        "horizontal_stripes": false,
+        "edge_damage_owner": "actual control boundary geometry"
+      },
+      "dark_stone_face": {
+        "luminance_basis": "encoded RGB weighted 0.2126R + 0.7152G + 0.0722B",
+        "mean_rgb": [
+          44.310684,
+          47.310684,
+          50.310684
+        ],
+        "luminance_mean": 46.889484,
+        "luminance_standard_deviation": 1.483707,
+        "luminance_minimum": 42.5788,
+        "luminance_maximum": 54.5788,
+        "mean_saturation": 0.11936,
+        "horizontal_neighbor_delta_mean": 0.499115,
+        "vertical_neighbor_delta_mean": 0.50116,
+        "neighbor_delta_p95": 4.0,
+        "neighbor_delta_over_12_fraction": 1.3e-05,
+        "texels_below_luminance_20": 0,
+        "texels_above_luminance_80": 0
+      }
+    },
+    {
+      "name": "brass",
+      "path": "assets/generated/ui/materials/brass.png",
+      "sha256": "b02247ab5d379dc2d8dfb86210cc4b2f479f481d9d7a31c32dd6a487d4f62db3",
+      "width": 512,
+      "height": 512,
+      "seed": 1397706377,
+      "palette": [
+        "#1c1004",
+        "#281a06",
+        "#3b2407",
+        "#503109",
+        "#6a400b",
+        "#824d0e",
+        "#9a5c11",
+        "#b07417",
+        "#c68b25",
+        "#d69b31",
+        "#e4ab43"
+      ],
+      "histogram": {
+        "#824d0e": 27823,
+        "#6a400b": 154276,
+        "#503109": 76860,
+        "#3b2407": 3025,
+        "#9a5c11": 160
+      }
+    },
+    {
+      "name": "crimson",
+      "path": "assets/generated/ui/materials/crimson.png",
+      "sha256": "3e6e567ba613151194555eb28640aaf4137cf61b933c14a2d6b004e7284cdd86",
+      "width": 512,
+      "height": 512,
+      "seed": 1397706514,
+      "palette": [
+        "#220605",
+        "#330c08",
+        "#45120b",
+        "#5b1a0f",
+        "#712312",
+        "#8b2b17",
+        "#a4361c",
+        "#ba4825",
+        "#ce5a2e",
+        "#dc723b"
+      ],
+      "histogram": {
+        "#5b1a0f": 147420,
+        "#45120b": 2384,
+        "#712312": 111802,
+        "#8b2b17": 538
+      }
+    },
+    {
+      "name": "obsidian",
+      "path": "assets/generated/ui/materials/obsidian.png",
+      "sha256": "67a65154afcb050364389bec7726955b4142ecc4045bc9d0b16f53ebe5f4b01c",
+      "width": 512,
+      "height": 512,
+      "seed": 1397706651,
+      "palette": [
+        "#030507",
+        "#050a0e",
+        "#080f16",
+        "#0b1620",
+        "#0f1d29",
+        "#152635",
+        "#203243",
+        "#304458"
+      ],
+      "histogram": {
+        "#030507": 3349,
+        "#050a0e": 126812,
+        "#080f16": 131454,
+        "#0b1620": 529
+      }
+    },
+    {
+      "name": "wood",
+      "path": "assets/generated/ui/materials/wood.png",
+      "sha256": "68109c2e811f136dfb99e786d4facce07eb9f6e90c6c016abb6a06cddc960f1b",
+      "width": 512,
+      "height": 512,
+      "seed": 1397706788,
+      "palette": [
+        "#100905",
+        "#1a1009",
+        "#24180d",
+        "#302010",
+        "#3e2c15",
+        "#4e391c",
+        "#624722",
+        "#795930",
+        "#927143"
+      ],
+      "histogram": {
+        "#1a1009": 9027,
+        "#24180d": 96187,
+        "#3e2c15": 20812,
+        "#302010": 136118
+      }
+    },
+    {
+      "name": "parchment",
+      "path": "assets/generated/ui/materials/parchment.png",
+      "sha256": "ac8accc6b77018fefc46668808a5ca20baf0064dde70fef54f3ef0c03a6852b5",
+      "width": 512,
+      "height": 512,
+      "seed": 1397706925,
+      "palette": [
+        "#25190d",
+        "#302211",
+        "#3d2b14",
+        "#4b361a",
+        "#5a4120",
+        "#6a4e28",
+        "#7b5e32",
+        "#8e703e",
+        "#a5854c"
+      ],
+      "histogram": {
+        "#4b361a": 163742,
+        "#5a4120": 90518,
+        "#6a4e28": 1495,
+        "#3d2b14": 6389
+      }
+    },
+    {
+      "name": "leather",
+      "path": "assets/generated/ui/materials/leather.png",
+      "sha256": "a57fa4c79457cd3386824c58f81466c92951ed75efb34391c2901f667bf995e2",
+      "width": 512,
+      "height": 512,
+      "seed": 1397707062,
+      "palette": [
+        "#11090b",
+        "#1d0e10",
+        "#2b1414",
+        "#3b1c18",
+        "#4e2720",
+        "#66372a",
+        "#814b35",
+        "#a06746"
+      ],
+      "histogram": {
+        "#2b1414": 182891,
+        "#1d0e10": 43669,
+        "#3b1c18": 35379,
+        "#4e2720": 205
+      }
+    },
+    {
+      "name": "iron",
+      "path": "assets/generated/ui/materials/iron.png",
+      "sha256": "63aa32576f358693d778bf4fa60058c2ea65f78c14fc9659540b17490ceb1ebb",
+      "width": 512,
+      "height": 512,
+      "seed": 1397707199,
+      "palette": [
+        "#090e12",
+        "#111a21",
+        "#1a2630",
+        "#27333d",
+        "#36434b",
+        "#49565c",
+        "#606d70",
+        "#7a8584"
+      ],
+      "histogram": {
+        "#1a2630": 114651,
+        "#27333d": 143768,
+        "#36434b": 3320,
+        "#49565c": 328,
+        "#111a21": 77
+      }
+    },
+    {
+      "name": "enamel",
+      "path": "assets/generated/ui/materials/enamel.png",
+      "sha256": "354f0db6db41a41134a89509f182be07bb3778743731e575c0f849b24c6452cb",
+      "width": 512,
+      "height": 512,
+      "seed": 1397707336,
+      "palette": [
+        "#040b18",
+        "#06172c",
+        "#08223d",
+        "#0b2f52",
+        "#123f6a",
+        "#195380",
+        "#21659a",
+        "#2c78ae",
+        "#4090c2"
+      ],
+      "histogram": {
+        "#195380": 4200,
+        "#123f6a": 184401,
+        "#0b2f52": 73417,
+        "#08223d": 126
+      }
+    }
+  ]
+}

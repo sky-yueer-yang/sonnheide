@@ -1,0 +1,3028 @@
+{
+  "schema_version": 1,
+  "content_id": "life_profiles_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "scientific_or_clinical_claim": false,
+  "units": {
+    "health": "health_milli integer 0..100000",
+    "energy": "energy_milli integer game metabolic quantity",
+    "mass": "g",
+    "distance": "mm",
+    "velocity": "mm_per_motion_second",
+    "temperature": "mC",
+    "fatigue": "fatigue_milli",
+    "thermal_deficit": "unpaid_energy_milli per cold/heat separately",
+    "infection": "load_milli",
+    "oxygen": "oxygen_debt_tick",
+    "sleep": "sleep_debt_tick",
+    "Q": 10000
+  },
+  "time": {
+    "ticks_per_motion_second": 20,
+    "ticks_per_game_day": 12000,
+    "ticks_per_calendar_hour": 500,
+    "days_per_year": 360,
+    "physiology_step_max_tick": 20,
+    "integration": "rate*dt+saved remainder divided by denominator; dt raw SimTick, never wall clock; split at actual effect boundaries"
+  },
+  "species_profiles": [
+    {
+      "species_id": "human",
+      "baseline_health_milli": 60000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 70000,
+      "body_displacement_millilitres": 73500,
+      "body_waterline_mm": 1550,
+      "safe_landing_speed_mm_per_motion_second": 4500,
+      "breathing_medium": "air",
+      "breath_hold_tick": 600,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 120000,
+      "productive_storage_capacity_energy_milli": 600000,
+      "placement_maintenance_energy_milli": 120000,
+      "movement_energy_milli_per_game_m": 100,
+      "work_energy_milli_per_work_unit": 40,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 6,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1000,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 15000,
+      "species_maturity_game_day": 6480,
+      "gestation_game_day": 270,
+      "interbirth_game_day": 360,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 16200000,
+      "gestation_dry_matter_g": 5833,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "swim",
+        "hand_tools"
+      ],
+      "default_sleep_hours": 8,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 20,
+      "body_collision_height_mm": 2100,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 40000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "rabbit",
+      "baseline_health_milli": 24000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 2500,
+      "body_displacement_millilitres": 2650,
+      "body_waterline_mm": 220,
+      "safe_landing_speed_mm_per_motion_second": 7000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 240,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 18000,
+      "productive_storage_capacity_energy_milli": 90000,
+      "placement_maintenance_energy_milli": 18000,
+      "movement_energy_milli_per_game_m": 16,
+      "work_energy_milli_per_work_unit": 5,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 400,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 30,
+      "interbirth_game_day": 45,
+      "litter_size": 3,
+      "gestation_productive_energy_milli": 270000,
+      "gestation_dry_matter_g": 208,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk",
+        "hop"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 125,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 12,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 12,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 2,
+      "body_collision_height_mm": 450,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "cow",
+      "baseline_health_milli": 76000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 500000,
+      "body_displacement_millilitres": 525000,
+      "body_waterline_mm": 1250,
+      "safe_landing_speed_mm_per_motion_second": 3000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 240,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 550000,
+      "productive_storage_capacity_energy_milli": 2750000,
+      "placement_maintenance_energy_milli": 550000,
+      "movement_energy_milli_per_game_m": 450,
+      "work_energy_milli_per_work_unit": 150,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 27,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 44000,
+      "species_maturity_game_day": 720,
+      "gestation_game_day": 280,
+      "interbirth_game_day": 400,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 77000000,
+      "gestation_dry_matter_g": 41666,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [
+        {
+          "output_commodity_id": "milk",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 2000,
+          "productive_energy_cost_milli_per_g": 180,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        }
+      ],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "mouth_tools"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 25000,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 2500,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 2500,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 75,
+      "body_collision_height_mm": 1750,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "sheep",
+      "baseline_health_milli": 48000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 65000,
+      "body_displacement_millilitres": 69000,
+      "body_waterline_mm": 650,
+      "safe_landing_speed_mm_per_motion_second": 4200,
+      "breathing_medium": "air",
+      "breath_hold_tick": 300,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 125000,
+      "productive_storage_capacity_energy_milli": 625000,
+      "placement_maintenance_energy_milli": 125000,
+      "movement_energy_milli_per_game_m": 95,
+      "work_energy_milli_per_work_unit": 31,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 6,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 5000,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 150,
+      "interbirth_game_day": 240,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 9375000,
+      "gestation_dry_matter_g": 5416,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [
+        {
+          "output_commodity_id": "wool",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 50,
+          "productive_energy_cost_milli_per_g": 500,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        },
+        {
+          "output_commodity_id": "milk",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 500,
+          "productive_energy_cost_milli_per_g": 180,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        }
+      ],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 3250,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 325,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 325,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 15,
+      "body_collision_height_mm": 1050,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "goat",
+      "baseline_health_milli": 48000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 60000,
+      "body_displacement_millilitres": 63500,
+      "body_waterline_mm": 650,
+      "safe_landing_speed_mm_per_motion_second": 6500,
+      "breathing_medium": "air",
+      "breath_hold_tick": 300,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 120000,
+      "productive_storage_capacity_energy_milli": 600000,
+      "placement_maintenance_energy_milli": 120000,
+      "movement_energy_milli_per_game_m": 90,
+      "work_energy_milli_per_work_unit": 30,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 6,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 6500,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 150,
+      "interbirth_game_day": 220,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 9000000,
+      "gestation_dry_matter_g": 5000,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [
+        {
+          "output_commodity_id": "milk",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 700,
+          "productive_energy_cost_milli_per_g": 180,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        }
+      ],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "climb"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 3000,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 300,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 300,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 15,
+      "body_collision_height_mm": 1050,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 250,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "deer",
+      "baseline_health_milli": 52000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 110000,
+      "body_displacement_millilitres": 116000,
+      "body_waterline_mm": 900,
+      "safe_landing_speed_mm_per_motion_second": 6000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 300,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 180000,
+      "productive_storage_capacity_energy_milli": 900000,
+      "placement_maintenance_energy_milli": 180000,
+      "movement_energy_milli_per_game_m": 140,
+      "work_energy_milli_per_work_unit": 46,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 9,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 7000,
+      "species_maturity_game_day": 720,
+      "gestation_game_day": 210,
+      "interbirth_game_day": 300,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 18900000,
+      "gestation_dry_matter_g": 9166,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "hop"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 5500,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 550,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 550,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 23,
+      "body_collision_height_mm": 1500,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "horse",
+      "baseline_health_milli": 68000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 450000,
+      "body_displacement_millilitres": 473000,
+      "body_waterline_mm": 1250,
+      "safe_landing_speed_mm_per_motion_second": 4000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 300,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 480000,
+      "productive_storage_capacity_energy_milli": 2400000,
+      "placement_maintenance_energy_milli": 480000,
+      "movement_energy_milli_per_game_m": 380,
+      "work_energy_milli_per_work_unit": 126,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 24,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 25500,
+      "species_maturity_game_day": 1080,
+      "gestation_game_day": 330,
+      "interbirth_game_day": 440,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 79200000,
+      "gestation_dry_matter_g": 37500,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 22500,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 2250,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 2250,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 63,
+      "body_collision_height_mm": 1900,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "dog",
+      "baseline_health_milli": 42000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 22000,
+      "body_displacement_millilitres": 23500,
+      "body_waterline_mm": 430,
+      "safe_landing_speed_mm_per_motion_second": 5000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 480,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 70000,
+      "productive_storage_capacity_energy_milli": 350000,
+      "placement_maintenance_energy_milli": 70000,
+      "movement_energy_milli_per_game_m": 55,
+      "work_energy_milli_per_work_unit": 18,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 3,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 4250,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 65,
+      "interbirth_game_day": 150,
+      "litter_size": 3,
+      "gestation_productive_energy_milli": 2240000,
+      "gestation_dry_matter_g": 1833,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "swim",
+        "mouth_tools"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 1100,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 110,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 110,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 9,
+      "body_collision_height_mm": 850,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "wolf",
+      "baseline_health_milli": 50000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 45000,
+      "body_displacement_millilitres": 47700,
+      "body_waterline_mm": 600,
+      "safe_landing_speed_mm_per_motion_second": 5500,
+      "breathing_medium": "air",
+      "breath_hold_tick": 420,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 105000,
+      "productive_storage_capacity_energy_milli": 525000,
+      "placement_maintenance_energy_milli": 105000,
+      "movement_energy_milli_per_game_m": 80,
+      "work_energy_milli_per_work_unit": 26,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 5,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 5500,
+      "species_maturity_game_day": 720,
+      "gestation_game_day": 65,
+      "interbirth_game_day": 200,
+      "litter_size": 3,
+      "gestation_productive_energy_milli": 3360000,
+      "gestation_dry_matter_g": 3750,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "swim"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 2250,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 225,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 225,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 13,
+      "body_collision_height_mm": 1000,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "fox",
+      "baseline_health_milli": 32000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 8000,
+      "body_displacement_millilitres": 8600,
+      "body_waterline_mm": 320,
+      "safe_landing_speed_mm_per_motion_second": 5800,
+      "breathing_medium": "air",
+      "breath_hold_tick": 300,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 38000,
+      "productive_storage_capacity_energy_milli": 190000,
+      "placement_maintenance_energy_milli": 38000,
+      "movement_energy_milli_per_game_m": 30,
+      "work_energy_milli_per_work_unit": 10,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 1750,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 55,
+      "interbirth_game_day": 180,
+      "litter_size": 2,
+      "gestation_productive_energy_milli": 1026000,
+      "gestation_dry_matter_g": 666,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 400,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 40,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 40,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 5,
+      "body_collision_height_mm": 550,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "bear",
+      "baseline_health_milli": 74000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 260000,
+      "body_displacement_millilitres": 273000,
+      "body_waterline_mm": 1000,
+      "safe_landing_speed_mm_per_motion_second": 4300,
+      "breathing_medium": "air",
+      "breath_hold_tick": 480,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 350000,
+      "productive_storage_capacity_energy_milli": 1750000,
+      "placement_maintenance_energy_milli": 350000,
+      "movement_energy_milli_per_game_m": 300,
+      "work_energy_milli_per_work_unit": 100,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 17,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 40000,
+      "species_maturity_game_day": 1080,
+      "gestation_game_day": 220,
+      "interbirth_game_day": 700,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 38500000,
+      "gestation_dry_matter_g": 21666,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "swim",
+        "mouth_tools"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 13000,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 1300,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 1300,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 50,
+      "body_collision_height_mm": 1700,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "boar",
+      "baseline_health_milli": 60000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 110000,
+      "body_displacement_millilitres": 116000,
+      "body_waterline_mm": 650,
+      "safe_landing_speed_mm_per_motion_second": 4000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 360,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 190000,
+      "productive_storage_capacity_energy_milli": 950000,
+      "placement_maintenance_energy_milli": 190000,
+      "movement_energy_milli_per_game_m": 150,
+      "work_energy_milli_per_work_unit": 50,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 9,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 3500,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 13000,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 115,
+      "interbirth_game_day": 220,
+      "litter_size": 3,
+      "gestation_productive_energy_milli": 10830000,
+      "gestation_dry_matter_g": 9166,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "swim"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 5500,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 550,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 550,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 25,
+      "body_collision_height_mm": 1000,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "chicken",
+      "baseline_health_milli": 20000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 2500,
+      "body_displacement_millilitres": 2700,
+      "body_waterline_mm": 250,
+      "safe_landing_speed_mm_per_motion_second": 4800,
+      "breathing_medium": "air",
+      "breath_hold_tick": 180,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 18000,
+      "productive_storage_capacity_energy_milli": 90000,
+      "placement_maintenance_energy_milli": 18000,
+      "movement_energy_milli_per_game_m": 15,
+      "work_energy_milli_per_work_unit": 5,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1800,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 300,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 21,
+      "interbirth_game_day": 50,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 180000,
+      "gestation_dry_matter_g": 208,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [
+        {
+          "output_commodity_id": "egg",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 80,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        }
+      ],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk",
+        "short_flight",
+        "beak_tools"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 125,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 12,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 12,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 2,
+      "body_collision_height_mm": 450,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "duck",
+      "baseline_health_milli": 22000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 3000,
+      "body_displacement_millilitres": 3450,
+      "body_waterline_mm": 260,
+      "safe_landing_speed_mm_per_motion_second": 5500,
+      "breathing_medium": "air",
+      "breath_hold_tick": 480,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 22000,
+      "productive_storage_capacity_energy_milli": 110000,
+      "placement_maintenance_energy_milli": 22000,
+      "movement_energy_milli_per_game_m": 16,
+      "work_energy_milli_per_work_unit": 5,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1800,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 375,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 28,
+      "interbirth_game_day": 60,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 308000,
+      "gestation_dry_matter_g": 250,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [
+        {
+          "output_commodity_id": "egg",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 100,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        }
+      ],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk",
+        "swim",
+        "fly",
+        "beak_tools"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 150,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 15,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 15,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 2,
+      "body_collision_height_mm": 500,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "eagle",
+      "baseline_health_milli": 28000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 6500,
+      "body_displacement_millilitres": 7150,
+      "body_waterline_mm": 350,
+      "safe_landing_speed_mm_per_motion_second": 7000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 240,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 45000,
+      "productive_storage_capacity_energy_milli": 225000,
+      "placement_maintenance_energy_milli": 45000,
+      "movement_energy_milli_per_game_m": 30,
+      "work_energy_milli_per_work_unit": 10,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 2,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1800,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 1100,
+      "species_maturity_game_day": 1080,
+      "gestation_game_day": 40,
+      "interbirth_game_day": 240,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 900000,
+      "gestation_dry_matter_g": 541,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk",
+        "fly",
+        "beak_tools"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 325,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 32,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 32,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 5,
+      "body_collision_height_mm": 650,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "turtle",
+      "baseline_health_milli": 42000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 12000,
+      "body_displacement_millilitres": 12700,
+      "body_waterline_mm": 160,
+      "safe_landing_speed_mm_per_motion_second": 3000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 1800,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 24000,
+      "productive_storage_capacity_energy_milli": 120000,
+      "placement_maintenance_energy_milli": 24000,
+      "movement_energy_milli_per_game_m": 20,
+      "work_energy_milli_per_work_unit": 6,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1000,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 700,
+      "species_maturity_game_day": 1800,
+      "gestation_game_day": 80,
+      "interbirth_game_day": 240,
+      "litter_size": 2,
+      "gestation_productive_energy_milli": 960000,
+      "gestation_dry_matter_g": 1000,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "body_strike",
+      "capability_mask": [
+        "walk",
+        "swim"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 600,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 60,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 60,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 3,
+      "body_collision_height_mm": 300,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 500,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "frog",
+      "baseline_health_milli": 16000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 1000,
+      "body_displacement_millilitres": 1120,
+      "body_waterline_mm": 90,
+      "safe_landing_speed_mm_per_motion_second": 7000,
+      "breathing_medium": "air_or_water",
+      "breath_hold_tick": 1200,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 8000,
+      "productive_storage_capacity_energy_milli": 40000,
+      "placement_maintenance_energy_milli": 8000,
+      "movement_energy_milli_per_game_m": 8,
+      "work_energy_milli_per_work_unit": 2,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1000,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 35,
+      "species_maturity_game_day": 360,
+      "gestation_game_day": 18,
+      "interbirth_game_day": 80,
+      "litter_size": 4,
+      "gestation_productive_energy_milli": 72000,
+      "gestation_dry_matter_g": 83,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk",
+        "hop",
+        "swim"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 50,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 5,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 5,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 1,
+      "body_collision_height_mm": 170,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "carp",
+      "baseline_health_milli": 24000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 5000,
+      "body_displacement_millilitres": 5350,
+      "body_waterline_mm": 140,
+      "safe_landing_speed_mm_per_motion_second": 2500,
+      "breathing_medium": "water",
+      "breath_hold_tick": 480,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 16000,
+      "productive_storage_capacity_energy_milli": 80000,
+      "placement_maintenance_energy_milli": 16000,
+      "movement_energy_milli_per_game_m": 12,
+      "work_energy_milli_per_work_unit": 4,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1000,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 0,
+      "species_maturity_game_day": 720,
+      "gestation_game_day": 15,
+      "interbirth_game_day": 100,
+      "litter_size": 4,
+      "gestation_productive_energy_milli": 112000,
+      "gestation_dry_matter_g": 416,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "swim"
+      ],
+      "default_sleep_hours": 9,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 250,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 25,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 25,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 2,
+      "body_collision_height_mm": 280,
+      "water_drag_per_second_q": 10000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1500,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 22000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    },
+    {
+      "species_id": "bee",
+      "baseline_health_milli": 8000,
+      "maximum_health_milli": 100000,
+      "body_mass_g": 2,
+      "body_displacement_millilitres": 3,
+      "body_waterline_mm": 2,
+      "safe_landing_speed_mm_per_motion_second": 9000,
+      "breathing_medium": "air",
+      "breath_hold_tick": 80,
+      "oxygen_recovery_per_safe_tick": 2,
+      "basal_energy_milli_per_game_day": 80,
+      "productive_storage_capacity_energy_milli": 400,
+      "placement_maintenance_energy_milli": 80,
+      "movement_energy_milli_per_game_m": 1,
+      "work_energy_milli_per_work_unit": 1,
+      "thermal_energy_milli_per_mC_gap_per_game_day": 1,
+      "cold_comfort_floor_mC": 12000,
+      "heat_comfort_ceiling_mC": 30000,
+      "native_insulation_q": 1000,
+      "native_heat_shedding_q": 8000,
+      "fatigue_recovery_milli_per_rest_game_day": 80000,
+      "wound_recovery_health_milli_per_game_day": 2500,
+      "oxygen_damage_health_milli_per_game_day": 30000,
+      "cold_heat_damage_cap_health_milli_per_game_day": 18000,
+      "starvation_damage_cap_health_milli_per_game_day": 16000,
+      "infection_damage_cap_health_milli_per_game_day": 10000,
+      "compression_damage_cap_health_milli_per_game_day": 24000,
+      "maximum_load_g": 0,
+      "species_maturity_game_day": 7,
+      "gestation_game_day": 8,
+      "interbirth_game_day": 12,
+      "litter_size": 1,
+      "gestation_productive_energy_milli": 320,
+      "gestation_dry_matter_g": 1,
+      "per_day_reproduction_progress_work": 10000,
+      "fertility_draw_q": 2000,
+      "offspring_viability_q": 9500,
+      "product_converters": [
+        {
+          "output_commodity_id": "honey",
+          "quantity_unit": "g",
+          "daily_quantity_cap": 1,
+          "productive_energy_cost_milli_per_g": 1300,
+          "digested_real_dry_matter_g_per_output_g": 1,
+          "requires_actual_rest_or_care_work": true,
+          "receipt_key": "actor_converter_output_interval",
+          "zero_maintenance_conversion": true
+        }
+      ],
+      "natural_body_attack_profile": "small_bite",
+      "capability_mask": [
+        "walk",
+        "fly"
+      ],
+      "default_sleep_hours": 6,
+      "age_stages": [
+        {
+          "maximum_age_fraction_q": 1000,
+          "movement_q": 4000,
+          "work_q": 0,
+          "independent_care_q": 0
+        },
+        {
+          "maximum_age_fraction_q": 5000,
+          "movement_q": 6500,
+          "work_q": 0,
+          "independent_care_q": 2000
+        },
+        {
+          "maximum_age_fraction_q": 9999,
+          "movement_q": 8500,
+          "work_q": 0,
+          "independent_care_q": 6000
+        },
+        {
+          "maximum_age_fraction_q": 10000,
+          "movement_q": 10000,
+          "work_q": 10000,
+          "independent_care_q": 10000
+        }
+      ],
+      "aging_start_potential_fraction_q": 8000,
+      "aging_daily_health_loss_at_start": 2,
+      "aging_daily_health_loss_per_extra_year": 100,
+      "recoverable_biomass_converters": [
+        {
+          "reserve_kind": "recoverable_meat_g",
+          "commodity_id": "meat",
+          "daily_quantity_cap_g": 1,
+          "productive_energy_cost_milli_per_g": 450,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_hide_g",
+          "commodity_id": "raw_hide",
+          "daily_quantity_cap_g": 1,
+          "productive_energy_cost_milli_per_g": 600,
+          "digested_dry_matter_cost_g_per_g": 1
+        },
+        {
+          "reserve_kind": "recoverable_bone_g",
+          "commodity_id": "bone",
+          "daily_quantity_cap_g": 1,
+          "productive_energy_cost_milli_per_g": 700,
+          "digested_dry_matter_cost_g_per_g": 1
+        }
+      ],
+      "body_presence_product_conversion": false,
+      "care_energy_milli_per_work_unit": 1,
+      "body_collision_height_mm": 5,
+      "water_drag_per_second_q": 20000,
+      "capacity_baselines": {
+        "body_robustness_q": 10000,
+        "stamina_milli": 100000,
+        "work_units_per_actual_work_tick": 1,
+        "climb_step_mm": 0,
+        "swim_speed_mm_per_motion_second": 1000,
+        "swim_effort_milli": 100000,
+        "flight_effort_milli": 100000,
+        "flight_speed_mm_per_motion_second": 4000,
+        "vision_range_mm": 6000,
+        "hearing_received_signal_threshold_q": 1000,
+        "smell_received_signal_threshold_q": 1000,
+        "dark_signal_q": 3500,
+        "focus_window_tick": 1000,
+        "knowledge_decay_q_per_game_day": 20,
+        "core_ratio_q": 10000
+      }
+    }
+  ],
+  "species_count": 19,
+  "trait_consumers": [
+    {
+      "trait_id": "health_capacity",
+      "consumer_owner": "life",
+      "export": "health_capacity",
+      "formula": "baseline_health_milli * multiplier_q / 10000 clamped 1..100000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "body_robustness",
+      "consumer_owner": "life",
+      "export": "injury_conversion",
+      "formula": "injury_health_loss = severity_milli * region_q / robustness_q",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "strength",
+      "consumer_owner": "life_action",
+      "export": "maximum_supported_load",
+      "formula": "species absolute min/max; actual load cost rises, basal adds max(0,multiplier_q-10000)//4",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "stamina",
+      "consumer_owner": "life_action",
+      "export": "fatigue_capacity",
+      "formula": "fatigue_limit_milli=100000*multiplier_q//10000; current debt not scaled",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "work_efficiency",
+      "consumer_owner": "task",
+      "export": "work_rate",
+      "formula": "actual productive work base_rate*multiplier_q//10000 once, consume corresponding work energy",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "fatigue_recovery",
+      "consumer_owner": "life",
+      "export": "fatigue_recovery",
+      "formula": "rest recovery base*multiplier_q with actual energy payment",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "wound_recovery",
+      "consumer_owner": "life",
+      "export": "wound_recovery",
+      "formula": "actual safe fed care recovery base*multiplier_q/10000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "clotting_capacity",
+      "consumer_owner": "life",
+      "export": "bleeding_clearance",
+      "formula": "bleed_work decreases by 2000*multiplier_q//10000 per gameDay",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "cold_tolerance",
+      "consumer_owner": "life",
+      "export": "cold_comfort_floor",
+      "formula": "12000 - tolerance_q*18000//10000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "heat_tolerance",
+      "consumer_owner": "life",
+      "export": "heat_comfort_ceiling",
+      "formula": "30000 + tolerance_q*12000//10000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "thermal_regulation",
+      "consumer_owner": "life",
+      "export": "thermal_energy_need",
+      "formula": "gap_energy*10000/multiplier_q; unpaid remainder becomes debt",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "wet_cold_tolerance",
+      "consumer_owner": "life",
+      "export": "wet_penalty",
+      "formula": "wet_cold_added_gap=body_wetness_q*6000//max(10000,multiplier_q)",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "fur_density",
+      "consumer_owner": "life",
+      "export": "native_insulation",
+      "formula": "native_insulation_q*multiplier_q/10000; heat shedding reduced by added insulation/2",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "immune_resistance",
+      "consumer_owner": "life",
+      "export": "infection_clearance",
+      "formula": "clearance 10000 load_milli/day*multiplier_q/10000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "toxin_resistance",
+      "consumer_owner": "life",
+      "export": "food_contamination_clearance",
+      "formula": "clearance 10000 load_milli/day*multiplier_q/10000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "parasite_resistance",
+      "consumer_owner": "life",
+      "export": "parasite_clearance",
+      "formula": "clearance 5000 load_milli/day*multiplier_q/10000",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "basal_efficiency",
+      "consumer_owner": "life",
+      "export": "basal_need",
+      "formula": "positive baseline_energy*10000/multiplier_q",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "fasting_tolerance",
+      "consumer_owner": "life",
+      "export": "starvation_grace",
+      "formula": "basal_day_energy*multiplier_q/10000 real deficit grace; never movement energy",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "energy_storage_capacity",
+      "consumer_owner": "life",
+      "export": "storage_capacity",
+      "formula": "species storage*multiplier_q/10000; retain overcap absolute balance, no refill",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "nutrient_absorption",
+      "consumer_owner": "life",
+      "export": "digestible_energy",
+      "formula": "uniquely consumed food raw_energy*digestibleQ*multiplier_q//100000000, max13000Q",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "dietary_flexibility",
+      "consumer_owner": "life",
+      "export": "diet_utilization",
+      "formula": "allowed diet only; unfamiliar allowed class digestibleQ=min(10000,5000*multiplier_q/10000) until real learned preparation",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "reproductive_efficiency",
+      "consumer_owner": "life",
+      "export": "gestation_energy_cost",
+      "formula": "fixed positive cost*10000/multiplier_q no free biomass",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "ground_speed",
+      "consumer_owner": "action",
+      "export": "ground_speed",
+      "formula": "species absolute speed_mm_s times age injury fatigue limits",
+      "capability_gate": [
+        "walk"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "acceleration",
+      "consumer_owner": "action",
+      "export": "acceleration",
+      "formula": "baseline 3000mm/s2*multiplier_q/10000 bounded supported medium",
+      "capability_gate": [
+        "walk",
+        "swim",
+        "fly",
+        "short_flight"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "agility",
+      "consumer_owner": "action",
+      "export": "turn_response",
+      "formula": "max_yaw_milliradian_per_s=3000*multiplier_q/10000, no body shrink",
+      "capability_gate": [
+        "walk",
+        "swim",
+        "fly",
+        "short_flight"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "reaction_speed",
+      "consumer_owner": "action_combat",
+      "export": "response_latency",
+      "formula": "max(1,8*10000//multiplier_q) tick",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "climb_capacity",
+      "consumer_owner": "action",
+      "export": "climb_step",
+      "formula": "species climb baseline 250mm*multiplier_q/10000 only climb supported; peak never waived",
+      "capability_gate": [
+        "climb"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "swim_capacity",
+      "consumer_owner": "life_action",
+      "export": "swim_effort_capacity",
+      "formula": "species supported effort budget 100000*multiplier_q/10000, actual energy/oxygen apply",
+      "capability_gate": [
+        "swim"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "swim_speed",
+      "consumer_owner": "action",
+      "export": "swim_speed",
+      "formula": "species.capacity_baselines.swim_speed_mm_per_motion_second*ratioQ//10000 only fixed swim capability",
+      "capability_gate": [
+        "swim"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "buoyancy",
+      "consumer_owner": "hazard_physics",
+      "export": "body_displacement",
+      "formula": "species displacement_ml*multiplier_q/10000 bounded displacement 70..130%; carried load adds mass not free flotation",
+      "capability_gate": [
+        "swim"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "flight_endurance",
+      "consumer_owner": "life_action",
+      "export": "flight_effort_capacity",
+      "formula": "supported flight 100000*multiplier_q/10000, actual expenditure",
+      "capability_gate": [
+        "fly",
+        "short_flight"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "flight_speed",
+      "consumer_owner": "action",
+      "export": "flight_speed",
+      "formula": "supported flight baseline 4000mm/s*multiplier_q/10000; peak forbidden",
+      "capability_gate": [
+        "fly",
+        "short_flight"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "grip_precision",
+      "consumer_owner": "task_combat",
+      "export": "tool_hold_error",
+      "formula": "base_error*10000/multiplier_q only actual compatible grip/adaptor",
+      "capability_gate": [
+        "hand_tools",
+        "mouth_tools",
+        "beak_tools"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "fine_motor",
+      "consumer_owner": "task",
+      "export": "supported_manipulation",
+      "formula": "supported skill work*multiplier_q/10000; no absent hand creation",
+      "capability_gate": [
+        "hand_tools"
+      ],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "vision_range",
+      "consumer_owner": "perception",
+      "export": "vision_range",
+      "formula": "species.capacity_baselines.vision_range_mm*ratioQ//10000; exact occlusion and ageLight/Dark actual light gate",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "hearing_sensitivity",
+      "consumer_owner": "perception",
+      "export": "heard_signal",
+      "formula": "actualSourceSignalQ*1000000//max(1000000,actualDistanceMm^2); multiply supported actual medium coefficientQ and ratioQ once; opaque barrier coefficient0, unobstructed10000; detect >=species.capacity_baselines received threshold1000Q. Source absent =>0; no hidden truth.",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "smell_sensitivity",
+      "consumer_owner": "perception",
+      "export": "smell_signal",
+      "formula": "actualSourceSignalQ*1000000//max(1000000,actualDistanceMm^2); multiply supported actual medium coefficientQ and ratioQ once; opaque barrier coefficient0, unobstructed10000; detect >=species.capacity_baselines received threshold1000Q. Source absent =>0; no hidden truth.",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "night_vision",
+      "consumer_owner": "perception",
+      "export": "dark_detection",
+      "formula": "actual dark local signal species.capacity_baselines.dark_signal_q*ratioQ//10000; noGodTruth; actual luminous source adds received signal once, same occlusion",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "spatial_reasoning",
+      "consumer_owner": "decision",
+      "export": "route_candidate_quota",
+      "formula": "budget=max(1,min(16,8*multiplier_q//10000)) within shared quota not truth access",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "learning_efficiency",
+      "consumer_owner": "social",
+      "export": "knowledge_work",
+      "formula": "real_learning_work*multiplier_q/10000 once",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "memory_retention",
+      "consumer_owner": "social",
+      "export": "knowledge_decay",
+      "formula": "unpracticed node decay_q_per_day=20*10000//multiplier_q, known mastered minimum1000; evidence history untouched",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "attention_endurance",
+      "consumer_owner": "task_social",
+      "export": "focus_window",
+      "formula": "max uninterrupted focus ticks=1000*multiplier_q/10000 then real rest or bounded efficiency",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "social_learning",
+      "consumer_owner": "social",
+      "export": "observed_teaching_progress",
+      "formula": "actual witnessed valid demonstration_work*multiplier_q/10000; no second duplication with same receipt",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "fertility",
+      "consumer_owner": "life",
+      "export": "conception",
+      "formula": "eligible episode chance_q=min(5000,base_fertility_q*multiplier_q//10000); one draw/actual pair episode",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "offspring_viability",
+      "consumer_owner": "life",
+      "export": "birth_health",
+      "formula": "base viability_q*multiplier_q/10000 clamped 1000..10000 with actual nutrition; one saved pregnancy draw",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "gestation_duration",
+      "consumer_owner": "life",
+      "export": "gestation_duration",
+      "formula": "base gestation_tick*multiplier_q/10000 snapshot once; larger is longer",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "reproductive_interval",
+      "consumer_owner": "life",
+      "export": "reproductive_interval",
+      "formula": "base interval_tick*multiplier_q/10000; absolute due preserved",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "lifespan_potential",
+      "consumer_owner": "life",
+      "export": "aging_start",
+      "formula": "species absolute lifespan_day potential and saved actual age work",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "age_resilience",
+      "consumer_owner": "life",
+      "export": "aging_damage",
+      "formula": "aging_loss*10000/multiplier_q; cannot recover actual age",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "palette_variation",
+      "consumer_owner": "renderer",
+      "export": "palette_slot",
+      "formula": "slot=floor(effective_q*authored_slot_count/10001); no simulation ability",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "coat_pattern",
+      "consumer_owner": "renderer",
+      "export": "coat_pattern_slot",
+      "formula": "bounded authored slot same lookup; no body size",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "eye_tint",
+      "consumer_owner": "renderer",
+      "export": "eye_slot",
+      "formula": "bounded authored slot same lookup; no extra perception",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "curiosity",
+      "consumer_owner": "life_personality",
+      "export": "birth_predisposition_only",
+      "formula": "saved birth predisposition_q=effective_q; CurrentPersonality independent once initialized, later DNA edits never overwrite",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "piety",
+      "consumer_owner": "life_personality",
+      "export": "birth_predisposition_only",
+      "formula": "saved birth predisposition_q=effective_q; CurrentPersonality independent once initialized, later DNA edits never overwrite",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "altruism",
+      "consumer_owner": "life_personality",
+      "export": "birth_predisposition_only",
+      "formula": "saved birth predisposition_q=effective_q; CurrentPersonality independent once initialized, later DNA edits never overwrite",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "risk_tolerance",
+      "consumer_owner": "life_personality",
+      "export": "birth_predisposition_only",
+      "formula": "saved birth predisposition_q=effective_q; CurrentPersonality independent once initialized, later DNA edits never overwrite",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "order_preference",
+      "consumer_owner": "life_personality",
+      "export": "birth_predisposition_only",
+      "formula": "saved birth predisposition_q=effective_q; CurrentPersonality independent once initialized, later DNA edits never overwrite",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "ambition",
+      "consumer_owner": "life_personality",
+      "export": "birth_predisposition_only",
+      "formula": "saved birth predisposition_q=effective_q; CurrentPersonality independent once initialized, later DNA edits never overwrite",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "pain_sensitivity",
+      "consumer_owner": "life_decision",
+      "export": "subjective_pain",
+      "formula": "actual injury_signal*multiplier_q/10000; structural limitation unchanged",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "sleep_requirement",
+      "consumer_owner": "life",
+      "export": "sleep_requirement_tick",
+      "formula": "absolute species trait envelope hours*500tick/hour, interpolate effectiveQ once; physiology reads this export rather than default_sleep_hours",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    },
+    {
+      "trait_id": "rest_recovery_efficiency",
+      "consumer_owner": "life",
+      "export": "sleep_recovery",
+      "formula": "actual safe rest_tick*multiplier_q/10000; requires metabolism, no fatigue second consumption",
+      "capability_gate": [],
+      "current_absolute_state_rescaled": false
+    }
+  ],
+  "trait_count": 61,
+  "gene_arithmetic": {
+    "allele_q": "(alleleA+alleleB)*5",
+    "effective_q": "(7000*((alleleA_raw+alleleB_raw)*5)+3000*(subspecies_trait_raw*10))//10000; neutralraw500=>effective5000=>ratio10000",
+    "ratio_q": "7000+6000*effective_q//10000",
+    "absolute_override": "minimum_scaled+(maximum_scaled-minimum_scaled)*effective_q//10000, scale m->mm, years->360days, hours->500tick; no float",
+    "recombination": "fixed contract trait_groups/order; per parent choose homolog bit once/group then at each adjacent trait saved draw_q<2000 switches homolog; choose that allele; draws ordered group/parent/trait and saved in conception",
+    "mutation": "per trait one saved draw below configured probability, delta uniform integer [-max,+max], clamp0..1000; no renderer or retry draws",
+    "subspecies_q": "shared profile raw0..1000 *10 => sharedQ0..10000; do not use raw as Q",
+    "capacity_compiler": "fixed species capability gate first; absolute species envelope overrides trait ratio for strength/ground_speed/lifespan/sleep where provided; convert m->mm,kg->g,years->360day,hours->500tick, abstractindex->Q10000; all other ratio baselines from species profile/trait consumer explicit constant. Preserve absolute health/debt/elapsed/inventory. Never infer missing body functions from positive gene.",
+    "rng_authority": "data/contracts/runtime_foundation_v1.json.counter_rng; SHA256 SONNRNG1 fixed preimage/rejection sampling; saved conception eventCounter/drawIndex receipts, no LCG/implementation hash",
+    "body_float_gate": "no-swim capability does not remove real fixed body displacement from physics; missing swim/flight/climb sets that active capacity0, body_displacement baseline always actualspecies.body_displacement_millilitres, buoyancy gene applied only supported swim species; others fixedbaseline"
+  },
+  "physiology_functions": {
+    "food_absorption": "actual qty*energy_milli_per_quantity_unit*digestibleQ*nutrient_absorption_q//100000000; diet permitted; unique consumed receipt; saved digestion remainder; dry matter conversion uses actual quantity mass conversion separately",
+    "basal": "base_per_day*10000//basal_efficiency_q * (10000+max(0,strength_ratio_q-10000)//4)//10000; integrate rate over12000tick; pay maintenance then productive; unpaid enters starvation_debt_energy_milli once",
+    "movement": "loadQ=10000+10000*actualRecursiveCarriedG//max(1,PhenotypeCapacities.maximum_load_g); mediumQ walk10000,run16000,swim18000,fly22000; divmod(actualDistanceMm*speciesMovementEnergyPerM*loadQ*mediumQ+savedMovementEnergyNumeratorRemainder,100000000000) produces paid energy_milli and saved remainder. Actual accumulated distance, not ceil each frame; finite proposed path conservatively reserves ceiling then actual payment once; no unpaid movement/work.",
+    "work": "actual work_units*work_energy_per_work_unit; product/commodity work productive only; actual direct survival foraging may maintenance-first and must consume existing food source before any unrelated production",
+    "thermal": "cold_floor=12000-18000*cold_tolerance_q//10000; heat_ceiling=30000+12000*heat_tolerance_q//10000; insulation_q=clamp(native+sum(coverage_q*material_q*durability_q*(10000-wetness_q)//10^12),0,8500); cold_gap=max(0,cold_floor-ambient_mC+wetness_q*6000//max(10000,wet_cold_ratio_q)); effective_gap=cold_gap*(10000-insulation_q)//10000; heat_gap=max(0,ambient_mC-heat_ceiling)+(actual_activity_heat_mC*insulation_q//10000); heat_shedding_q=max(1000,native_shedding_q-insulation_q//2); thermal need per_day=effective_gap*species_thermal_factor*10000//regulation_ratio_q (heat likewise divide shedding_q); integrate/pay sources, unpaid to separate cold/heat debt; safe fed recovery reduces each debt by basal_per_day/2 over real safe dt",
+    "starvation_damage": "grace=basal_per_day*fasting_ratio_q//10000; damage_rate_day=min(species_cap,max(0,starvation_debt-grace)//12); only current dt if hunger_consequences; no replay; paid basal reduces deficit debt by actual paid_energy//2",
+    "thermal_damage": "grace=basal_per_day//2; each cold/heat damage_rate_day=min(species_cap,max(0,debt-grace)//12); current dt thermal_consequences only; no HP damage from simply missing a garment",
+    "fatigue": "distanceUnits,savedFatigueDistanceMmRemainder=divmod(actualDistanceMm+oldRemainder,100); add distanceUnits+actualWorkUnits*20+integrated actual medium effort. Medium effort/day walk0,run20000,swim30000,fly35000 with saved rate remainder. Safe paid actual rest recovers speciesRecoveryPerDay*fatigueRecoveryQ/10000 integrated with saved remainder. impairmentQ=clamp(10000-debt*6000//max(1,PhenotypeCapacities.fatigue_capacity),2500,10000); do not floor every75mm tick separately.",
+    "sleep": "requiredRestTickPerDay=PhenotypeCapacities.sleep_requirement_tick (species absolute envelope compilation); accrue divmod(dtTick*requiredRestTickPerDay+savedSleepAccrualRemainder,12000); actual safe metabolically paid asleep rest recovers divmod(dtTick*restRecoveryQ+savedSleepRecoveryRemainder,10000). AttentionQ=clamp(10000-sleepDebtTick*4000//max(1,requiredRestTickPerDay),3000,10000); gene edit changes future accrual not past debt.",
+    "infection": "dose from actual supported contact/consumed contaminated_batch receipt; contact dose=source_load_milli*contact_tick//1200 capped20000/contactRoot; food dose=consumed_g*contamination_q//10000 capped20000/receipt; clearance/day10000 immune,5000 parasite, multiplied corresponding ratio_q; load=max(0,old+dose-clearance); daily damage=min(speciescap,max(0,load-30000)//10); real care adds max5000/day clearance with unique work/material receipt; infection_spread only new transmission, existing course continues",
+    "aging": "age_day=(now-birthTick)//12000; lifespan_day from fixed species absolute override; start=lifespan_day*8000//10000; if aging enabled integrate daily damage=(base_loss+max(0,age_day-start)*100//360)*10000//age_resilience_q capped10000/day; chronological age always advances; off interval never backfilled; no hidden hazard random death"
+  },
+  "injury": {
+    "record": "InjuryImpulse{ActorRef,sourceEventId,kind,bodyRegion,severity_milli,actualTick}; unique root/contact/time receipt",
+    "body_regions": {
+      "head": 15000,
+      "torso": 10000,
+      "left_arm": 6500,
+      "right_arm": 6500,
+      "left_leg": 8000,
+      "right_leg": 8000,
+      "wing": 7500,
+      "fin": 7000,
+      "whole_body": 10000
+    },
+    "apply": "health_loss=min(remainingHealth,ceil(severity_milli*region_factor_q/max(1,body_robustness_q))); add actual wound open_milli=health_loss; live pain derived; health0 resolves one death after sameInstant aggregation",
+    "bleeding": "only cut/pierce injury open wound: bleed_rate_day=min(10000,open_milli//4); clotting integrates 2000*clotting_ratio_q/10000 wound-milli/day; remaining bleeding damage unique dt; blunt/compression does not implicitly cut",
+    "limb_impairment": "region accumulated unresolved injury >=18000 locks fine task/limb contribution; below reduces limb capability by min(8000,wound*8000//18000); head/torso health no teleport. No authored amputation/regrowth system introduced",
+    "recovery": "safe rest + actual productive nutrition + actual care when required; reduce unresolved injury and recover HP by bounded species wound recovery/day*gene ratio; cannot exceed capacity; supplies/energy/time paid; severe limb impairment requires300 real care WU before recovery begins",
+    "rule_scope": "hunger/thermal/aging gates corresponding damage only; mechanical injury, oxygen, existing bleed/infection unaffected; no free healing or immunity"
+  },
+  "hazard_physics": {
+    "gravity_mm_per_motion_second_squared": 9810,
+    "terminal_fall_speed_mm_per_motion_second": 50000,
+    "integrator": "within fixed20Hz tick analytic constantaccel in integer rational units: velocity20=v_mm_per_s*20, position800=p_mm*800; deltaPosition800=2*velocity20*dtTick+accel*dtTick^2; velocity20+=accel*dtTick. Split at real collision/medium/control and exact rational terminal-speed time; preserve rational remainders. Swept actual trajectory first contact, no variable-dt Euler different results.",
+    "fall_impulse": "waterplane not solid landing; actual water_drag and buoyancy integrate before actual solid impact. excess=max(0,actualSolidContactNormalSpeedMmS-PhenotypeCapacities.safe_landing_speed_mm_per_motion_second); severity_milli=min(100000,excess*excess//2000), kindblunt whole_body; one unique contact impulse. No blanket water fall immunity.",
+    "buoyancy": "displacementMl=PhenotypeCapacities.body_displacement_ml+sum(actualEquippedFloatDisplacementMl); supportedMassG=displacementMl*actualSubmergedFractionQ//10000; totalMassG=species.body_mass_g+recursiveActualCarriedMassG; netAccelMmS2=clamp(trunc0(9810*(supportedMassG-totalMassG)/max(1,totalMassG)),-9810,9810). Use actual waterline/head coverage and rational integrator; real supported swim stroke requires actual energy, no unsupported walking.",
+    "oxygen": "head_breathing_interface in wrong medium increments oxygen_debt_tick by actual dt, correctly breathable reduces2*dt; threshold species breath_hold_tick; beyond threshold current damage rate=species oxygen_damage/day; frog supported air_or_water still needs supported water quality; carp air is wrong medium; no hunger/thermal switch exemption",
+    "entrapment": "actual swept maximum body penetration depthMm into terrain occupied volume; compressionSeverityQ=min(10000,max(0,depthMm)*10000//species.body_collision_height_mm); current damage/day=species.compression_damage_cap_health_milli_per_game_day*compressionSeverityQ//10000 with canonical saved rate remainder. Original pose remains TERRAIN_ENTRAPPED; actual head covered routes oxygen. No instant death/snap/refill, no terrain editing severity guessed from column kind.",
+    "rescue": "real reachable unblocked safe point + legal rescue tool/task + capable real carriers and load + actual movement; no rescuer enters high_peak prism. If no physical access, only explicit terrain lowering/removal can release entrapment. Carried victim retains ActorRef/cargo and adds real mass; no free HP/refill",
+    "airborne_peak": "universal PeakExclusionPrism before swim/fly/climb/genes; body sweep not centre; reducing actual geometry only clears",
+    "nonlife_projectiles": "gravity/swept collision shared physics primitives, not Actor passage/peak restriction; no visual particle authority",
+    "water_drag": "static water velocity0; per axis dragAccelerationMmS2=-sign(actualVelocityMmS)*min(20000,abs(actualVelocityMmS)*actualSubmersionQ*species.water_drag_per_second_q//100000000); freeze velocity/submersion once actual 20Hz tick boundary then analytic constant-acceleration integrate; split only actual medium/collision boundaries and update physical facts there. Tick slicing/UI/worker never refreezes drag. No instantaneous velocity reset.",
+    "water_quality": "first supported water uniformly breathable for species whose fixed breathing medium includes water; no unimplemented salinity/pollution gate. Frog air_or_water, carp air wrong medium; biological infection still actual dose sources.",
+    "safe_landing_export": "fixed species safe_landing_speed_mm_per_motion_second * min(10000,actual injury mobilityQ,fatigueQ)//10000; no new gene raises fixed envelope; universal peak rule first"
+  },
+  "breeding_functions": {
+    "eligibility": "same species real alive mature supported roles, actual contact, consent for Civic, fed, interval reached, rule and capacity; bounded pair draw fertility once per episode",
+    "gestation": "snapshot genes, current required_ticks=base_days*12000*duration_q//10000, required_productive_energy and dry_matter; progress only actual paid nutrition and stable carrier/nest; no seed body material conversion from maintenance",
+    "birth": "current support/body clearance/nonpeak and committed cap reservation; actual gestation complete; transfer assigned productive reserve with explicit losses, offspring reserve never by adult body; offspring body health=min(capacity,base_health*saved viability_q//10000), one saved conception draw; saved pregnancy can finish under reproduction switch off; no source reroll",
+    "bee_roles": "queen/drone pair only; supported bounded brood role plan saved before conception; queen<=1 active per real colony, replacement only existing eligible female recorded maturation task, no role gene edit; workers never self-conceive",
+    "products": "real productive energy AND digested dry matter AND valid body converter AND actual care/rest work; min(all inputs,daily cap,space); integer remainders and loss receipts; milk/wool/egg/honey quantity transfers once, sapient voluntary contract; edible egg and GestationRef exclusive",
+    "recoverable_biomass": "only real paid productive nutrition/dry matter forms distinct bounded reserve once; conversions draw from same material pool as milk/wool/eggs/gestation, never each independently uses full food; no recoverable biomass from player placement/bodyPresence; sapient deceased never ordinary slaughter goods"
+  },
+  "persistence": [
+    "all_absolute_states",
+    "per-rate remainders",
+    "lastIntegratedTick",
+    "InjuryImpulse_receipts",
+    "wound_regions_bleed",
+    "oxygen_debt_tick",
+    "digestive_real_input_energy_and_dry_matter",
+    "pregnancy_snapshots_work_due_role_plan",
+    "product_converter_remainders",
+    "profile_hash",
+    "trait_capacity_revision",
+    "movement_energy_numerator_remainder",
+    "fatigue_distance_mm_remainder",
+    "sleep_accrual_remainder",
+    "sleep_recovery_remainder",
+    "physical_position800_velocity20"
+  ],
+  "acceptance_cases": [
+    {
+      "id": "LP01",
+      "assert": "same rawtick split vs unsplit basal identical remainder and energy"
+    },
+    {
+      "id": "LP02",
+      "assert": "maintenance cannot convert to products birth mass or commodity labor"
+    },
+    {
+      "id": "LP03",
+      "assert": "actual carried recursive mass sinks insufficient displacement; apparel remains"
+    },
+    {
+      "id": "LP04",
+      "assert": "head wrong medium damages even hunger thermal off"
+    },
+    {
+      "id": "LP05",
+      "assert": "same simultaneous injury receipts aggregate once before unique death"
+    },
+    {
+      "id": "LP06",
+      "assert": "all61trait readers have a typed finite export and gate"
+    },
+    {
+      "id": "LP07",
+      "assert": "actual fall excess squared impulse, safe landing zero, carried tools preserved"
+    },
+    {
+      "id": "LP08",
+      "assert": "age maturity preserved aging off, no catchup damage"
+    }
+  ],
+  "state_field_bindings": {
+    "health_remaining": "health_milli",
+    "maintenance_energy_nonrecoverable": "energy_milli",
+    "productive_energy_from_real_food": "energy_milli",
+    "productive_dry_matter_g": "actual digested real food dry matter g; unique source receipt and losses",
+    "fatigue_debt": "fatigue_milli",
+    "exposureDebt_cold": "unpaid thermal energy_milli",
+    "exposureDebt_heat": "unpaid thermal energy_milli",
+    "starvation_debt": "unpaid basal energy_milli",
+    "sleep_debt": "sleep_debt_tick",
+    "oxygen_debt_tick": "actual wrong-medium breathing tick",
+    "body_wetness": "q0..10000",
+    "health_loads": "load_milli perkind/source; no sum across incompatible types",
+    "movement_energy_numerator_remainder": "mod100000000000",
+    "fatigue_distance_mm_remainder": "mod100mm",
+    "sleep_accrual_remainder": "mod12000",
+    "sleep_recovery_remainder": "mod10000",
+    "physical_velocity20": "mm/motionsecond *20 integer",
+    "physical_position800": "mm*800 integer"
+  },
+  "food_interface": {
+    "file": "data/content/economy_content_v1.json",
+    "required_fields": [
+      "commodity_id",
+      "quantity_unit",
+      "dietClass",
+      "energy_milli_per_quantity_unit",
+      "digestibleQ",
+      "dryMatterQ"
+    ],
+    "dry_matter": "consumed_quantity_mass_g*dryMatterQ//10000 with source remainder; never energy value duplicated as material",
+    "quality": "real spoiled/contaminated food changes accepted edible qty and actual dose; no closed-menu replenishment"
+  }
+}

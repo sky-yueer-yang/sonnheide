@@ -1,0 +1,1319 @@
+{
+  "format": "SonnheideHeavyArcadeDelivery1",
+  "date": "2026-10-10",
+  "status": "pass",
+  "scope": "S00_S01_blank_only_centered_creation_heavy_arcade_UI",
+  "publication_parent": "fa70456f829329fde728f8440e6a3efe76820c21",
+  "command": "python3 tools/build.py --sanitize --native-smoke --bundle --jobs 6",
+  "device": {
+    "renderer": "Metal",
+    "gpu": "Apple M3",
+    "pixel_size": [
+      2560,
+      1600
+    ],
+    "role": "development_GPU_evidence"
+  },
+  "build": {
+    "all_targets": true,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 122.86,
+    "core_invariant_checks": 71101,
+    "asan": true,
+    "ubsan": true
+  },
+  "native_action_count": 56,
+  "modal_layer": {
+    "native_pointer_acknowledged": true,
+    "path": "SDL_PushEvent -> App routing -> RmlUi pointer hit -> error dismiss",
+    "screen": "creation",
+    "status": "pass",
+    "topmost_action_hit": true
+  },
+  "creation": {
+    "centered": true,
+    "creation_entry": "blank_only",
+    "dialog_height_px": 1296,
+    "dialog_left_px": 672,
+    "dialog_top_px": 152,
+    "dialog_width_px": 1216,
+    "geography_loaded_on_startup": false,
+    "status": "pass",
+    "viewport_height_px": 1600,
+    "viewport_width_px": 2560,
+    "world_map_controls_present": false
+  },
+  "large_world": {
+    "actual_geometry_bytes": 394096,
+    "continue_roundtrip_surface_identical": true,
+    "core_height_cells": 4096,
+    "core_width_cells": 4096,
+    "geometry_budget_bytes": 134217728,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "native_gpu_parameters_file": "large-world-gpu.json",
+    "physical_height_mm": 8192000,
+    "physical_width_mm": 8192000,
+    "status": "pass",
+    "surface_hash": "6e6ab529b2b9071e97583ee00d6f34b88d9db35b4f291d292017e622877b81c2",
+    "zero_plane_land_pick_mm": 0
+  },
+  "presentation": {
+    "image_comparison_required": true,
+    "live_advance_ms": 1515,
+    "local_clock_frozen": true,
+    "menu_creates_world": false,
+    "status": "pass",
+    "actual_gpu_pixels_frozen_identical": true,
+    "gpu_rounding_tolerance_lsb": 1,
+    "frozen_max_channel_delta": 0,
+    "live_significant_changed_channels": 13992,
+    "rgba_bytes": 16384000
+  },
+  "ui": {
+    "panel_rgba": "#042537cc",
+    "dock_rgba": "#072d58d0",
+    "frame_edge_dp": [
+      4,
+      6
+    ],
+    "font": "locked_Fusion_Pixel_Regular_directional_CJK_bold_uniform_white_contour",
+    "outline_physical_dpi_scaling": true,
+    "eight_categories": "open_bottom_trapezoid_tabs_overlapping_tool_frame_selected_only_contents",
+    "tabs": {
+      "width_dp": 68,
+      "small_view_width_dp": 58,
+      "active_height_dp": 44,
+      "inactive_height_dp": 40,
+      "neck_dp": 6,
+      "icon_dp": 32,
+      "shoulder_face_fractions": [
+        0.3,
+        0.6,
+        0.9
+      ]
+    },
+    "main_palette": [
+      "blue",
+      "white",
+      "red",
+      "yellow"
+    ],
+    "yellow_base": "#ffaa00",
+    "directional_white_bevel": false,
+    "icon_white_contour": "uniform_flat",
+    "icon_blue": "#1662b8",
+    "icon_red": "#de402d",
+    "button_blue": "#0e4a94e8",
+    "selected_red": "#be3f25e8",
+    "locales": [
+      "zh-CN",
+      "en",
+      "de"
+    ],
+    "icons": 41,
+    "icon_outputs": 123,
+    "layout_rejection_warnings": 0
+  },
+  "source_code_manifest": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "30f778f180823673cfa400fded413b04138b0a46d276bff1df1d6d3e4cf776b0"
+    },
+    {
+      "path": "apps/game/main.cpp",
+      "sha256": "6f1f8cf6c1dc7a6aac2bc5f762b6aa1378e9f79dc4e6cd16ff6d2d677ca888d7"
+    },
+    {
+      "path": "assets/shaders/common.sh",
+      "sha256": "898a0c49d37ed230b1bd78b812bf603d834185bd576bcb684e66ba13b0d86e02"
+    },
+    {
+      "path": "assets/shaders/shadow.fs.sc",
+      "sha256": "889f9e162b323b055e54292ee269aa60ec94a7cf35752b15084c47dc80c726a5"
+    },
+    {
+      "path": "assets/shaders/shadow.vs.sc",
+      "sha256": "94410a6484f25caa0ffb868bd5bf99eb324efc649e9b9beff046131697b937dd"
+    },
+    {
+      "path": "assets/shaders/sky.fs.sc",
+      "sha256": "427b9192d8142e924e8cfd441e58854df69cfbb0e758ada08a68e758feeb4671"
+    },
+    {
+      "path": "assets/shaders/sky.vs.sc",
+      "sha256": "1e42f47fa8fc675c3f88ee16fbc5c3ae0ba84da3598db0e9dd920a4ad072c3f0"
+    },
+    {
+      "path": "assets/shaders/surface.sh",
+      "sha256": "c98562911e824fcc399d63daf3c2043acd41c9dc76ce256ffe0001d12b19feac"
+    },
+    {
+      "path": "assets/shaders/ui.fs.sc",
+      "sha256": "cbacaa7fdf8b99f240e4215965f7aa379309b5a0158e5f2ded406eef234a14d8"
+    },
+    {
+      "path": "assets/shaders/ui.vs.sc",
+      "sha256": "5f607d6d65d90705f44bac007698eb5e07d42a53a59787322ddf076c7d58d060"
+    },
+    {
+      "path": "assets/shaders/varying.def.sc",
+      "sha256": "a5a2cb446b80bc10c4cf2a109a10a1bfee7dbf9df7ed12c82bd6fccf972bb0e0"
+    },
+    {
+      "path": "assets/shaders/water.fs.sc",
+      "sha256": "7186846e7634c64c514ec0f339bdb75dcddbed27939e436dcd8d3dc8ff4bcaf0"
+    },
+    {
+      "path": "assets/shaders/world.fs.sc",
+      "sha256": "9a4479930b55939423c9ef00c8fd61088efa6854aeaeef8f5ca0ac5928de05d4"
+    },
+    {
+      "path": "assets/shaders/world.vs.sc",
+      "sha256": "cc8c7cd3a918a180f0b02d474a65b979b2d62befe53cae2d75c2d5eba56680d3"
+    },
+    {
+      "path": "assets/ui/application.rcss",
+      "sha256": "0a7df4ecaa266159e0963ffb4361cc39fd8c03af16df7d796773d8b5be12c4d0"
+    },
+    {
+      "path": "assets/ui/application.rml",
+      "sha256": "73b482cc48f663e5a8b13f860da33ae6e8dc1ffc96a7a11dc1ca0254b3c3141d"
+    },
+    {
+      "path": "assets/ui/locales.tsv",
+      "sha256": "b15dbb9d49e87372c43fb098f2baa5cfee70a618e23078666b9eb1ea348f478d"
+    },
+    {
+      "path": "data/contracts/civic_control_v1.json",
+      "sha256": "053dc2f3c772772723564515ff7ac22d979b6331fef4f4dbd2b86d90afac316b"
+    },
+    {
+      "path": "data/contracts/decision_core_v1.json",
+      "sha256": "021d6af9dfd97f9fb82b479683dea28e975c12c84a062f016d0236d09833ddc7"
+    },
+    {
+      "path": "data/contracts/economic_decisions_v1.json",
+      "sha256": "a7056780707fd1b43471808aabd4d8f4585394955fb9542dc763999a06466dc1"
+    },
+    {
+      "path": "data/contracts/emergence_algorithms_v1.json",
+      "sha256": "6609b02e8309272e6ad6b41a2700308d9a08e3f5e2a0d10a5b6ac4cb5246551d"
+    },
+    {
+      "path": "data/contracts/game_v0_8.json",
+      "sha256": "ba3917aeb5e1f509936da0467ed50c24c7a59147d047769d4eb502fdc5ee3c8b"
+    },
+    {
+      "path": "data/contracts/game_v0_9.json",
+      "sha256": "3a29359a212398843207c5930ecabb426759666f62adb6db0d095081f3bb8bc8"
+    },
+    {
+      "path": "data/contracts/god_control_v1.json",
+      "sha256": "9c8a9924940a6dbb9a4254441301f846cff5b97a6708abef629e2b938bf64ac5"
+    },
+    {
+      "path": "data/contracts/interaction_runtime_v1.json",
+      "sha256": "6944c85f808acd66cfe41283bf8ffa5d2c7f99cbe9723feda8ee3a8e307046c4"
+    },
+    {
+      "path": "data/contracts/life_genetics_v1.json",
+      "sha256": "e52d7deedc42c49159a2dcdb0e3871448b1fe1c43a8ce26a095211e83f0663af"
+    },
+    {
+      "path": "data/contracts/natural_action_v1.json",
+      "sha256": "9e10aac3c8dceca9e301dbcd639e3f98841e8418a1eaaac73940a158a005aa5e"
+    },
+    {
+      "path": "data/contracts/pixel_world.json",
+      "sha256": "6ca9435afdbbc3d2bb979b60e5d5dac3699cf9cddb8915a5a84194b461877475"
+    },
+    {
+      "path": "data/contracts/political_decisions_v1.json",
+      "sha256": "0bdc94e74e0e2cff66a275c3e4d242b7abfc79020261798aff04ab5af5524c20"
+    },
+    {
+      "path": "data/contracts/runtime_foundation_v1.json",
+      "sha256": "b821e8ba15586c65f76faeb0a84eba2bb8df8adbfe7cbac53b8d52b6ab068651"
+    },
+    {
+      "path": "data/contracts/settlement_lifecycle_v1.json",
+      "sha256": "d4b27e7e888b6c48d5cc72141c5ef343cc2ae0624afc10915ce7561a9d2c3ba8"
+    },
+    {
+      "path": "data/contracts/social_decisions_v1.json",
+      "sha256": "ee7862d3ace666bd4a7ba045fb236f50ce40666ac54639a7a791a7a72f9283f3"
+    },
+    {
+      "path": "data/contracts/surface_ecology.json",
+      "sha256": "c914270d96c0cc3ebac8c6f2ace2e148195699d059816ad5fb5b6f4c5357b99b"
+    },
+    {
+      "path": "data/contracts/terrain_access_v1.json",
+      "sha256": "9841b042db54cde77767b366106f1e2bb9e1c660ae67be253512d377063fb0f2"
+    },
+    {
+      "path": "data/contracts/tool_registry_v1.json",
+      "sha256": "3ef85a80284fb8ede25def1cce275f9ecc58e86b175ed4282d4406f3c4fdad44"
+    },
+    {
+      "path": "data/contracts/vegetation_generator_v1.json",
+      "sha256": "1f4c68fc91651b3b30d176a2ef5322b3498f6e8f4ee384ebae9dd01d2f4db22f"
+    },
+    {
+      "path": "data/contracts/warfare_decisions_v1.json",
+      "sha256": "01074d942be8930722e32b700f7134afda9e21c3a727428ee059110d005e1a67"
+    },
+    {
+      "path": "src/client/client.cpp",
+      "sha256": "4cfb1009e636661b62f081f2c822deff5a6adcd1c2b21a2a12d973fc5e9e6573"
+    },
+    {
+      "path": "src/client/client.hpp",
+      "sha256": "812b7945317d7893011a3d9b72dd9037c28b0b46922b7442f24394384d631e9d"
+    },
+    {
+      "path": "src/core/geography.cpp",
+      "sha256": "8ba1e15c733bd4cca60f15d2ab95a3142bfaaca5cfd2216b36d07c6b696267e1"
+    },
+    {
+      "path": "src/core/hash.cpp",
+      "sha256": "f56b7f608e11b617952235f9b12a466d6530c464e3e0807e1ac36191b9c9b5b0"
+    },
+    {
+      "path": "src/core/json.cpp",
+      "sha256": "938066324f0e02f4a1638ce76a2b9b9ed92e7f907762badee7e28ef06a71ecac"
+    },
+    {
+      "path": "src/core/ref_registry.inc",
+      "sha256": "3106c2bfe953990a70a36276d8b82e2e06b5014b914d27fdea897d7f133444db"
+    },
+    {
+      "path": "src/core/save.cpp",
+      "sha256": "1a208813be14e88b721361fa72a544cc8b8a5fbca876e0b55ba214870c71b47f"
+    },
+    {
+      "path": "src/core/sonnheide.hpp",
+      "sha256": "a59e7e3c48cdab4221c4c8ca65431536700930388336c3b3e6a6ae2ec0c49eb6"
+    },
+    {
+      "path": "src/core/terrain.cpp",
+      "sha256": "4360fd325ad9339c09b9f121412f7f5fa36d7e6c277f5ba0d03cac96c8653bf0"
+    },
+    {
+      "path": "src/core/unicode_tables.inc",
+      "sha256": "ef51f94739b47201f0b023ec2631cb0975dfe83aba5a7718f18c9747b717792a"
+    },
+    {
+      "path": "src/core/world.cpp",
+      "sha256": "acf729aeae7f3962d80252c16644b8278a6e50b7d8874db73ace488d3cf50397"
+    },
+    {
+      "path": "src/ui/pixel_decorator.cpp",
+      "sha256": "de80b370106a58845cb7ef22afeaa4b1591acda8efc521329ed40f82291709a5"
+    },
+    {
+      "path": "src/ui/pixel_decorator.hpp",
+      "sha256": "7ad956f992340f5ff42152027ce4644b821b55eb2aa3b3c9767a45d6021ba6a5"
+    },
+    {
+      "path": "src/ui/ui.cpp",
+      "sha256": "27658a6f9b6a3eaee4de9fc3304ddea939ff01de47419525f6747c88880c6401"
+    },
+    {
+      "path": "src/ui/ui.hpp",
+      "sha256": "db1ac5e33fbcb4f0945f34440c00d2298a3a274ef143944924ca229e1b62ff45"
+    },
+    {
+      "path": "tests/core/core_tests.cpp",
+      "sha256": "550ee6dcc6adfda4e37510b59b56b7bfca8aee7b12949168b630b3499e2a5478"
+    },
+    {
+      "path": "tests/ui/ui_tests.cpp",
+      "sha256": "ffadc2e1ee276d672457478490884d74acb58d11859179cb5ce9c585318d6096"
+    },
+    {
+      "path": "tools/build.py",
+      "sha256": "a900609e825919f8c9e9b3de7e714a29623929d11e15ba38c9ff32b722ae75a1"
+    },
+    {
+      "path": "tools/generate_interaction_spec.py",
+      "sha256": "748f403ab80d86e48329c79a0893d6e955c5c81c88c6a039c9e1ddb1c224a9ea"
+    },
+    {
+      "path": "tools/generate_unicode_tables.py",
+      "sha256": "25c4cb60b70dc2459aabf3ec42c222992af26bfd97e9154bd87760e5dda20fbf"
+    },
+    {
+      "path": "tools/generate_visual_assets.py",
+      "sha256": "886a3815ed886b6398ba4d9c6f2dabdd8e186f087621e7ca1f47dcbd8b33ef10"
+    },
+    {
+      "path": "tools/play.py",
+      "sha256": "2dbc711a6ec146c39fb78a97c5c2fc1dafe8116cd3e919103552ad023ddad183"
+    },
+    {
+      "path": "tools/prepare_sources.py",
+      "sha256": "0d2b27c5d9600af28b88381dff9917bde94d8b7968f248cff0974787dafadae6"
+    },
+    {
+      "path": "tools/validate_design.py",
+      "sha256": "cdeb7db056d0e937d01701033804eb0f8f30fe51f78a7976b85072391764d30e"
+    },
+    {
+      "path": "tools/validate_project.py",
+      "sha256": "dda40525d4f20f9958d79f04b43320655a507ebf513aca6a707d8272b532033e"
+    }
+  ],
+  "executable_sha256": "45e72d68f47c688491e6625bd29fc0745bc6720ec5c03600a90fec1f34303304",
+  "resource_manifests": {
+    "definitions.json": {
+      "files": [
+        {
+          "path": "data/content/combat_profiles_v1.json",
+          "sha256": "7af094de21b34cc631a9cf6ce3c416dff46aa7638303e19d8a7af75c13f480b3"
+        },
+        {
+          "path": "data/content/economy_content_v1.json",
+          "sha256": "4269f5995a1237849c235e5e7d9a96e10b240646d8ea6fac01f0571fc01219ef"
+        },
+        {
+          "path": "data/content/life_profiles_v1.json",
+          "sha256": "bfa71e06e3ad16af0c57fd2922de9fc55c617eab02aa2a4f580736f29825f096"
+        },
+        {
+          "path": "data/content/technology_runtime_v1.json",
+          "sha256": "bca2583b43db79c2401071adc71987636be7f1cfb158546901004fba28e8fa4b"
+        },
+        {
+          "path": "data/contracts/civic_control_v1.json",
+          "sha256": "053dc2f3c772772723564515ff7ac22d979b6331fef4f4dbd2b86d90afac316b"
+        },
+        {
+          "path": "data/contracts/decision_core_v1.json",
+          "sha256": "021d6af9dfd97f9fb82b479683dea28e975c12c84a062f016d0236d09833ddc7"
+        },
+        {
+          "path": "data/contracts/economic_decisions_v1.json",
+          "sha256": "a7056780707fd1b43471808aabd4d8f4585394955fb9542dc763999a06466dc1"
+        },
+        {
+          "path": "data/contracts/emergence_algorithms_v1.json",
+          "sha256": "6609b02e8309272e6ad6b41a2700308d9a08e3f5e2a0d10a5b6ac4cb5246551d"
+        },
+        {
+          "path": "data/contracts/game_v0_9.json",
+          "sha256": "3a29359a212398843207c5930ecabb426759666f62adb6db0d095081f3bb8bc8"
+        },
+        {
+          "path": "data/contracts/god_control_v1.json",
+          "sha256": "9c8a9924940a6dbb9a4254441301f846cff5b97a6708abef629e2b938bf64ac5"
+        },
+        {
+          "path": "data/contracts/interaction_runtime_v1.json",
+          "sha256": "6944c85f808acd66cfe41283bf8ffa5d2c7f99cbe9723feda8ee3a8e307046c4"
+        },
+        {
+          "path": "data/contracts/life_genetics_v1.json",
+          "sha256": "e52d7deedc42c49159a2dcdb0e3871448b1fe1c43a8ce26a095211e83f0663af"
+        },
+        {
+          "path": "data/contracts/natural_action_v1.json",
+          "sha256": "9e10aac3c8dceca9e301dbcd639e3f98841e8418a1eaaac73940a158a005aa5e"
+        },
+        {
+          "path": "data/contracts/pixel_world.json",
+          "sha256": "6ca9435afdbbc3d2bb979b60e5d5dac3699cf9cddb8915a5a84194b461877475"
+        },
+        {
+          "path": "data/contracts/political_decisions_v1.json",
+          "sha256": "0bdc94e74e0e2cff66a275c3e4d242b7abfc79020261798aff04ab5af5524c20"
+        },
+        {
+          "path": "data/contracts/runtime_foundation_v1.json",
+          "sha256": "b821e8ba15586c65f76faeb0a84eba2bb8df8adbfe7cbac53b8d52b6ab068651"
+        },
+        {
+          "path": "data/contracts/settlement_lifecycle_v1.json",
+          "sha256": "d4b27e7e888b6c48d5cc72141c5ef343cc2ae0624afc10915ce7561a9d2c3ba8"
+        },
+        {
+          "path": "data/contracts/social_decisions_v1.json",
+          "sha256": "ee7862d3ace666bd4a7ba045fb236f50ce40666ac54639a7a791a7a72f9283f3"
+        },
+        {
+          "path": "data/contracts/surface_ecology.json",
+          "sha256": "c914270d96c0cc3ebac8c6f2ace2e148195699d059816ad5fb5b6f4c5357b99b"
+        },
+        {
+          "path": "data/contracts/terrain_access_v1.json",
+          "sha256": "9841b042db54cde77767b366106f1e2bb9e1c660ae67be253512d377063fb0f2"
+        },
+        {
+          "path": "data/contracts/tool_registry_v1.json",
+          "sha256": "3ef85a80284fb8ede25def1cce275f9ecc58e86b175ed4282d4406f3c4fdad44"
+        },
+        {
+          "path": "data/contracts/vegetation_generator_v1.json",
+          "sha256": "1f4c68fc91651b3b30d176a2ef5322b3498f6e8f4ee384ebae9dd01d2f4db22f"
+        },
+        {
+          "path": "data/contracts/warfare_decisions_v1.json",
+          "sha256": "01074d942be8930722e32b700f7134afda9e21c3a727428ee059110d005e1a67"
+        }
+      ],
+      "format": "SonnDefinitions1"
+    },
+    "assets.json": {
+      "files": [
+        {
+          "path": "fonts/fusion-pixel-12px-proportional-zh_hans.otf",
+          "sha256": "9955f9e20abd758316418a2942aa6ee773754060da4a3f9286581fd11312f6c3"
+        },
+        {
+          "path": "generated/buildings/civic_hall_graybox.gltf",
+          "sha256": "0e56eb2727ba47a2f9e23f48a72c1060021138b178191e4351aa79c72537f914"
+        },
+        {
+          "path": "generated/buildings/port_graybox.gltf",
+          "sha256": "fafd10ed4f66a0cd2dbf767cfa02a2d6d061242930ed9f4edaa2712305e7e3b0"
+        },
+        {
+          "path": "generated/buildings/residence_graybox.gltf",
+          "sha256": "2f9b182f50c5c72dc23331636b88936326c4a6a66f7439381dadc42790ac6149"
+        },
+        {
+          "path": "generated/ui/icons/arrow-down-192.png",
+          "sha256": "fce4dcb5744e3024045b991222bb10d7e6921b3bb12fd7d8ff6579ce70ce339d"
+        },
+        {
+          "path": "generated/ui/icons/arrow-down-96.png",
+          "sha256": "c7e0314d148a553bb8132c7d67b21aaa940c5713296a2538047442a95277fa3d"
+        },
+        {
+          "path": "generated/ui/icons/arrow-down.svg",
+          "sha256": "78e3f3016f0b4bd79df2ef9fb340207334a2f7e899a0ad256779b63b8e797b8d"
+        },
+        {
+          "path": "generated/ui/icons/arrow-left-192.png",
+          "sha256": "af87a551c0236ac26dd4da452e222081c04465a9bec3626e2fafd449f37a3125"
+        },
+        {
+          "path": "generated/ui/icons/arrow-left-96.png",
+          "sha256": "a117b2125fc7be802313ed8a9edf20ef23cb88c2a6e0329e1a4ff53fa6e3697a"
+        },
+        {
+          "path": "generated/ui/icons/arrow-left.svg",
+          "sha256": "b75f91fac18a67dbc36e0de771b3125e4c71f7b2397eb576d6b6d17f8011ed71"
+        },
+        {
+          "path": "generated/ui/icons/arrow-right-192.png",
+          "sha256": "97d30dcd0715dc8df399b4e61bdfe87cefcc2ad6da5f60850fa8ac8c5fbd5528"
+        },
+        {
+          "path": "generated/ui/icons/arrow-right-96.png",
+          "sha256": "db8bf7e032ca65674ad8b252df4f3fb42968d2166a7845b40cbc7c3b6a484d01"
+        },
+        {
+          "path": "generated/ui/icons/arrow-right.svg",
+          "sha256": "0449855ef2f6375c62a2308e92126865a1ac165c64ede6b6a5e025237cba0e8e"
+        },
+        {
+          "path": "generated/ui/icons/arrow-up-192.png",
+          "sha256": "62afd7b84932ffc4d2d5ad7f67ba6a66f98fbff16ec748c670054d7a5635c391"
+        },
+        {
+          "path": "generated/ui/icons/arrow-up-96.png",
+          "sha256": "8896d92ea6e24541d9a6c9c73fef564cac7c45bb0bfef2fef8aff1eaf4fa9602"
+        },
+        {
+          "path": "generated/ui/icons/arrow-up.svg",
+          "sha256": "a290ffa94d4b41b178e80cc7fa90c6fa26c5672bdd027b46f880631ab8bce541"
+        },
+        {
+          "path": "generated/ui/icons/audio-192.png",
+          "sha256": "783dff1a7758c9f7965759f1af6e6c8dbbc53454961c86b9a98382228918811e"
+        },
+        {
+          "path": "generated/ui/icons/audio-96.png",
+          "sha256": "60bdccde325e10b2d291fd655e94b108bacc9ea9ca45b68a4e32deaa3f940dd7"
+        },
+        {
+          "path": "generated/ui/icons/audio.svg",
+          "sha256": "e1677036bf07d09a778fada37420f4c780a142fd2ed5c0eea4bcbbcbdabac126"
+        },
+        {
+          "path": "generated/ui/icons/back-192.png",
+          "sha256": "115bfc0290a6c92bb3bfd66b0a23bb8d7288e3009c03a30ca88ab37eae724ce0"
+        },
+        {
+          "path": "generated/ui/icons/back-96.png",
+          "sha256": "804ee5a384cc6b050d95694165d63ba82a37d742a429695e31bac51585565d5e"
+        },
+        {
+          "path": "generated/ui/icons/back.svg",
+          "sha256": "804f7f5bfc912b07bde3d5c5a3d3f788e3088127ce5a92565bc0611d27627d85"
+        },
+        {
+          "path": "generated/ui/icons/blank-192.png",
+          "sha256": "b61c068b2410153bcad21c4b6f64160fa26ddc1c40f494611a1e494f9960126e"
+        },
+        {
+          "path": "generated/ui/icons/blank-96.png",
+          "sha256": "e45a4003db5299057747e8b4e11e1adc1293f79ff32139a808348e09ccac9d79"
+        },
+        {
+          "path": "generated/ui/icons/blank.svg",
+          "sha256": "6e878eda3f30b744173b68aab8407e973c34f3ff862c38563612fe69a455cb82"
+        },
+        {
+          "path": "generated/ui/icons/buildings-192.png",
+          "sha256": "d3724018d0e6abed9cc6d64fcf6add27c66efc1d9723879cd9f79834994f648c"
+        },
+        {
+          "path": "generated/ui/icons/buildings-96.png",
+          "sha256": "f775531a6960426a3b0100b5cccdfb052e75341f184828e849a804918c4e9a3a"
+        },
+        {
+          "path": "generated/ui/icons/buildings.svg",
+          "sha256": "881d67fcecbd84f92446d198290df3925500d7cf13a46c3148a15b6a6cba8503"
+        },
+        {
+          "path": "generated/ui/icons/camera-192.png",
+          "sha256": "3ce008174be85ef79cf71365ba0c703dabd206448ac3ae499e48ee2487964376"
+        },
+        {
+          "path": "generated/ui/icons/camera-96.png",
+          "sha256": "800a5300cc7fd08ea18eac1fa6513a364231db597f74731ba474d748bcc841f7"
+        },
+        {
+          "path": "generated/ui/icons/camera.svg",
+          "sha256": "b4f9ea02efd3c0670be4a2aaa8d0b50c4516eac7aa8d1aebb0e0df6b7e513325"
+        },
+        {
+          "path": "generated/ui/icons/check-192.png",
+          "sha256": "a66a5a54b107546b345bd57321be46650f6cf6808298e752cd6760df64bd7c23"
+        },
+        {
+          "path": "generated/ui/icons/check-96.png",
+          "sha256": "5f8e5e7a1bc8305158ce660b1c548ac51d3d3846e5cedea315e09c0968f61dd5"
+        },
+        {
+          "path": "generated/ui/icons/check.svg",
+          "sha256": "5ce662e90088707f65c5a5b01545d99310dea8f14eb1c30c739ca2f300755d09"
+        },
+        {
+          "path": "generated/ui/icons/close-192.png",
+          "sha256": "0c38af8049e7e2c3673c668b412b6b54c457e39d4e86564397f9c2ce11c64230"
+        },
+        {
+          "path": "generated/ui/icons/close-96.png",
+          "sha256": "fea4edae7c239ce7f76c2a6a4a46b07784b6ed9a766a469fee4d5dcaa52202a8"
+        },
+        {
+          "path": "generated/ui/icons/close.svg",
+          "sha256": "95e92d63173b09ebe524e014b2f0436d49c48d410074a4c01c7aec9415def007"
+        },
+        {
+          "path": "generated/ui/icons/create-192.png",
+          "sha256": "359e10f866672d8bab75f494d868672a8608e9a3ff16a3f6b59b3102ec4ee9cc"
+        },
+        {
+          "path": "generated/ui/icons/create-96.png",
+          "sha256": "997d2b6ac1773071fb5dc556424ef0a4714dd317a02e8d1364b236c3b00bf482"
+        },
+        {
+          "path": "generated/ui/icons/create.svg",
+          "sha256": "4ecb663ee5e116c75d07f2b4d2b6df9eaf5ecbc4043dce0864ca7837fb674bb7"
+        },
+        {
+          "path": "generated/ui/icons/cycle-192.png",
+          "sha256": "50963cd76c08c1219e080d9dd61c0acd707c093fde9e28a74b6d3a69ff90d209"
+        },
+        {
+          "path": "generated/ui/icons/cycle-96.png",
+          "sha256": "8544209965648c82af941793cffa1cac2172ebe6d68b321c51289a95c1446d6b"
+        },
+        {
+          "path": "generated/ui/icons/cycle.svg",
+          "sha256": "c2dc13f3ddc8d9fdb497ba4a4c5aba9e1ad63122ce6ec94ea7cf2ea8d980ae67"
+        },
+        {
+          "path": "generated/ui/icons/earth-192.png",
+          "sha256": "48f94d9266df6accd89c7eb01786a8ad2277a30db88d85742bdfcc3b171be85d"
+        },
+        {
+          "path": "generated/ui/icons/earth-96.png",
+          "sha256": "c6cb465a2be8336a86047125fb5fab52c9ce7cedbdb16ead50bd5dee53f36b1f"
+        },
+        {
+          "path": "generated/ui/icons/earth.svg",
+          "sha256": "e8a60cb8a694b76eb4a48a4a867dd2e0b38269013272b0675b4a17c6199c2494"
+        },
+        {
+          "path": "generated/ui/icons/economy-192.png",
+          "sha256": "e61c9c077daf58051d94a089fb7441c9df06ac11fcf7a45c74e74d693de5f076"
+        },
+        {
+          "path": "generated/ui/icons/economy-96.png",
+          "sha256": "befb6cd12773c7a938829c49254340801c716f28a52e24f97b9d907b1f543860"
+        },
+        {
+          "path": "generated/ui/icons/economy.svg",
+          "sha256": "67f5a49950d44c4985462dae80ff5b6ca8ca321c7b0ed6f5d45c2cbe2a077603"
+        },
+        {
+          "path": "generated/ui/icons/exit-192.png",
+          "sha256": "355c48a80980d0f830b23d298c7685d4366bfcedcf68d0459f6ea3e9e36da872"
+        },
+        {
+          "path": "generated/ui/icons/exit-96.png",
+          "sha256": "f55f78cabdd9ff4d7ebbb386422e96aed178d5b3fbb07d7bf44ba26b49324038"
+        },
+        {
+          "path": "generated/ui/icons/exit.svg",
+          "sha256": "fba2bbd75b17cdb5a3ea70040f7a4de6d3b4f5321bb687996bc9a86ff28fb3f5"
+        },
+        {
+          "path": "generated/ui/icons/hand-192.png",
+          "sha256": "1fba548b9cf008ef0f728ea98b0b183d80c1e86fe389d71b46d04c497705590a"
+        },
+        {
+          "path": "generated/ui/icons/hand-96.png",
+          "sha256": "064650fc8b222e3d2edb057203a02aa6de8e177e81d0ed4b6776b23cd494acd5"
+        },
+        {
+          "path": "generated/ui/icons/hand.svg",
+          "sha256": "2b3a00a476b78d61a927687e02c8337dad5cfc54f643fb088988dd4bbb1f4862"
+        },
+        {
+          "path": "generated/ui/icons/help-192.png",
+          "sha256": "0fbd9bec6a65401f11dd28ab3b99ca87d85581a5a33e17f1af36bdd65ee186f2"
+        },
+        {
+          "path": "generated/ui/icons/help-96.png",
+          "sha256": "5d9c054aadfd6c05dd1cb340527ef3ee3d44de8d5561f9a82847dc634ecaf670"
+        },
+        {
+          "path": "generated/ui/icons/help.svg",
+          "sha256": "9c556ca04dda7e6c1877bfa6b1f356a3803412370330a436bffd4910b597ab96"
+        },
+        {
+          "path": "generated/ui/icons/laws-192.png",
+          "sha256": "ffb46e8d2b429175e44a7d3b3f016dfb1c281a7cb8568097609e6057d6ee69e6"
+        },
+        {
+          "path": "generated/ui/icons/laws-96.png",
+          "sha256": "ce62b3cfac86a1403ddbed83ab289711a789ce45c942b2b734189c8889de45a7"
+        },
+        {
+          "path": "generated/ui/icons/laws.svg",
+          "sha256": "f8f1e69cf0abba0bf9eec061e9556f7a876d805148a236d9f2c24c4592e2088b"
+        },
+        {
+          "path": "generated/ui/icons/load-192.png",
+          "sha256": "aac212d339cd52680f2e4570727822af8a135bebd083347f7990fdcaface43a2"
+        },
+        {
+          "path": "generated/ui/icons/load-96.png",
+          "sha256": "4b065686a1f3a217aaa2a2f082be9f0c394321d8301b7871063d92346dd1477a"
+        },
+        {
+          "path": "generated/ui/icons/load.svg",
+          "sha256": "449c25dbe4b4f6f4abd6a47bf7ce64167e9ad6e76e2591c1feb0792295a81c2d"
+        },
+        {
+          "path": "generated/ui/icons/moon-192.png",
+          "sha256": "16c741ec956fcf0846bed55d616e983d1f2c54a32d0fc6d312321c0e1158fbe4"
+        },
+        {
+          "path": "generated/ui/icons/moon-96.png",
+          "sha256": "d4898f52df8a19cb82e932742eb065404d53433a95b8c6b409f23e13f32422be"
+        },
+        {
+          "path": "generated/ui/icons/moon.svg",
+          "sha256": "1303439801da991428f7f643736fe831a6073620390398eb6d935b50f3469725"
+        },
+        {
+          "path": "generated/ui/icons/pause-192.png",
+          "sha256": "cfdd59f7b3cf58115b74cc3c36acfba17fc7b35a7b1be512d91ce3ff65444cc8"
+        },
+        {
+          "path": "generated/ui/icons/pause-96.png",
+          "sha256": "3cd5c67b4717d0f38c733216039fefdf7bb8529e24b17fd5104c1a5c61d3f9ea"
+        },
+        {
+          "path": "generated/ui/icons/pause.svg",
+          "sha256": "e3d89baebe2b278d9389033607ba364a68dbbf55807389165e01d907f2275596"
+        },
+        {
+          "path": "generated/ui/icons/people-192.png",
+          "sha256": "6aa8fd1a3d69b72c3ae61c0958e1158af3dbef85ad2d5901e44a468999721737"
+        },
+        {
+          "path": "generated/ui/icons/people-96.png",
+          "sha256": "b42dce5bb72b0c5875d19e358b9c5d3bce943b1e81ed039251bdff931facf1ec"
+        },
+        {
+          "path": "generated/ui/icons/people.svg",
+          "sha256": "d3e6caa9554c733eaf18c85363808124b2c6c6672f1d1d4125f7749c975f0119"
+        },
+        {
+          "path": "generated/ui/icons/play-192.png",
+          "sha256": "cd29d47cf3cc796df419520af8a5584aa065440ed30fdf368573987b97aae315"
+        },
+        {
+          "path": "generated/ui/icons/play-96.png",
+          "sha256": "1cf883a5790858fcbb5a8f73d397f00e164952f3dffece151363bae089cfd2a8"
+        },
+        {
+          "path": "generated/ui/icons/play.svg",
+          "sha256": "d5fbc25d719528e550dd70d37ddcb16debe19143c05cac49e300767ab1eded7b"
+        },
+        {
+          "path": "generated/ui/icons/save-192.png",
+          "sha256": "8b1e45e641ad78da699a19a3a7b468bd3b5387a57cc53aa49fe5fab9bffd7440"
+        },
+        {
+          "path": "generated/ui/icons/save-96.png",
+          "sha256": "d34e811327dd408150c532ec68a69a811a600a45156c156cd40c7df000ac7686"
+        },
+        {
+          "path": "generated/ui/icons/save.svg",
+          "sha256": "4c14f6d8924fb7c893a90039ffaa54d84ffbe6c6c96a87e4767016bdbd427493"
+        },
+        {
+          "path": "generated/ui/icons/settings-192.png",
+          "sha256": "9c4e6deaf218bc79a439d3ae4a51b57fe755007d94a9c40a1439a7abaa3fa00b"
+        },
+        {
+          "path": "generated/ui/icons/settings-96.png",
+          "sha256": "2524c13cf63f90f42e2f4586514d969aa846aa50cf81d34ab3482d7245b24338"
+        },
+        {
+          "path": "generated/ui/icons/settings.svg",
+          "sha256": "3721f6e5330d5ced05ba1e46fa7143977eee56a07c688c54c497c39beafa7556"
+        },
+        {
+          "path": "generated/ui/icons/star-192.png",
+          "sha256": "3464f715771e66c71405a581aef3fec7db06bab7b74333ff60fdbf0245290f64"
+        },
+        {
+          "path": "generated/ui/icons/star-96.png",
+          "sha256": "c7a761533268c7808ff16266958c25ad29a92dd75c2817d3a13db0275649538d"
+        },
+        {
+          "path": "generated/ui/icons/star.svg",
+          "sha256": "5f7410bb18951a779dc86610048546c5f69316341628ebd25395850b83375c22"
+        },
+        {
+          "path": "generated/ui/icons/sun-192.png",
+          "sha256": "48f3f82c38841ac8e010c932d9700c50c6d1faa0e8f76ca439b7a32192d2a370"
+        },
+        {
+          "path": "generated/ui/icons/sun-96.png",
+          "sha256": "c67477e3935c45d3e35371a60328370aebb140bee2ce6cca39180834427799ac"
+        },
+        {
+          "path": "generated/ui/icons/sun.svg",
+          "sha256": "dd741f00396af49e995d74a65782b8c84760c097f0e7dc954ac8ad4d58d4b63c"
+        },
+        {
+          "path": "generated/ui/icons/tab-buildings-192.png",
+          "sha256": "d3724018d0e6abed9cc6d64fcf6add27c66efc1d9723879cd9f79834994f648c"
+        },
+        {
+          "path": "generated/ui/icons/tab-buildings-96.png",
+          "sha256": "f775531a6960426a3b0100b5cccdfb052e75341f184828e849a804918c4e9a3a"
+        },
+        {
+          "path": "generated/ui/icons/tab-buildings.svg",
+          "sha256": "881d67fcecbd84f92446d198290df3925500d7cf13a46c3148a15b6a6cba8503"
+        },
+        {
+          "path": "generated/ui/icons/tab-camera-192.png",
+          "sha256": "3ce008174be85ef79cf71365ba0c703dabd206448ac3ae499e48ee2487964376"
+        },
+        {
+          "path": "generated/ui/icons/tab-camera-96.png",
+          "sha256": "800a5300cc7fd08ea18eac1fa6513a364231db597f74731ba474d748bcc841f7"
+        },
+        {
+          "path": "generated/ui/icons/tab-camera.svg",
+          "sha256": "b4f9ea02efd3c0670be4a2aaa8d0b50c4516eac7aa8d1aebb0e0df6b7e513325"
+        },
+        {
+          "path": "generated/ui/icons/tab-economy-192.png",
+          "sha256": "e61c9c077daf58051d94a089fb7441c9df06ac11fcf7a45c74e74d693de5f076"
+        },
+        {
+          "path": "generated/ui/icons/tab-economy-96.png",
+          "sha256": "befb6cd12773c7a938829c49254340801c716f28a52e24f97b9d907b1f543860"
+        },
+        {
+          "path": "generated/ui/icons/tab-economy.svg",
+          "sha256": "67f5a49950d44c4985462dae80ff5b6ca8ca321c7b0ed6f5d45c2cbe2a077603"
+        },
+        {
+          "path": "generated/ui/icons/tab-laws-192.png",
+          "sha256": "ffb46e8d2b429175e44a7d3b3f016dfb1c281a7cb8568097609e6057d6ee69e6"
+        },
+        {
+          "path": "generated/ui/icons/tab-laws-96.png",
+          "sha256": "ce62b3cfac86a1403ddbed83ab289711a789ce45c942b2b734189c8889de45a7"
+        },
+        {
+          "path": "generated/ui/icons/tab-laws.svg",
+          "sha256": "f8f1e69cf0abba0bf9eec061e9556f7a876d805148a236d9f2c24c4592e2088b"
+        },
+        {
+          "path": "generated/ui/icons/tab-people-192.png",
+          "sha256": "6aa8fd1a3d69b72c3ae61c0958e1158af3dbef85ad2d5901e44a468999721737"
+        },
+        {
+          "path": "generated/ui/icons/tab-people-96.png",
+          "sha256": "b42dce5bb72b0c5875d19e358b9c5d3bce943b1e81ed039251bdff931facf1ec"
+        },
+        {
+          "path": "generated/ui/icons/tab-people.svg",
+          "sha256": "d3e6caa9554c733eaf18c85363808124b2c6c6672f1d1d4125f7749c975f0119"
+        },
+        {
+          "path": "generated/ui/icons/tab-settings-192.png",
+          "sha256": "9c4e6deaf218bc79a439d3ae4a51b57fe755007d94a9c40a1439a7abaa3fa00b"
+        },
+        {
+          "path": "generated/ui/icons/tab-settings-96.png",
+          "sha256": "2524c13cf63f90f42e2f4586514d969aa846aa50cf81d34ab3482d7245b24338"
+        },
+        {
+          "path": "generated/ui/icons/tab-settings.svg",
+          "sha256": "3721f6e5330d5ced05ba1e46fa7143977eee56a07c688c54c497c39beafa7556"
+        },
+        {
+          "path": "generated/ui/icons/tab-terrain-192.png",
+          "sha256": "bdfbebfb6b2afa4607f01c0eddd9ee8c070b8929e2d0fae53e8a85f08bf45aba"
+        },
+        {
+          "path": "generated/ui/icons/tab-terrain-96.png",
+          "sha256": "cee2345e564e4d6d70d493e6eae1550d88f30a5b6c756cfefe1287c6fba3db3a"
+        },
+        {
+          "path": "generated/ui/icons/tab-terrain.svg",
+          "sha256": "b38da169eb231c6478c43182bdbedf4449816fd6a561061337d35502b90c0768"
+        },
+        {
+          "path": "generated/ui/icons/tab-world-192.png",
+          "sha256": "f1975a4ea677ef35ce866126af81a0bb811affa0b3303a6b000e4508704002f0"
+        },
+        {
+          "path": "generated/ui/icons/tab-world-96.png",
+          "sha256": "d146ea6b795faab11d6c7447753cae8b1fe439cce0c2c73dc143b8384475bc61"
+        },
+        {
+          "path": "generated/ui/icons/tab-world.svg",
+          "sha256": "d81a6e1053c412a27b5c62311d3b4d246a1298119fd1592a08bf882181f0817e"
+        },
+        {
+          "path": "generated/ui/icons/terrain-192.png",
+          "sha256": "bdfbebfb6b2afa4607f01c0eddd9ee8c070b8929e2d0fae53e8a85f08bf45aba"
+        },
+        {
+          "path": "generated/ui/icons/terrain-96.png",
+          "sha256": "cee2345e564e4d6d70d493e6eae1550d88f30a5b6c756cfefe1287c6fba3db3a"
+        },
+        {
+          "path": "generated/ui/icons/terrain.svg",
+          "sha256": "b38da169eb231c6478c43182bdbedf4449816fd6a561061337d35502b90c0768"
+        },
+        {
+          "path": "generated/ui/icons/tools-192.png",
+          "sha256": "0200a728754cfed04503152302d3aebb51f5782da5b2bd44ba9ad92540d7fba0"
+        },
+        {
+          "path": "generated/ui/icons/tools-96.png",
+          "sha256": "0a8ac5161ef9665f3208b4e396f51a7997546fc34663d6d30ea974270aee93d9"
+        },
+        {
+          "path": "generated/ui/icons/tools.svg",
+          "sha256": "5174a5f0e0fcc7b9071b45c7a2deba52f4fd4eebb6ad7a89c8e416f14570873f"
+        },
+        {
+          "path": "generated/ui/icons/world-192.png",
+          "sha256": "f1975a4ea677ef35ce866126af81a0bb811affa0b3303a6b000e4508704002f0"
+        },
+        {
+          "path": "generated/ui/icons/world-96.png",
+          "sha256": "d146ea6b795faab11d6c7447753cae8b1fe439cce0c2c73dc143b8384475bc61"
+        },
+        {
+          "path": "generated/ui/icons/world.svg",
+          "sha256": "d81a6e1053c412a27b5c62311d3b4d246a1298119fd1592a08bf882181f0817e"
+        },
+        {
+          "path": "generated/ui/icons/zoom-in-192.png",
+          "sha256": "b30f34cee2d19618fff0c675c0a131885bc26def30bb8c8c8fc88ed66e9c01dd"
+        },
+        {
+          "path": "generated/ui/icons/zoom-in-96.png",
+          "sha256": "d8f08f9c5a7cda21d3a52fa1ffab01eae617909ac46f9964cbc1af553ba8c29b"
+        },
+        {
+          "path": "generated/ui/icons/zoom-in.svg",
+          "sha256": "29baa835a7c5c6b9420484154fa05498ebfd333b4a6b60fa325fbe986d8ac312"
+        },
+        {
+          "path": "generated/ui/icons/zoom-out-192.png",
+          "sha256": "9822257fa53ece497577443dad2340bbd7fa7ed2c12ef6fbb1658836990afa02"
+        },
+        {
+          "path": "generated/ui/icons/zoom-out-96.png",
+          "sha256": "78eafda696bada0c2e4067654ecc141bcaa916f03cab6ed4a1942ae3c1e17d91"
+        },
+        {
+          "path": "generated/ui/icons/zoom-out.svg",
+          "sha256": "f33fc1f722516763c20671ae605eb4871c1b6abc4e58e924b5acbadff71a05ea"
+        },
+        {
+          "path": "recipes/pixel_surfaces.cpp",
+          "sha256": "4cfb1009e636661b62f081f2c822deff5a6adcd1c2b21a2a12d973fc5e9e6573"
+        },
+        {
+          "path": "shader-source/common.sh",
+          "sha256": "898a0c49d37ed230b1bd78b812bf603d834185bd576bcb684e66ba13b0d86e02"
+        },
+        {
+          "path": "shader-source/shadow.fs.sc",
+          "sha256": "889f9e162b323b055e54292ee269aa60ec94a7cf35752b15084c47dc80c726a5"
+        },
+        {
+          "path": "shader-source/shadow.vs.sc",
+          "sha256": "94410a6484f25caa0ffb868bd5bf99eb324efc649e9b9beff046131697b937dd"
+        },
+        {
+          "path": "shader-source/sky.fs.sc",
+          "sha256": "427b9192d8142e924e8cfd441e58854df69cfbb0e758ada08a68e758feeb4671"
+        },
+        {
+          "path": "shader-source/sky.vs.sc",
+          "sha256": "1e42f47fa8fc675c3f88ee16fbc5c3ae0ba84da3598db0e9dd920a4ad072c3f0"
+        },
+        {
+          "path": "shader-source/surface.sh",
+          "sha256": "c98562911e824fcc399d63daf3c2043acd41c9dc76ce256ffe0001d12b19feac"
+        },
+        {
+          "path": "shader-source/ui.fs.sc",
+          "sha256": "cbacaa7fdf8b99f240e4215965f7aa379309b5a0158e5f2ded406eef234a14d8"
+        },
+        {
+          "path": "shader-source/ui.vs.sc",
+          "sha256": "5f607d6d65d90705f44bac007698eb5e07d42a53a59787322ddf076c7d58d060"
+        },
+        {
+          "path": "shader-source/varying.def.sc",
+          "sha256": "a5a2cb446b80bc10c4cf2a109a10a1bfee7dbf9df7ed12c82bd6fccf972bb0e0"
+        },
+        {
+          "path": "shader-source/water.fs.sc",
+          "sha256": "7186846e7634c64c514ec0f339bdb75dcddbed27939e436dcd8d3dc8ff4bcaf0"
+        },
+        {
+          "path": "shader-source/world.fs.sc",
+          "sha256": "9a4479930b55939423c9ef00c8fd61088efa6854aeaeef8f5ca0ac5928de05d4"
+        },
+        {
+          "path": "shader-source/world.vs.sc",
+          "sha256": "cc8c7cd3a918a180f0b02d474a65b979b2d62befe53cae2d75c2d5eba56680d3"
+        },
+        {
+          "path": "ui/application.rcss",
+          "sha256": "0a7df4ecaa266159e0963ffb4361cc39fd8c03af16df7d796773d8b5be12c4d0"
+        },
+        {
+          "path": "ui/application.rml",
+          "sha256": "73b482cc48f663e5a8b13f860da33ae6e8dc1ffc96a7a11dc1ca0254b3c3141d"
+        },
+        {
+          "path": "ui/locales.tsv",
+          "sha256": "b15dbb9d49e87372c43fb098f2baa5cfee70a618e23078666b9eb1ea348f478d"
+        }
+      ],
+      "format": "SonnAssets1"
+    }
+  },
+  "build_log_sha256": "08f9a64da4d4a576e6ec880e1dd921f5648acff783c62c6c3389ef5b561b2c98",
+  "captures": [
+    {
+      "name": "blank-oblique.tga",
+      "sha256": "63d95a76c8c7e12100f946cf6eb68bb63b523e45a1558fb49b3ad81205823711",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "blank-preview.tga",
+      "sha256": "f2da6d3521aeaddd8ff411b6a4573c1319380d3ce6383d7181773ad9275f37cb",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "blank-world.tga",
+      "sha256": "6af6fae012129d679bf4f18038ea1cfb7e01206ea3aa3e7f6b2765c460a6d2b8",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-centered.tga",
+      "sha256": "e9cc7beb2bbce970ef4a1cbe230412d825bd8f56a6dbbbbb28915aa69f1a7f67",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-error.tga",
+      "sha256": "6373a7de0ed277df7ef1d8b762eec2776172a9231a1eae8c23a8000e92b7f07c",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-options-centered.tga",
+      "sha256": "e9977eea44c51219f68664e06843016ffe62376ecbcf8aca3c74f4b0665a7d2d",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "darkness.tga",
+      "sha256": "00a37be8a99da1461787563b6470c7e2bc88db47263442d2442ce078d5912e05",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "land-preview.tga",
+      "sha256": "4f4b681af7226a0eed46bfcb4b7149b0dea65966cf80d849ff78170fac70f8aa",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "loaded-world.tga",
+      "sha256": "a6a3540eb6bec190cff5816bafe309b90c9c7c20a677d5c93f6f5b7f7c395988",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-frozen-a.tga",
+      "sha256": "df45ae6fe38a5d9a855f42aa4284d21df1f778a52daafeae40e7dcc563f3bd96",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-frozen-b.tga",
+      "sha256": "df45ae6fe38a5d9a855f42aa4284d21df1f778a52daafeae40e7dcc563f3bd96",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-motion.tga",
+      "sha256": "df45ae6fe38a5d9a855f42aa4284d21df1f778a52daafeae40e7dcc563f3bd96",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu.tga",
+      "sha256": "80865056cf12ea8d8bd4091a08c08648b57c633d34fa3321937ee584e0d69955",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-darkness.tga",
+      "sha256": "7ae291860759b0ea4428e21189751882a098b72d8947b80bc94440ce100bd27c",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-full.tga",
+      "sha256": "a4aa8c3c740b0000253182a33a47fa5a87cecf39ed9ac63a569d8f970d95dbcd",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-light.tga",
+      "sha256": "a4aa8c3c740b0000253182a33a47fa5a87cecf39ed9ac63a569d8f970d95dbcd",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-mean-base.tga",
+      "sha256": "705ff1b77765199fa26266c7780c0eaa30a4de48e0facb50d277b9f086865164",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "sea-preview.tga",
+      "sha256": "65a8f5b1a115ef5c64cae175ada089b9ae54958e2791e8f8dd08731b83a61b79",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-de.tga",
+      "sha256": "a7b3ba77e6103e5a1845ff899d7de65b26956b9fc497452e4eb2ce407d50fdc8",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-en.tga",
+      "sha256": "01a47a8707542b052cb28f15294089781e5848db17cd431006a3b0b103bd5daf",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-zh.tga",
+      "sha256": "79a8ec93db9eee99ab72271df96ec5bdbdb39732304786eb46bb1ce81979909f",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "world-name-consequences.tga",
+      "sha256": "27d3ac77efcf80fd685fa72e678b2be9fdc7b4c7572ba138559ee20c2987f1cd",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    }
+  ],
+  "published_evidence": [
+    {
+      "path": "docs/evidence/heavy-arcade/acceptance.log",
+      "sha256": "c76f61cd5a926fce90d1416fafabc15cdb3e25838a20484c27cea5030d2a6e36",
+      "bytes": 9142
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/blank-oblique.png",
+      "sha256": "1f52de8107ff95158638ec68e5c4b8ee90b60b140e28155fb4afa24101d290c9",
+      "bytes": 1808503
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/camera-input.json",
+      "sha256": "2ef5e94cf3cde9a2aefc1a9d69fca7c69d32ea49580db83ca14aae2d6e108e82",
+      "bytes": 428
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/creation-centered.png",
+      "sha256": "a8edac1aca73d314d1fc8f4c57be890fb52cc9c4fe6652868aa6ceeb4126769c",
+      "bytes": 38578
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/creation-error.png",
+      "sha256": "571017192f1f67e2d05afe14e96928e30b183eeed14706f20dfb1487382e23d3",
+      "bytes": 40759
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/creation-ui.json",
+      "sha256": "e8f2827fe208f2ad552beff2252a7d1d5a1c6392a379db25b56823dba5a23ced",
+      "bytes": 273
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/ctest.log",
+      "sha256": "57259186fda342ab89184adcda781d61775964d9a3331ecb164cef173997c9fa",
+      "bytes": 3089
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/error-layer.json",
+      "sha256": "308341a9fcdf4856249a1c60dae76a893d52d591ef88d665da53dd87844672d1",
+      "bytes": 174
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/gpu-world.json",
+      "sha256": "5d91d793c0ef76d415954c214b3e7f87b2072f654b586dca7ef1e98ce8b2a0ef",
+      "bytes": 2147
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/gpu.json",
+      "sha256": "39eded8b8a3759c700ddb575e1f868451ae670ae9005c7a6b7a0aabd7d1ecfe5",
+      "bytes": 2108
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/large-world-gpu.json",
+      "sha256": "64a228ea83cd554e6bae479d5ca17b144c3a0be4432a23e3ca969d9762aebc70",
+      "bytes": 2171
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/large-world.json",
+      "sha256": "c0b0b405a2de1ac4b9133d77002675e6b696bb3fb31344703cbb1ecf7d1a6324",
+      "bytes": 458
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/main-menu.png",
+      "sha256": "9a490386238cd51f6632130b909b6357883239d21a041e7f1aa0762e6f1018c2",
+      "bytes": 33698
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/native-flow.json",
+      "sha256": "abe6b06dabfe1b6fa5fa6222d59575458f4bd6317596078a2912f0f7893010fb",
+      "bytes": 2252
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/presentation-motion.json",
+      "sha256": "8719ade342fc3cbfec75b306ecaebdf581fa59ba5e493a9a3ca48eba86fb5b2b",
+      "bytes": 334
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/settings-zh.png",
+      "sha256": "e4893c84ea00632f042021f5e6c86e8daa5b7924207b38ae31316c233150c3d2",
+      "bytes": 1152072
+    },
+    {
+      "path": "docs/evidence/heavy-arcade/toolbar-detail.png",
+      "sha256": "b074382f17faa8b9b1cf17a963f9ae513a371de22c88b32b53ae627c0da6bef0",
+      "bytes": 682545
+    }
+  ],
+  "limitations": [
+    "Current world remains 0 population and 0 buildings; production Godterrain/ramp/life/buildings/civilization are later stages.",
+    "GSHHG original sources/core Earth regression retained as historical test resources only; no public World-map or Earth creation.",
+    "Existing saves are preserved; exact definition/asset package validation remains, no arbitrary prior-version migration.",
+    "Development Metal GPU evidence and Windows compilation CI do not prove Windows GPU or Steam installation."
+  ]
+}

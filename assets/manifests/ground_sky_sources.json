@@ -1,0 +1,605 @@
+{
+  "acquired_utc_date": "2026-10-08",
+  "api_terms_url": "https://github.com/Poly-Haven/Public-API/blob/master/ToS.md",
+  "assets": [
+    {
+      "archive": {
+        "bytes": 21982446,
+        "filename": "brown_mud-2k-sources-v1.zip",
+        "sha256": "d6db6961c4641b3f6ac21758c03bb455847ef59ba8297a589abc46c67c1a07c3",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/brown_mud-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "files": [
+        {
+          "bytes": 7393206,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "brown_mud_diff_2k.png",
+          "format": "png",
+          "sha256": "4709452f41154926d6d6355207044fb13b8bedc2b234f2870bb3e0d5bd5a026d",
+          "slot": "base_color",
+          "upstream_md5": "ffc9062843d8d0ca36b15bdf815c3bfb",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/brown_mud/brown_mud_diff_2k.png"
+        },
+        {
+          "bytes": 8710573,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "brown_mud_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "06f04240c8aad947bb37acd118763e92736f57c8edaf27e95fe8185d32bbbabd",
+          "slot": "normal_gl",
+          "upstream_md5": "f722dd7040d0bfe4f040646cd595ad14",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/brown_mud/brown_mud_nor_gl_2k.png"
+        },
+        {
+          "bytes": 5869184,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "brown_mud_arm_2k.png",
+          "format": "png",
+          "sha256": "65a069d5c18895a93781c8be2265bd447c51169b515115d0e6f8151fbba2adb4",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "461cc34d570a3c824a3c05b574fa1497",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/brown_mud/brown_mud_arm_2k.png"
+        }
+      ],
+      "id": "brown_mud",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/brown_mud",
+      "physical_size_m": [
+        1.299996,
+        1.299996
+      ],
+      "resolution": "2k",
+      "role": "mud"
+    },
+    {
+      "archive": {
+        "bytes": 64984605,
+        "filename": "grass_ground-2k-sources-v1.zip",
+        "sha256": "981938f49ea726437ee53b0d31bd9b7fc205373fda9f8d9a74ce6499ee84e804",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/grass_ground-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "files": [
+        {
+          "bytes": 23017857,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "grass_ground_diff_2k.png",
+          "format": "png",
+          "sha256": "711341bcef8c1e7317a70e6bb39e1e63878e3946e26c93b78e3835f26bd26620",
+          "slot": "base_color",
+          "upstream_md5": "a80a7eb329bc77fddbc885793ff268c1",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/grass_ground/grass_ground_diff_2k.png"
+        },
+        {
+          "bytes": 24557731,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "grass_ground_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "d215b1ef91e7fddaef060064b3a9219551bdec51c64a14deed8aa7ce0e68d012",
+          "slot": "normal_gl",
+          "upstream_md5": "5792932be9f2695195f5f38dd14046d8",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/grass_ground/grass_ground_nor_gl_2k.png"
+        },
+        {
+          "bytes": 17399472,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "grass_ground_arm_2k.png",
+          "format": "png",
+          "sha256": "6ae824ff1205510685481890a01aa2e5c27386721ca0b900cad23d15c1f02c51",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "0b0114136ec5d64aaeac73bcaaa73450",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/grass_ground/grass_ground_arm_2k.png"
+        }
+      ],
+      "id": "grass_ground",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/grass_ground",
+      "physical_size_m": [
+        2.51,
+        2.51
+      ],
+      "resolution": "2k",
+      "role": "dense_grass"
+    },
+    {
+      "archive": {
+        "bytes": 62013977,
+        "filename": "sparse_grass-2k-sources-v1.zip",
+        "sha256": "98ab3af0876c44e63204bbe151081d7ce58bb2afdee1855b0deb53fd0bca3504",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/sparse_grass-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Amal Kumar": "All"
+      },
+      "files": [
+        {
+          "bytes": 22593728,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sparse_grass_diff_2k.png",
+          "format": "png",
+          "sha256": "d24a836c12689f4fda41358251f30ddb865bbad41ccac63bf276b13559d55167",
+          "slot": "base_color",
+          "upstream_md5": "7de88637c54d5fa32953e89b9a31af67",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sparse_grass/sparse_grass_diff_2k.png"
+        },
+        {
+          "bytes": 24333251,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sparse_grass_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "3295cf5ca9db4ed1888d94ebf7e69295c1c6607beeb1e3bd5373c7cd20c9318e",
+          "slot": "normal_gl",
+          "upstream_md5": "890a75197a9aa1e44a29a0af64634576",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sparse_grass/sparse_grass_nor_gl_2k.png"
+        },
+        {
+          "bytes": 15077462,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sparse_grass_arm_2k.png",
+          "format": "png",
+          "sha256": "a3f0684562d5caeed8e1179206bb7bcf630eb99f9fbcb6c50e50287170228684",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "a956382aab773678ca3ee079c6a9fd04",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sparse_grass/sparse_grass_arm_2k.png"
+        }
+      ],
+      "id": "sparse_grass",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/sparse_grass",
+      "physical_size_m": [
+        2.0,
+        2.0
+      ],
+      "resolution": "2k",
+      "role": "sparse_grass"
+    },
+    {
+      "archive": {
+        "bytes": 27379950,
+        "filename": "forest_leaves_02-2k-sources-v1.zip",
+        "sha256": "141b4dca7d29d49eda169a951f78efee39a88ea88b4444dd452a03251dbdaaf2",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/forest_leaves_02-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "files": [
+        {
+          "bytes": 9748582,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "forest_leaves_02_diffuse_2k.png",
+          "format": "png",
+          "sha256": "5f572a23d6e4a7c7ea132272945f7dabb301101641083f9f490e89b1f65be4e7",
+          "slot": "base_color",
+          "upstream_md5": "142798abe47028a0c7c8ed35ae53140d",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/forest_leaves_02/forest_leaves_02_diffuse_2k.png"
+        },
+        {
+          "bytes": 10708761,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "forest_leaves_02_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "b352e89611239796aa307afd3d34a83aca77b8e2a98244e3458ec3fa5b635af2",
+          "slot": "normal_gl",
+          "upstream_md5": "cce2a8fd9454483a17f65b3cfc832725",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/forest_leaves_02/forest_leaves_02_nor_gl_2k.png"
+        },
+        {
+          "bytes": 6912984,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "forest_leaves_02_arm_2k.png",
+          "format": "png",
+          "sha256": "d8106fc2d56ceb1bbffdfa00772364aed678b51c1621cae7d554f6230151635f",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "ce01b23560c9fca6e62fec5f8ecd1bae",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/forest_leaves_02/forest_leaves_02_arm_2k.png"
+        }
+      ],
+      "id": "forest_leaves_02",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/forest_leaves_02",
+      "physical_size_m": [
+        3.000973,
+        3.00098
+      ],
+      "resolution": "2k",
+      "role": "forest_floor"
+    },
+    {
+      "archive": {
+        "bytes": 70462800,
+        "filename": "dry_ground_01-2k-sources-v1.zip",
+        "sha256": "7138fc37d7c5b8cd2a0144170671bd7ecbf14a863476d44cbf17b4df3014d612",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/dry_ground_01-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "files": [
+        {
+          "bytes": 25962764,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "dry_ground_01_diff_2k.png",
+          "format": "png",
+          "sha256": "6304e560e28ee2849ab21853d7126e99118c90a312243c60c227bdc8418d2517",
+          "slot": "base_color",
+          "upstream_md5": "7a83a9f071ff6a435304eb1eae045804",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/dry_ground_01/dry_ground_01_diff_2k.png"
+        },
+        {
+          "bytes": 25971966,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "dry_ground_01_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "763a8785f9d1d333491587fcc180ec6618b5ef123daa86b540e7f8dd75d487f2",
+          "slot": "normal_gl",
+          "upstream_md5": "31b81b7f876f1b49b2e0d56ccdb6227d",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/dry_ground_01/dry_ground_01_nor_gl_2k.png"
+        },
+        {
+          "bytes": 18518521,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "dry_ground_01_arm_2k.png",
+          "format": "png",
+          "sha256": "69e5b781f6b517d82bd67e8ae15261654b8faf1d302ac841b78704e59c0d00ed",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "4e2cb89c5e001a93952294d3a49d4ea8",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/dry_ground_01/dry_ground_01_arm_2k.png"
+        }
+      ],
+      "id": "dry_ground_01",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/dry_ground_01",
+      "physical_size_m": [
+        4.0,
+        4.0
+      ],
+      "resolution": "2k",
+      "role": "dry_soil"
+    },
+    {
+      "archive": {
+        "bytes": 64885776,
+        "filename": "sandy_gravel_02-2k-sources-v1.zip",
+        "sha256": "84259d75c73893e86cfe9c8aeee2fa26dcb41105436a89eed684e9bdb22c21d7",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/sandy_gravel_02-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Dario Barresi": "All"
+      },
+      "files": [
+        {
+          "bytes": 23348099,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sandy_gravel_02_diff_2k.png",
+          "format": "png",
+          "sha256": "4fcd7bde52c83b7a31426a9813636ccad923ea0824947ebdf63634ba1c2d7343",
+          "slot": "base_color",
+          "upstream_md5": "894baabb36ef133337415c62dadb9a5f",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandy_gravel_02/sandy_gravel_02_diff_2k.png"
+        },
+        {
+          "bytes": 24038535,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sandy_gravel_02_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "6737530c0280b678a55de7a9f2046012de60e28edcadf65e556cc855a83886b4",
+          "slot": "normal_gl",
+          "upstream_md5": "9278f7845f5fe83d9dd252918faf4013",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandy_gravel_02/sandy_gravel_02_nor_gl_2k.png"
+        },
+        {
+          "bytes": 17489556,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sandy_gravel_02_arm_2k.png",
+          "format": "png",
+          "sha256": "79329985280a5de1e55500103ea7440b62c2f033ae38dde23a412852a3b70596",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "447365212c37544de46f96c570924385",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sandy_gravel_02/sandy_gravel_02_arm_2k.png"
+        }
+      ],
+      "id": "sandy_gravel_02",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/sandy_gravel_02",
+      "physical_size_m": [
+        2.53,
+        2.53
+      ],
+      "resolution": "2k",
+      "role": "gravel"
+    },
+    {
+      "archive": {
+        "bytes": 61818185,
+        "filename": "sand_03-2k-sources-v1.zip",
+        "sha256": "add9722261de7c36014511a983ec430d9ae87a540b99273d6c290fc450182202",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/sand_03-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "files": [
+        {
+          "bytes": 22861671,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sand_03_diff_2k.png",
+          "format": "png",
+          "sha256": "2331f246bf721a93a7c946ef75289060e86d3d67612ec8a25d81c58e96e66ee8",
+          "slot": "base_color",
+          "upstream_md5": "1e11495eb44657ef29426ac235ae141a",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sand_03/sand_03_diff_2k.png"
+        },
+        {
+          "bytes": 22273220,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sand_03_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "43b8179110e6ac28e230c931216fbdf1923f93f62502df4255c0b68525adf628",
+          "slot": "normal_gl",
+          "upstream_md5": "902a565005b714356b0a4863a23f4515",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sand_03/sand_03_nor_gl_2k.png"
+        },
+        {
+          "bytes": 16673839,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "sand_03_arm_2k.png",
+          "format": "png",
+          "sha256": "9776c9cea366bf5b42f8752f58543712f0b46c83186cc45131c701564b705016",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "0e425260ba9769b8d432acfd318fe0c4",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/sand_03/sand_03_arm_2k.png"
+        }
+      ],
+      "id": "sand_03",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/sand_03",
+      "physical_size_m": [
+        2.0,
+        2.0
+      ],
+      "resolution": "2k",
+      "role": "dry_sand"
+    },
+    {
+      "archive": {
+        "bytes": 63197883,
+        "filename": "damp_beach_sand-2k-sources-v1.zip",
+        "sha256": "01f4b4f747bdec2a48bdbd9f56d96b82db4ea4d4071a5b5ead8f2325efbd6bd1",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/damp_beach_sand-2k-sources-v1.zip"
+      },
+      "authors": {
+        "Dimitrios Savva": "All"
+      },
+      "files": [
+        {
+          "bytes": 22664485,
+          "color_space": "sRGB",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "damp_beach_sand_diff_2k.png",
+          "format": "png",
+          "sha256": "59cc7611a6882230253d57d8f6f1bc2e4104e02b310418447eb0c0461b26c48c",
+          "slot": "base_color",
+          "upstream_md5": "ce5301bff8d364392f7e47e097aaec43",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/damp_beach_sand/damp_beach_sand_diff_2k.png"
+        },
+        {
+          "bytes": 22351223,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "damp_beach_sand_nor_gl_2k.png",
+          "format": "png",
+          "sha256": "79bb98e9cfc5b4c4098918f86fd93a59a79c2722a7e927211cd8edabb367d508",
+          "slot": "normal_gl",
+          "upstream_md5": "c0a9fe9f72d39152aa533dbfda0393aa",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/damp_beach_sand/damp_beach_sand_nor_gl_2k.png"
+        },
+        {
+          "bytes": 18172587,
+          "color_space": "linear",
+          "expected_dimensions": [
+            2048,
+            2048
+          ],
+          "filename": "damp_beach_sand_arm_2k.png",
+          "format": "png",
+          "sha256": "b6ba162e3f55c38979509ecf5e4eb645cf0ee2b1094ed18fa9d59e4d75bec426",
+          "slot": "occlusion_roughness_metallic",
+          "upstream_md5": "339d0c04100b5801947a996afb0c0a4d",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/damp_beach_sand/damp_beach_sand_arm_2k.png"
+        }
+      ],
+      "id": "damp_beach_sand",
+      "kind": "ground",
+      "page": "https://polyhaven.com/a/damp_beach_sand",
+      "physical_size_m": [
+        2.0,
+        2.0
+      ],
+      "resolution": "2k",
+      "role": "wet_sand"
+    },
+    {
+      "archive": {
+        "bytes": 63986271,
+        "filename": "kloppenheim_05_puresky-8k-sources-v1.zip",
+        "sha256": "55d8e44ac9e250a557cddf07356aae6a98f4a44a796d3827eb22cf79eaff086c",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/kloppenheim_05_puresky-8k-sources-v1.zip"
+      },
+      "authors": {
+        "Greg Zaal": "Original",
+        "Jarod Guest": "Sky Edits"
+      },
+      "files": [
+        {
+          "bytes": 63978009,
+          "color_space": "linear_HDR",
+          "expected_dimensions": [
+            8192,
+            4096
+          ],
+          "filename": "kloppenheim_05_puresky_8k.hdr",
+          "format": "radiance_hdr",
+          "sha256": "d80ffef8da49a4c8db52fabbf8a1adda0dbf24564020a0c41b73319f73b25087",
+          "slot": "radiance",
+          "upstream_md5": "1e83209747ea6c6d9a4b8028a71d6512",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/kloppenheim_05_puresky_8k.hdr"
+        }
+      ],
+      "id": "kloppenheim_05_puresky",
+      "kind": "sky",
+      "page": "https://polyhaven.com/a/kloppenheim_05_puresky",
+      "resolution": "8k",
+      "role": "age_of_light"
+    },
+    {
+      "archive": {
+        "bytes": 81318826,
+        "filename": "qwantani_night_puresky-8k-sources-v1.zip",
+        "sha256": "1cdf5290ab4888e2dd8cca0249e6ab523c5b82deb6270f2ccfb7253baa770459",
+        "url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/ground-sky-sources-v1/qwantani_night_puresky-8k-sources-v1.zip"
+      },
+      "authors": {
+        "Greg Zaal": "Photography",
+        "Jarod Guest": "Processing"
+      },
+      "files": [
+        {
+          "bytes": 81310557,
+          "color_space": "linear_HDR",
+          "expected_dimensions": [
+            8192,
+            4096
+          ],
+          "filename": "qwantani_night_puresky_8k.hdr",
+          "format": "radiance_hdr",
+          "sha256": "f83acb478901de7afce7e35cf5ed0f2ee6b8f45ae559c21edaabbadb61afae4f",
+          "slot": "radiance",
+          "upstream_md5": "e4a895652cdee48aab9ab157d22d9884",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/qwantani_night_puresky_8k.hdr"
+        }
+      ],
+      "id": "qwantani_night_puresky",
+      "kind": "sky",
+      "page": "https://polyhaven.com/a/qwantani_night_puresky",
+      "resolution": "8k",
+      "role": "age_of_darkness"
+    }
+  ],
+  "game_ready": false,
+  "license": "CC0-1.0",
+  "license_text": {
+    "bytes": 7048,
+    "path": "assets/source/third_party/poly_haven/CC0-1.0.txt",
+    "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt"
+  },
+  "license_url": "https://polyhaven.com/license",
+  "notes": [
+    "No website preview images, Poly Haven logo, third-party buildings or live API client are imported.",
+    "Original PNG/HDR bytes are unchanged; source packs are deterministic ZIP_STORED with per-asset receipt and CC0.",
+    "Ground physical dimensions are converted from official metadata millimetres to metres.",
+    "HDR source headers and SHA verified; complete native visual/IBL/exposure QA remains pending.",
+    "2K source channels and 8K panorama resolution do not describe global map source accuracy."
+  ],
+  "provider": "Poly Haven",
+  "release_tag": "ground-sky-sources-v1",
+  "runtime_integrated": false,
+  "schema_version": 1,
+  "source_status": "original_bytes_acquired_SHA256_verified_release_publication_via_locked_workflow"
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "fonts": [
+    {
+      "name": "noto-serif-cjk-sc-regular",
+      "family": "Noto Serif CJK SC",
+      "style": "Regular",
+      "font_version": "2.003",
+      "format": "static OpenType CFF",
+      "license": "OFL-1.1",
+      "copyright": "© 2017-2024 Adobe (http://www.adobe.com/).",
+      "repository": "https://github.com/notofonts/noto-cjk",
+      "revision": "f8d157532fbfaeda587e826d4cd5b21a49186f7c",
+      "upstream_path": "Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf",
+      "upstream_git_blob_sha1": "cba8a4783cc38574ac7cda52cae7d9b4241c07a5",
+      "project_path": "assets/source/ui/fonts/noto-serif-cjk-sc/NotoSerifCJKsc-Regular.otf",
+      "archive_filename": "noto-serif-cjk-sc-f8d157532fbfaeda587e826d4cd5b21a49186f7c-Regular.otf",
+      "archive_sha256": "2a2eae2628df83556c54018c41e20fa532c1b862c5256ae8b3f23feb918d12ca",
+      "archive_bytes": 24543080,
+      "archive_format": "raw-otf",
+      "official_source_url": "https://raw.githubusercontent.com/notofonts/noto-cjk/f8d157532fbfaeda587e826d4cd5b21a49186f7c/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf",
+      "project_release_url": "https://github.com/sky-yueer-yang/sonnheide/releases/download/native-sources-v1/noto-serif-cjk-sc-f8d157532fbfaeda587e826d4cd5b21a49186f7c-Regular.otf",
+      "storage": "Project GitHub Release binary; checked-in provenance and unmodified license; native vendor restores project_path",
+      "licenses": [
+        {
+          "upstream_path": "Serif/LICENSE",
+          "project_path": "assets/source/ui/fonts/noto-serif-cjk-sc/OFL.txt",
+          "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+          "bytes": 4301,
+          "upstream_git_blob_sha1": "d952d62c065f3f35fb83a173496e90b21525aef3",
+          "official_source_url": "https://raw.githubusercontent.com/notofonts/noto-cjk/f8d157532fbfaeda587e826d4cd5b21a49186f7c/Serif/LICENSE"
+        }
+      ],
+      "notice_path": "assets/source/ui/fonts/noto-serif-cjk-sc/NOTICE.md",
+      "validation": {
+        "original_bytes_downloaded": true,
+        "font_modified": false,
+        "sfnt_signature": "OTTO",
+        "table_count": 17,
+        "glyph_count": 65535,
+        "cmap_format": 12,
+        "cmap_group_count": 15651,
+        "fvar_present": false,
+        "tested_unique_characters": 181,
+        "missing_characters": [],
+        "coverage_sources": ["ASCII U+0020..U+007E", "client/native/menu_model.cpp", "ui/application/main-menu.rml"],
+        "offline_audit_command": "python3 assets/source/ui/fonts/noto-serif-cjk-sc/verify_font.py",
+        "coverage_scope": "Current menu characters; not a claim that every historical or regional CJK character exists",
+        "freetype_runtime_rasterization": {
+          "version": "2.13.3",
+          "linked_library": ".build/native/deps/freetype/libfreetype.a",
+          "probe_glyphs_rendered": 68,
+          "probe_pixel_height": 36,
+          "charmap": "FT_ENCODING_UNICODE",
+          "load_flags": "FT_LOAD_RENDER",
+          "result": "PASS: actual static library opened face and rasterized nonempty Chinese and German glyph bitmaps",
+          "scope": "Temporary independent font probe; native RmlUi/Metal visual smoke testing remains separate"
+        }
+      }
+    }
+  ],
+  "existing_font_policy": "Cinzel.ttf and its original manifest/notices remain unchanged. This manifest describes only the new distributable Chinese font.",
+  "original_art_policy": "Font permissions grant no redistribution license over original project branding, paintings or game content."
+}

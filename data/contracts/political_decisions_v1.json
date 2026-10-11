@@ -1,0 +1,2326 @@
+{
+  "schema_version": 1,
+  "contract_id": "political_decisions_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "audit_date": "2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "sources": {
+    "authoritative_design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+    "algorithm_document": "docs/architecture/POLICY_AND_POLITICAL_DECISIONS.md",
+    "original_source_preserved": "docs/design/Sonnheide_Complete_Design_v0.6.md",
+    "primary_research": [
+      {
+        "title": "Rubinstein 1982 Perfect Equilibrium in a Bargaining Model",
+        "url": "https://arielrubinstein.org/papers/11.pdf",
+        "use": "alternating_offer_and_waiting_cost_analysis_only"
+      },
+      {
+        "title": "Fearon 1995 Rationalist Explanations for War",
+        "url": "https://web.stanford.edu/group/fearon-research/cgi-bin/wordpress/wp-content/uploads/2013/10/Rationalist-Explanations-for-War.pdf",
+        "use": "private_information_and_commitment_problem_analysis_only"
+      }
+    ],
+    "worldbox_internal_formula_claim": false,
+    "new_runtime_dependency": false
+  },
+  "cross_contract_interfaces": {
+    "decision_core": "data/contracts/decision_core_v1.json",
+    "civic": "data/contracts/civic_control_v1.json",
+    "settlements": "data/contracts/settlement_lifecycle_v1.json",
+    "life": "data/contracts/life_genetics_v1.json",
+    "god": "data/contracts/god_control_v1.json",
+    "natural_action": "data/contracts/natural_action_v1.json",
+    "game": "data/contracts/game_v0_8.json"
+  },
+  "invariants": [
+    "law_passage_authorization_budget_reservation_actual_delivery_and_acceptance_are_separate",
+    "actual_actor_role_authority_and_eligibility_precede_personality_preference",
+    "ruler_death_does_not_destroy_state_or_transfer_public_treasury_to_estate",
+    "one_valid_ballot_per_lawful_seat_per_exact_proposal_hash",
+    "lawful_multiple_seats_one_actor_not_same_seat_twice",
+    "frozen_procedure_not_changed_after_result",
+    "personality_never_adds_goods_votes_population_qualification_or_divine_grant",
+    "forecast_income_not_actual_spendable_cash",
+    "legislative_approval_not_asset_owner_transfer",
+    "actual_stock_route_work_and_finite_budget_required_for_delivery",
+    "world_truth_validation_not_hidden_information_oracle",
+    "related_source_chains_not_independent_evidence_or_repeated_grievance_loss",
+    "root_religion_only_player_and_church_founding_type_frozen",
+    "imperial_reserved_rights_member_consent_and_divine_grant_maintained",
+    "treaty_exact_terms_authority_and_real_resources_revalidated",
+    "local_defense_and_existing_war_not_disabled_by_ai_new_wars",
+    "organized_unlawful_hostility_explicit_no_fake_legal_war_authorization",
+    "real_plot_participants_actions_and_resources_no_rebel_spawn",
+    "past_spend_tax_damage_and_completed_work_not_undone_by_repeal_or_load",
+    "camera_locale_render_fps_workers_wallclock_do_not_change_decisions"
+  ],
+  "shared_records": {
+    "DecisionEpisode_fields": [
+      "episodeId",
+      "subjectRef",
+      "accountableActorRef",
+      "roleAuthorityRevision",
+      "domain",
+      "decisionCounter",
+      "startTick",
+      "dueTick",
+      "BeliefSnapshotId",
+      "candidateSetVersion",
+      "selectedPlanId",
+      "CommitmentRef",
+      "logicalWorkCursor",
+      "OutcomeAttributionRefs"
+    ],
+    "BeliefObservation_fields": [
+      "ObservedFactId",
+      "subject",
+      "predicate",
+      "estimateLo",
+      "estimateHi",
+      "confidenceQ",
+      "observedTick",
+      "receivedTick",
+      "sourceChain"
+    ],
+    "CandidatePlan_required": [
+      "typed_preconditions",
+      "resource_and_time_claims",
+      "horizon",
+      "postconditions",
+      "failure_continuations",
+      "refinement"
+    ],
+    "PersonalitySnapshot": "current_six_axes_q_0_to_10000_separate_from_genetic_predisposition_emotional_state_and_skills",
+    "accountable_actor": "actual_existing_incumbent_representative_or_lawful_proxy_not_state_averaged_personality",
+    "institution_memory": "lawful_procedures_and_known_precedents_not_dead_ruler_private_knowledge"
+  },
+  "units": {
+    "SimTick": "authoritative_integer",
+    "ticks_per_motion_second": 20,
+    "ticks_per_game_day": 12000,
+    "days_per_game_year": 360,
+    "money": "accounting_minor_units_integer",
+    "rate": "basis_points_0_to_10000_under_lawful_cap",
+    "quantity": "commodity_contract_minimum_integer_unit",
+    "work": "actorWorkTicks",
+    "area": "horizontal_projected_square_millimetres",
+    "probability_or_confidence": "Q_0_to_10000",
+    "scientific_or_final_balance_claim": false,
+    "wall_clock_deadlines": false
+  },
+  "entities": {
+    "PolicyIssue": [
+      "stable_id",
+      "revision",
+      "trigger_cause_event_ids",
+      "jurisdiction",
+      "responsible_real_institution",
+      "affected_refs",
+      "evidence_refs",
+      "priority_bucket",
+      "deadline_tick",
+      "status",
+      "merged_issue_refs"
+    ],
+    "PolicyProposal": [
+      "stable_id",
+      "revision",
+      "episode_ref",
+      "issue_ref",
+      "current_policy_ref",
+      "typed_clause_drafts",
+      "exact_proposal_hash",
+      "stakeholder_impacts_by_unit",
+      "belief_snapshot_refs",
+      "authority_path",
+      "spending_permissions",
+      "actual_resource_claims",
+      "transition_plan",
+      "failure_continuations"
+    ],
+    "PolicyAuthorization": [
+      "proposal_hash",
+      "procedure_version",
+      "actual_valid_seats_or_signer_refs",
+      "lawful_consents",
+      "scope",
+      "role_version",
+      "authorized_limits",
+      "issued_tick",
+      "expires_tick"
+    ],
+    "PolicyImplementation": [
+      "authorization_ref",
+      "law_version",
+      "effective_scope",
+      "actual_task_contract_assessment_refs",
+      "reservations",
+      "fulfilled_outputs_by_unit",
+      "unserved_refs_and_causes",
+      "status",
+      "due_tick"
+    ],
+    "LegislativeSession": [
+      "agenda_version",
+      "proposal_hashes",
+      "procedure_version",
+      "eligible_seat_refs",
+      "seat_authority_versions",
+      "notice_deadline",
+      "close_tick",
+      "ballots",
+      "amendment_cursor",
+      "outcome"
+    ],
+    "ConstituencyMandate": [
+      "real_principal_refs",
+      "actual_representative_ref",
+      "issue_scope",
+      "authorization_event",
+      "expires_tick",
+      "withdrawal_rule"
+    ],
+    "PoliticalAssociation": [
+      "real_participants",
+      "actual_contact_and_join_events",
+      "issue_scope",
+      "private_or_public_membership",
+      "dues_and_meetings",
+      "support_commitments",
+      "leadership_roles"
+    ],
+    "GrievanceAccount": [
+      "actual_experiences_or_received_observation_refs",
+      "source_chain",
+      "cause_class",
+      "loss_quantity_by_unit",
+      "estimated_accountable_refs",
+      "rights_judgement",
+      "unresolved_claim_ref",
+      "attention_summary",
+      "response_observation_refs"
+    ],
+    "DiplomaticProposal": [
+      "sender_actual_authority",
+      "recipient_refs",
+      "typed_terms_hash",
+      "sent_and_received_message_refs",
+      "round_index",
+      "private_belief_and_outside_option",
+      "ratification_refs",
+      "actual_resource_claims",
+      "deadline_tick"
+    ],
+    "WarAuthorization": [
+      "actual_issuer_authority",
+      "participants",
+      "finite_goal_refs",
+      "legal_approval_refs",
+      "military_command_scope",
+      "expiry_tick",
+      "actual_own_resource_claims",
+      "belief_snapshot_ref",
+      "lawful_origin_authority_event_ref"
+    ]
+  },
+  "information": {
+    "sources": [
+      "own_actual_experience",
+      "authorized_institution_ledger",
+      "actual_arrived_city_report",
+      "public_law_or_vote_result",
+      "arrived_messenger_or_document",
+      "lawfully_shared_intelligence",
+      "actual_observed_leak_or_audit"
+    ],
+    "unknown": "not_zero_and_not_authoritative_current_truth",
+    "confidence_scale": [
+      0,
+      10000
+    ],
+    "correlated_report_merge": "underlying_event_id_and_source_chain_not_independent_duplicate_confidence",
+    "forged_report": "actual_author_contact_evidence_not_random_plague_or_global_lie_flag",
+    "validation_error": "authorized_obsolete_or_unavailable_reason_not_enemy_count_or_private_wallet",
+    "truth_probe_rejection": "generic_authorized_failure_does_not_update_hidden_capability_estimate",
+    "memory": {
+      "salient_person_events_max": 32,
+      "old_attention_summary": "cause_accountable_gameDay_bucket",
+      "rights_debt_property_casualty_treaty_ledgers": "persist_exact_independent_of_attention_decay",
+      "new_major_event": "event_driven_dirty_subject_episodes",
+      "same_cause_loss": "one_ledger_then_multiple_nonduplicated_interpretations"
+    },
+    "outcome_attribution": [
+      "predicted_and_actual_coverage",
+      "actual_collected_tax",
+      "actual_cost_and_disbursement",
+      "fulfilled_service",
+      "actual_breach_damage_migration_or_casualty",
+      "observed_external_causes",
+      "responsibility_estimate_with_confidence"
+    ],
+    "god_observation_updates_ai_belief": false,
+    "secret_ballot": "own_or_actual_disclosure_until_lawful_aggregate_publication",
+    "secret_plot_registry_access": "god_only_not_automatic_government_knowledge"
+  },
+  "issue_agenda": {
+    "ordinary_slots_per_institution_game_day": 8,
+    "mandatory_queue": [
+      "actual_life_emergency",
+      "existing_due_contract",
+      "lawful_petition_or_appeal_deadline",
+      "existing_defense"
+    ],
+    "ranking": [
+      "deadline_bucket_ASC",
+      "persistent_severity_bucket_DESC",
+      "affected_qualified_member_fraction_DESC",
+      "actual_administrative_work_ASC"
+    ],
+    "personality_effect": "bounded_ordinary_slot_search_and_issue_order_only",
+    "waiting_escalation_days": 7,
+    "same_event_issue_merge": true,
+    "legal_deadlines_truncated_by_slot_budget": false,
+    "overload": "CAPACITY_BACKLOG_actual_work_not_fake_reply"
+  },
+  "candidate_generation": {
+    "mandatory_alternatives": [
+      "KEEP_CURRENT_if_lawful_and_safe",
+      "REPAIR_EXECUTION_if_feasible",
+      "GATHER_INFORMATION",
+      "WAIT_if_lawful_and_not_unserved_emergency"
+    ],
+    "max_per_issue": 12,
+    "tax_search_step_bps": [
+      250,
+      500,
+      1000
+    ],
+    "tax_search_not_final_rate_quantization": true,
+    "families": [
+      {
+        "id": "BASIC_SUPPLY_AND_RELIEF",
+        "algorithm": "actual_minimum_need_resource_route_allocation_with_transport_purchase_production_or_relocation_options",
+        "hard_guards": [
+          "real_discretionary_stock",
+          "minimum_actor_energy_and_clothing_needs",
+          "actual_route_and_work",
+          "owner_permission"
+        ],
+        "outcome_units": [
+          "commodity_minimum_units",
+          "covered_members",
+          "actorWorkTicks"
+        ]
+      },
+      {
+        "id": "TAX_AND_FISCAL_SHARE",
+        "algorithm": "known_tax_base_interval_step_candidates_with_household_company_and_city_retained_capacity",
+        "hard_guards": [
+          "actual_fiscal_axis",
+          "lawful_rate_cap",
+          "reserved_rights",
+          "already_locked_cash"
+        ],
+        "outcome_units": [
+          "accounting_minor_units_interval",
+          "rate_bps",
+          "affected_qualified_members"
+        ]
+      },
+      {
+        "id": "PUBLIC_PROJECTS",
+        "algorithm": "hard_minimum_maintenance_then_dependency_aware_bounded_budget_combination_and_single_item_replacement",
+        "hard_guards": [
+          "actual_money_material_work_route",
+          "project_and_access_approval",
+          "city_survival_reserve"
+        ],
+        "outcome_units": [
+          "accounting_minor_units",
+          "commodity_minimum_units",
+          "actorWorkTicks",
+          "served_area_mm2"
+        ]
+      },
+      {
+        "id": "CLOTHING_EDUCATION_CARE",
+        "algorithm": "real_worker_tool_and_supply_capacity_combination_public_or_lawful_contract_service",
+        "hard_guards": [
+          "actual_staff_and_fit",
+          "minimum_basic_life_budget",
+          "suit_missing_still_work_wage_job"
+        ],
+        "outcome_units": [
+          "fulfilled_service_work_ticks",
+          "real_garments_units",
+          "covered_members"
+        ]
+      },
+      {
+        "id": "INDUSTRY_AND_COMPANY_LICENSE",
+        "algorithm": "actual_knowledge_administration_capacity_and_transition_paths",
+        "hard_guards": [
+          "no_workers_machines_spawn",
+          "third_party_custody_preserved",
+          "existing_property_liquidation_or_transition"
+        ],
+        "outcome_units": [
+          "licensed_existing_applicants",
+          "actual_implementation_work"
+        ]
+      },
+      {
+        "id": "LAND_ADMISSION_AND_CITIZENSHIP",
+        "algorithm": "actual_existing_applicants_service_capacity_routes_and_distinct_legal_admission_options",
+        "hard_guards": [
+          "no_automatic_actor_generation",
+          "lawful_title",
+          "actual_home_service_capacity",
+          "distinct_residence_settlement_subject_qualification"
+        ],
+        "outcome_units": [
+          "admitted_actual_refs",
+          "served_area_mm2",
+          "actual_transport_ticks"
+        ]
+      },
+      {
+        "id": "LABOR_AND_MOBILIZATION",
+        "algorithm": "existing_adult_individuals_training_contract_fit_and_family_supply_quota_options",
+        "hard_guards": [
+          "species_maturity",
+          "one_real_work_time",
+          "no_army_or_equipment_spawn",
+          "actual_legal_or_explicit_illicit_origin"
+        ],
+        "outcome_units": [
+          "qualified_existing_actor_refs",
+          "actorWorkTicks",
+          "actual_equipment_units"
+        ]
+      },
+      {
+        "id": "RELIGIOUS_POLICY",
+        "algorithm": "known_existing_root_doctrine_and_church_charter_compatible_tolerance_tax_service_or_dispute_options",
+        "hard_guards": [
+          "root_only_player",
+          "founding_church_type_frozen",
+          "personal_faith_separate",
+          "imperial_grant_validity"
+        ],
+        "outcome_units": [
+          "real_service_units",
+          "rights_affected_member_refs",
+          "actual_budget"
+        ]
+      },
+      {
+        "id": "PROPERTY_DEBT_AND_LIQUIDATION",
+        "algorithm": "specific_claims_objects_priority_restructure_sale_compensation_expropriation_or_winddown",
+        "hard_guards": [
+          "owner_controller_custodian_separate",
+          "third_party_goods_not_estate",
+          "real_money_and_debt",
+          "lawful_or_explicit_illicit_seizure_origin"
+        ],
+        "outcome_units": [
+          "actual_claim_minor_units",
+          "specific_asset_refs",
+          "implementation_work"
+        ]
+      },
+      {
+        "id": "CONSTITUTION_SUCCESSION_AND_RANK",
+        "algorithm": "existing_legal_qualified_candidates_procedure_transition_coronation_and_petition",
+        "hard_guards": [
+          "original_eight_axes",
+          "lawful_primogeniture_or_existing_election",
+          "no_direct_EMPIRE",
+          "real_divine_grant"
+        ],
+        "outcome_units": [
+          "specific_legal_amendments",
+          "actual_cost_and_work"
+        ]
+      },
+      {
+        "id": "DIPLOMACY_AND_WAR_POLICY",
+        "algorithm": "own_beliefs_finite_goals_multi_issue_offers_arbitration_defense_or_authorization",
+        "hard_guards": [
+          "known_or_addressable_target",
+          "actual_messages",
+          "own_authority",
+          "no_hidden_enemy_truth",
+          "real_resources_for_execution"
+        ],
+        "outcome_units": [
+          "actual_offer_terms",
+          "own_cost_interval",
+          "goal_refs",
+          "actual_resource_claims"
+        ]
+      }
+    ],
+    "budget_search": "bounded_branch_and_bound_or_greedy_with_replacement_over_project_dependencies_and_all_resource_dimensions",
+    "search_failure": "SEARCH_INCOMPLETE_not_proof_no_plan_exists",
+    "heterogeneous_loss_units_added_directly": false,
+    "pre_currency": "real_in_kind_ration_and_work_records_no_fictitious_zero_cost_company",
+    "public_project_search_nodes_max": 32,
+    "food_allocation_candidates": [
+      "risk_tier_then_progressive_lowest_coverage_real_route_allocation",
+      "fastest_actual_emergency_delivery_then_bounded_balance",
+      "honor_minimum_existing_commitments_then_real_purchase",
+      "real_voluntary_temporary_housing_or_relocation"
+    ],
+    "tax_forecast": "known_actual_past_receipts_and_coverage_tax_base_interval_not_current_private_truth",
+    "project_constraints": [
+      "dependency_DAG",
+      "actual_cash",
+      "commodity_units",
+      "facility_work",
+      "actor_work",
+      "supply_and_old_access"
+    ]
+  },
+  "constitution": {
+    "axis_ids": [
+      "crown_source",
+      "administrative_distribution",
+      "legislative_gate",
+      "fiscal_authority",
+      "religious_status",
+      "property_regime",
+      "local_charters",
+      "subject_admission"
+    ],
+    "source_contract": "data/contracts/civic_control_v1.json",
+    "source_enum_override": false,
+    "legal_priority": [
+      "immutable_world_constraints",
+      "explicit_treaty_or_imperial_charter_reservations_and_grants",
+      "local_constitution",
+      "valid_law",
+      "administrative_rule"
+    ],
+    "same_priority_unresolved_conflict": "LEGAL_CONFLICT_actual_review_not_random_choice",
+    "pre_cultural_policy_scope": [
+      "basic_ration",
+      "minimum_land_and_survival",
+      "basic_safety",
+      "service_obligations",
+      "simple_tribute"
+    ],
+    "regency_source": "civic_control_v1.crown_succession.regency",
+    "institution_requires_existing_real_staff_and_organization": true,
+    "legality_of_conduct_and_physical_possibility_separate": true,
+    "illegal_conduct": "actual_IllicitActPlan_or_PoliticalPlot_and_specific_loss_evidence_not_fake_lawful_authorization"
+  },
+  "personality": {
+    "axes": [
+      {
+        "id": "curiosity",
+        "scale": [
+          0,
+          10000
+        ],
+        "modifies": "information_request_and_trial_search_budget",
+        "does_not": "extra_primary_reports_not_truth_access"
+      },
+      {
+        "id": "piety",
+        "scale": [
+          0,
+          10000
+        ],
+        "modifies": "actual_learned_doctrine_and_faith_commitment_salience",
+        "does_not": "not_automatic_faith_or_holy_war"
+      },
+      {
+        "id": "altruism",
+        "scale": [
+          0,
+          10000
+        ],
+        "modifies": "observed_other_people_basic_needs_casualty_and_lawful_self_budget_concession",
+        "does_not": "no_spending_others_assets"
+      },
+      {
+        "id": "risk_tolerance",
+        "scale": [
+          0,
+          10000
+        ],
+        "modifies": "belief_interval_quantile_and_trial_or_offer_risk_acceptance",
+        "does_not": "not_physical_or_authority_override"
+      },
+      {
+        "id": "order_preference",
+        "scale": [
+          0,
+          10000
+        ],
+        "modifies": "procedure_prior_commitment_and_incremental_change_salience",
+        "does_not": "not_universal_obedience"
+      },
+      {
+        "id": "ambition",
+        "scale": [
+          0,
+          10000
+        ],
+        "modifies": "actual_nomination_leadership_prestige_and_independence_candidates",
+        "does_not": "not_extra_votes_or_rank_buff"
+      }
+    ],
+    "source": "current_PersonalitySnapshot_not_genome_or_new_species_axis",
+    "curiosity_primary_investigation_tasks_range": [
+      1,
+      4
+    ],
+    "comparison": "domain_specific_need_rights_order_then_finite_outranking_over_actor_estimates_not_one_universal_weighted_sum",
+    "individual_stakes": [
+      "actual_household_minimum_needs",
+      "occupation_and_contract",
+      "assets_and_debts_known_to_self",
+      "faith_and_culture_practices",
+      "legal_role_and_rights",
+      "actual_service_location",
+      "real_memory",
+      "prior_commitments"
+    ],
+    "near_ties": "saved_domain_stream_once_per_exact_candidate_set_not_daily_reroll",
+    "temporary_state": [
+      "hunger",
+      "fatigue",
+      "bereavement",
+      "injury",
+      "threat"
+    ],
+    "temporary_state_overwrites_personality": false,
+    "species_color_invents_political_prejudice": false,
+    "trait_stereotype_guaranteed_choice": false,
+    "ballot_choice_steps": [
+      "sufficient_known_terms_or_real_investigation_or_abstain",
+      "compare_known_basic_life_and_rights_risk_buckets",
+      "family_specific_tax_net_burden_relief_coverage_autonomy_obligations_or_actual_doctrine",
+      "near_bucket_real_reliability_procedure_relationship_and_prestige"
+    ],
+    "close_bucket_candidates_max": 4
+  },
+  "legislature": {
+    "states": [
+      "DRAFT",
+      "NOTICED",
+      "DELIBERATING",
+      "AMENDING",
+      "VOTING",
+      "PASSED",
+      "REJECTED",
+      "NO_QUORUM",
+      "AUTHORIZATION_EXPIRED",
+      "IMPLEMENTING"
+    ],
+    "ruler_decree": "exact_scope_current_lawful_incumbent_or_authorized_proxy_signs_no_fabricated_popular_consent",
+    "other_gate": "actual_registered_institution_with_charter_not_same_body_in_all_constitutions",
+    "default_new_sample_procedure": {
+      "notice_days": 2,
+      "deliberation_days": 3,
+      "voting_days": 2,
+      "quorum": "ceil_2N_over_3_lawful_registered_final_seats",
+      "ordinary_passage": "valid_yes_strictly_greater_than_valid_no_after_quorum",
+      "amend_constitution": "yes_at_least_ceil_2N_over_3_all_lawful_seats_and_reserved_right_consent",
+      "abstain": "presence_not_yes_or_no",
+      "zero_valid_yes_no": "not_passed",
+      "policy_tie": "not_passed_no_crown_tiebreak",
+      "no_quorum_retry_min_days": 7,
+      "published_before_ballots": true,
+      "not_existing_crown_election_override": true
+    },
+    "emergency": "only_existing_specific_emergency_authority_not_label_bypass",
+    "emergency_default_expiry_days": 7,
+    "emergency_constitution_or_imperial_grant_bypass": false,
+    "frozen": [
+      "agendaVersion",
+      "proposalHash",
+      "procedureVersion",
+      "noticeDeadline",
+      "closeTick"
+    ],
+    "max_amendment_versions": 6,
+    "agenda": "preannounced_proposal_order_bounded_amendment_rounds_and_status_quo_vote",
+    "condorcet_or_strategyproof_guarantee": false,
+    "ballot_identity": "SessionRef_SeatRef_ProposalHash",
+    "max_valid_ballots_per_seat": 1,
+    "validity": [
+      "real_existing_lawful_seat_in_final_close_set",
+      "legally_signed_when_cast",
+      "exact_proposal_and_procedure",
+      "cast_before_close",
+      "actual_proxy_scope_if_needed"
+    ],
+    "signer_death": "valid_legally_issued_ballot_survives_if_seat_and_terms_continue_lawful_successor_may_replace_before_close",
+    "seat_withdrawal": "remove_in_final_eligible_set_recompute_with_frozen_procedure",
+    "new_supporter_adds_seat": false,
+    "same_actor_multiple_actual_seats": "each_seat_independent_no_duplicate_same_seat",
+    "max_logic_budget_truncates_legal_seats": false,
+    "delayed_close_computation": "freeze_due_snapshot_and_before_close_ballots_full_scan_then_publish_no_late_votes_due_to_worker_delay",
+    "ballot_receipt_tick": "authoritative_legislative_receipt_before_closeTick_not_remote_handwriting_or_send_tick"
+  },
+  "association_and_petition": {
+    "real_association_creation": "existing_actors_actual_contact_join_and_contribution",
+    "same_faith_family_or_personality_auto_consent": false,
+    "support_commitment": "issue_scope_conditions_expiry_withdrawal_not_ballot",
+    "sample_contacts_per_episode": 8,
+    "sample_rounds": 4,
+    "same_cash_promised_to_multiple_parties": "all_actual_claims_revalidated_no_overcommit",
+    "petition_states": [
+      "FILED",
+      "RECEIVED",
+      "EVIDENCE_REQUESTED",
+      "ADMISSIBLE",
+      "HEARING",
+      "NEGOTIATION",
+      "REMEDY",
+      "REJECTED",
+      "APPEAL",
+      "CLOSED"
+    ],
+    "petition_receive_days": 7,
+    "petition_answer_days": 30,
+    "pre_literate_oral_petition": true,
+    "administrative_work_real": true,
+    "lawful_donation": "actual_owner_discretionary_cash_and_ledger",
+    "illicit_bribe_or_embezzlement": "actual_control_custody_contact_participant_choice_evidence_and_loss_as_IllicitActPlan",
+    "high_ambition_automatically_corrupt": false,
+    "legal_prohibition_removes_illegal_candidate_from_world": false
+  },
+  "implementation": {
+    "states": [
+      "AUTHORIZED",
+      "SCHEDULED",
+      "IMPLEMENTING",
+      "PARTIALLY_SERVED",
+      "UNFUNDED",
+      "SUPPLY_BLOCKED",
+      "NO_EXECUTOR",
+      "EVALUATING",
+      "EVALUATION_INCONCLUSIVE",
+      "REVISED",
+      "REPEALED",
+      "EXPIRED",
+      "COMPLETED"
+    ],
+    "authorization": "capped_spending_permission_not_cash_or_stock",
+    "spend": "atomic_actual_available_balance_minus_live_reservations_only",
+    "cash_excluded": [
+      "predicted_tax",
+      "promised_foreign_compensation",
+      "unfulfilled_donation",
+      "private_member_account_without_lawful_transfer"
+    ],
+    "resource_separation": [
+      "law_and_permission",
+      "real_budget",
+      "stock_ownership_and_custody",
+      "actual_transport",
+      "staff_work_and_fit"
+    ],
+    "concurrent_allocation": [
+      "lawful_mandatory_priority",
+      "deadline",
+      "fair_stable_queue"
+    ],
+    "negative_balance": false,
+    "law_effective_at": "saved_SimTick_clause_version_jurisdiction_trigger_predicate_priority_and_transition",
+    "tax_identity": "unique_TaxAssessmentId_per_actual_taxable_event_and_law_version",
+    "tax_share": "one_lawful_assessment_split_not_each_layer_unbounded_tax",
+    "law_change_rewrites_past_tax": false,
+    "lawful_retroactive_charge": "new_explicit_separate_assessment_with_review_not_historical_overwrite",
+    "enforcement": "known_specific_evidence_actual_staff_path_work_and_procedure_not_omniscient_delete",
+    "rumor_alone": "investigation_possible_not_automatic_fine_or_seizure",
+    "no_staff": "NO_EXECUTOR_no_auto_official",
+    "repeal": "future_triggers_stop_actual_spent_paid_damage_and_property_facts_remain",
+    "refund": "new_real_funded_ledger_and_actual_beneficiary_claims",
+    "valid_law_and_institution_authorization_after_signer_death": "continues_under_registered_scope_expiry_recall_and_current_real_executor_not_automatic_revote",
+    "stale_role_request": "late_old_actor_prepared_signing_or_implementation_request_rejected_not_old_law_repealed",
+    "tax_assessment_revision": "same_TaxAssessmentId_actual_taxableEvent_lawVersion_adds_signed_difference_receipt_once_not_full_recharge",
+    "wage_tax": "earned_pay_assessment_and_actual_payment_withholding_separate_no_phantom_unreceived_cash_deduction",
+    "relief_need_identity": "shared_NeedReceipt_actual_remaining_gap_cross_policy_church_charity_no_double_delivery_claim",
+    "illicit_custody_asset": "actual_custody_or_misuse_of_real_delegated_payment_access_preserves_original_owner_and_evidence_no_arbitrary_private_wallet_api"
+  },
+  "evaluation": {
+    "pilot_observation_days": 14,
+    "formal_review_days": 30,
+    "inconclusive": "lack_of_actual_coverage_reports_or_causal_identification_not_success",
+    "dimensions": [
+      "coverage_actual_vs_estimated",
+      "actual_burden",
+      "tax_or_cash_actual_vs_forecast",
+      "delivery_actual_vs_expected",
+      "execution_cost",
+      "breaches_migration_casualties",
+      "observed_external_shocks",
+      "real_appeals_and_remedies"
+    ],
+    "external_god_loss": "god_cause_not_fake_policy_collection_or_unexplained_king_fault",
+    "revision_or_repeal": "new_authorized_process_and_real_contract_exit",
+    "no_generic_support_score_production": true
+  },
+  "succession_and_religion": {
+    "lawful_primogeniture": "existing_civic_contract_not_support_score",
+    "acceptance_or_refusal": "actual_candidate_episode_current_health_family_obligations_risk_and_ambition_saved_once",
+    "nomination": "qualified_real_pool_then_known_service_capability_issue_alignment_and_reliable_relations",
+    "crown_election": "civic_control_v1_rounds_seats_quorum_and_tiebreak_unchanged",
+    "unknown_candidate": "real_information_search_or_abstain_no_fake_biography",
+    "coup": "CONTESTED_CONTROL_and_real_plot_not_false_lawful_succession",
+    "church": "actual_fixed_charter_assets_staff_and_doctrine",
+    "root_creation": "player_only",
+    "personal_faith": "not_auto_official_religion",
+    "empire": "real_member_consents_reserved_rights_root_and_player_divine_grant",
+    "ordinary_emperor_succession_new_grant": false,
+    "new_root_or_fundamental_basis": "renew_actual_petition_or_lawful_downgrade_dissolution",
+    "tribute_default": "actual_ledger_ability_extension_arbitration_or_limited_pressure_not_one_default_war"
+  },
+  "diplomacy": {
+    "states": [
+      "CONTACT_NEEDED",
+      "CONTACT_SENT",
+      "CONTACT_RECEIVED",
+      "PROPOSING",
+      "COUNTEROFFERING",
+      "PROVISIONAL_AGREEMENT",
+      "RATIFICATION_PENDING",
+      "ACTIVE",
+      "FAILED",
+      "WITHDRAWN",
+      "EXPIRED"
+    ],
+    "discovery_off": "addressable_basic_contact_not_enemy_knowledge",
+    "discovery_on": "actual_contact_or_shared_document_required",
+    "existing_wars_and_treaties_preserved": true,
+    "message_fields": [
+      "actual_source_and_recipient",
+      "language_or_actual_translation",
+      "sentTick",
+      "delivery_task_ref",
+      "receivedTick",
+      "payloadHash"
+    ],
+    "receipt_updates_belief": "actual_delivery_or_actual_communicative_meeting_only",
+    "instant_cross_sea_without_communication_capacity": false,
+    "terms": [
+      "passage",
+      "customs",
+      "trade_and_supply_quota",
+      "nonaggression",
+      "actual_compensation_and_installments",
+      "territorial_cession",
+      "troop_withdrawal",
+      "prisoner_exchange",
+      "dependency_contribution",
+      "reserved_rights"
+    ],
+    "max_offer_packages_per_round": 12,
+    "max_rounds_per_episode": 4,
+    "no_bargaining_overlap": "investigate_wait_or_change_issue_not_automatic_war",
+    "outside_option": "private_own_belief_not_opponent_truth",
+    "offer_comparison": [
+      "nontransferable_right_and_authority_hard_guards",
+      "actual_budget_claims",
+      "acceptable_issue_intervals",
+      "worst_affordable_cost",
+      "observed_commitment_credibility",
+      "own_estimated_gain"
+    ],
+    "concession": "actual_new_information_or_cost_and_personality_not_fixed_plus_5_relationship",
+    "commitment_mechanisms": [
+      "real_escrow",
+      "conditional_installments",
+      "verifiable_withdrawal",
+      "actual_observer_contact",
+      "finite_term",
+      "real_third_party_arbitration"
+    ],
+    "ratification": "same_exact_terms_hash_actual_authorized_signers_version_no_parent_cycle_and_resources_one_commit",
+    "peace": "real_withdrawal_prisoner_transfer_debt_and_transport_tasks_not_delete_war_or_teleport",
+    "deliberate_misrepresentation": "real_message_act_recipient_belief_may_be_wrong_no_fake_active_treaty",
+    "ai_diplomatic_plans_gate": "reject_new_autonomous_alliance_peace_dependency_treaty_plot_at_commit_existing_signed_obligations_and_committed_plot_scope_continue_no_catchup"
+  },
+  "war_authorization": {
+    "causes": [
+      "evidenced_territorial_dispute",
+      "evidenced_succession_dispute",
+      "actual_attack_or_occupation",
+      "actual_treaty_breach_compensation",
+      "independence_or_dependency_dispute",
+      "actual_blockade",
+      "actual_religious_rights_persecution",
+      "OPPORTUNISTIC_EXPANSION_INTENT_with_real_known_specific_target_no_fake_victim_event"
+    ],
+    "cultural_difference_alone": "not_automatic_cause",
+    "affinity_or_ambition_threshold_declares": false,
+    "stages": [
+      "DISPUTE",
+      "INFORMATION",
+      "NEGOTIATION",
+      "MEDIATION",
+      "PRESSURE",
+      "MOBILIZATION_OPTION",
+      "WAR_PROPOSAL",
+      "LEGAL_AUTHORIZATION",
+      "DECLARATION",
+      "ACTUAL_UNLAWFUL_HOSTILITY",
+      "WAR_CONTINUATION",
+      "PEACE"
+    ],
+    "proposal_fields": [
+      "specific_finite_goal_refs",
+      "own_belief_interval",
+      "peaceful_alternatives",
+      "lawful_authority_and_reserved_rights",
+      "actual_own_resource_claims",
+      "military_readiness_summary",
+      "worst_affordable_civil_supply_displacement"
+    ],
+    "war_mechanisms": [
+      "private_or_wrong_information",
+      "incentive_to_misrepresent",
+      "credible_commitment_failure",
+      "different_actor_and_institution_interests",
+      "nonmoney_right_or_doctrine_goal",
+      "actual_alliance_and_domestic_constraint"
+    ],
+    "legality_not_good_strategy_or_victory": true,
+    "military_boundary": "actual_recruitment_movement_attack_equipment_path_training_and_supply_validated_by_military_domain_no_army_spawn",
+    "ai_new_wars_false_blocks": [
+      "new_ai_war_plot_start",
+      "new_ai_offensive_declaration",
+      "new_ai_organized_undeclared_offensive_hostility"
+    ],
+    "ai_new_wars_false_preserves": [
+      "immediate_local_self_defense",
+      "actual_rescue_and_retreat",
+      "existing_wars_continuation",
+      "peace_negotiation_under_existing_scope"
+    ],
+    "defense_guard": "actual_attack_or_imminent_observed_threat_local_necessary_scope_not_renamed_offensive_goal",
+    "illicit_attack": "actual_existing_actor_plan_effect_and_legal_evidence_not_fake_WarAuthorization",
+    "single_crime_auto_state_war": false,
+    "war_relation_escalation": "actual_organization_authority_participation_target_scope_and_cause_classifier",
+    "new_war_does_not_create": [
+      "person",
+      "soldier",
+      "army",
+      "weapons",
+      "divine_grant",
+      "agreement"
+    ],
+    "continue": "actual_cost_losses_goal_control_alliance_support_known_enemy_and_new_offers_daily",
+    "sunk_cost_bias": "bounded_known_attention_not_infinite_reward",
+    "retreat_requires_full_peace_ratification": false,
+    "unprovoked_aggression": "explicit_expansion_intent_domestic_authorization_external_treaty_breach_and_combat_separate",
+    "lawful_authorization_and_illicit_hostility_separate_records": true,
+    "military_opportunistic_cause_adapter": "political_OPPORTUNISTIC_EXPANSION_INTENT_to_warfare_Crisis_OPPORTUNISTIC_CLAIM_preserving_actual_target_and_no_false_self_defense"
+  },
+  "rebellion": {
+    "stages": [
+      "GRIEVANCE",
+      "PETITION_OR_ASSOCIATION",
+      "NEGOTIATION_OR_REVIEW",
+      "PREPARING",
+      "READY",
+      "COMMITTING",
+      "ACTUAL_REBELLION",
+      "CANCELLED",
+      "FAILED"
+    ],
+    "progress": "completed_contact_resource_and_action_facts_not_tick_fill",
+    "requirements": [
+      "actual_initiator",
+      "actual_real_participants_with_consent_or_explicit_coercion",
+      "communication_or_translation",
+      "specific_goals",
+      "actual_supplies_money_equipment",
+      "real_action_feasibility",
+      "individual_risk_family_and_role_conflict"
+    ],
+    "possible_actions": [
+      "refuse_tax",
+      "strike",
+      "petition_or_protest",
+      "actual_emigration_application",
+      "military_mutiny",
+      "organized_armed_uprising"
+    ],
+    "military_mutiny": "existing_actual_serving_actors_and_equipment_no_new_army",
+    "repair_or_compromise": "can_cancel_real_commitments_before_actual_action",
+    "discovery": "actual_leak_sight_report_or_audit_not_global_registry",
+    "suppression": "actual_staff_permissions_or_explicit_illicit_command_and_path_resources",
+    "causal_loss_count": "once_per_actual_new_event",
+    "successful_separation": "existing_community_actors_assets_and_explicit_territory_transition_new_duchy_not_population_or_rank_spawn",
+    "ai_rebellions_gate": "blocks_new_autonomous_rebel_organization_or_uncommitted_transition_to_actual_organization_not_lawful_petition_existing_committed_organization_continues"
+  },
+  "transactions": {
+    "ordinary_ai_player_confirmation_each_step": false,
+    "player_destructive_god_edit": "existing_specific_preview_required",
+    "input_guards": [
+      "expectedRoleRevision",
+      "proposalHash",
+      "lawVersion",
+      "seatVersion_or_authorizationRef",
+      "actual_resource_claims",
+      "affectedObjects",
+      "rulesVersion",
+      "decisionCounter"
+    ],
+    "commit_order": [
+      "final_alive_roles_members",
+      "necessary_crown_resolution_and_proxy",
+      "law_treaty_qualification",
+      "valid_ballots_and_authorization",
+      "actual_money_stock_transport_reservations",
+      "actual_effects",
+      "settlement_state_office_normalization",
+      "events_and_actual_informational_messages"
+    ],
+    "failure_codes": [
+      "STALE_AUTHORITY",
+      "STALE_PROPOSAL",
+      "SEAT_WITHDRAWN",
+      "LEGAL_CONFLICT",
+      "NO_QUORUM",
+      "UNFUNDED",
+      "SUPPLY_BLOCKED",
+      "NO_EXECUTOR",
+      "COMMUNICATION_PENDING",
+      "UNKNOWN_TARGET",
+      "SEARCH_INCOMPLETE"
+    ],
+    "no_new_evidence_backoff_days": [
+      1,
+      3,
+      7
+    ],
+    "no_unbounded_same_tick_retry": true,
+    "blocked_long_term": "WAITING_FOR_CAPACITY_or_real_appeal_or_withdrawal",
+    "completed_work_and_consumed_goods_refund": false,
+    "world_rule_gates": {
+      "ai_new_wars": "new_autonomous_war_plot_declaration_or_organized_undeclared_offense",
+      "ai_diplomatic_plans": "new_autonomous_alliance_peace_dependency_treaty_plots",
+      "ai_rebellions": "new_autonomous_rebel_organization",
+      "ai_border_claims": "new_autonomous_claim_or_effective_border_expansion_not_actual_occupation",
+      "ai_recruitment": "new_autonomous_existing_adult_admission_not_current_member_dismissal_or_existing_service"
+    }
+  },
+  "scheduling_and_persistence": {
+    "ordinary_evaluation": "once_per_game_day_plus_relevant_event_dirty",
+    "critical_resolution": "commit_barrier_real_death_due_message_receipt_attack",
+    "logic_cursor": "deterministic_full_validation_of_all_legal_seats_and_write_closure_no_worker_time_cutoff",
+    "indexes": [
+      "law_subject_jurisdiction",
+      "due_tick",
+      "account_reservation",
+      "actual_organization_contacts",
+      "per_actor_known_secrets",
+      "causal_event_accountable_ref"
+    ],
+    "prohibited_matrix": "Person_x_AllStates_x_AllPolicies",
+    "save": [
+      "issues",
+      "proposals",
+      "frozen_agendas_procedures",
+      "seats_ballots_and_signature_authority_at_cast",
+      "actual_resource_reservations",
+      "contracts",
+      "messages_delivery_receipts",
+      "private_belief_snapshots_and_source_chains",
+      "memory_and_attribution",
+      "plot_knowledge_and_illicit_evidence",
+      "absolute_due_ticks",
+      "backoff",
+      "logic_work_cursor",
+      "decision_domain_rng_and_counters"
+    ],
+    "load_recalculates_votes_grants_or_support": false,
+    "load_replays_spend_or_tax": false,
+    "load_delivers_unarrived_message": false,
+    "pause_advances_game_day": false
+  },
+  "command_routes": {
+    "existing": [
+      {
+        "id": "ChangeStateLaw",
+        "scope": "exact_typed_proposal_lawful_authorization_or_explicit_existing_player_god_origin"
+      },
+      {
+        "id": "ChangeConstitution",
+        "scope": "lawful_amendment_or_explicit_god_origin_reserved_rights_and_imperial_grant_consequences"
+      },
+      {
+        "id": "CreatePoliticalPlot",
+        "scope": "real_initiator_and_goal_no_phantom_participants"
+      },
+      {
+        "id": "AdvancePoliticalPlot",
+        "scope": "actual_preparation_and_events_no_auto_progress"
+      },
+      {
+        "id": "CancelPoliticalPlot",
+        "scope": "unperformed_commitments_only_actual_loss_persists"
+      },
+      {
+        "id": "ProposeDiplomaticIntent",
+        "scope": "actual_own_belief_typed_offer_and_message_task"
+      },
+      {
+        "id": "CommitWarDeclaration",
+        "scope": "exact_goal_current_lawful_authorization_or_explicit_trusted_player_god_war_event_not_fake_illicit_authorization"
+      },
+      {
+        "id": "CommitPeaceTreaty",
+        "scope": "same_terms_actual_signers_current_versions_and_outstanding_custody_debts"
+      },
+      {
+        "id": "SubmitEmpirePetition",
+        "scope": "actual_member_consents_no_auto_divine_grant"
+      },
+      {
+        "id": "CastCrownBallot",
+        "scope": "existing_civic_seat_candidate_round_rules_not_policy_vote"
+      }
+    ],
+    "new_typed_commands": [
+      {
+        "id": "OpenPolicySession",
+        "target_page": "state",
+        "effect": "freeze_actual_institution_agenda_procedure_and_deadline",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "actual_current_institution_and_qualified_authority",
+          "exact_agenda_procedure_notice_and_deadline"
+        ],
+        "additional_target_pages": [
+          "city"
+        ]
+      },
+      {
+        "id": "CastPolicyBallot",
+        "target_page": "state",
+        "effect": "one_valid_seat_exact_proposal_ballot",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "actual_lawful_seat_and_signature_or_registered_proxy",
+          "exact_proposal_procedure_before_deadline",
+          "no_control_lease_fabricates_vote_consent"
+        ],
+        "additional_target_pages": [
+          "city"
+        ]
+      },
+      {
+        "id": "ClosePolicySession",
+        "target_page": "state",
+        "effect": "final_seats_revalidation_and_precise_authorization_or_no_result",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "complete_final_eligible_seat_scan",
+          "frozen_proposal_procedure_and_closeTick",
+          "late_computation_does_not_accept_late_ballots"
+        ],
+        "additional_target_pages": [
+          "city"
+        ]
+      },
+      {
+        "id": "CommitPolicyImplementationBatch",
+        "target_page": "state",
+        "effect": "real_resource_reservation_and_tasks_under_current_authorization",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "existing_exact_valid_policy_authorization",
+          "current_real_executor_and_role",
+          "real_available_funds_goods_work_transport",
+          "no_replay_of_delivered_effects"
+        ],
+        "additional_target_pages": [
+          "city"
+        ]
+      },
+      {
+        "id": "SubmitPoliticalPetition",
+        "target_page": "political_plot",
+        "effect": "actual_initiator_claim_evidence_and_delivery",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "existing_actual_initiator_and_concrete_claim",
+          "real_evidence_or_marked_uncertain_testimony",
+          "actual_delivery_or_oral_access"
+        ]
+      },
+      {
+        "id": "RespondPoliticalPetition",
+        "target_page": "political_plot",
+        "effect": "actual_authorized_reply_or_remedy_obligations",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "actual_current_authorized_responder",
+          "exact_petition_and_known_evidence",
+          "no_fake_delivered_remedy_or_spawned_official"
+        ]
+      },
+      {
+        "id": "DeliverDiplomaticMessage",
+        "target_page": "political_plot",
+        "effect": "actual_delivery_receipt_and_recipient_belief_update",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "actual_current_transport_or_communicative_meeting_receipt",
+          "exact_source_recipient_payload_language_or_translation",
+          "no_delivery_before_actual_arrival"
+        ]
+      },
+      {
+        "id": "CommitSignedTreaty",
+        "target_page": "treaty",
+        "effect": "exact_ratified_compatible_typed_terms_one_transition",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "exact_terms_hash_and_all_actual_ratifications",
+          "current_signer_authority_and_parent_no_cycle",
+          "real_budget_asset_and_transport_claims",
+          "same_territorial_transition_settlement_office_contract_closure"
+        ]
+      },
+      {
+        "id": "CommitIllicitPoliticalAct",
+        "target_page": "political_plot",
+        "effect": "actual_feasible_unauthorized_conduct_loss_and_private_or_observed_evidence_no_false_authorization",
+        "command_class": "world_transaction",
+        "mutates_world": true,
+        "single_writer": true,
+        "idempotent_dispatch": true,
+        "idempotent_world_mutation": true,
+        "preview_revalidation": true,
+        "arbitrary_json_overwrite": false,
+        "planned_only": true,
+        "production_implemented": false,
+        "source_contract": "data/contracts/political_decisions_v1.json",
+        "ordinary_ai_requires_player_preview_click": false,
+        "guards": [
+          "existing_supported_specific_IllicitActPlan",
+          "actual_actor_control_custody_contact_and_physical_work",
+          "real_resource_and_time_claims",
+          "no_privileged_arbitrary_account_or_legal_owner_transfer",
+          "explicit_illicit_evidence_not_false_lawful_authorization"
+        ],
+        "supported_act_kinds": [
+          "actual_bribe_offer_and_transfer",
+          "actual_custody_embezzlement",
+          "actual_political_coercion_contact",
+          "actual_secret_message_leak",
+          "actual_unsupported_asset_seizure_with_physical_control"
+        ]
+      }
+    ],
+    "all_new_commands": {
+      "command_class": "world_transaction",
+      "single_writer": true,
+      "idempotent_dispatch": true,
+      "idempotent_world_mutation": true,
+      "arbitrary_json_overwrite": false,
+      "planned_only": true,
+      "production_implemented": false,
+      "ordinary_ai_requires_player_preview_click": false
+    },
+    "new_global_toolbar_sections_or_tools": false,
+    "illicit_act_scope": "specific_supported_domain_action_not_universal_permissions_or_account_API"
+  },
+  "verification_scenarios": [
+    {
+      "id": "POL01",
+      "trigger": "ruler_decree_without_current_crown_authority",
+      "must": [
+        "no_legal_authorization",
+        "no_law_effect",
+        "existing_local_maintenance_continues"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL02",
+      "trigger": "regent_proposes_new_offensive_war",
+      "must": [
+        "blocked_normal_authorization",
+        "existing_defense_and_wages_allowed",
+        "illicit_plot_explicitly_distinct"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL03",
+      "trigger": "member_reserved_tax_changed_by_emperor",
+      "must": [
+        "reject_reserved_scope",
+        "no_member_account_draw",
+        "compatible_delegated_scope_remains_possible"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL04",
+      "trigger": "local_first_fiscal_axis_and_state_project",
+      "must": [
+        "actual_local_reserve_protected",
+        "state_permission_not_city_cash",
+        "grant_or_lawful_contribution_required"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL05",
+      "trigger": "same_priority_incompatible_laws",
+      "must": [
+        "legal_conflict_referral",
+        "no_random_law_winner",
+        "old_unambiguous_rules_continue"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL06",
+      "trigger": "pre_cultural_bank_license_proposal",
+      "must": [
+        "mature_law_knowledge_capacity_guards",
+        "real_in_kind_minimum_rules_work",
+        "no_bank_or_money_spawn"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL07",
+      "trigger": "all_ruler_personality_axes_changed",
+      "must": [
+        "lawful_actor_authority_unchanged",
+        "no_resources_votes_rank_or_knowledge_spawn",
+        "new_episode_uses_new_snapshot"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL08",
+      "trigger": "two_people_same_need_different_personality",
+      "must": [
+        "distinct_information_search_or_ranked_candidates",
+        "same_exact_inventory_and_authority_guards",
+        "not_deterministic_trait_stereotype"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL09",
+      "trigger": "high_piety_no_learned_religion",
+      "must": [
+        "no_root_religion_creation",
+        "no_auto_conversion",
+        "current_known_doctrine_only"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL10",
+      "trigger": "tax_event_reported_three_times",
+      "must": [
+        "source_chain_deduplication",
+        "one_experienced_loss",
+        "no_triple_confidence"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL11",
+      "trigger": "official_receives_false_food_report",
+      "must": [
+        "estimate_may_be_wrong",
+        "physical_supply_truth_rejects_without_hidden_oracle_leak",
+        "actual_investigation_task_possible"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL12",
+      "trigger": "unknown_household_in_income_report",
+      "must": [
+        "unknown_not_zero_income",
+        "coverage_preserved",
+        "no_private_wallet_full_world_read"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL13",
+      "trigger": "god_terrain_wipes_stored_household_clothes_not_live_actor_worn_items",
+      "must": [
+        "god_cause_not_fake_tax_loss",
+        "actual_new_relief_failure_can_be_distinct",
+        "one_loss_ledger"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL14",
+      "trigger": "single_grievance_copied_to_association",
+      "must": [
+        "only_real_member_experience_or_received_report",
+        "no_cloned_hate",
+        "received_source_chain_persisted"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL15",
+      "trigger": "32_event_memory_cap_with_old_debt",
+      "must": [
+        "old_attention_summary_may_decay",
+        "unpaid_debt_ledger_remains",
+        "no_forgiven_balance_from_memory_limit"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL16",
+      "trigger": "mandatory_petition_deadline_and_8_slots",
+      "must": [
+        "deadline_not_truncated",
+        "capacity_backlog_visible",
+        "no_fake_answer_or_worker"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL17",
+      "trigger": "petition_spam_same_event",
+      "must": [
+        "merge_issue",
+        "no_extra_seat_or_vote",
+        "distinct_legal_claim_keeps_link"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL18",
+      "trigger": "minority_petition_waits_7_days",
+      "must": [
+        "ordinary_queue_age_escalation",
+        "real_legal_rights_not_erased_by_popularity",
+        "budget_hard_guards"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL19",
+      "trigger": "tax_forecast_exceeds_actual_cash",
+      "must": [
+        "forecast_not_spendable",
+        "real_taxable_event_once",
+        "no_negative_balance_or_printing"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL20",
+      "trigger": "two_projects_same_available_cash",
+      "must": [
+        "all_or_nothing_reservations",
+        "one_real_minor_unit_spent_once",
+        "loser_unfunded_or_replan"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL21",
+      "trigger": "emergency_food_policy_zero_food",
+      "must": [
+        "legal_policy_can_exist",
+        "supply_blocked_not_fulfilled",
+        "no_decor_or_terrain_food"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL22",
+      "trigger": "relief_supply_exists_but_route_cut",
+      "must": [
+        "actual_transport_required",
+        "no_teleport_delivery",
+        "new_route_or_actual_deficit"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL23",
+      "trigger": "public_construction_policy_approved",
+      "must": [
+        "real_front_delivery_and_automatic_build_time",
+        "no_onsite_mason_animation",
+        "no_building_spawn"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL24",
+      "trigger": "dress_code_policy_worker_no_suit",
+      "must": [
+        "work_wages_job_retained",
+        "higher_lawful_purchase_priority",
+        "basic_life_budget_reserved"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL25",
+      "trigger": "industry_permission_research_unlocked",
+      "must": [
+        "no_machine_or_employee_spawn",
+        "real_tools_workers_and_materials",
+        "lawful_transition"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL26",
+      "trigger": "immigration_quota_real_applicants",
+      "must": [
+        "existing_actor_only",
+        "admission_capacity_not_population_generation",
+        "citizenship_residence_location_distinct"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL27",
+      "trigger": "sapient_rabbit_eligible_vote_and_work",
+      "must": [
+        "species_not_blanket_office_ban",
+        "maturity_and_real_tool_fit_required",
+        "one_existing_actor"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL28",
+      "trigger": "proposal_amended_after_ballots",
+      "must": [
+        "new_hash_requires_revote",
+        "old_ballots_no_approval_for_new_terms",
+        "budget_recomputed"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL29",
+      "trigger": "duplicate_ballot_same_seat",
+      "must": [
+        "one_latest_valid_ballot",
+        "distinct_lawful_seats_still_count",
+        "idempotent_command"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL30",
+      "trigger": "signer_dies_seat_continues",
+      "must": [
+        "valid_legally_issued_ballot_retained",
+        "lawful_successor_can_replace_before_close",
+        "no_fake_dead_signing"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL31",
+      "trigger": "seat_leaves_in_same_close_transaction",
+      "must": [
+        "final_eligible_seats_only",
+        "quorum_recalculated_by_frozen_procedure",
+        "removed_vote_not_counted"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL32",
+      "trigger": "all_abstain_with_quorum",
+      "must": [
+        "presence_counted",
+        "zero_yes_no_not_passed",
+        "old_law_unchanged"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL33",
+      "trigger": "policy_majority_tie",
+      "must": [
+        "not_passed",
+        "no_crown_tiebreak_reuse",
+        "future_bounded_retry"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL34",
+      "trigger": "amendments_condorcet_cycle",
+      "must": [
+        "preannounced_agenda_and_bounded_rounds",
+        "no_same_tick_infinite_loop",
+        "no_claim_strategy_immunity"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL35",
+      "trigger": "secret_ballot_queried_by_colleague",
+      "must": [
+        "own_known_or_actual_leak_only",
+        "aggregate_result_after_close",
+        "god_view_not_ai_knowledge"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL36",
+      "trigger": "politician_changes_procedure_after_vote_result",
+      "must": [
+        "stale_procedure_rejected",
+        "no_retroactive_favorable_rule",
+        "new_lawful_episode_needed"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL37",
+      "trigger": "associate_promises_others_votes",
+      "must": [
+        "support_commitment_not_ballot",
+        "actual_signer_or_authorized_proxy",
+        "no_family_or_faith_auto_consent"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL38",
+      "trigger": "two_bribes_same_purse",
+      "must": [
+        "real_cash_reservation",
+        "recipient_actual_choice",
+        "no_duplicate_money_or_legal_vote_forgery"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL39",
+      "trigger": "embezzlement_actual_custody_no_owner",
+      "must": [
+        "explicit_illicit_act_and_loss",
+        "no_false_legal_appropriation",
+        "evidence_only_if_observed"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL40",
+      "trigger": "no_shared_language_negotiation",
+      "must": [
+        "actual_translation_or_communication_delay",
+        "ui_locale_not_language",
+        "no_instant_mutual_understanding"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL41",
+      "trigger": "pilot_14_days_no_reports",
+      "must": [
+        "evaluation_inconclusive",
+        "no_fake_success_bonus",
+        "bounded_extend_pause_or_investigate"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL42",
+      "trigger": "repeal_tax_after_payment",
+      "must": [
+        "future_trigger_stops",
+        "past_assessment_unchanged",
+        "refund_new_real_funded_ledger"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL43",
+      "trigger": "emergency_policy_reload_before_expiry",
+      "must": [
+        "absolute_due_tick_and_work_cursor",
+        "not_new_7_days",
+        "no_repeated_disbursement"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL44",
+      "trigger": "supply_store_wipe_and_late_policy_commit",
+      "must": [
+        "stale_readset_revalidation",
+        "real_lost_reservations_once",
+        "no_fulfilled_goods_reappearance"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL45",
+      "trigger": "king_death_and_budget_policy_same_batch",
+      "must": [
+        "final_alive_authority_set",
+        "succession_before_restricted_signing",
+        "treasury_not_private_estate"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL46",
+      "trigger": "hereditary_heir_unpopular",
+      "must": [
+        "legal_primogeniture_not_score",
+        "accept_refuse_regency_real_episodes",
+        "no_support_based_bloodline_rewrite"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL47",
+      "trigger": "all_election_candidates_unknown",
+      "must": [
+        "bounded_real_information_search_or_abstain",
+        "no_fake_qualifications",
+        "existing_round_deadline_saved"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL48",
+      "trigger": "legal_election_and_plot_coup",
+      "must": [
+        "legal_result_and_contested_control_separate",
+        "no_false_constitutional_event",
+        "existing_participants_no_guard_spawn"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL49",
+      "trigger": "church_split_without_asset_authority",
+      "must": [
+        "no_central_asset_takeaway",
+        "member_real_joining",
+        "doctrine_and_property_separate"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL50",
+      "trigger": "empire_petition_no_divine_grant",
+      "must": [
+        "wait_actual_player_approval",
+        "no_self_signed_grant",
+        "members_and_root_revalidated"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL51",
+      "trigger": "normal_emperor_succession",
+      "must": [
+        "same_valid_grant_not_new_approval",
+        "each_crown_budget_independent",
+        "actual_proxy_limits"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL52",
+      "trigger": "one_member_tribute_default",
+      "must": [
+        "ledger_and_ability_investigation_first",
+        "arbitration_restructure_or_limited_pressure",
+        "no_auto_war"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL53",
+      "trigger": "diplomacy_discovery_off",
+      "must": [
+        "addressable_contact_may_be_possible",
+        "no_enemy_force_or_reservation_price_truth",
+        "existing_war_unaffected"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL54",
+      "trigger": "diplomatic_message_not_delivered",
+      "must": [
+        "no_recipient_belief_update",
+        "no_ratification",
+        "actual_transport_or_meeting"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL55",
+      "trigger": "counteroffer_opponent_private_reservation_changes",
+      "must": [
+        "recipient_decision_only_own_belief_and_terms",
+        "sender_gets_reply_not_hidden_price",
+        "no_oracle_query_probing"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL56",
+      "trigger": "signed_treaty_terms_changed",
+      "must": [
+        "hash_and_authority_stale_reject",
+        "no_half_boundary_transfer",
+        "explicit_new_ratification"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL57",
+      "trigger": "treaty_escrow_without_real_funds",
+      "must": [
+        "no_escrow_creation",
+        "legal_offer_conditional_or_rejected",
+        "no_unfunded_war_compensation"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL58",
+      "trigger": "low_affinity_and_high_ambition_no_dispute",
+      "must": [
+        "no_automatic_war_from_score",
+        "real_target_cause_or_explicit_illicit_plot_needed",
+        "no_army_spawn"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL59",
+      "trigger": "ai_new_wars_disabled_under_attack",
+      "must": [
+        "new_initiated_hostility_blocked",
+        "local_defense_and_existing_war_retreat_continue",
+        "no_offense_renamed_defense"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL60",
+      "trigger": "ill_advised_lawful_war_declaration",
+      "must": [
+        "legal_authority_not_victory_guarantee",
+        "campaign_resources_still_actual",
+        "actor_may_misjudge_known_estimates"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL61",
+      "trigger": "rebellion_plot_no_food_or_participants",
+      "must": [
+        "preparation_not_auto_progress",
+        "no_rebels_or_army_spawn",
+        "can_cancel_or_recruit_real_members",
+        "ai_rebellions_off_blocks_new_organization_not_lawful_petition_or_existing_committed_organization"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL62",
+      "trigger": "secret_plot_in_global_registry",
+      "must": [
+        "government_requires_actual_leak_observation_or_audit",
+        "god_truth_does_not_inform_government",
+        "real_evidence_source"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL63",
+      "trigger": "peace_with_prisoners_occupied_city_and_debts",
+      "must": [
+        "terms_and_tasks_explicit",
+        "no_instant_teleport_or_private_seizure",
+        "earned_wages_and_in_transit_claims_persist"
+      ],
+      "status": "future_production_not_executed"
+    },
+    {
+      "id": "POL64",
+      "trigger": "save_load_camera_thread_permutation",
+      "must": [
+        "same_belief_ballots_due_reservations_rng_and_results",
+        "no_worker_speed_world_change",
+        "no_repeated_tax_gift_or_discovery"
+      ],
+      "status": "future_production_not_executed"
+    }
+  ],
+  "verification_scenario_count": 64,
+  "finite_model": {
+    "path": "docs/research/models/political_decision_reference_model.py",
+    "scope": [
+      "small_finite_ballot_seats_quorum_tie_version_validation",
+      "integer_budget_reservation_and_idempotent_spend",
+      "own_belief_only_offer_acceptance"
+    ],
+    "not_claimed": [
+      "full_politics",
+      "personality_psychology",
+      "propagation_or_corruption_detection",
+      "messenger_path",
+      "tactical_war",
+      "performance_or_production_acceptance"
+    ],
+    "stale_role_scope": "current_prepared_request_not_automatic_expiry_of_existing_law_after_signer_death"
+  },
+  "source_law_coverage": {
+    "source_catalog": "data/catalogs/laws.json",
+    "source_catalog_mutated": false,
+    "source_design_version": "0.6",
+    "mapping_design_version": "0.8",
+    "algorithm_only_not_implemented": true,
+    "entry_count": 35,
+    "entries": [
+      {
+        "source_law_id": "LAW_SUCCESSION",
+        "source_trigger": "crown_vacant",
+        "source_constraint_preserved": "candidate_election",
+        "policy_family": "CONSTITUTION_SUCCESSION_AND_RANK",
+        "typed_decision_branch": "CrownVacancyResolution",
+        "current_guard_or_clarification": "current_civic_primogeniture_election_regency_not_source_summary_all_elective",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_CENTRALISATION",
+        "source_trigger": "city_action",
+        "source_constraint_preserved": "authority_scope",
+        "policy_family": "CONSTITUTION_SUCCESSION_AND_RANK",
+        "typed_decision_branch": "AdministrativeAuthorityAllocation",
+        "current_guard_or_clarification": "actual_central_local_member_authority_and_reserved_rights",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_LEGISLATURE",
+        "source_trigger": "change_law",
+        "source_constraint_preserved": "approval_rule",
+        "policy_family": "CONSTITUTION_SUCCESSION_AND_RANK",
+        "typed_decision_branch": "LegislativeProcedureRevision",
+        "current_guard_or_clarification": "real_institution_seats_notice_quorum_transition_no_result_rewrite",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_FISCAL_SHARE",
+        "source_trigger": "tax_settlement",
+        "source_constraint_preserved": "split_same_assessment",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "SplitSingleTaxAssessment",
+        "current_guard_or_clarification": "same_assessment_actual_share_integer_remainder_not_layer_retax",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_OFFICIAL_RELIGION",
+        "source_trigger": "religious_recognition",
+        "source_constraint_preserved": "religion_and_grant_check",
+        "policy_family": "RELIGIOUS_POLICY",
+        "typed_decision_branch": "OfficialReligionRecognition",
+        "current_guard_or_clarification": "existing_root_doctrine_personal_faith_separate_imperial_grant",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_PROPERTY_REGIME",
+        "source_trigger": "register_owner",
+        "source_constraint_preserved": "eligible_actor",
+        "policy_family": "PROPERTY_DEBT_AND_LIQUIDATION",
+        "typed_decision_branch": "PropertyEligibilityAndTransition",
+        "current_guard_or_clarification": "future_eligibility_and_explicit_real_owner_transition",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_COMPANY_ADMISSION",
+        "source_trigger": "company_application",
+        "source_constraint_preserved": "readiness_and_market_capacity",
+        "policy_family": "INDUSTRY_AND_COMPANY_LICENSE",
+        "typed_decision_branch": "DomesticCompanyAdmission",
+        "current_guard_or_clarification": "mature_capacity_real_applicant_capital_site_no_machine_worker_spawn",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_FOREIGN_COMPANY",
+        "source_trigger": "foreign_branch_application",
+        "source_constraint_preserved": "host_registration",
+        "policy_family": "INDUSTRY_AND_COMPANY_LICENSE",
+        "typed_decision_branch": "HostBranchRegistration",
+        "current_guard_or_clarification": "real_host_registry_tax_rights_route_and_custody",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_GROUP_OWNERSHIP",
+        "source_trigger": "purchase_equity",
+        "source_constraint_preserved": "acyclic_ownership_and_limits",
+        "policy_family": "INDUSTRY_AND_COMPANY_LICENSE",
+        "typed_decision_branch": "EquityOwnershipTransition",
+        "current_guard_or_clarification": "real_payment_shares_acyclic_ownership_no_stock_exchange",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_BANKING",
+        "source_trigger": "bank_application",
+        "source_constraint_preserved": "capital_and_reserve_check",
+        "policy_family": "INDUSTRY_AND_COMPANY_LICENSE",
+        "typed_decision_branch": "BankingLicenseAndReserve",
+        "current_guard_or_clarification": "actual_capital_100_percent_demand_reserve_term_investment_no_money_creation",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_CHURCH_BUSINESS",
+        "source_trigger": "church_company_application",
+        "source_constraint_preserved": "charter_and_state_intersection",
+        "policy_family": "RELIGIOUS_POLICY",
+        "typed_decision_branch": "ChurchCompanyPermissionIntersection",
+        "current_guard_or_clarification": "frozen_charter_and_state_license_intersection",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_LAND_TAX",
+        "source_trigger": "tax_period",
+        "source_constraint_preserved": "site_tax_base",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "PeriodicActualPlotTaxAssessment",
+        "current_guard_or_clarification": "actual_period_plot_taxbase_exemptions_owner_not_map_color",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_INCOME_TAX",
+        "source_trigger": "income_event",
+        "source_constraint_preserved": "progressive_tax",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "ActualIncomeAssessmentAndWithholding",
+        "current_guard_or_clarification": "actual_income_brackets_earned_wage_and_received_withholding_separate",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_SALES_TAX",
+        "source_trigger": "final_sale",
+        "source_constraint_preserved": "single_stage_sales_tax",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "SingleFinalSaleTaxAssessment",
+        "current_guard_or_clarification": "actual_final_sale_not_custody_transport_or_loan",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_PROFIT_TAX",
+        "source_trigger": "profit_period",
+        "source_constraint_preserved": "profit_base",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "PeriodicRecognizedProfitAssessment",
+        "current_guard_or_clarification": "actual_period_recognized_income_cost_loss_not_loan_or_inventory",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_CUSTOMS",
+        "source_trigger": "border_crossing",
+        "source_constraint_preserved": "once_per_clearance",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "OncePerActualClearance",
+        "current_guard_or_clarification": "stable_real_crossing_clearance_not_boundary_load_or_path_duplicate",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_DIVIDEND_TAX",
+        "source_trigger": "dividend",
+        "source_constraint_preserved": "withhold_and_credit",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "ActualDividendWithholdingAndCredit",
+        "current_guard_or_clarification": "actual_lawful_paid_dividend_once_credit_receipt",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_INHERITANCE",
+        "source_trigger": "person_death",
+        "source_constraint_preserved": "settle_debts_then_transfer",
+        "policy_family": "PROPERTY_DEBT_AND_LIQUIDATION",
+        "typed_decision_branch": "RealEstateDebtThenTransfer",
+        "current_guard_or_clarification": "exclude_third_party_public_company_goods_debt_first_then_real_beneficiaries",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_INHERITANCE_TAX",
+        "source_trigger": "estate_transfer",
+        "source_constraint_preserved": "net_estate_base",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "NetEstateTaxAssessment",
+        "current_guard_or_clarification": "net_actual_estate_exemption_and_debt_one_receipt_no_reload_tax",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_RESOURCE_FEE",
+        "source_trigger": "extraction",
+        "source_constraint_preserved": "actual_extracted_quantity",
+        "policy_family": "TAX_AND_FISCAL_SHARE",
+        "typed_decision_branch": "ActualExtractionRoyalty",
+        "current_guard_or_clarification": "actual_unique_output_quantity_no_god_terrain_resources",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_TITHE_COLLECTION",
+        "source_trigger": "contribution_assessment",
+        "source_constraint_preserved": "protected_floor_and_payable",
+        "policy_family": "RELIGIOUS_POLICY",
+        "typed_decision_branch": "ActualContributionCollection",
+        "current_guard_or_clarification": "real_faith_charter_protected_floor_actual_collection_not_tax_or_donation_clone",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_INSOLVENCY",
+        "source_trigger": "insolvent_actor",
+        "source_constraint_preserved": "exclude_client_property",
+        "policy_family": "PROPERTY_DEBT_AND_LIQUIDATION",
+        "typed_decision_branch": "InsolvencyPriorityAndExit",
+        "current_guard_or_clarification": "real_priority_restructuring_sale_liquidation_excludes_client_property",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_EXPROPRIATION",
+        "source_trigger": "take_asset",
+        "source_constraint_preserved": "legal_compensation",
+        "policy_family": "PROPERTY_DEBT_AND_LIQUIDATION",
+        "typed_decision_branch": "AuthorizedCompensatedAssetTaking",
+        "current_guard_or_clarification": "specific_authority_compensation_real_budget_deadline_appeal_custody",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_LABOR",
+        "source_trigger": "hire_or_exit",
+        "source_constraint_preserved": "single_active_labor_allocation",
+        "policy_family": "LABOR_AND_MOBILIZATION",
+        "typed_decision_branch": "RealLaborAdmissionExitAndTime",
+        "current_guard_or_clarification": "actual_hire_exit_wages_one_body_time_no_suit_job_loss",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_CONSCRIPTION",
+        "source_trigger": "recruit",
+        "source_constraint_preserved": "adult_labor_reserve",
+        "policy_family": "LABOR_AND_MOBILIZATION",
+        "typed_decision_branch": "ExistingAdultServiceAdmission",
+        "current_guard_or_clarification": "actual_mature_person_quota_roles_family_training_equipment_no_soldier_spawn",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_MIGRATION_GENERAL",
+        "source_trigger": "migration_apply",
+        "source_constraint_preserved": "housing_and_rights",
+        "policy_family": "LAND_ADMISSION_AND_CITIZENSHIP",
+        "typed_decision_branch": "ExistingApplicantResidence",
+        "current_guard_or_clarification": "existing_applicant_home_route_rights_no_auto_immigrant",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_MIGRATION_INVESTMENT",
+        "source_trigger": "investment_migration",
+        "source_constraint_preserved": "real_locked_capital",
+        "policy_family": "LAND_ADMISSION_AND_CITIZENSHIP",
+        "typed_decision_branch": "RealLockedCapitalAdmission",
+        "current_guard_or_clarification": "actual_disposable_capital_lock_and_performance_not_intention_as_cash",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_MIGRATION_FAITH",
+        "source_trigger": "faith_migration",
+        "source_constraint_preserved": "culture_membership_sponsor",
+        "policy_family": "LAND_ADMISSION_AND_CITIZENSHIP",
+        "typed_decision_branch": "ActualFaithSponsorAdmission",
+        "current_guard_or_clarification": "actual_culture_faith_sponsor_capacity_not_piety_or_auto_actor",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_MIGRATION_TALENT",
+        "source_trigger": "talent_migration",
+        "source_constraint_preserved": "actual_skill_and_slot",
+        "policy_family": "LAND_ADMISSION_AND_CITIZENSHIP",
+        "typed_decision_branch": "ActualSkillAndVacancyAdmission",
+        "current_guard_or_clarification": "actual_skill_fit_job_home_not_gene_edit_worker_spawn",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_RELIGIOUS_TOLERANCE",
+        "source_trigger": "religious_activity",
+        "source_constraint_preserved": "permission_and_social_effect",
+        "policy_family": "RELIGIOUS_POLICY",
+        "typed_decision_branch": "SpecificFaithActivityRights",
+        "current_guard_or_clarification": "actual_activity_rights_evidence_enforcement_no_omniscient_faith_delete",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_CULTURE_POLICY",
+        "source_trigger": "official_culture_change",
+        "source_constraint_preserved": "nonempty_reference_set",
+        "policy_family": "CONSTITUTION_SUCCESSION_AND_RANK",
+        "typed_decision_branch": "OfficialCultureReferenceTransition",
+        "current_guard_or_clarification": "cultural_nonempty_actual_refs_language_capacity_precultural_empty_allowed_human_genesis",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_KNOWLEDGE_RIGHTS",
+        "source_trigger": "publish_or_use",
+        "source_constraint_preserved": "access_competence_license",
+        "policy_family": "INDUSTRY_AND_COMPANY_LICENSE",
+        "typed_decision_branch": "ActualKnowledgeAccessLicense",
+        "current_guard_or_clarification": "actual_document_contact_competence_tools_license_not_free_invention",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_SUBJECT_TREATY",
+        "source_trigger": "subject_action",
+        "source_constraint_preserved": "explicit_treaty_scope",
+        "policy_family": "DIPLOMACY_AND_WAR_POLICY",
+        "typed_decision_branch": "ExplicitDependencyReservedAuthority",
+        "current_guard_or_clarification": "real_reserved_powers_contribution_arbitration_one_parent_no_cycle",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_IMPERIAL_CHARTER",
+        "source_trigger": "empire_request",
+        "source_constraint_preserved": "divine_approval",
+        "policy_family": "CONSTITUTION_SUCCESSION_AND_RANK",
+        "typed_decision_branch": "RealImperialPetitionAndAmendment",
+        "current_guard_or_clarification": "actual_consents_frozen_root_foundation_player_grant_normal_amendment_chain",
+        "status": "covered_current_design_not_production"
+      },
+      {
+        "source_law_id": "LAW_TERRITORIAL_TRANSITION",
+        "source_trigger": "peace_commit",
+        "source_constraint_preserved": "occupier_distinct_from_owner",
+        "policy_family": "DIPLOMACY_AND_WAR_POLICY",
+        "typed_decision_branch": "ExactRatifiedTerritorialTransition",
+        "current_guard_or_clarification": "exact_normal_treaty_or_explicit_god_origin_sovereignty_admin_occupation_property_distinct",
+        "status": "covered_current_design_not_production"
+      }
+    ],
+    "overrides_or_retirements": [
+      "source_succession_candidate_election_summary_not_override_current_civic_hereditary",
+      "church_founding_type_frozen",
+      "root_religion_player_only",
+      "no_money_or_population_creation",
+      "historical_uneditable_natural_terrain_not_reintroduced",
+      "succession_geography_damage_temporary_congestion_not_automatic_repeal"
+    ]
+  },
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ],
+  "global_tick_cutoff": {
+    "received_tick_predicate": "receivedTick<=closeTick",
+    "freeze_phase": "DELIVER_AND_FREEZE_DUE_phase4",
+    "close_phase": "DUE_EXECUTION_phase8_then_FINAL_LIFECYCLE_phase9",
+    "late_old_sent_tick": "reject",
+    "slow_validation_adds_votes": false
+  }
+}

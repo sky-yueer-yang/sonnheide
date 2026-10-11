@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "design_version": "0.9",
+  "planned_only": true,
+  "production_implemented": false,
+  "contract_id": "sonnheide_pixel_world_v0_8",
+  "decision": "docs/decisions/0022-blank-world-and-heavy-arcade-ui.md",
+  "design": "docs/design/Sonnheide_Design_v0.9_Executable_Rules.md",
+  "detailed_terrain_contract": "data/contracts/terrain_access_v1.json",
+  "game_contract": "data/contracts/game_v0_9.json",
+  "original_baseline_sha256": "cdff70f277a46554c7d06f0078d1d77049bb88ca965d05e889d619ade949bea6",
+  "creation": {
+    "modes": [
+      "blank"
+    ],
+    "blank_modes": [
+      "ocean",
+      "flat_land"
+    ],
+    "procedural_world_template_library": false,
+    "uniform_horizontal_scale": true,
+    "preview_uses_generated_candidate": true,
+    "maximum_preview_resolution": "same_playable_world_surface",
+    "boundary": "exact_rectangular_cut_then8cell_fixed_deep_ocean_guard_then_render_only_outer_ocean",
+    "natural_source_provenance_read_only": true,
+    "effective_terrain_editable": true,
+    "initial_humans": 0,
+    "initial_sapient_animals": 0,
+    "initial_buildings": 0,
+    "irregular_coast_transition": false,
+    "world_map_selection": false,
+    "geography_runtime_required": false,
+    "creation_dialog": "centered_bounded_scrollable_modal"
+  },
+  "grid": {
+    "representation": "management_columns_row_RLE_and_sparse_64x64_micro_surface_patches",
+    "sample_base_height_quantum_mm": 500,
+    "sample_ramp_corner_height_quantum_mm": 1,
+    "sample_chunk_cells": [
+      64,
+      64
+    ],
+    "final_capacity_promise": false,
+    "profile_freezes_on_create": true,
+    "natural_caves_or_floating_ground": false,
+    "fixed_flat_heights_mm": {
+      "deep_ocean": -20000,
+      "close_ocean": -8000,
+      "shallow_water": -2000,
+      "sand": 0,
+      "soil": 0,
+      "hill": 16000,
+      "mountain": 48000,
+      "high_peak": 96000
+    },
+    "arbitrary_flat_heights": false,
+    "continuous_exception": "owned_ramp_patch_only",
+    "natural_edge_height_transition": false,
+    "sample_cell_size_mm": 2000,
+    "new_world_default_core_cells": [
+      1024,
+      1024
+    ],
+    "current_capacity_limit_core_cells": [
+      4096,
+      4096
+    ],
+    "texture_pixels_per_metre": 32,
+    "legacy_geometry_cell_sizes_mm": [
+      250,
+      2000
+    ],
+    "surface_micro_size_um": 31250,
+    "management_equals_surface_resolution": false
+  },
+  "water": {
+    "sea_level_m": 0,
+    "lake_level_m": 0,
+    "sea_connectivity": "positive_length_shared_wet_edge_4_neighbor_local_wet_regions_to_external_sea_source",
+    "depth": "derived_from_actual_triangular_surface",
+    "ordinary_chunk_edge_is_coast": false,
+    "high_altitude_lakes": false,
+    "persistent_natural_objects": false,
+    "water_identity": "none_current_revision_navigation_component_only"
+  },
+  "preset_ids": [
+    "shallow_water",
+    "close_ocean",
+    "deep_ocean",
+    "sand",
+    "soil",
+    "hill",
+    "mountain",
+    "high_peak"
+  ],
+  "ramp": {
+    "actual_supported_surface": true,
+    "walk_vehicle_animal_profiles_separate": true,
+    "all_moving_actors_peak_exclusion": true,
+    "gene_or_flight_bypasses_peak": false,
+    "removal_consequence_preview_required": true,
+    "terrain_restore_overwrites_later_edits": false
+  },
+  "godterrain": {
+    "free": true,
+    "inventory_output": 0,
+    "population_output": 0,
+    "refund_output": 0,
+    "can_damage_civil_world": true,
+    "single_writer_consequence_commit": true,
+    "type_change_wipes_nonliving": true,
+    "precise_changed_footprint": true,
+    "all_live_Actor_and_Gestation_direct_erase": false,
+    "worn_and_carried_nonliving_in_scope": false,
+    "same_kind_repeat_wipes": false,
+    "soil_theme_only_wipes": false,
+    "lost_goods_restored_by_inverse_geometry": false,
+    "live_actor_portable_subtree_preserved": true
+  },
+  "ecology_contract": "data/contracts/surface_ecology.json",
+  "tools_contract": "data/contracts/tool_registry_v1.json",
+  "algorithm_decision": "docs/decisions/0015-settlements-natural-actions-and-god-control.md",
+  "god_control_contract": "data/contracts/god_control_v1.json",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "runtime_foundation": "data/contracts/runtime_foundation_v1.json",
+  "allowed_operators": [
+    "PaintPreset",
+    "RaiseOneTier",
+    "LowerOneTier",
+    "FlattenToPreset",
+    "CopyFlatTerrain",
+    "CreateRamp",
+    "RemoveRamp",
+    "PaintEcologyTheme"
+  ],
+  "removed_operators": [
+    "Smooth",
+    "SetArbitraryTargetHeight",
+    "StrengthAsContinuousHeightDelta"
+  ],
+  "clock_contract": "runtime_foundation_v1.clock",
+  "save_wire_contract": "runtime_foundation_v1.save_wire",
+  "micro_surface_update": {
+    "decision": "docs/decisions/0021-large-world-micro-surfaces-and-worldbox-interface.md",
+    "profile": 2,
+    "management_cell_mm": 2000,
+    "micro_side": 64,
+    "micro_size_um": 31250,
+    "soil_sand_top_mm": 0,
+    "water_surface_mm": 0,
+    "wet_classification": "actual_kind_and_micro_coverage_not_positive_height",
+    "default_core_cells": 1024,
+    "maximum_core_cells": 4096,
+    "presets_core_cells": [
+      256,
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "reclamation": "replace_only_wet_microfaces_preserve_dry_kind_theme_revision",
+    "representation": "row_RLE_plus_sparse_palette_packed_fine_patches",
+    "production_full_game_implemented": false,
+    "binary_patch_codec": "lossless_minimum_fixed_spans_row_offset_spans_sorted_row_dictionary_or_raw_bitpacked_fallback",
+    "geometry_hash": "canonical_decoded_indices_independent_of_lossless_resident_codec",
+    "save_patch_registry": "schema_2_sorted_unique_patch_palettes_and_explicit_index_encoding_palette_id",
+    "geometry_hash_memory": "streaming_canonical_decoded_bytes_not_world_sized_raw_buffer"
+  }
+}

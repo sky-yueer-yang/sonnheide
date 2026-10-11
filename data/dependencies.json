@@ -1,44 +1,57 @@
 {
   "schema_version": 1,
   "document_type": "selection_manifest_not_build_lock",
-  "integrated_runtime_dependencies": [],
-  "planned": [
+  "integrated_runtime_dependencies": [
     {
-      "name": "SDL3",
-      "upstream": "https://github.com/libsdl-org/SDL",
-      "license_candidate": "Zlib",
-      "status": "not_integrated",
-      "resolved_commit": null,
-      "source_archive_sha256": null,
-      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+      "name": "sdl",
+      "resolved_commit": "7f3ae3d57459e59943a4ecfefc8f6277ec6bf540",
+      "source_archive_sha256": "7a8347c770b90b33daac2352858ca03f9c9a2ccc8ce711054870361d1a6b32e5",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
+      "linked_to_kernel": false
+    },
+    {
+      "name": "rmlui",
+      "resolved_commit": "40edf1acfa7f13f0c9b2af91d6f09ed47aa2c2c9",
+      "source_archive_sha256": "59cc05404011645873048fbf7aac5131ac4c8c304853fa448d1aa43b4e2ba340",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
+      "linked_to_kernel": false
+    },
+    {
+      "name": "freetype",
+      "resolved_commit": "42608f77f20749dd6ddc9e0536788eaad70ea4b5",
+      "source_archive_sha256": "68ce87bb59ea209eb7350f41a94a27519ce16b37011b475a1e62d4abee154b66",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
+      "linked_to_kernel": false
     },
     {
       "name": "bgfx",
-      "upstream": "https://github.com/bkaradzic/bgfx",
-      "license_candidate": "BSD-2-Clause",
-      "status": "not_integrated",
-      "resolved_commit": null,
-      "source_archive_sha256": null,
-      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+      "resolved_commit": "cca91681c953d2de9531197b0f580c866ffaa775",
+      "source_archive_sha256": "fdf2642d58327bee772eb06e4fdb32aef4c53c0d17325820a848d1628e01a24e",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
+      "linked_to_kernel": false
     },
     {
       "name": "bx",
-      "upstream": "https://github.com/bkaradzic/bx",
-      "license_candidate": "BSD-2-Clause",
-      "status": "not_integrated",
-      "resolved_commit": null,
-      "source_archive_sha256": null,
-      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
+      "resolved_commit": "d86e4ea9d9da6e832a3ff41398587d82b772c69b",
+      "source_archive_sha256": "ebceffb7cba8d29dc0931de6b2fd2a700f26fbd5a3b978ee92398b91f2260956",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
+      "linked_to_kernel": false
     },
     {
       "name": "bimg",
-      "upstream": "https://github.com/bkaradzic/bimg",
-      "license_candidate": "BSD-2-Clause",
-      "status": "not_integrated",
-      "resolved_commit": null,
-      "source_archive_sha256": null,
-      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
-    },
+      "resolved_commit": "101b5b5fd4670f82cfdec8e98aa1ab9ee93bb2a1",
+      "source_archive_sha256": "efb47d1ee18a653658c04e3aabbafd4e302b17a191c18cfe2ca64b6892761f94",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "native_main_menu_and_phase1_Earth_Metal_verified_Direct3D11_build_target",
+      "linked_to_kernel": false
+    }
+  ],
+  "planned": [
     {
       "name": "cgltf",
       "upstream": "https://github.com/jkuhlmann/cgltf",
@@ -65,24 +78,6 @@
       "resolved_commit": null,
       "source_archive_sha256": null,
       "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
-    },
-    {
-      "name": "RmlUi",
-      "upstream": "https://github.com/mikke89/RmlUi",
-      "license_candidate": "MIT",
-      "status": "not_integrated",
-      "resolved_commit": null,
-      "source_archive_sha256": null,
-      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
-    },
-    {
-      "name": "FreeType",
-      "upstream": "https://freetype.org/",
-      "license_candidate": "FTL",
-      "status": "not_integrated",
-      "resolved_commit": null,
-      "source_archive_sha256": null,
-      "note": "Per-file and transitive licenses plus actual builds must be verified before integration"
     }
   ],
   "vendored_source_components": [
@@ -95,6 +90,16 @@
       "status": "native_CPU_FFT_reference_only",
       "native_GPU_port_integrated": false,
       "browser_reference_dependency": "three.js 0.180.0; CDN imported, not vendored or linked to native core"
+    },
+    {
+      "name": "mmikk/hextile-demo",
+      "upstream": "https://github.com/mmikk/hextile-demo",
+      "resolved_commit": "43c3ed7e18e1e4539fa9323f72d5e2a65147ebb3",
+      "license": "MIT",
+      "source_manifest": "third_party/hextile/UPSTREAM.json",
+      "status": "native_bgfx_PBR_Hex_port",
+      "native_GPU_port_integrated": true,
+      "runtime_framework_imported": false
     }
   ],
   "retained_geographic_sources": [
@@ -108,7 +113,22 @@
       "license_file": "data/geo/sources/CC0-1.0.txt",
       "license_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
       "license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
-      "status": "real_25x25_Alps_window_offline_rebuilt"
+      "status": "historical_research_only_retired_by_ADR_0010",
+      "required_for_new_world": false,
+      "additional_acquisition_planned": false
+    },
+    {
+      "name": "GSHHG 2.3.7 full binary and five navigation LODs",
+      "license": "LGPL-3.0-or-later",
+      "source_manifest": "data/geo/gshhg_sources.lock.json",
+      "partial_source": false,
+      "full_global_package_downloaded": true,
+      "license_file": "data/geo/sources/gshhg/COPYING.LESSERv3",
+      "license_sha256": "ea7d049c7705dc13afc202dd18e1827f3484f8212fd3fa7b82fc4a0c363432c9",
+      "status": "phase1_native_full_source_sampler_and_navigation",
+      "required_for_new_world": true,
+      "dem": false,
+      "hosting": "GitHub geography-sources-v1 Release; immutable original ZIP and notices"
     }
   ],
   "retained_character_sources": [
@@ -143,5 +163,50 @@
       "linked_to_runtime": false,
       "minimum_blender": "4.2.0"
     }
-  ]
+  ],
+  "optional_development_tools": [
+    {
+      "name": "Node.js",
+      "purpose": "Execute the original offline inspector model regression in vm; no npm packages, no production runtime dependency",
+      "tested_version": "24.19.0",
+      "accepted_major_versions": [
+        20,
+        22,
+        24
+      ],
+      "upstream": "https://nodejs.org/",
+      "license_reference": "https://github.com/nodejs/node/blob/main/LICENSE",
+      "distribution": "not_vendored; use installed/bundled runtime",
+      "configuration": "SONNHEIDE_NODE or node on PATH"
+    }
+  ],
+  "integrated_build_dependencies": [
+    {
+      "name": "bgfx.cmake",
+      "resolved_commit": "f2ea8fb0438721d754aefa22b14fe161f948a383",
+      "source_manifest": "data/native_dependencies.lock.json",
+      "status": "optional_native_build_only"
+    }
+  ],
+  "retained_material_sources": [
+    {
+      "name": "Poly Haven eight PBR surfaces and two Pure Sky environments",
+      "license": "CC0-1.0",
+      "source_manifest": "assets/manifests/ground_sky_sources.json",
+      "status": "phase1_native_PBR_Hex_and_fixed_Age_SH9_GGX",
+      "hosting": "GitHub ground-sky-sources-v1 Release via locked workflow",
+      "runtime_integrated": true,
+      "game_ready": true
+    }
+  ],
+  "active_design_contract": "data/contracts/pixel_world.json",
+  "pixel_route": {
+    "status": "planned",
+    "reuse_native_libraries": true,
+    "makehuman_production_dependency": false,
+    "poly_haven_hex_required": false,
+    "abyssal_native_gpu_required": false,
+    "original_character_clothing_building_assets": true,
+    "retained_sources_role": "historical_byte_locked_not_new_pixel_world_dependencies"
+  }
 }

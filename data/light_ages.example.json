@@ -1,0 +1,20 @@
+{
+  "status": "planning_example_not_active_kernel_config",
+  "schema_version": 1,
+  "phases": ["light", "darkness"],
+  "default_phase": "light",
+  "default_automatic": false,
+  "duration_unit": "simulation_days_using_world_frozen_TimeConfig",
+  "light_duration_days": 30,
+  "darkness_duration_days": 30,
+  "duration_bounds_days": [1, 3600],
+  "manual_selection_disables_automatic": true,
+  "enable_or_change_duration_restarts_current_phase_timer": true,
+  "calendar_drives_astronomy": false,
+  "pause_freezes_remaining_ticks": true,
+  "load_restarts_timer": false,
+  "offline_catchup": false,
+  "menu_paintings_affect_world": false,
+  "contract": "docs/architecture/LIGHT_AGES.md",
+  "implementation_status": "not_connected_to_authoritative_World_scheduler_checkpoint_or_native_GPU"
+}

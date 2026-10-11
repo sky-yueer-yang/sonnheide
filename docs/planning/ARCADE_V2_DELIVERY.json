@@ -1,0 +1,462 @@
+{
+  "format": "SonnheideArcadeDelivery1",
+  "date": "2026-10-10",
+  "scope": "S00_S01_fine_terrain_translucent_arcade_ui",
+  "status": "pass",
+  "publication_parent": "1861e9afb88f1bfe3caab149ba9dc0db2249bece",
+  "command": "python3 tools/build.py --sanitize --native-smoke --bundle --jobs 6",
+  "device": {
+    "platform": "macOS arm64 developer machine",
+    "gpu": "Apple M3",
+    "renderer": "Metal",
+    "pixel_size": [
+      2560,
+      1600
+    ],
+    "logical_size": [
+      1280,
+      800
+    ]
+  },
+  "build": {
+    "all_targets": true,
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "ctest_seconds": 6.68,
+    "core_invariant_checks": 1216,
+    "asan": true,
+    "ubsan": true
+  },
+  "native_actions": 58,
+  "captures": [
+    {
+      "name": "blank-oblique.tga",
+      "sha256": "8db3560a050a64a9bdb4fd88ecf60b630aa0380b8e2a858cd4b11d8b0d270abc",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "blank-preview.tga",
+      "sha256": "d25c3c6d9629b59a081610251aa9123e5e0afee7211e2d29c1bcaa79f9e3287d",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "creation-error.tga",
+      "sha256": "a6878d2cfc282fec568fcadf0978365358046a3ee46b447d74c4381bd03f62ca",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "darkness.tga",
+      "sha256": "fa47e45fb46394171ff30cad17d4b0e96bf6b01fe4c4898eccff92e2391036fa",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "earth-map.tga",
+      "sha256": "8c49413a7f52580c1422e560845b96820b8d5f9ccabe435b1cc57cf40e45da43",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "earth-preview.tga",
+      "sha256": "cfb13d345dac5672f3645613fb3d74e2b74294fc7fcc96f1bc19cca2ab83d258",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "earth-world.tga",
+      "sha256": "1d541e07016b79a9d59dac098c93f60b422c5b1a4c257ff7cdd6427614b1d9db",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "loaded-world.tga",
+      "sha256": "8b192e3a42ac384862e46036cb5f4c51d15356667574a9618ed7b4beffd68920",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-frozen-a.tga",
+      "sha256": "2438073af492d96b87fb2122e3ee4658ad5e1a35ed950b72bcc307aa18e069e1",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-frozen-b.tga",
+      "sha256": "cfcc3f6a9902bf5aadf98f1acda067a5463da2bb01b8505864cacf9b0793cfd2",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu-motion.tga",
+      "sha256": "2438073af492d96b87fb2122e3ee4658ad5e1a35ed950b72bcc307aa18e069e1",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "main-menu.tga",
+      "sha256": "029b9052ed02285931921515c60183b509d6960cfac3277e7f785c533f41cb27",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-darkness.tga",
+      "sha256": "927f3aa68ad978c6920f3695df0f609291dcd160384a77278c13f822848669c8",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-full.tga",
+      "sha256": "769620adfde60fe4bec2871a031de721b7c090328f62cc46f2cf7651db77a79c",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-light.tga",
+      "sha256": "769620adfde60fe4bec2871a031de721b7c090328f62cc46f2cf7651db77a79c",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "pixel-near-mean-base.tga",
+      "sha256": "59b9c4b0f9f524ce572860f16faa7ed83b132c0b47e605f1cdb2fc8cde99c6de",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-de.tga",
+      "sha256": "7f14bd17dff6bd54d6c6cbca7e472edd62b20998dfb5282d103a6ba0ec55b5e7",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-en.tga",
+      "sha256": "a9f793973c56ecb19f533f31709aa1b38a957b516199b1d0edbe6a5ed3ef6957",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "settings-zh.tga",
+      "sha256": "2b6ae2edc06cc9c72a4ab3a8e7591cc230c16e090422315a4ae11776f2322a7b",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    },
+    {
+      "name": "world-name-consequences.tga",
+      "sha256": "50dea213c87448829f8e9680c25c56448378e1b65e0e6ae82c51a0b79a6704f0",
+      "bytes": 16384018,
+      "width": 2560,
+      "height": 1600,
+      "source": "actual_native_gpu_readback"
+    }
+  ],
+  "motion": {
+    "image_comparison_required": true,
+    "live_advance_ms": 1500,
+    "local_clock_frozen": true,
+    "menu_creates_world": false,
+    "status": "pass",
+    "actual_gpu_pixels_frozen_identical": false,
+    "gpu_rounding_tolerance_lsb": 1,
+    "frozen_max_channel_delta": 1,
+    "live_significant_changed_channels": 13994,
+    "rgba_bytes": 16384000
+  },
+  "source_files": [
+    {
+      "path": "src/client/client.cpp",
+      "sha256": "c98213838467f1962a7171371c06a651782bcc66050ca068883a8741bd722df9"
+    },
+    {
+      "path": "src/client/client.hpp",
+      "sha256": "91329df0fc0b482db993c0eed965b0c6218b074ff45930eea7c76d5cb4029d94"
+    },
+    {
+      "path": "src/core/geography.cpp",
+      "sha256": "9df61584bf4bc26825c80991f417bc80cba538e77cdf8ba0a158dc0e1c6196fe"
+    },
+    {
+      "path": "src/core/hash.cpp",
+      "sha256": "5d9ecd16896e8168fba19b43c6491474527f76f26a6a82a81d90e4756a9289cf"
+    },
+    {
+      "path": "src/core/json.cpp",
+      "sha256": "938066324f0e02f4a1638ce76a2b9b9ed92e7f907762badee7e28ef06a71ecac"
+    },
+    {
+      "path": "src/core/save.cpp",
+      "sha256": "e45aad9dc55e2e6d32dccf4e855f51f9ddc69e36e4875d1ed602a360aea2ea76"
+    },
+    {
+      "path": "src/core/sonnheide.hpp",
+      "sha256": "e1e86453d29f8aeaa3a67c8ba6856786c94431ff5d3d8732c8705326fa344b03"
+    },
+    {
+      "path": "src/core/terrain.cpp",
+      "sha256": "598babdec5b0df67e7e707ddd11e88d3f72c0699b1615efe5f0979bc158a4c44"
+    },
+    {
+      "path": "src/core/world.cpp",
+      "sha256": "97739c098a77723d49ca1b11c70d950b06c9dc8a164df8ca5dcd7fc61c1d1cbc"
+    },
+    {
+      "path": "src/ui/pixel_decorator.cpp",
+      "sha256": "12738a0720ceb351ee4bde6c50e50e0b3abf0e1f5de0a9e699c71cc34dae20d1"
+    },
+    {
+      "path": "src/ui/pixel_decorator.hpp",
+      "sha256": "db84734070736ded038466d983bd692b4021a10bc4cb467a4d6f3598e8a7e245"
+    },
+    {
+      "path": "src/ui/ui.cpp",
+      "sha256": "5049dea89ecc116687fff91b5d6bf3c358dbba4a155fd9c161759aa93f98558b"
+    },
+    {
+      "path": "src/ui/ui.hpp",
+      "sha256": "b7ce8c336c3bff1c9aa34a67625135589125a3fd2393ee2d2dabe5f741629feb"
+    },
+    {
+      "path": "apps/game/main.cpp",
+      "sha256": "31c8d628d532742f4e2df80d7f90fc335acea5e7cc06ce75160885894b5eda00"
+    },
+    {
+      "path": "assets/ui/application.rcss",
+      "sha256": "4cb66ad76ed4cacb64d03646970f925accde71cd4cf2eb9c5d6d42ed6af81a3a"
+    },
+    {
+      "path": "assets/ui/application.rml",
+      "sha256": "c5098b1ba81442090fd91f1e59a75a503cc962d79052d7f86a17d2a8b4a9ae62"
+    },
+    {
+      "path": "assets/ui/locales.tsv",
+      "sha256": "de6d6136f51b703f4eb087f98efd8a5910f122c6d00fba79e4ab8861e3e5408c"
+    },
+    {
+      "path": "assets/shaders/common.sh",
+      "sha256": "898a0c49d37ed230b1bd78b812bf603d834185bd576bcb684e66ba13b0d86e02"
+    },
+    {
+      "path": "assets/shaders/shadow.fs.sc",
+      "sha256": "889f9e162b323b055e54292ee269aa60ec94a7cf35752b15084c47dc80c726a5"
+    },
+    {
+      "path": "assets/shaders/shadow.vs.sc",
+      "sha256": "94410a6484f25caa0ffb868bd5bf99eb324efc649e9b9beff046131697b937dd"
+    },
+    {
+      "path": "assets/shaders/sky.fs.sc",
+      "sha256": "8b2ad15a0d0a2e33bac7c6294bca785d46c642bd3c2967151c16029c37a98635"
+    },
+    {
+      "path": "assets/shaders/sky.vs.sc",
+      "sha256": "1e42f47fa8fc675c3f88ee16fbc5c3ae0ba84da3598db0e9dd920a4ad072c3f0"
+    },
+    {
+      "path": "assets/shaders/ui.fs.sc",
+      "sha256": "cbacaa7fdf8b99f240e4215965f7aa379309b5a0158e5f2ded406eef234a14d8"
+    },
+    {
+      "path": "assets/shaders/ui.vs.sc",
+      "sha256": "5f607d6d65d90705f44bac007698eb5e07d42a53a59787322ddf076c7d58d060"
+    },
+    {
+      "path": "assets/shaders/varying.def.sc",
+      "sha256": "a5a2cb446b80bc10c4cf2a109a10a1bfee7dbf9df7ed12c82bd6fccf972bb0e0"
+    },
+    {
+      "path": "assets/shaders/water.fs.sc",
+      "sha256": "e39f5d6460d05fea11e6cb7245ce52e9a109931deaee5ee874c9d09b5cad16cd"
+    },
+    {
+      "path": "assets/shaders/world.fs.sc",
+      "sha256": "01cffbaecec92990a36733b7360aa39dd9ed92628262fbed1855c29bf5f11c96"
+    },
+    {
+      "path": "assets/shaders/world.vs.sc",
+      "sha256": "cc8c7cd3a918a180f0b02d474a65b979b2d62befe53cae2d75c2d5eba56680d3"
+    },
+    {
+      "path": "data/contracts/civic_control_v1.json",
+      "sha256": "053dc2f3c772772723564515ff7ac22d979b6331fef4f4dbd2b86d90afac316b"
+    },
+    {
+      "path": "data/contracts/decision_core_v1.json",
+      "sha256": "021d6af9dfd97f9fb82b479683dea28e975c12c84a062f016d0236d09833ddc7"
+    },
+    {
+      "path": "data/contracts/economic_decisions_v1.json",
+      "sha256": "a7056780707fd1b43471808aabd4d8f4585394955fb9542dc763999a06466dc1"
+    },
+    {
+      "path": "data/contracts/emergence_algorithms_v1.json",
+      "sha256": "6609b02e8309272e6ad6b41a2700308d9a08e3f5e2a0d10a5b6ac4cb5246551d"
+    },
+    {
+      "path": "data/contracts/game_v0_8.json",
+      "sha256": "ba3917aeb5e1f509936da0467ed50c24c7a59147d047769d4eb502fdc5ee3c8b"
+    },
+    {
+      "path": "data/contracts/game_v0_9.json",
+      "sha256": "c7bd2324e7760964695418248a04567e90f4dbb99d1bcdde3079c4c483d6b811"
+    },
+    {
+      "path": "data/contracts/god_control_v1.json",
+      "sha256": "9c8a9924940a6dbb9a4254441301f846cff5b97a6708abef629e2b938bf64ac5"
+    },
+    {
+      "path": "data/contracts/interaction_runtime_v1.json",
+      "sha256": "6944c85f808acd66cfe41283bf8ffa5d2c7f99cbe9723feda8ee3a8e307046c4"
+    },
+    {
+      "path": "data/contracts/life_genetics_v1.json",
+      "sha256": "e52d7deedc42c49159a2dcdb0e3871448b1fe1c43a8ce26a095211e83f0663af"
+    },
+    {
+      "path": "data/contracts/natural_action_v1.json",
+      "sha256": "9e10aac3c8dceca9e301dbcd639e3f98841e8418a1eaaac73940a158a005aa5e"
+    },
+    {
+      "path": "data/contracts/pixel_world.json",
+      "sha256": "ccf5eff44a3d92c038a18bec9c18f356aeb5641c9ea5c885eedef277712ac2e2"
+    },
+    {
+      "path": "data/contracts/political_decisions_v1.json",
+      "sha256": "0bdc94e74e0e2cff66a275c3e4d242b7abfc79020261798aff04ab5af5524c20"
+    },
+    {
+      "path": "data/contracts/runtime_foundation_v1.json",
+      "sha256": "15e6605b497eae4c771748f5635232a94eb0a38e39206a08c6f628f9460e1476"
+    },
+    {
+      "path": "data/contracts/settlement_lifecycle_v1.json",
+      "sha256": "d4b27e7e888b6c48d5cc72141c5ef343cc2ae0624afc10915ce7561a9d2c3ba8"
+    },
+    {
+      "path": "data/contracts/social_decisions_v1.json",
+      "sha256": "ee7862d3ace666bd4a7ba045fb236f50ce40666ac54639a7a791a7a72f9283f3"
+    },
+    {
+      "path": "data/contracts/surface_ecology.json",
+      "sha256": "c914270d96c0cc3ebac8c6f2ace2e148195699d059816ad5fb5b6f4c5357b99b"
+    },
+    {
+      "path": "data/contracts/terrain_access_v1.json",
+      "sha256": "727f68935fffff6f5f79a07f9173d614807fdd3aadf05a008c4266b7d3655bc8"
+    },
+    {
+      "path": "data/contracts/tool_registry_v1.json",
+      "sha256": "3ef85a80284fb8ede25def1cce275f9ecc58e86b175ed4282d4406f3c4fdad44"
+    },
+    {
+      "path": "data/contracts/vegetation_generator_v1.json",
+      "sha256": "1f4c68fc91651b3b30d176a2ef5322b3498f6e8f4ee384ebae9dd01d2f4db22f"
+    },
+    {
+      "path": "data/contracts/warfare_decisions_v1.json",
+      "sha256": "01074d942be8930722e32b700f7134afda9e21c3a727428ee059110d005e1a67"
+    },
+    {
+      "path": "tools/build.py",
+      "sha256": "8fcae53ddc9007a45d640e3ec23b3ecf99ad0dff99fc9144fdc9f342fd96051f"
+    },
+    {
+      "path": "tools/generate_interaction_spec.py",
+      "sha256": "748f403ab80d86e48329c79a0893d6e955c5c81c88c6a039c9e1ddb1c224a9ea"
+    },
+    {
+      "path": "tools/generate_unicode_tables.py",
+      "sha256": "25c4cb60b70dc2459aabf3ec42c222992af26bfd97e9154bd87760e5dda20fbf"
+    },
+    {
+      "path": "tools/generate_visual_assets.py",
+      "sha256": "406c918cafa3e73fe01c852e39eb257ffa77bb2f3c40f8b44ad9f91dff362503"
+    },
+    {
+      "path": "tools/play.py",
+      "sha256": "2dbc711a6ec146c39fb78a97c5c2fc1dafe8116cd3e919103552ad023ddad183"
+    },
+    {
+      "path": "tools/prepare_sources.py",
+      "sha256": "0e9320b193095a666f901e9b6bb5cbfc13c6e7235fd5910cdacec41803feebc3"
+    },
+    {
+      "path": "tools/validate_design.py",
+      "sha256": "cdeb7db056d0e937d01701033804eb0f8f30fe51f78a7976b85072391764d30e"
+    },
+    {
+      "path": "tools/validate_project.py",
+      "sha256": "ebf458537e09660ff70aee579d5c046ec29461991c25fad42847ac75d60cd2d6"
+    },
+    {
+      "path": "tests/core/core_tests.cpp",
+      "sha256": "46d999e25627cd8b04f3d28506ab56cfb906fa5b99fb40cdbd0acf03e9b4d17e"
+    },
+    {
+      "path": "tests/ui/ui_tests.cpp",
+      "sha256": "be64928e8e13a2d6db3a835a5674277636ad5910d51d0825109cc41692faf160"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/evidence/arcade-v2/main-menu.png",
+      "sha256": "d6e2957eb9b98e86a044ac15f7743aae31e4b1d308f00ecf7258267d5aed7793",
+      "bytes": 32805,
+      "conversion": "TGA RGBA to lossless PNG RGBA; no retouching"
+    },
+    {
+      "path": "docs/evidence/arcade-v2/settings-zh.png",
+      "sha256": "4cfec1a4125b7d95c3a3e9f803902c1326f25e200af78321a127fa5072a6fdd9",
+      "bytes": 1713394,
+      "conversion": "TGA RGBA to lossless PNG RGBA; no retouching"
+    }
+  ],
+  "limits": {
+    "world_population": 0,
+    "buildings": 0,
+    "godterrain_editor_implemented": false,
+    "ramps_implemented": false,
+    "windows_current_source_result": "pending_source_publication",
+    "windows_gpu_verified": false,
+    "steam_install_verified": false
+  }
+}

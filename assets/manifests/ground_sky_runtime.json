@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "recipe": "sonnheide-ground-sky-v2-rgba16f-sh9-ggx-fixed-age",
+  "source_lock": "assets/manifests/ground_sky_sources.json",
+  "cook_tool": "tools/cook_ground_sky.py",
+  "runtime_location": "assets/runtime/ground-sky",
+  "shader_location": "shaders/{metal|dx11}",
+  "ground": {
+    "resolution": [
+      2048,
+      2048
+    ],
+    "channels": [
+      "base_color",
+      "normal_gl",
+      "occlusion_roughness_metallic"
+    ],
+    "base_color": "RGBA8 sRGB hardware decode; linear-area averaged sRGB reencoded mip levels",
+    "normal": "RGBA8 linear; mip normals renormalized; rotated tangent components inversely rotated",
+    "orm": "RGBA8 linear AO-Roughness-Metallic; linear area mip levels",
+    "hex": "mmikk TriangleGrid, candidate centers and offset/rotation adaptation; shared transformed gradients and weights for all channels",
+    "rotation": "bounded float phase replaces overflow-prone integer product; presentation only",
+    "physical_scale": "locked Poly Haven physical_size_m; independent of camera",
+    "maximum_gpu_bytes": 536870880,
+    "decoder": "pinned bimg byte-preserving PNG decode; do not route linear channels through OS colour management"
+  },
+  "sky": {
+    "resolution": [
+      8192,
+      4096
+    ],
+    "format": "RGBA16F linear full mip chain",
+    "calibration_light": 0.65,
+    "calibration_darkness": 0.018,
+    "lower_hemisphere": "mirrored upper radiance fades to 0.28; source ground excluded",
+    "diffuse": "spherical-area-weighted Lambertian SH9",
+    "specular": "GGX importance-prefilter V=N, 128 Hammersley samples, N.L normalization and PDF-derived solid-angle source mip; 512x256 roughness chain",
+    "tone_mapping": "fixed ACES approximation then gamma; no automatic exposure",
+    "rotation": "fixed panorama yaw; no astronomy",
+    "maximum_gpu_bytes": 715827888,
+    "brdf": "analytic split-sum BRDF approximation, Fresnel energy-sharing diffuse/specular",
+    "specular_gpu_bytes": 2796216,
+    "mean_water": "orthographic reflection uses the same constant view direction as ground; perspective reflection uses pixel view rays"
+  },
+  "geometry": "single immutable full-source world sampler; complete conforming domain grid with fine camera patch; identical renderer for game and orthographic preview; parallel rays and parallel eye vectors for orthographic views",
+  "water": "infinite analytic fixed-level plane in sky-ray shader; genuine GPU presentation, static mean water only; Abyssal FFT native port deferred",
+  "shader_compiler": "pinned bgfx shaderc from data/native_dependencies.lock.json; build native host Metal or D3D11 binary",
+  "runtime_network": false,
+  "simulation_rng": false,
+  "assets_checked_in": false,
+  "asset_host": "GitHub ground-sky-sources-v1 Release; processed bytes reproduced locally and bundled",
+  "presentation_recipe": "backend-independent shader source SHA, renderer/byte-preserving decoder algorithm source SHA and algorithm version; compiled shader SHA independently embedded in generated runtime admission header",
+  "image_cache": "independent SHA of actual RGBE/SH/GGX function AST, image recipe and locked source bytes; image byte SHA required; one exact previous-script-and-AST compatible migration"
+}

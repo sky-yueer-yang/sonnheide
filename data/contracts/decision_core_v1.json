@@ -1,0 +1,654 @@
+{
+  "schema_version": 1,
+  "contract_id": "sonnheide_decision_core_v1",
+  "design_version": "0.9",
+  "algorithm_revision": "ADR0018-2026-10-09",
+  "planned_only": true,
+  "production_implemented": false,
+  "document": "docs/architecture/DECISION_CORE_PERSONALITY_AND_INFORMATION.md",
+  "interfaces": {
+    "life": "data/contracts/life_genetics_v1.json",
+    "natural_actions": "data/contracts/natural_action_v1.json",
+    "settlement": "data/contracts/settlement_lifecycle_v1.json",
+    "political": "data/contracts/political_decisions_v1.json",
+    "economic": "data/contracts/economic_decisions_v1.json",
+    "warfare": "data/contracts/warfare_decisions_v1.json",
+    "social": "data/contracts/social_decisions_v1.json",
+    "civic": "data/contracts/civic_control_v1.json"
+  },
+  "research_sources": [
+    {
+      "url": "https://www.nobelprize.org/uploads/2018/06/simon-lecture.pdf",
+      "use": "bounded_search_satisficing_not_claim_of_optimality"
+    },
+    {
+      "url": "https://media.gdcvault.com/gdc2016/Presentations/Dill_Kevin_Nuts_and_Bolts.pdf",
+      "use": "modular_considerations_actions_not_copied_code"
+    }
+  ],
+  "authority": {
+    "single_writer": true,
+    "all_domains_share_actual_resource_and_body_time_claims": true,
+    "automatic_decisions_require_player_click": false,
+    "world_truth_readable_by_planner": false,
+    "world_truth_used_for_actual_commit_guards": true,
+    "secret_validation_details_returned_to_actor": false,
+    "legal_authority_forged_by_personality": false,
+    "supported_unlawful_action": "explicit_existing_Plot_or_rebellion_or_attack_task_real_effect_witness_law_not_privileged_transfer",
+    "effective_law_survives_signer_death": true,
+    "new_signature_and_actual_implementation_require_current_qualified_executor": true
+  },
+  "records": {
+    "DecisionEpisode": [
+      "episodeId",
+      "subjectRef",
+      "accountableActorRef",
+      "roleAuthorityRevision",
+      "domain",
+      "decisionCounter",
+      "startTick",
+      "dueTick",
+      "BeliefSnapshotId",
+      "candidateSetVersion",
+      "selectedPlanId",
+      "CommitmentRef",
+      "logicalWorkCursor",
+      "OutcomeAttributionRefs"
+    ],
+    "BeliefSnapshot": [
+      "holderRef",
+      "roleRef",
+      "ObservedFactIds",
+      "evidenceRevision",
+      "generatedTick",
+      "definitionHash"
+    ],
+    "ObservedFact": [
+      "ObservedFactId",
+      "subject",
+      "predicate",
+      "estimateLo",
+      "estimateHi",
+      "unit",
+      "confidenceQ",
+      "observedTick",
+      "receivedTick",
+      "sourceChain",
+      "visibilityClass",
+      "sourceRevision",
+      "supersedesRef"
+    ],
+    "CandidatePlan": [
+      "planId",
+      "typedGoal",
+      "expectedPreconditions",
+      "resourceClaims",
+      "timeClaims",
+      "stages",
+      "horizonTicks",
+      "metricUnits",
+      "scenarioIntervals",
+      "failurePolicy",
+      "exitConditions",
+      "taskInterfaces"
+    ],
+    "Commitment": [
+      "subjects",
+      "acceptedAuthorityRecords",
+      "resourceCaps",
+      "actualReservations",
+      "dueTick",
+      "exitConditions",
+      "effectReceiptIds"
+    ],
+    "OutcomeAttribution": [
+      "originalPrediction",
+      "observedOutcomes",
+      "effectId",
+      "rootCauseIds",
+      "confoundedFlag",
+      "learningReceipt",
+      "unknownFields"
+    ]
+  },
+  "knowledge": {
+    "states": [
+      "KNOWN_CURRENT",
+      "LAST_KNOWN",
+      "DISPUTED",
+      "UNKNOWN"
+    ],
+    "sources": [
+      "actual_senses",
+      "own_body_and_actual_possession",
+      "authorized_accounts_and_records",
+      "actual_teaching",
+      "delivered_message_or_scout_report",
+      "real_public_quote"
+    ],
+    "unknown_as_zero": false,
+    "remote_inventory_book_is_current_physical_truth": false,
+    "god_ui_updates_actor_knowledge": false,
+    "observation_chain_deduplication": "root_ObservedFactId",
+    "same_root_relay_increases_independent_confidence": false,
+    "contradiction": "retain_evidence_widen_interval_not_false_consensus",
+    "confidence_is_calibrated_probability": false,
+    "confidence_multiplied_creates_resource_quantity": false,
+    "aging": "frozen_predicate_ttl_and_interval_expansion_saved_observedTick",
+    "historical_event_aging_erases_fact": false,
+    "indistinguishable_worlds": "same_permitted_K_definition_episode_and_counter_same_proposal_even_if_hidden_truth_differs",
+    "execution_outcomes_of_hidden_different_worlds_must_be_equal": false,
+    "rejected_probe": "opaque_denial_episode_cooldown_finite_attempts_no_hidden_details",
+    "messages": "actual_contact_language_or_existing_primitive_interface_actual_carrier_delay_saved",
+    "source_correction": "received_authenticated_source_revision_supersedes_old_same_root_estimate_preserves_history_no_new_independent_evidence_old_revision_cannot_overwrite"
+  },
+  "personality": {
+    "axes": [
+      "curiosity",
+      "piety",
+      "altruism",
+      "risk_tolerance",
+      "order_preference",
+      "ambition"
+    ],
+    "current_scale_q": [
+      0,
+      10000
+    ],
+    "author": "life.CurrentPersonality",
+    "export": "PersonalitySnapshot",
+    "genetic_traits": "inherited_predisposition_not_current_axes",
+    "birth": "life_expressed_predisposition_initializes_baseline_and_current_once",
+    "gene_edit_resets_current": false,
+    "current_edit_modifies_genome": false,
+    "current_edit_resets_memory_skill_emotion_health_counter_commitment": false,
+    "natural_development": {
+      "sample_absolute_change_q_per_calendar_day_max": 8,
+      "sample_absolute_change_q_per_30_day_window_max": 120,
+      "per_axis_saved_sliding_receipts": true,
+      "duplicate_root_effect_integrated_once": true,
+      "save_or_context_switch_refreshes_budget": false
+    },
+    "separate_records": [
+      "emotions",
+      "DomainSkill",
+      "religious_conviction",
+      "church_leadership_trust",
+      "political_opinion",
+      "aesthetic_preferences",
+      "object_specific_relations"
+    ],
+    "current_personality_edit_command": "SetCurrentPersonalityAxes",
+    "piety_is_current_religion_or_church_trust": false
+  },
+  "axis_effects": {
+    "curiosity": [
+      "information_search_allocation",
+      "research_topic_or_learning_candidate"
+    ],
+    "piety": [
+      "existing_faith_practice_candidate",
+      "doctrine_consistent_preference"
+    ],
+    "altruism": [
+      "own_surplus_assistance",
+      "real_public_beneficiary_weight"
+    ],
+    "risk_tolerance": [
+      "domain_uncertain_loss_interval_attitude",
+      "own_allowed_investment_risk"
+    ],
+    "order_preference": [
+      "commitment_switch_margin",
+      "existing_procedure_preference"
+    ],
+    "ambition": [
+      "office_or_enterprise_goal_candidate",
+      "long_horizon_reputation_goal"
+    ]
+  },
+  "sample_personality_mappings": {
+    "curiosity_search_slice": "2+floor(6*curiosityQ/10000)_within_fixed_total_budget",
+    "order_switch_margin": "150+floor(350*orderQ/10000)_domain_calibrated_points",
+    "optional_risk_attitude_q": "1000+floor(7000*riskQ/10000)_domain_specific_not_survival_or_engine_bypass",
+    "samples_require_definition_lock_and_calibration": true
+  },
+  "candidate_pipeline": [
+    "permitted_observations",
+    "due_episode",
+    "domain_alternatives_including_wait_observe_refuse",
+    "engine_and_authority_and_expected_feasibility_guards",
+    "unit_explicit_interval_metrics",
+    "domain_comparator_and_commitment",
+    "actual_claim_prepare_validate",
+    "commit_receipt_task_once",
+    "real_execution",
+    "later_observed_outcome_and_unique_learning"
+  ],
+  "comparison": {
+    "universal_money_time_death_score": false,
+    "domain_comparators_independent": true,
+    "hard_guard_outscored": false,
+    "normalization": "frozen_unit_to_domain_curve_before_same_domain_weighted_points",
+    "pareto": "all_dimensions_nonworse_at_least_one_strictly_better_unknown_interval_not_proven_dominated",
+    "safety_duty_tier_randomized": false,
+    "optional_variants": "stable_frozen_near_best_band_only",
+    "random_key": [
+      "WorldSeed",
+      "subjectRef",
+      "domain",
+      "decisionCounter",
+      "definitionHash"
+    ],
+    "counter_increment": "once_successful_published_EventFreezeReceipt_for_first_episode_candidate_freeze_not_queries_worker_slices_failed_candidates_retries_or_load",
+    "random_bit_protocol": "data/contracts/runtime_foundation_v1.json#/counter_rng"
+  },
+  "commitment": {
+    "states": [
+      "COLLECTING",
+      "PROPOSED",
+      "NEGOTIATING",
+      "AUTHORIZED",
+      "RESERVING",
+      "COMMITTED",
+      "EXECUTING",
+      "OBSERVING",
+      "CLOSED",
+      "WAITING",
+      "BLOCKED",
+      "REJECTED",
+      "EXPIRED",
+      "CANCELLED"
+    ],
+    "past_effects_refunded_on_cancel": false,
+    "switch_cost": "future_incremental_loss_not_unlimited_sunk_cost_lock",
+    "actual_safety_or_role_or_target_or_stoploss_interrupts": true,
+    "short_queue_replans_entire_life": false
+  },
+  "availability": {
+    "record": "ActorAvailabilityLedger",
+    "one_main_physical_episode": true,
+    "same_tick_multiple_domain_full_work": false,
+    "admission": [
+      "existing_indivisible_handover",
+      "immediate_safety",
+      "actual_care_and_basic_supply",
+      "lawful_duty",
+      "committed_deadline",
+      "institution_approved_priority",
+      "accumulated_wait",
+      "stable_id_final_tie"
+    ],
+    "volunteer_acceptance_required": true,
+    "military_replaces_care_with_fake_actor": false,
+    "resource_fairness": "priority_class_requestTick_overdueAge_saved_round_robin_cursor_id_last_tie",
+    "worker_finish_order_wins_resource": false
+  },
+  "feedback": {
+    "classes": [
+      "EXECUTION",
+      "RESOURCE",
+      "CONTACT",
+      "SOCIAL_ACCEPTANCE",
+      "ENVIRONMENT",
+      "EXTERNAL_INTERVENTION"
+    ],
+    "prediction_frozen_before_decision": true,
+    "update_only_received_actual_outcome": true,
+    "unobserved_counterfactual_reward": false,
+    "confounded_outcome": "UNKNOWN_or_CONFOUNDED_not_false_policy_cause",
+    "bounded_estimate_update": "old+floor(alphaQ*(observed-old)/10000)",
+    "receipt_key": [
+      "subjectRef",
+      "rootEffect",
+      "domain",
+      "metric"
+    ],
+    "self_created_problem_and_repair_unbounded_reputation": false,
+    "online_neural_or_cloud_model_required": false
+  },
+  "time": {
+    "canonical": "SimTick",
+    "motion_second_ticks_sample": 20,
+    "game_day_ticks_sample": 12000,
+    "game_year_days": 360,
+    "wall_clock_render_camera_affects_choice": false,
+    "physical_dangers_wait_for_high_level_planner": false,
+    "game_day_low_frequency": [
+      "economy",
+      "politics",
+      "strategy"
+    ],
+    "saved_logical_due_and_frontiers": true
+  },
+  "performance": {
+    "sample_actor_candidates_max": 24,
+    "sample_task_nodes_max": 32,
+    "sample_observation_merge_batch_max": 128,
+    "sample_institution_candidates_max": 32,
+    "sample_prediction_scenarios_max": 4,
+    "sample_all_highlevel_primitives_per_tick_max": 4096,
+    "budgets_are_capacity_claims": false,
+    "fair_saved_continuations": true,
+    "skill_or_curiosity_exceeds_fixed_total_work": false,
+    "quota_applies_only_to_preemptible_search_not_due_legal_or_physiology_effects": true,
+    "large_indivisible_prepare": "isolated_candidate_frontier_frozen_original_due_cutoff_then_complete_atomic_publish_not_partial_ballots_or_wallclock_skip"
+  },
+  "persistence": {
+    "required": [
+      "CurrentPersonality_baseline_current_edit_and_experience_budget",
+      "source_chained_knowledge_and_ttl",
+      "DecisionEpisode_counter_frontier_due",
+      "real_resource_time_claims_and_Commitment",
+      "actual_message_transport",
+      "OutcomeAttribution_and_unique_learning_receipts",
+      "fair_cursor_and_backlog"
+    ],
+    "load_rerolls_candidates_or_restocks_or_refunds": false
+  },
+  "ui": {
+    "existing_person_animal_activity_and_institution_panels": true,
+    "new_global_toolbar_tools": 0,
+    "main_fact_limit": 4,
+    "on_demand_candidate_evidence_and_personality_detail": true,
+    "limited_meta_explanation_leaks_truth": false,
+    "parameter_edit_is_account_balance_edit": false
+  },
+  "reference_model": "docs/research/models/decision_core_reference_model.py",
+  "acceptance_cases": [
+    {
+      "id": "DC01",
+      "given": "两个World只隐藏敌兵不同",
+      "expected": "相同K/counter提案相同，实际执行可不同",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC02",
+      "given": "玩家查看隐藏对方账户",
+      "expected": "不会自动给AI记入K",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC03",
+      "given": "同一传闻经过三人回传",
+      "expected": "源去重不加独立信心",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC04",
+      "given": "矛盾的两条报告",
+      "expected": "保DISPUTED区间不伪确认",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC05",
+      "given": "未知库存/敌兵",
+      "expected": "不能当0或免费货",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC06",
+      "given": "未来receivedTick消息",
+      "expected": "到时前不影响选择",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC07",
+      "given": "旧移动目标报告",
+      "expected": "过期区间扩大，不能实时追踪",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC08",
+      "given": "旧法律历史",
+      "expected": "不因为TTL抹掉事件",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC09",
+      "given": "同episode反复查询",
+      "expected": "counter和World不变",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC10",
+      "given": "变locale/帧率",
+      "expected": "规范候选与提案相同",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC11",
+      "given": "异步worker反序",
+      "expected": "结果及资源准入相同",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC12",
+      "given": "载入部分搜索前沿",
+      "expected": "按saved work继续不重抽",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC13",
+      "given": "角色在commit前撤回",
+      "expected": "候选拒绝不伪签",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC14",
+      "given": "未知库存试探被拒",
+      "expected": "只opaque原因+有界冷却",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC15",
+      "given": "同opaque拒绝反复改quantity",
+      "expected": "不能二分探测私密量",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC16",
+      "given": "高野心没现金",
+      "expected": "不能透支造钱或货",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC17",
+      "given": "高利他无自有余量",
+      "expected": "不能花他人预算",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC18",
+      "given": "高虔诚",
+      "expected": "不自动改教派/获得神授",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC19",
+      "given": "DNA改求知倾向",
+      "expected": "不重置当前人格记忆技能",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC20",
+      "given": "typed当前人格编辑",
+      "expected": "不改DNA不清已有效承诺",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC21",
+      "given": "当前人格越界",
+      "expected": "拒绝不silent clamp未批准输入",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC22",
+      "given": "未成年成人外形",
+      "expected": "公民资格按life成熟",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC23",
+      "given": "同人上班军役照护同时claim",
+      "expected": "实际时段只准入一份",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC24",
+      "given": "已不可分割交接被高层新任务抢占",
+      "expected": "先合法结实物再重排",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC25",
+      "given": "自愿者列入候选",
+      "expected": "未接受不算承诺",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC26",
+      "given": "两机构抢同一真实库存",
+      "expected": "单写一成功另一重验无复制",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC27",
+      "given": "相同priority每日争货",
+      "expected": "等待/轮转避免固定小ID独吞",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC28",
+      "given": "预算耗尽",
+      "expected": "保存前沿明确等待不跳危险",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC29",
+      "given": "基本需要对高野心可选项目",
+      "expected": "硬层不能被分数抵消",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC30",
+      "given": "不同指标量纲",
+      "expected": "先domaincurve不直接钱+米",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC31",
+      "given": "UnknownPareto候选",
+      "expected": "不假称严格支配",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC32",
+      "given": "高风险与低风险同情景",
+      "expected": "可不同合法方案但硬底线相同",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC33",
+      "given": "高秩序短等候",
+      "expected": "保承诺不每tick翻计划",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC34",
+      "given": "真实目标被wipe",
+      "expected": "即时失效货loss一次",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC35",
+      "given": "取消已执行计划",
+      "expected": "过去消耗与effect不退款",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC36",
+      "given": "不断亏损沉没成本",
+      "expected": "未来止损仍可退出",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC37",
+      "given": "同effect多system callback",
+      "expected": "学习每subject/domain/metric一次",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC38",
+      "given": "减税同时God淹城",
+      "expected": "外部cause不伪归因政策",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC39",
+      "given": "结果尚未知",
+      "expected": "不预奖成功或责罚失败",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC40",
+      "given": "只有外人知道失败",
+      "expected": "持有者未收报告不全知学习",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC41",
+      "given": "一次被骗",
+      "expected": "对象/领域更新不是全species永久仇恨",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC42",
+      "given": "已有非法Plot",
+      "expected": "真实动作/见证/法律后果不伪法令",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC43",
+      "given": "unlawful标签调用privileged转账",
+      "expected": "拒绝绕过守恒产权API",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC44",
+      "given": "AI类被关",
+      "expected": "禁新自选不冻生理孕期债务",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC45",
+      "given": "角色缺实际负责人",
+      "expected": "不造默认经理/国王/士兵",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC46",
+      "given": "候选超actor cap",
+      "expected": "分片续算不扩大真实感官",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC47",
+      "given": "长期经历重复/存载",
+      "expected": "不重复积分或刷新滑窗额度",
+      "status": "future_production_acceptance_not_executed"
+    },
+    {
+      "id": "DC48",
+      "given": "God与limitedmeta解释",
+      "expected": "前者真后果/估计并列，后者不泄秘密",
+      "status": "future_production_acceptance_not_executed"
+    }
+  ],
+  "acceptance_case_count": 48,
+  "executable_specification_contracts": [
+    "data/contracts/runtime_foundation_v1.json",
+    "data/contracts/emergence_algorithms_v1.json",
+    "data/contracts/interaction_runtime_v1.json"
+  ]
+}
